@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartKembo — Wasiliana Nasi</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero {
+  background: var(--primary-2);
+  padding: 160px 5% 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,200,150,0.07) 0%, transparent 70%);
+}
+.page-hero-title { font-family:var(--font-d); font-size:clamp(36px,5vw,64px); font-weight:800; color:white; letter-spacing:-1.5px; margin-bottom:14px; position:relative; }
+.page-hero-title span { color:var(--accent); }
+.page-hero-sub { font-size:18px; color:rgba(255,255,255,0.55); font-weight:300; position:relative; }
+
+.contact-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:56px; align-items:start; margin-top:64px; }
+
+.contact-info { }
+.contact-info-item { display:flex; gap:18px; margin-bottom:28px; }
+.ci-icon { width:52px; height:52px; background:var(--accent-3); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.ci-icon svg { width:24px; height:24px; }
+.ci-label { font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+.ci-val { font-size:16px; font-weight:500; color:var(--text-1); }
+.ci-sub { font-size:13px; color:var(--text-3); margin-top:3px; }
+
+.whatsapp-btn { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:white; padding:14px 24px; border-radius:12px; font-size:15px; font-weight:600; text-decoration:none; margin-top:16px; transition:all 0.2s; }
+.whatsapp-btn:hover { background:#1ebe5d; transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,211,102,0.3); }
+
+.contact-form-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:36px; box-shadow:var(--shadow-sm); }
+.form-title { font-family:var(--font-d); font-size:22px; font-weight:800; margin-bottom:6px; }
+.form-sub { font-size:14px; color:var(--text-2); margin-bottom:28px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-group { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.form-label { font-size:13px; font-weight:500; color:var(--text-2); }
+.form-label span { color:#EF4444; }
+.form-control { padding:11px 14px; border:1px solid var(--border-2); border-radius:var(--radius-sm); font-family:var(--font-b); font-size:14px; color:var(--text-1); background:white; outline:none; transition:border-color 0.15s, box-shadow 0.15s; }
+.form-control:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,200,150,0.1); }
+textarea.form-control { resize:vertical; min-height:120px; line-height:1.5; }
+.form-select { cursor:pointer; }
+.submit-btn { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:var(--radius-sm); font-family:var(--font-b); font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.submit-btn:hover { background:var(--primary-2); box-shadow:var(--shadow-md); }
+.submit-btn:disabled { background:var(--gray-3); cursor:not-allowed; }
+.success-msg { display:none; text-align:center; padding:32px; }
+.success-icon { width:64px; height:64px; background:#ECFDF5; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+.success-title { font-family:var(--font-d); font-size:20px; font-weight:800; margin-bottom:8px; }
+.success-sub { font-size:14px; color:var(--text-2); line-height:1.6; }
+.alert { padding:12px 16px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:none; }
+.alert-error { background:#FEF2F2; color:#991B1B; border:1px solid #FECACA; display:block; }
+
+.faq-section { background:var(--gray-1); }
+.faq-list { margin-top:48px; }
+.faq-item { background:white; border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:10px; overflow:hidden; }
+.faq-q { padding:18px 22px; font-size:15px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background 0.15s; }
+.faq-q:hover { background:var(--gray-1); }
+.faq-icon { width:24px; height:24px; border-radius:50%; background:var(--accent-3); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform 0.2s; }
+.faq-item.open .faq-icon { transform:rotate(45deg); }
+.faq-a { display:none; padding:0 22px 18px; font-size:14px; color:var(--text-2); line-height:1.7; }
+.faq-item.open .faq-a { display:block; }
+
+@media(max-width:768px) {
+  .contact-grid { grid-template-columns:1fr; }
+  .form-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<script src="js/layout.js"></script>
+
+<div class="page-hero">
+  <div class="section-tag" style="justify-content:center">Wasiliana</div>
+  <h1 class="page-hero-title">Tuko Hapa<br><span>Kukusaidia</span></h1>
+  <p class="page-hero-sub">Piga simu, tuma WhatsApp, au jaza fomu — tutajibu haraka</p>
+</div>
+
+<section>
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2 style="font-family:var(--font-d);font-size:28px;font-weight:800;margin-bottom:8px">Njia za<br>Kuwasiliana</h2>
+        <p style="font-size:14px;color:var(--text-2);margin-bottom:36px;line-height:1.7">Timu yetu ipo tayari kukusaidia. Tunajibu maswali yote ndani ya saa 2 wakati wa kazi.</p>
+
+        <div class="contact-info-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.18 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <div class="ci-label">Simu / WhatsApp</div>
+            <div class="ci-val">+255 712 000 000</div>
+            <div class="ci-sub">Jumatatu–Ijumaa, 8:00 AM – 6:00 PM</div>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div>
+            <div class="ci-label">Barua Pepe</div>
+            <div class="ci-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="40292e262f00332d2132342b252d222f6e232f6e343a">[email&#160;protected]</a></div>
+            <div class="ci-sub">Tunajibu ndani ya saa 2</div>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div>
+            <div class="ci-label">Ofisi</div>
+            <div class="ci-val">Dar es Salaam, Tanzania</div>
+            <div class="ci-sub">Tunaweza kuja kwako pia 🇹🇿</div>
+          </div>
+        </div>
+
+        <a href="https://wa.me/255712000000?text=Habari%20SmartKembo!%20Nataka%20kujua%20zaidi%20kuhusu%20mfumo%20wa%20WiFi." class="whatsapp-btn" target="_blank">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Piga WhatsApp Sasa
+        </a>
+      </div>
+
+      <div class="contact-form-card">
+        <div id="form-content">
+          <div class="form-title">Tuma Ujumbe</div>
+          <div class="form-sub">Jaza fomu hapa chini — tutakujibu haraka</div>
+          <div id="form-alert" class="alert"></div>
+          <div class="form-row">
+            <div class="form-group" style="margin:0">
+              <label class="form-label">Jina Lako <span>*</span></label>
+              <input class="form-control" id="c-name" placeholder="Jina lako kamili">
+            </div>
+            <div class="form-group" style="margin:0">
+              <label class="form-label">Simu <span>*</span></label>
+              <input class="form-control" id="c-phone" type="tel" placeholder="0712 000 000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Barua Pepe</label>
+            <input class="form-control" id="c-email" type="email" placeholder="wewe@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mada <span>*</span></label>
+            <select class="form-control form-select" id="c-subject">
+              <option value="">Chagua mada...</option>
+              <option>Nataka kujua kuhusu mfumo</option>
+              <option>Tatizo la kiufundi</option>
+              <option>Ombi la akaunti</option>
+              <option>Malipo na bei</option>
+              <option>Ushirikiano wa biashara</option>
+              <option>Kingine</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ujumbe Wako <span>*</span></label>
+            <textarea class="form-control" id="c-message" placeholder="Andika swali lako au ujumbe wako hapa..."></textarea>
+          </div>
+          <button class="submit-btn" id="submit-btn" onclick="sendMessage()">
+            Tuma Ujumbe
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <p style="text-align:center;font-size:12px;color:var(--text-3);margin-top:12px">Tunajibu ndani ya saa 2 wakati wa kazi</p>
+        </div>
+        <div class="success-msg" id="success-msg">
+          <div class="success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="success-title">Ujumbe Umetumwa!</div>
+          <p class="success-sub">Asante kwa kuwasiliana nasi. Tutakujibu ndani ya saa 2 kwa simu au barua pepe yako.</p>
+          <button onclick="resetForm()" style="margin-top:20px;padding:10px 24px;background:var(--primary);color:white;border:none;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--font-b);font-size:14px">Tuma Ujumbe Mwingine</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-tag">Maswali ya Kawaida</div>
+    <h2 class="section-title">Maswali<br><span>Unayouliza</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Ni muda gani inachukua kuanza kutumia SmartKembo?
+          <div class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a">Baada ya kuomba akaunti, tutakupigia simu ndani ya saa 24. Ukiwa na router ya Mikrotik tayari, unaweza kuanza kuuza WiFi ndani ya siku 1–2. Tunakusaidia hatua kwa hatua bila malipo ya ziada.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Ninahitaji router gani?
+          <div class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a">SmartKembo inafanya kazi vizuri na Mikrotik (inapendekezwa), OpenWRT, na Ubiquiti. Mikrotik RB941 au RB951 zinapatikana Tanzania kwa bei ya Tsh 80,000–150,000 na zinafaa vizuri kwa hoteli na ofisi ndogo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Ninaweza kubadilisha bei za pakiti zangu wakati wowote?
+          <div class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a">Ndiyo! Unaweza kubadilisha bei, kuongeza au kuondoa pakiti wakati wowote kupitia dashibodi yako. Mabadiliko yanaanza mara moja — wateja wanaona bei mpya papo hapo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Malipo yanaingia vipi mkononi mwangu?
+          <div class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a">Wateja wanalipa kupitia M-Pesa, Tigo Pesa, au Airtel Money. Pesa inaingia moja kwa moja kwenye akaunti yako ya simu — hakuna kuchelewa, hakuna commission ya ziada. SmartKembo inakusanya ada yake ya mwezi tu.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Kuna msaada wa kiufundi?
+          <div class="faq-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a">Ndiyo! Wamiliki wa Pro na Enterprise wana msaada wa simu na WhatsApp. Basic wana msaada wa barua pepe. Pia tuna mafunzo (tutorials) kwenye tovuti yetu ya jinsi ya kutumia kila kipengele.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function sendMessage() {
+  const name    = document.getElementById('c-name').value.trim();
+  const phone   = document.getElementById('c-phone').value.trim();
+  const subject = document.getElementById('c-subject').value;
+  const message = document.getElementById('c-message').value.trim();
+  const alert   = document.getElementById('form-alert');
+  const btn     = document.getElementById('submit-btn');
+
+  alert.className = 'alert';
+  if (!name || !phone || !subject || !message) {
+    alert.className = 'alert alert-error';
+    alert.textContent = 'Tafadhali jaza sehemu zote muhimu zilizo na *';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Inatuma...';
+
+  // Simulate send (real: connect to API or EmailJS)
+  setTimeout(() => {
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
+  }, 1500);
+}
+
+function resetForm() {
+  document.getElementById('form-content').style.display = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').innerHTML = 'Tuma Ujumbe <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon

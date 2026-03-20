@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartKembo — Kuhusu Sisi</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero { background:var(--primary-2); padding:160px 5% 80px; position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,200,150,0.07) 0%, transparent 70%); }
+.page-hero-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.page-hero-title { font-family:var(--font-d); font-size:clamp(36px,5vw,64px); font-weight:800; color:white; letter-spacing:-1.5px; margin-bottom:14px; position:relative; }
+.page-hero-title span { color:var(--accent); }
+.page-hero-sub { font-size:17px; color:rgba(255,255,255,0.6); font-weight:300; line-height:1.7; position:relative; }
+.hero-numbers { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; position:relative; }
+.hero-num-card { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px; text-align:center; }
+.hero-num-val { font-family:var(--font-d); font-size:36px; font-weight:800; color:var(--accent); }
+.hero-num-lbl { font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; }
+
+.story-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.story-text h2 { font-family:var(--font-d); font-size:36px; font-weight:800; letter-spacing:-0.8px; margin-bottom:20px; }
+.story-text p { font-size:16px; color:var(--text-2); line-height:1.8; margin-bottom:16px; }
+
+.story-visual { background:var(--primary); border-radius:24px; padding:36px; }
+.sv-year { font-family:var(--font-m); font-size:12px; color:var(--accent); margin-bottom:6px; }
+.sv-event { font-size:15px; font-weight:600; color:white; margin-bottom:4px; }
+.sv-desc { font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); }
+.sv-desc:last-child { border:none; margin:0; padding:0; }
+
+.values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px; }
+.value-card { text-align:center; padding:32px 24px; }
+.value-icon { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:24px; }
+.value-title { font-family:var(--font-d); font-size:18px; font-weight:700; margin-bottom:8px; }
+.value-desc { font-size:14px; color:var(--text-2); line-height:1.7; }
+
+.team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:56px; }
+.team-card { text-align:center; }
+.team-avatar { width:88px; height:88px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:28px; font-weight:800; margin:0 auto 16px; }
+.team-name { font-family:var(--font-d); font-size:18px; font-weight:700; margin-bottom:4px; }
+.team-role { font-size:13px; color:var(--accent-2); font-weight:500; margin-bottom:8px; }
+.team-bio { font-size:13px; color:var(--text-2); line-height:1.6; }
+
+.mission-section { background:var(--primary); text-align:center; }
+.mission-title { font-family:var(--font-d); font-size:clamp(28px,4vw,48px); font-weight:800; color:white; letter-spacing:-1px; margin-bottom:20px; }
+.mission-title span { color:var(--accent); }
+.mission-text { font-size:20px; color:rgba(255,255,255,0.6); font-weight:300; max-width:600px; margin:0 auto 36px; line-height:1.7; font-style:italic; }
+
+@media(max-width:768px) {
+  .page-hero-inner, .story-grid, .values-grid, .team-grid { grid-template-columns:1fr; }
+  .hero-numbers { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<script src="js/layout.js"></script>
+
+<div class="page-hero">
+  <div class="page-hero-inner container">
+    <div>
+      <div class="section-tag">Kuhusu SmartKembo</div>
+      <h1 class="page-hero-title">Tunajenga<br><span>Mustakabali</span><br>wa WiFi</h1>
+      <p class="page-hero-sub">SmartKembo ilianzishwa Tanzania na watu wanaojua matatizo ya kusimamia WiFi kwa biashara ndogo na kubwa. Lengo letu ni moja: kufanya uuzaji wa WiFi kuwa rahisi, wa kisasa, na wenye faida.</p>
+    </div>
+    <div class="hero-numbers">
+      <div class="hero-num-card">
+        <div class="hero-num-val">2024</div>
+        <div class="hero-num-lbl">Mwaka wa Kuanzishwa</div>
+      </div>
+      <div class="hero-num-card">
+        <div class="hero-num-val">24+</div>
+        <div class="hero-num-lbl">Wamiliki Wanaotumia</div>
+      </div>
+      <div class="hero-num-card">
+        <div class="hero-num-val">500+</div>
+        <div class="hero-num-lbl">Wateja Kila Siku</div>
+      </div>
+      <div class="hero-num-card">
+        <div class="hero-num-val">TZ 🇹🇿</div>
+        <div class="hero-num-lbl">Imeanzishwa Tanzania</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY -->
+<section>
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-text">
+        <div class="section-tag">Hadithi Yetu</div>
+        <h2>Tatizo Tuliloona,<br><span class="text-accent">Suluhisho Tulilounda</span></h2>
+        <p>Kila mmiliki wa hoteli, café au ofisi anayetoa WiFi alikuwa na tatizo moja — anapoteza pesa kwa sababu wateja wanatumia WiFi bila kulipa, au analazimika kukaa karibu na router kila wakati kumpa mtu password.</p>
+        <p>SmartKembo ilianzishwa ili kutatua tatizo hili. Tuliunda mfumo ambao wateja wanalipa wenyewe kwa M-Pesa na kupata WiFi mara moja — mmiliki anaweza kulala, WiFi inaendelea kufanya kazi na pesa zinaingia.</p>
+        <p>Tunajivunia kuwa kampuni ya Tanzania, inayotengenezwa kwa Watanzania, kwa lugha ya Kiswahili.</p>
+      </div>
+      <div class="story-visual">
+        <div class="sv-year">2024 — Januari</div>
+        <div class="sv-event">SmartKembo Ilianzishwa</div>
+        <div class="sv-desc">Wazo lilianza na tatizo la mmiliki wa hoteli Arusha — alipoteza Tsh 500,000 kila mwezi kwa wateja wasiolipa WiFi.</div>
+
+        <div class="sv-year">2024 — Aprili</div>
+        <div class="sv-event">Toleo la Kwanza</div>
+        <div class="sv-desc">Mfumo wa kwanza ulianza kufanya kazi na wamiliki 3 wa majaribio Dar es Salaam na Arusha.</div>
+
+        <div class="sv-year">2024 — Agosti</div>
+        <div class="sv-event">Wamiliki 10</div>
+        <div class="sv-desc">Baada ya maboresho mengi, tulianza kuona matokeo ya kweli — wamiliki waliongeza mapato yao kwa wastani wa 40%.</div>
+
+        <div class="sv-year">2025 — Sasa</div>
+        <div class="sv-event">SmartKembo Inakua</div>
+        <div class="sv-desc">Wamiliki 24+ katika Tanzania, Kenya na Uganda. Tunaendelea kuongeza vipengele vipya — Water Vending inakuja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section style="background:var(--gray-1)">
+  <div class="container">
+    <div class="text-center">
+      <div class="section-tag">Maadili Yetu</div>
+      <h2 class="section-title">Tunaamini<br><span>Katika Hivi</span></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon" style="background:#EAF3DE">🇹🇿</div>
+        <div class="value-title">Tanzania Kwanza</div>
+        <p class="value-desc">Tunajenga kwa Watanzania, kwa lugha ya Kiswahili, na kwa mfumo wa malipo wa Tanzania — M-Pesa, Tigo Pesa, Airtel.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon" style="background:#E6F1FB">⚡</div>
+        <div class="value-title">Urahisi ni Nguvu</div>
+        <p class="value-desc">Mfumo wetu unapaswa kueleweka na mmiliki yeyote — hata asiye na ujuzi mkubwa wa teknolojia. Rahisi = matumizi zaidi = faida zaidi.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon" style="background:#FAEEDA">🤝</div>
+        <div class="value-title">Mafanikio Yako ni Yetu</div>
+        <p class="value-desc">Tunafanikiwa tu ukifanikiwa wewe. Ndiyo maana tunatoa msaada wa kweli — simu, WhatsApp, na kutembelea ukihitaji.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section>
+  <div class="container">
+    <div class="text-center">
+      <div class="section-tag">Timu Yetu</div>
+      <h2 class="section-title">Watu Nyuma ya<br><span>SmartKembo</span></h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar" style="background:#EAF3DE;color:#3B6D11">KM</div>
+        <div class="team-name">Kelvin Mwamba</div>
+        <div class="team-role">Mwanzilishi & CEO</div>
+        <p class="team-bio">Mhandisi wa programu mwenye uzoefu wa miaka 8. Ameunda mifumo ya biashara kwa kampuni za Afrika Mashariki.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#E0F2FE;color:#0369A1">AN</div>
+        <div class="team-name">Amina Nkosi</div>
+        <div class="team-role">Mkurugenzi wa Teknolojia</div>
+        <p class="team-bio">Mtaalamu wa backend na database. Anasimamia usalama na uimara wa mfumo wote wa SmartKembo.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:#FCE7F3;color:#9D174D">DK</div>
+        <div class="team-name">David Kirui</div>
+        <div class="team-role">Mkurugenzi wa Biashara</div>
+        <p class="team-bio">Anaongoza uhusiano na wamiliki wetu. Yeye ndiye unayempigia simu ukihitaji msaada — anajua SmartKembo kwa kina.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission-section">
+  <div class="container">
+    <div class="section-tag" style="justify-content:center">Dhamira Yetu</div>
+    <h2 class="mission-title">Kila Mmiliki wa WiFi<br><span>Afrika Anastahili Mfumo Huu</span></h2>
+    <p class="mission-text">"Tunataka kila mmiliki wa hoteli ndogo Dodoma, café Mombasa, au ofisi Kampala aweze kusimamia WiFi yake kwa urahisi na kupata mapato yanayostahili."</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="smartkembo/apply.html" class="btn btn-primary btn-lg">Jiunge Nasi</a>
+      <a href="contact.html" class="btn btn-outline btn-lg">Wasiliana Nasi</a>
+    </div>
+  </div>
+</section>
+
+<!-- Projects page -->
+</body>
+</html>

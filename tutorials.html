@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartKembo — Mafunzo</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero { background:var(--primary-2); padding:160px 5% 80px; text-align:center; position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,200,150,0.07) 0%, transparent 70%); }
+.page-hero-title { font-family:var(--font-d); font-size:clamp(36px,5vw,64px); font-weight:800; color:white; letter-spacing:-1.5px; margin-bottom:14px; position:relative; }
+.page-hero-title span { color:var(--accent); }
+.page-hero-sub { font-size:18px; color:rgba(255,255,255,0.55); font-weight:300; position:relative; }
+
+.tuts-cats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:40px; }
+.tut-cat { padding:8px 18px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1.5px solid var(--border-2); background:white; color:var(--text-2); transition:all 0.15s; }
+.tut-cat.active,.tut-cat:hover { background:var(--primary); color:white; border-color:var(--primary); }
+
+.tuts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.tut-card { background:white; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all 0.2s; cursor:pointer; }
+.tut-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.tut-thumb { height:160px; display:flex; align-items:center; justify-content:center; font-size:48px; position:relative; }
+.tut-level { position:absolute; top:12px; right:12px; }
+.tut-body { padding:20px; }
+.tut-meta { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.tut-time { font-size:12px; color:var(--text-3); display:flex; align-items:center; gap:4px; }
+.tut-title { font-family:var(--font-d); font-size:17px; font-weight:700; margin-bottom:8px; line-height:1.3; }
+.tut-desc { font-size:13px; color:var(--text-2); line-height:1.6; }
+.tut-footer { padding:14px 20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.tut-author { font-size:12px; color:var(--text-3); }
+.tut-link { font-size:13px; font-weight:600; color:var(--accent-2); text-decoration:none; display:flex; align-items:center; gap:4px; }
+.tut-link:hover { color:var(--primary); }
+
+/* Modal */
+.tut-modal-bg { display:none; position:fixed; inset:0; background:rgba(13,61,46,0.6); z-index:500; align-items:center; justify-content:center; padding:20px; }
+.tut-modal-bg.open { display:flex; }
+.tut-modal { background:white; border-radius:var(--radius); max-width:680px; width:100%; max-height:85vh; overflow-y:auto; }
+.tut-modal-header { padding:24px 28px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; position:sticky; top:0; background:white; z-index:1; }
+.tut-modal-title { font-family:var(--font-d); font-size:22px; font-weight:800; }
+.tut-modal-close { width:32px; height:32px; border-radius:50%; border:1px solid var(--border-2); background:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; }
+.tut-modal-body { padding:28px; }
+.tut-step { display:flex; gap:18px; margin-bottom:28px; }
+.tut-step-num { width:40px; height:40px; background:var(--primary); color:white; border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:15px; font-weight:800; flex-shrink:0; }
+.tut-step-title { font-family:var(--font-d); font-size:16px; font-weight:700; margin-bottom:6px; }
+.tut-step-desc { font-size:14px; color:var(--text-2); line-height:1.7; }
+.tut-code { font-family:var(--font-m); font-size:12px; background:var(--gray-1); padding:10px 14px; border-radius:8px; margin:8px 0; border:1px solid var(--border); display:block; }
+.tut-tip { background:var(--accent-3); border-left:3px solid var(--accent); padding:12px 16px; border-radius:0 8px 8px 0; font-size:13px; color:var(--text-1); margin:12px 0; line-height:1.6; }
+
+@media(max-width:768px) {
+  .tuts-grid { grid-template-columns:1fr; }
+}
+@media(max-width:1024px) {
+  .tuts-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<script src="js/layout.js"></script>
+
+<div class="page-hero">
+  <div class="section-tag" style="justify-content:center">Mafunzo</div>
+  <h1 class="page-hero-title">Jifunze<br><span>Kwa Urahisi</span></h1>
+  <p class="page-hero-sub">Mafunzo ya jinsi ya kutumia SmartKembo — hatua kwa hatua, kwa Kiswahili</p>
+</div>
+
+<section>
+  <div class="container">
+    <div class="tuts-cats">
+      <div class="tut-cat active" onclick="filterTuts('all',this)">Yote</div>
+      <div class="tut-cat" onclick="filterTuts('kuanza',this)">Kuanza</div>
+      <div class="tut-cat" onclick="filterTuts('dashibodi',this)">Dashibodi</div>
+      <div class="tut-cat" onclick="filterTuts('malipo',this)">Malipo</div>
+      <div class="tut-cat" onclick="filterTuts('router',this)">Router</div>
+      <div class="tut-cat" onclick="filterTuts('advanced',this)">Ya Juu</div>
+    </div>
+
+    <div class="tuts-grid" id="tuts-grid">
+
+      <div class="tut-card" data-cat="kuanza" onclick="openTut(1)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#EAF3DE,#D1FAE5)">
+          🚀
+          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 10</span>
+            <span class="badge badge-green">Mwanzo</span>
+          </div>
+          <div class="tut-title">Jinsi ya Kuanzisha SmartKembo kwa Mara ya Kwanza</div>
+          <p class="tut-desc">Hatua zote za kuanzisha akaunti, kuweka pakiti za kwanza, na kuunganisha router yako.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="malipo" onclick="openTut(2)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#E6F1FB,#BFDBFE)">
+          💳
+          <div class="tut-level"><span class="badge badge-blue">Wastani</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 8</span>
+            <span class="badge badge-blue">Wastani</span>
+          </div>
+          <div class="tut-title">Jinsi Malipo ya M-Pesa Yanavyofanya Kazi</div>
+          <p class="tut-desc">Elewa jinsi wateja wanavyolipa na pesa inavyoingia kwenye akaunti yako ya simu moja kwa moja.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="dashibodi" onclick="openTut(3)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#FAEEDA,#FDE68A)">
+          📊
+          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 6</span>
+            <span class="badge badge-green">Mwanzo</span>
+          </div>
+          <div class="tut-title">Jinsi ya Kusoma Ripoti za Mapato</div>
+          <p class="tut-desc">Elewa kila takwimu kwenye dashibodi yako — mapato, wateja, na pakiti zinazouza zaidi.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="router" onclick="openTut(4)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">
+          🔌
+          <div class="tut-level"><span class="badge" style="background:#EDE9FE;color:#5B21B6">Ya Juu</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 20</span>
+            <span class="badge" style="background:#EDE9FE;color:#5B21B6">Ya Juu</span>
+          </div>
+          <div class="tut-title">Jinsi ya Kuunganisha Router ya Mikrotik</div>
+          <p class="tut-desc">Mwongozo kamili wa kuunganisha Mikrotik na SmartKembo — hatua kwa hatua na picha.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="dashibodi" onclick="openTut(5)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0)">
+          📦
+          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 5</span>
+            <span class="badge badge-green">Mwanzo</span>
+          </div>
+          <div class="tut-title">Jinsi ya Kuongeza na Kubadilisha Pakiti</div>
+          <p class="tut-desc">Weka pakiti mpya, badilisha bei, washa au zima pakiti — rahisi kabisa kupitia dashibodi.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+      <div class="tut-card" data-cat="advanced" onclick="openTut(6)">
+        <div class="tut-thumb" style="background:linear-gradient(135deg,#FEF2F2,#FECACA)">
+          🌐
+          <div class="tut-level"><span class="badge" style="background:#FEF2F2;color:#991B1B">Ya Juu</span></div>
+        </div>
+        <div class="tut-body">
+          <div class="tut-meta">
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 30</span>
+            <span class="badge" style="background:#FEF2F2;color:#991B1B">Ya Juu</span>
+          </div>
+          <div class="tut-title">Jinsi ya Kuweka SmartKembo Online (Railway + Vercel)</div>
+          <p class="tut-desc">Mwongozo kamili wa kuweka mfumo wako online — GitHub, Railway, Vercel, na domain yako.</p>
+        </div>
+        <div class="tut-footer">
+          <span class="tut-author">Na SmartKembo Team</span>
+          <span class="tut-link">Soma → </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Tutorial Modal -->
+<div class="tut-modal-bg" id="tut-modal">
+  <div class="tut-modal">
+    <div class="tut-modal-header">
+      <div class="tut-modal-title" id="modal-title">Mafunzo</div>
+      <button class="tut-modal-close" onclick="closeTut()">✕</button>
+    </div>
+    <div class="tut-modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const tutorials = {
+  1: {
+    title: 'Jinsi ya Kuanzisha SmartKembo kwa Mara ya Kwanza',
+    steps: [
+      { title: 'Omba Akaunti', desc: 'Nenda kwenye <strong>smartkembo.co.tz/apply</strong> → jaza fomu ya maombi yako — jina la biashara, eneo, simu na barua pepe. Tutakupigia simu ndani ya saa 24.' },
+      { title: 'Pata Taarifa za Kuingia', desc: 'Baada ya kukubaliwa, utapata barua pepe yenye <strong>email</strong> na <strong>nenosiri</strong> lako la mwanza. Nenda kwenye smartkembo.co.tz/login-owner na uingie.', tip: 'Badilisha nenosiri lako la mwanza mara moja ukiingia — nenda Mipangilio → Nenosiri.' },
+      { title: 'Weka Pakiti Zako', desc: 'Nenda <strong>Pakiti</strong> kwenye sidebar → bonyeza "Ongeza Pakiti Mpya" → weka jina (mf. "1 Saa"), muda (dakika 60), kasi (5 Mbps) na bei (Tsh 1,000) → Hifadhi.' },
+      { title: 'Shiriki Portal yako', desc: 'Nenda <strong>Portal Yangu</strong> → nakili URL ya portal yako. URL inaonekana kama: <code>wifi.smartkembo.co.tz?owner=UUID</code> — hii ndio wateja wataifungua wanapotaka kulipa.', tip: 'Weka URL hii kama "redirect" kwenye router yako ya Mikrotik ili wateja wapelekwe huko kiotomatiki.' },
+    ]
+  },
+  2: {
+    title: 'Jinsi Malipo ya M-Pesa Yanavyofanya Kazi',
+    steps: [
+      { title: 'Mteja Anaingia Portal', desc: 'Mteja anaunganika WiFi yako → router inamwelekeza kwenye portal yako ya SmartKembo → anaona pakiti zako na bei zake.' },
+      { title: 'Anachagua Pakiti', desc: 'Anabonyeza pakiti anayotaka (mf. "3 Masaa — Tsh 2,500") → anaweka nambari yake ya simu ya M-Pesa → anabonyeza "Lipa".' },
+      { title: 'Malipo Yanatumwa', desc: 'SmartKembo inaitumia Selcom au Azampesa kutuma <strong>popup kwenye simu ya mteja</strong> — anaona: "Thibitisha kulipa Tsh 2,500 kwa SmartKembo".' },
+      { title: 'Mteja Anathibitisha', desc: 'Mteja anabonyeza "Confirm" na kuweka PIN yake ya M-Pesa → pesa inaenda moja kwa moja kwenye akaunti yako ya M-Pesa.', tip: 'Pesa inaingia kwenye akaunti yako kwa sekunde 30 hadi dakika 2 — inategemea mzigo wa mtandao wa M-Pesa.' },
+      { title: 'WiFi Inawashwa', desc: 'Backend ya SmartKembo inapokea uthibitisho → inaambia router kumruhusu mteja → <strong>mteja anapata WiFi papo hapo</strong> bila kufanya chochote zaidi.' },
+    ]
+  },
+  3: {
+    title: 'Jinsi ya Kusoma Ripoti za Mapato',
+    steps: [
+      { title: 'Takwimu za Juu (Stats Cards)', desc: 'Kwenye dashibodi yako, unaona kadi 4 juu: <strong>Mapato Leo</strong>, <strong>Wateja Leo</strong>, <strong>Wanaounganika Sasa</strong>, na <strong>Mapato ya Mwezi</strong>. Hizi zinasasishwa kiotomatiki.' },
+      { title: 'Chati ya Wiki', desc: 'Chati ya bar inaonyesha mapato ya siku 7 zilizopita. Bar ya mwisho (leo) ni ya rangi ya kijani — nyingine ni za kijivu. Inakusaidia kuona mwelekeo wa mapato yako.' },
+      { title: 'Ripoti ya Kina', desc: 'Nenda <strong>Ripoti</strong> kwenye sidebar → chagua kipindi: Leo, Wiki, Mwezi, au Mwaka. Utaona: idadi ya wateja, malipo yaliyofanikiwa, na mapato jumla.' },
+      { title: 'Pakiti Zinazouza Zaidi', desc: 'Kwenye dashibodi, sehemu ya "Pakiti Zinazouza Zaidi" inaonyesha ni pakiti gani inayopendwa na wateja wako zaidi. Tumia taarifa hii kubadilisha pakiti na bei.', tip: 'Ukiona pakiti moja inauza zaidi ya 60% — fikiria kuongeza bei yake kidogo. Wateja wanaipenda maana yake watalipa zaidi.' },
+    ]
+  },
+  4: {
+    title: 'Jinsi ya Kuunganisha Router ya Mikrotik',
+    steps: [
+      { title: 'Ingiza taarifa za Router', desc: 'Kwenye Dashibodi yako → <strong>Mipangilio</strong> → <strong>Router Settings</strong> → weka: Router Host (IP ya router yako, mf. 192.168.88.1), Port (8728), User (admin), Password.' },
+      { title: 'Washa API kwenye Mikrotik', desc: 'Ingia Mikrotik (kupitia Winbox au browser) → IP → Services → washa <strong>api</strong> port 8728. Hakikisha SmartKembo inaruhusiwa (IP ya seva yako).', code: '/ip service set api disabled=no' },
+      { title: 'Weka Hotspot', desc: 'Kwenye Mikrotik → IP → Hotspot → Setup → chagua interface yako (wlan1) → weka DNS name (mf. wifi.smartkembo.co.tz) → maliza setup.' },
+      { title: 'Badilisha Login Page', desc: 'Kwenye Mikrotik → Files → weka URL ya portal yako badala ya login.html ya default. Wateja watapelekwa portal yako ya SmartKembo moja kwa moja.', tip: 'URL ya portal: https://wifi.smartkembo.co.tz/portal.html?owner=UUID_YAKO' },
+    ]
+  },
+  5: {
+    title: 'Jinsi ya Kuongeza na Kubadilisha Pakiti',
+    steps: [
+      { title: 'Nenda Pakiti', desc: 'Kwenye sidebar → bonyeza <strong>Pakiti</strong>. Utaona orodha ya pakiti zako zote za sasa pamoja na status yao (imewashwa/imezimwa).' },
+      { title: 'Ongeza Pakiti Mpya', desc: 'Bonyeza <strong>"Ongeza Pakiti Mpya"</strong> → jaza fomu: Jina la pakiti, Muda (dakika), Kasi ya juu (Mbps), Bei (Tsh) → Hifadhi.' },
+      { title: 'Badilisha Pakiti Iliyopo', desc: 'Bonyeza kitufe cha ✎ (hariri) kwenye pakiti unayotaka kubadilisha → badilisha bei, muda, au kasi → Hifadhi. Mabadiliko yanaanza mara moja.' },
+      { title: 'Zima au Washa Pakiti', desc: 'Toggle (kitufe cha kuzunguka) kwenye kila pakiti inakuwezesha kuizima bila kuifuta. Pakiti iliyozimwa haitaonekana kwa wateja lakini unaweza kuirudisha wakati wowote.', tip: 'Zima pakiti za bei ndogo wakati wa msimu wa watu wengi — weka pakiti za bei kubwa tu ili mapato yako yaongezeke.' },
+    ]
+  },
+  6: {
+    title: 'Jinsi ya Kuweka SmartKembo Online',
+    steps: [
+      { title: 'Pakia GitHub', desc: 'Fungua akaunti GitHub (github.com) → tengeneza repos mbili: <strong>smartkembo-backend</strong> na <strong>smartkembo-frontend</strong> → pakia msimbo wako.', code: 'git init\ngit add .\ngit commit -m "First commit"\ngit push origin main' },
+      { title: 'Weka Backend kwenye Railway', desc: 'Nenda railway.app → "New Project" → "Deploy from GitHub" → chagua smartkembo-backend → ongeza PostgreSQL database → weka variables (NODE_ENV, JWT_SECRET, n.k.)' },
+      { title: 'Run Migration', desc: 'Railway → project → shell → andika:', code: 'npm run migrate\nnpm run seed' },
+      { title: 'Weka Frontend kwenye Vercel', desc: 'Nenda vercel.com → "New Project" → chagua smartkembo-frontend → deploy. Utapata URL kama <strong>smartkembo.vercel.app</strong>' },
+      { title: 'Unganisha Domain', desc: 'Vercel → Settings → Domains → ongeza domain yako (mf. smartkembo.co.tz) → Vercel itakupa DNS records → weka kwenye Namecheap DNS.', tip: 'DNS inachukua saa 24-48 kusambaa duniani. Baada ya hapo domain yako itafanya kazi!' },
+    ]
+  }
+};
+
+function openTut(id) {
+  const tut = tutorials[id];
+  document.getElementById('modal-title').textContent = tut.title;
+  document.getElementById('modal-body').innerHTML = tut.steps.map((s, i) => `
+    <div class="tut-step">
+      <div class="tut-step-num">${i + 1}</div>
+      <div>
+        <div class="tut-step-title">${s.title}</div>
+        <div class="tut-step-desc">${s.desc}</div>
+        ${s.code ? `<code class="tut-code">${s.code}</code>` : ''}
+        ${s.tip ? `<div class="tut-tip">💡 <strong>Ushauri:</strong> ${s.tip}</div>` : ''}
+      </div>
+    </div>`).join('');
+  document.getElementById('tut-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTut() {
+  document.getElementById('tut-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('tut-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('tut-modal')) closeTut();
+});
+
+function filterTuts(cat, btn) {
+  document.querySelectorAll('.tut-cat').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tut-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartKembo — Huduma Zetu</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero { background:var(--primary-2); padding:160px 5% 80px; text-align:center; position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 50% 100%, rgba(0,200,150,0.07) 0%, transparent 70%); }
+.page-hero-title { font-family:var(--font-d); font-size:clamp(36px,5vw,64px); font-weight:800; color:white; letter-spacing:-1.5px; margin-bottom:14px; position:relative; }
+.page-hero-title span { color:var(--accent); }
+.page-hero-sub { font-size:18px; color:rgba(255,255,255,0.55); font-weight:300; position:relative; }
+
+.services-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:28px; margin-top:64px; }
+.service-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:36px 32px; transition:all 0.25s; position:relative; overflow:hidden; }
+.service-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+.service-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--accent), var(--accent-2)); transform:scaleX(0); transition:transform 0.25s; transform-origin:left; }
+.service-card:hover::after { transform:scaleX(1); }
+.service-num { font-family:var(--font-m); font-size:13px; font-weight:500; color:var(--accent); margin-bottom:16px; }
+.service-icon { width:60px; height:60px; background:var(--accent-3); border-radius:16px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+.service-icon svg { width:30px; height:30px; }
+.service-title { font-family:var(--font-d); font-size:22px; font-weight:800; margin-bottom:12px; }
+.service-desc { font-size:15px; color:var(--text-2); line-height:1.7; margin-bottom:20px; }
+.service-features { display:flex; flex-direction:column; gap:8px; }
+.sf { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-2); }
+.sf-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+.packages-section { background:var(--gray-1); }
+.packages-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:48px; }
+.pkg-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:24px; text-align:center; transition:all 0.2s; }
+.pkg-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+.pkg-card.popular { border-color:var(--accent); position:relative; }
+.pkg-pop-badge { position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--accent); color:var(--primary); font-size:10px; font-weight:800; padding:3px 14px; border-radius:20px; white-space:nowrap; }
+.pkg-icon { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+.pkg-name { font-family:var(--font-d); font-size:18px; font-weight:800; margin-bottom:4px; }
+.pkg-desc { font-size:12px; color:var(--text-3); margin-bottom:14px; }
+.pkg-price { font-family:var(--font-d); font-size:30px; font-weight:800; color:var(--primary); }
+.pkg-per { font-size:13px; color:var(--text-3); margin-bottom:16px; }
+.pkg-divider { height:1px; background:var(--border); margin:14px 0; }
+.pkg-feat { font-size:12px; color:var(--text-2); padding:4px 0; text-align:left; display:flex; gap:8px; align-items:center; }
+.pkg-check { color:var(--accent-2); font-weight:700; }
+
+.comparison-section { }
+.comparison-table { width:100%; border-collapse:collapse; margin-top:48px; background:white; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.comparison-table th { padding:16px 20px; text-align:left; font-size:13px; font-weight:700; background:var(--primary); color:white; }
+.comparison-table th:first-child { width:40%; }
+.comparison-table td { padding:14px 20px; font-size:14px; border-bottom:1px solid var(--border); }
+.comparison-table tr:last-child td { border:none; }
+.comparison-table tr:nth-child(even) td { background:var(--gray-1); }
+.ct-check { color:var(--accent-2); font-weight:700; font-size:16px; }
+.ct-x { color:var(--gray-3); font-size:16px; }
+.ct-feat { font-weight:500; }
+
+@media(max-width:768px) {
+  .services-grid, .packages-grid { grid-template-columns:1fr; }
+  .comparison-table { display:block; overflow-x:auto; }
+}
+</style>
+</head>
+<body>
+<script src="js/layout.js"></script>
+
+<div class="page-hero">
+  <div class="section-tag" style="justify-content:center">Huduma</div>
+  <h1 class="page-hero-title">Tunakupa<br><span>Kila Kitu</span></h1>
+  <p class="page-hero-sub">Kutoka mfumo wa dashibodi hadi malipo ya simu — SmartKembo inakusimamia WiFi yako kikamilifu</p>
+</div>
+
+<!-- MAIN SERVICES -->
+<section>
+  <div class="container">
+    <div class="section-tag">Huduma Zetu Kuu</div>
+    <h2 class="section-title">Bidhaa Nne<br><span>Zinazofanya Kazi</span></h2>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-num">01 / WiFi Management</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        </div>
+        <div class="service-title">Mfumo wa WiFi Vending</div>
+        <p class="service-desc">Mfumo kamili wa kusimamia WiFi yako — portal ya wateja, malipo ya M-Pesa, na udhibiti wa router yako ya Mikrotik kiotomatiki.</p>
+        <div class="service-features">
+          <div class="sf"><div class="sf-dot"></div>Portal inayofunguka kwenye simu za wateja</div>
+          <div class="sf"><div class="sf-dot"></div>Malipo ya M-Pesa, Tigo, Airtel moja kwa moja</div>
+          <div class="sf"><div class="sf-dot"></div>Unganisho na Mikrotik RouterOS</div>
+          <div class="sf"><div class="sf-dot"></div>Vikao vinavyoisha kiotomatiki</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02 / Dashboard</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <div class="service-title">Dashibodi ya Kisasa</div>
+        <p class="service-desc">Angalia mapato, wateja wanaounganika saa hii, historia ya malipo, na ripoti za kina — kwenye simu au kompyuta yako.</p>
+        <div class="service-features">
+          <div class="sf"><div class="sf-dot"></div>Takwimu za wakati halisi</div>
+          <div class="sf"><div class="sf-dot"></div>Ripoti za mapato (siku/wiki/mwezi/mwaka)</div>
+          <div class="sf"><div class="sf-dot"></div>Angalia ni pakiti gani inayouza zaidi</div>
+          <div class="sf"><div class="sf-dot"></div>Pakua ripoti kwa PDF au CSV</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03 / Malipo</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="service-title">Mfumo wa Malipo</div>
+        <p class="service-desc">Malipo yanaingia moja kwa moja kwenye akaunti yako ya simu. Inaunganishwa na Selcom, Azampesa, Tigo Pesa na Airtel Money.</p>
+        <div class="service-features">
+          <div class="sf"><div class="sf-dot"></div>Selcom (Tigo, Airtel, Halotel)</div>
+          <div class="sf"><div class="sf-dot"></div>Azampesa (Vodacom M-Pesa)</div>
+          <div class="sf"><div class="sf-dot"></div>Hakuna commission ya ziada</div>
+          <div class="sf"><div class="sf-dot"></div>Historia ya malipo yote</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">04 / Msaada</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="service-title">Msaada wa Wataalamu</div>
+        <p class="service-desc">Timu yetu inakusaidia kuanzisha mfumo, kuunganisha router, na kukujibu maswali yote ya kiufundi kupitia simu, WhatsApp na email.</p>
+        <div class="service-features">
+          <div class="sf"><div class="sf-dot"></div>Usanidi wa mfumo (bure)</div>
+          <div class="sf"><div class="sf-dot"></div>Mafunzo ya jinsi ya kutumia</div>
+          <div class="sf"><div class="sf-dot"></div>Msaada wa WhatsApp</div>
+          <div class="sf"><div class="sf-dot"></div>Utatuzi wa matatizo ya kiufundi</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages-section">
+  <div class="container">
+    <div class="text-center">
+      <div class="section-tag">Pakiti za Kuuzia Wateja</div>
+      <h2 class="section-title">Mifano ya Pakiti<br><span>Unazoweza Weka</span></h2>
+      <p class="section-sub" style="margin:0 auto">Hizi ni mifano tu — unaweza kuweka bei na muda wowote unaotaka.</p>
+    </div>
+    <div class="packages-grid">
+      <div class="pkg-card">
+        <div class="pkg-icon" style="background:#EDE9FE">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="pkg-name">Dakika 30</div>
+        <div class="pkg-desc">Kwa wateja wa haraka</div>
+        <div class="pkg-price">500</div>
+        <div class="pkg-per">Tsh</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>30 dakika kamili</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Kasi ya 3 Mbps</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Inaisha kiotomatiki</div>
+      </div>
+      <div class="pkg-card popular">
+        <div class="pkg-pop-badge">Maarufu</div>
+        <div class="pkg-icon" style="background:#EAF3DE">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="pkg-name">Saa 3</div>
+        <div class="pkg-desc">Inayopendelewa zaidi</div>
+        <div class="pkg-price">2,500</div>
+        <div class="pkg-per">Tsh</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Masaa 3 kamili</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Kasi ya 10 Mbps</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Inaisha kiotomatiki</div>
+      </div>
+      <div class="pkg-card">
+        <div class="pkg-icon" style="background:#FAEEDA">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#633806" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="pkg-name">Siku Nzima</div>
+        <div class="pkg-desc">Kwa wateja wa siku nzima</div>
+        <div class="pkg-price">5,000</div>
+        <div class="pkg-per">Tsh</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Masaa 24 kamili</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Kasi ya 15 Mbps</div>
+        <div class="pkg-feat"><span class="pkg-check">✓</span>Inaisha kiotomatiki</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison-section">
+  <div class="container">
+    <div class="section-tag">Kulinganisha Mipango</div>
+    <h2 class="section-title">Chagua Mpango<br><span>Unaokufaa</span></h2>
+    <div style="overflow-x:auto">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Kipengele</th>
+            <th style="text-align:center">Basic<br><small style="font-weight:400;opacity:0.7">Tsh 30K/mwezi</small></th>
+            <th style="text-align:center;background:var(--accent-2)">Pro ⭐<br><small style="font-weight:400;opacity:0.8">Tsh 80K/mwezi</small></th>
+            <th style="text-align:center">Enterprise<br><small style="font-weight:400;opacity:0.7">Tsh 200K/mwezi</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="ct-feat">Wateja kwa mwezi</td><td style="text-align:center">Hadi 500</td><td style="text-align:center">Bila kikomo</td><td style="text-align:center">Bila kikomo</td></tr>
+          <tr><td class="ct-feat">Pakiti za WiFi</td><td style="text-align:center">Hadi 3</td><td style="text-align:center">Hadi 10</td><td style="text-align:center">Bila kikomo</td></tr>
+          <tr><td class="ct-feat">Dashibodi ya kisasa</td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">Ripoti ya msingi</td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">Ripoti ya kina (PDF/CSV)</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">Msaada wa simu/WhatsApp</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-check">✓</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">Wasimamizi wengi</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center">Hadi 3</td><td style="text-align:center">Bila kikomo</td></tr>
+          <tr><td class="ct-feat">API kamili</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">SLA ya 99.9%</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr><td class="ct-feat">Msaada wa saa 24/7</td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-x">—</span></td><td style="text-align:center"><span class="ct-check">✓</span></td></tr>
+          <tr>
+            <td></td>
+            <td style="text-align:center;padding:20px"><a href="smartkembo/apply.html" class="btn btn-dark btn-sm">Chagua Basic</a></td>
+            <td style="text-align:center;padding:20px"><a href="smartkembo/apply.html" class="btn btn-primary btn-sm">Chagua Pro</a></td>
+            <td style="text-align:center;padding:20px"><a href="contact.html" class="btn btn-dark btn-sm">Wasiliana</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
