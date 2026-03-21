@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electronics Shop — SMD's SmartKembo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 <style>
 :root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -188,7 +189,7 @@ a{text-decoration:none;}
     <div class="results-count">Showing <span id="prod-count">0</span> products</div>
   </div>
 
-  <div class="products" id="products-grid">
+  <div class="products" id="products-grid" data-static="true">
     <div class="product" data-cat="arduino">
       <div class="prod-img">🤖<div class="prod-badges"><span class="badge badge-hot">HOT</span></div></div>
       <div class="prod-body"><div class="prod-cat">Arduino</div><div class="prod-name">Arduino Uno R3</div><div class="prod-desc">Original ATmega328P board. Perfect for beginners and all projects.</div><div class="prod-price-row"><span class="prod-price">Tsh 35,000</span><span class="prod-old">45,000</span></div><div class="prod-actions"><button class="btn-cart" onclick="addCart(this,'Arduino Uno R3',35000,'🤖')">+ Add to Cart</button><button class="btn-wa" onclick="quickWA('Arduino Uno R3','35,000')">WhatsApp</button></div></div>
@@ -270,12 +271,12 @@ a{text-decoration:none;}
   <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science</span>
   <div class="footer-links">
     <a href="index.html">Home</a>
-    <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
-    <a href="mailto:admin@smartkembo.com">Email</a>
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+    <a href="/cdn-cgi/l/email-protection#fd9c99909493bd8e909c8f899698909f92d39e9290">Email</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var cart = {};
 
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
@@ -370,12 +371,12 @@ function orderWA(){
   });
   msg += '\nTOTAL: Tsh '+total.toLocaleString();
   msg += '\n\nNinataka kujua bei ya delivery na upatikanaji.';
-  window.open('https://wa.me/255767830319?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/255768303190?text='+encodeURIComponent(msg),'_blank');
 }
 
 function quickWA(name, price){
   var msg = 'Nataka kununua: '+name+' — Tsh '+price+'\n\nNiambie upatikanaji na delivery.';
-  window.open('https://wa.me/255767830319?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/255768303190?text='+encodeURIComponent(msg),'_blank');
 }
 
 function filter(cat, btn){
@@ -390,10 +391,47 @@ function filter(cat, btn){
   });
   document.getElementById('prod-count').textContent = visible;
   var empty = document.getElementById('empty-state');
-  empty.classList.toggle('show', visible===0);
+  empty.classList.toggle('hidden', !show);
+  });
+  document.getElementById('prod-count').textContent = visible;
+  var empty = document.getElementById('empty-state');
+  if(empty) empty.style.display = visible === 0 ? 'block' : 'none';
 }
 
-document.getElementById('prod-count').textContent = document.querySelectorAll('.product').length;
+// Dynamic products from API
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+  fetch(API + '/content/public?type=product')
+    .then(function(r){ return r.json(); })
+    .catch(function(){ return null; })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var grid = document.getElementById('products-grid');
+      if (!grid) return;
+      res.data.forEach(function(p) {
+        var price = p.price ? parseFloat(p.price) : 0;
+        var cat = (p.category || 'other').toLowerCase().replace(/\s+/g,'-');
+        var div = document.createElement('div');
+        div.className = 'product';
+        div.setAttribute('data-cat', cat);
+        div.innerHTML =
+          '<div class="prod-img">📦<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
+          '<div class="prod-body">' +
+            '<div class="prod-cat">' + (p.category||'Bidhaa') + '</div>' +
+            '<div class="prod-name">' + p.title + '</div>' +
+            '<div class="prod-desc">' + (p.body||'') + '</div>' +
+            '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
+            '<div class="prod-actions">' +
+              '<button class="btn-cart" onclick="addCart(this,'' + p.title.replace(/'/g,"\'") + '',' + price + ','📦')">+ Add to Cart</button>' +
+              '<button class="btn-wa" onclick="quickWA('' + p.title.replace(/'/g,"\'") + '','' + price.toLocaleString() + '')">WhatsApp</button>' +
+            '</div>' +
+          '</div>';
+        grid.insertBefore(div, grid.firstChild);
+      });
+      filterProducts();
+    });
+})();
 </script>
+<script src="js/layout.js"></script>
 </body>
 </html>
