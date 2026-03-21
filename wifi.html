@@ -161,6 +161,19 @@ h2 span{color:var(--cyan);}
   .stats-inner{grid-template-columns:repeat(2,1fr);}
   .hw::after{display:none;}
   .plan.feat{transform:none;}
+  .nav-links,.nav-right .btn-ghost,.nav-right .btn-cyan{display:none;}
+  .hamburger{display:flex;}
+  h1{font-size:32px;}
+  section{padding:56px 5%;}
+  .stats-bar{padding:24px 5%;}
+  .sb-val{font-size:28px;}
+}
+@media(max-width:480px){
+  h1{font-size:26px;}
+  h2{font-size:22px;}
+  .nav-right{gap:4px;}
+  .stats-inner{grid-template-columns:1fr 1fr;gap:12px;}
+  .spec-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
