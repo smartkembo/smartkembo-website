@@ -552,5 +552,57 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
 })();
 </script>
 
+
+<script>
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+
+  // 📝 Articles — add to articles grid
+  fetch(API + '/content/public?type=article', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var grid = document.getElementById('articles');
+      if (!grid) return;
+      res.data.forEach(function(p) {
+        var div = document.createElement('div');
+        div.className = 'art-card rv';
+        div.setAttribute('data-cat', (p.category||'general').toLowerCase());
+        div.innerHTML =
+          '<div class="art-icon">📝</div>' +
+          '<div class="art-body">' +
+            '<div class="art-cat">' + (p.category||'Article') + '</div>' +
+            '<div class="art-name">' + p.title + '</div>' +
+            '<div class="art-desc">' + (p.body ? p.body.substring(0,100) + '...' : '') + '</div>' +
+          '</div>';
+        grid.insertBefore(div, grid.firstChild);
+      });
+      // Update count
+      var countEl = document.getElementById('art-count');
+      if (countEl) countEl.textContent = grid.querySelectorAll('.art-card').length;
+    })
+    .catch(function(){});
+
+  // 📢 Announcement — banner juu
+  fetch(API + '/content/public?type=announcement', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var p = res.data[0];
+      var bar = document.createElement('div');
+      bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;width:100%;box-sizing:border-box;';
+      bar.innerHTML = '📢 <strong>' + p.title + '</strong>' + (p.body ? ' — ' + p.body : '');
+      var nav = document.querySelector('nav, .nav-wrap');
+      if (nav && nav.nextSibling) {
+        nav.parentNode.insertBefore(bar, nav.nextSibling);
+      } else {
+        document.body.insertBefore(bar, document.body.firstChild);
+      }
+    })
+    .catch(function(){});
+
+})();
+</script>
+
 </body>
 </html>
