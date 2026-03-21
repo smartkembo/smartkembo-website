@@ -40,6 +40,13 @@ h1{font-size:clamp(32px,5vw,56px);font-weight:600;line-height:1.1;letter-spacing
 h1 span{color:var(--blue);}
 .hero-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto;}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+section{padding:80px 5%;}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-tag::before{content:'//';opacity:.4;}
+h2{font-size:clamp(26px,3.5vw,42px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
+h2 span{color:var(--blue);}
+.sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:500px;line-height:1.75;margin-bottom:40px;}
 .progress-section{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:580px;margin:0 auto 64px;}
 .prog-title{font-size:13px;font-weight:600;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;text-align:left;}
 .prog-item{margin-bottom:16px;}
@@ -51,16 +58,9 @@ h1 span{color:var(--blue);}
 .fill-done{background:var(--cyan);}
 .fill-prog{background:var(--blue);}
 .fill-soon{background:rgba(255,255,255,0.1);}
-section{padding:80px 5%;}
-.sec-inner{max-width:1100px;margin:0 auto;}
-.sec-tag{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.sec-tag::before{content:'//';opacity:.4;}
-h2{font-size:clamp(26px,3.5vw,42px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
-h2 span{color:var(--blue);}
-.sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:500px;line-height:1.75;margin-bottom:48px;}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .feat{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s;}
-.feat:hover{border-color:rgba(96,165,250,.2);transform:translateY(-3px);}
+.feat:hover{border-color:var(--blue3);transform:translateY(-3px);}
 .feat-icon{font-size:32px;margin-bottom:14px;}
 .feat-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;}
 .feat-desc{font-size:13px;color:var(--gray2);line-height:1.7;}
@@ -76,74 +76,6 @@ h2 span{color:var(--blue);}
 .hw-icon{font-size:22px;margin-bottom:8px;}
 .hw-title{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:5px;}
 .hw-desc{font-size:12px;color:var(--gray2);line-height:1.7;}
-.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
-.spec-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:28px;}
-.spec-card-title{font-size:12px;font-weight:600;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
-.spec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
-.spec-row:last-child{border:none;}
-.spec-lbl{color:var(--gray2);}
-.spec-val{font-weight:500;color:var(--white);}
-.cta-section{background:var(--navy2);border-top:1px solid var(--border);padding:80px 5%;text-align:center;}
-.cta-inner{max-width:600px;margin:0 auto;}
-.cta-inner h2{margin-bottom:12px;}
-.cta-p{font-size:15px;color:var(--gray1);font-weight:300;margin-bottom:28px;line-height:1.75;}
-.cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
-.cta-note{font-size:11px;color:var(--gray2);letter-spacing:.5px;}
-.footer{background:var(--navy);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
-.footer-links{display:flex;gap:16px;}
-.footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
-.footer-links a:hover{color:var(--cyan);}
-@media(max-width:768px){
-  .hamburger{display:flex;}
-  h1{font-size:28px;}
-  h2{font-size:22px;}
-  section{padding:56px 5%;}
-  .feat-grid,.how-grid,.spec-grid,.plans-grid{grid-template-columns:1fr;}
-  .plan.feat{transform:none;}
-  .hw::after{display:none;}
-  .hero-actions{flex-direction:column;align-items:stretch;}
-  .hero-actions .btn{width:100%;justify-content:center;}
-  .progress-section{padding:20px;}
-  .cta-acts{flex-direction:column;align-items:stretch;}
-  .cta-acts .btn{width:100%;justify-content:center;}
-  .footer{flex-direction:column;text-align:center;}
-  .footer-links{justify-content:center;flex-wrap:wrap;}
-  .nav-back{font-size:12px;padding:6px 10px;}
-}
-@media(max-width:480px){
-  h1{font-size:24px;}
-  h2{font-size:20px;}
-  .hero{padding:48px 4% 40px;}
-  .hero-icon{font-size:52px;}
-  .progress-section{margin-bottom:40px;}
-  .spec-grid{grid-template-columns:1fr;}
-  section{padding:48px 4%;}
-  .status-badge{font-size:10px;padding:5px 12px;}
-}
-  .hamburger{display:flex;}
-  h1{font-size:28px;}
-  h2{font-size:22px;}
-  section{padding:56px 5%;}
-  .feat-grid,.how-grid,.spec-grid,.plans-grid{grid-template-columns:1fr;}
-  .plan.feat{transform:none;}
-  .hw::after{display:none;}
-  .hero-actions{flex-direction:column;align-items:center;}
-  .hero-actions .btn{width:100%;max-width:320px;justify-content:center;}
-  .progress-section{padding:20px;}
-  .cta-acts{flex-direction:column;align-items:center;}
-  .cta-acts .btn{width:100%;max-width:320px;justify-content:center;}
-  .footer{flex-direction:column;text-align:center;}
-  .footer-links{justify-content:center;flex-wrap:wrap;}
-}
-@media(max-width:480px){
-  h1{font-size:24px;}
-  h2{font-size:20px;}
-  .hero{padding:48px 5% 40px;}
-  .hero-icon{font-size:52px;}
-  .progress-section{margin-bottom:40px;}
-}
-
 .plans-section{background:var(--navy);}
 .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
 .plan{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;position:relative;transition:all .2s;}
@@ -161,6 +93,47 @@ h2 span{color:var(--blue);}
 .plan:not(.feat) .plan-btn{background:var(--blue2);color:var(--blue);border:1px solid var(--blue3);}
 .plan:not(.feat) .plan-btn:hover{background:var(--blue);color:var(--navy);}
 .plan.feat .plan-btn{background:var(--blue);color:var(--navy);border:none;}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
+.spec-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:28px;}
+.spec-card-title{font-size:12px;font-weight:600;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
+.spec-row:last-child{border:none;}
+.spec-lbl{color:var(--gray2);}
+.spec-val{font-weight:500;color:var(--white);}
+.cta-section{background:var(--navy2);border-top:1px solid var(--border);padding:80px 5%;text-align:center;}
+.cta-inner{max-width:600px;margin:0 auto;}
+.cta-inner h2{margin-bottom:12px;}
+.cta-p{font-size:15px;color:var(--gray1);font-weight:300;margin-bottom:28px;line-height:1.75;}
+.cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.cta-note{font-size:11px;color:var(--gray2);letter-spacing:.5px;}
+.footer{background:var(--navy);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
+.footer-links a:hover{color:var(--cyan);}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .nav-back{font-size:12px;padding:6px 10px;}
+  h1{font-size:28px;}
+  h2{font-size:22px;}
+  section{padding:56px 5%;}
+  .feat-grid,.how-grid,.plans-grid,.spec-grid{grid-template-columns:1fr;}
+  .hw::after{display:none;}
+  .plan.feat{transform:none;}
+  .hero-actions,.cta-acts{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn,.cta-acts .btn{width:100%;justify-content:center;}
+  .footer{flex-direction:column;text-align:center;}
+  .footer-links{justify-content:center;}
+}
+@media(max-width:480px){
+  h1{font-size:24px;}
+  h2{font-size:20px;}
+  .hero{padding:48px 4% 40px;}
+  .hero-icon{font-size:52px;}
+  section{padding:48px 4%;}
+  .progress-section{padding:20px;margin-bottom:40px;}
+  .cta-section{padding:56px 4%;}
+}
 </style>
 </head>
 <body>
@@ -180,9 +153,9 @@ h2 span{color:var(--blue);}
   <button class="mob-x" onclick="closeMenu()">✕</button>
   <a href="index.html" onclick="closeMenu()">← Home</a>
   <a href="#features" onclick="closeMenu()">Features</a>
-  <a href="#howworks" onclick="closeMenu()">How it works</a>
+  <a href="#howworks" onclick="closeMenu()">How it Works</a>
   <a href="#pricing" onclick="closeMenu()">Pricing</a>
-  <a href="https://smartkembo-app.vercel.app/apply.html" onclick="closeMenu()" style="color:var(--blue);margin-top:12px">Get Notified →</a>
+  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--blue);margin-top:12px">Register Interest →</a>
 </div>
 
 <section class="hero">
@@ -192,7 +165,7 @@ h2 span{color:var(--blue);}
     <h1>Smart <span>Water Vending</span> Platform</h1>
     <p class="hero-p">Automate your water business completely. Customers pay via M-Pesa — the smart dispenser releases exactly the amount paid, then stops automatically. No cashier needed, no water wasted.</p>
     <div class="hero-actions">
-      <a href="https://wa.me/255768303190?text=Ninataka%20kujua%20zaidi%20kuhusu%20Water%20Vending%20ya%20SmartKembo" target="_blank" class="btn btn-blue">📱 Get Notified When Live</a>
+      <a href="apply-water.html" class="btn btn-blue">📋 Register Your Interest</a>
       <a href="#pricing" class="btn btn-ghost">View Pricing →</a>
     </div>
     <div class="progress-section">
@@ -227,42 +200,12 @@ h2 span{color:var(--blue);}
     <h2>Everything You Need to <span>Sell Water</span></h2>
     <p class="sec-p">A complete system from payment to dispensing — built for kiosks, estates, schools and water points.</p>
     <div class="feat-grid">
-      <div class="feat">
-        <div class="feat-icon">📱</div>
-        <div class="feat-title">M-Pesa Payment</div>
-        <div class="feat-desc">Customer sends payment via M-Pesa, Tigo Pesa or Airtel Money. No cash handling required.</div>
-        <span class="feat-badge badge-done">✓ Ready</span>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">🚰</div>
-        <div class="feat-title">Smart IoT Dispenser</div>
-        <div class="feat-desc">Solenoid valve controlled by microcontroller. Releases exact litres paid for — not a drop more.</div>
-        <span class="feat-badge badge-dev">In Development</span>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">📊</div>
-        <div class="feat-title">Real-Time Dashboard</div>
-        <div class="feat-desc">Track litres sold, daily revenue and customer count from your phone anywhere, anytime.</div>
-        <span class="feat-badge badge-done">✓ Ready</span>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">⚖️</div>
-        <div class="feat-title">Flexible Pricing</div>
-        <div class="feat-desc">Set your own price per litre. Offer bundles — 10L, 20L, 50L — you decide the packages.</div>
-        <span class="feat-badge badge-done">✓ Ready</span>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">🔔</div>
-        <div class="feat-title">Low Stock Alerts</div>
-        <div class="feat-desc">Get SMS notification when water tank level is low. Never miss a sale due to empty tank.</div>
-        <span class="feat-badge badge-dev">In Development</span>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">📈</div>
-        <div class="feat-title">Sales Reports</div>
-        <div class="feat-desc">Daily, weekly, monthly reports. See peak hours, best-selling packages and revenue trends.</div>
-        <span class="feat-badge badge-done">✓ Ready</span>
-      </div>
+      <div class="feat"><div class="feat-icon">📱</div><div class="feat-title">M-Pesa Payment</div><div class="feat-desc">Customer sends payment via M-Pesa, Tigo Pesa or Airtel Money. No cash handling required.</div><span class="feat-badge badge-done">✓ Ready</span></div>
+      <div class="feat"><div class="feat-icon">🚰</div><div class="feat-title">Smart IoT Dispenser</div><div class="feat-desc">Solenoid valve controlled by microcontroller. Releases exact litres paid for — not a drop more.</div><span class="feat-badge badge-dev">In Development</span></div>
+      <div class="feat"><div class="feat-icon">📊</div><div class="feat-title">Real-Time Dashboard</div><div class="feat-desc">Track litres sold, daily revenue and customer count from your phone anywhere, anytime.</div><span class="feat-badge badge-done">✓ Ready</span></div>
+      <div class="feat"><div class="feat-icon">⚖️</div><div class="feat-title">Flexible Pricing</div><div class="feat-desc">Set your own price per litre. Offer bundles — 10L, 20L, 50L — you decide the packages.</div><span class="feat-badge badge-done">✓ Ready</span></div>
+      <div class="feat"><div class="feat-icon">🔔</div><div class="feat-title">Low Stock Alerts</div><div class="feat-desc">Get SMS notification when water tank level is low. Never miss a sale due to empty tank.</div><span class="feat-badge badge-dev">In Development</span></div>
+      <div class="feat"><div class="feat-icon">📈</div><div class="feat-title">Sales Reports</div><div class="feat-desc">Daily, weekly, monthly reports. See peak hours, best-selling packages and revenue trends.</div><span class="feat-badge badge-done">✓ Ready</span></div>
     </div>
   </div>
 </section>
@@ -272,29 +215,51 @@ h2 span{color:var(--blue);}
     <div class="sec-tag">Process</div>
     <h2>How It <span>Works</span></h2>
     <div class="how-grid">
-      <div class="hw">
-        <div class="hw-num">01</div>
-        <div class="hw-icon">📱</div>
-        <div class="hw-title">Customer Pays</div>
-        <div class="hw-desc">Customer sends M-Pesa to your business number. They choose litres — 10L, 20L or 50L.</div>
+      <div class="hw"><div class="hw-num">01</div><div class="hw-icon">📱</div><div class="hw-title">Customer Pays</div><div class="hw-desc">Customer sends M-Pesa to your business number. They choose litres — 10L, 20L or 50L.</div></div>
+      <div class="hw"><div class="hw-num">02</div><div class="hw-icon">⚡</div><div class="hw-title">System Confirms</div><div class="hw-desc">SmartKembo backend receives M-Pesa webhook instantly and confirms the payment.</div></div>
+      <div class="hw"><div class="hw-num">03</div><div class="hw-icon">🚰</div><div class="hw-title">Valve Opens</div><div class="hw-desc">IoT dispenser valve opens automatically. Releases exact litres paid — then closes.</div></div>
+      <div class="hw"><div class="hw-num">04</div><div class="hw-icon">💰</div><div class="hw-title">Money is Yours</div><div class="hw-desc">Revenue goes directly to your M-Pesa. View all sales on your dashboard in real time.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="plans-section">
+  <div class="sec-inner">
+    <div class="sec-tag" style="justify-content:center">Pricing</div>
+    <h2 style="text-align:center">Simple <span>Monthly Plans</span></h2>
+    <p class="sec-p" style="text-align:center;margin:0 auto 40px">Water Vending is included in all plans at no extra cost.</p>
+    <div class="plans-grid">
+      <div class="plan">
+        <div class="plan-name">Basic</div><div class="plan-desc">Small water kiosks</div>
+        <div class="plan-price">30K</div><div class="plan-mo">Tsh per month</div>
+        <a href="apply-water.html" class="plan-btn">Register Interest</a>
+        <div class="plan-div"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Up to 500 customers/month</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>3 water packages</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Basic reports</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Email support</div>
       </div>
-      <div class="hw">
-        <div class="hw-num">02</div>
-        <div class="hw-icon">⚡</div>
-        <div class="hw-title">System Confirms</div>
-        <div class="hw-desc">SmartKembo backend receives M-Pesa webhook instantly and confirms the payment.</div>
+      <div class="plan feat">
+        <div class="plan-pop">⭐ MOST POPULAR</div>
+        <div class="plan-name">Pro</div><div class="plan-desc">Water points &amp; estates</div>
+        <div class="plan-price">80K</div><div class="plan-mo">Tsh per month</div>
+        <a href="apply-water.html" class="plan-btn">Register Interest</a>
+        <div class="plan-div" style="background:rgba(96,165,250,.15)"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Unlimited customers</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>10 water packages</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Advanced reports</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>WhatsApp support</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Low stock SMS alerts</div>
       </div>
-      <div class="hw">
-        <div class="hw-num">03</div>
-        <div class="hw-icon">🚰</div>
-        <div class="hw-title">Valve Opens</div>
-        <div class="hw-desc">IoT dispenser valve opens automatically. Releases exact litres paid — then closes.</div>
-      </div>
-      <div class="hw">
-        <div class="hw-num">04</div>
-        <div class="hw-icon">💰</div>
-        <div class="hw-title">Money is Yours</div>
-        <div class="hw-desc">Revenue goes directly to your M-Pesa. View all sales on your dashboard in real time.</div>
+      <div class="plan">
+        <div class="plan-name">Enterprise</div><div class="plan-desc">Large water suppliers</div>
+        <div class="plan-price">200K</div><div class="plan-mo">Tsh per month</div>
+        <a href="https://wa.me/255768303190" target="_blank" class="plan-btn">Contact Us</a>
+        <div class="plan-div"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Everything in Pro</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Full API access</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>99.9% SLA guarantee</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>24/7 priority support</div>
       </div>
     </div>
   </div>
@@ -327,64 +292,15 @@ h2 span{color:var(--blue);}
   </div>
 </section>
 
-
-<section id="pricing" class="plans-section">
-  <div class="sec-inner">
-    <div class="sec-tag" style="justify-content:center">Pricing</div>
-    <h2 style="text-align:center">Simple <span>Monthly Plans</span></h2>
-    <p class="sec-p" style="text-align:center;margin:0 auto 40px">Water Vending module is included in all plans — no extra cost.</p>
-    <div class="plans-grid">
-      <div class="plan">
-        <div class="plan-name">Basic</div>
-        <div class="plan-desc">Small water kiosks</div>
-        <div class="plan-price">30K</div>
-        <div class="plan-mo">Tsh per month</div>
-        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Basic%20Plan" target="_blank" class="plan-btn">Get Notified</a>
-        <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Up to 500 customers/month</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>3 water packages</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Basic reports</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Email support</div>
-      </div>
-      <div class="plan feat">
-        <div class="plan-pop">⭐ MOST POPULAR</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-desc">Water points &amp; estates</div>
-        <div class="plan-price">80K</div>
-        <div class="plan-mo">Tsh per month</div>
-        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Pro%20Plan" target="_blank" class="plan-btn">Get Notified</a>
-        <div class="plan-div" style="background:rgba(96,165,250,.15)"></div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Unlimited customers</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>10 water packages</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Advanced reports</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>WhatsApp support</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Low stock SMS alerts</div>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-desc">Large water suppliers</div>
-        <div class="plan-price">200K</div>
-        <div class="plan-mo">Tsh per month</div>
-        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Enterprise" target="_blank" class="plan-btn">Contact Us</a>
-        <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Everything in Pro</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Full API access</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>99.9% SLA guarantee</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>24/7 priority support</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="cta-section">
   <div class="cta-inner">
     <h2>Be First When <span>Water Vending</span> Launches</h2>
-    <p class="cta-p">Register your interest now — we will contact you personally when the Water Vending module is ready for deployment in your area.</p>
+    <p class="cta-p">Register your interest now — we will contact you personally when the Water Vending module is ready in your area.</p>
     <div class="cta-acts">
-      <a href="https://wa.me/255768303190?text=Ninataka%20kujua%20zaidi%20kuhusu%20Water%20Vending%20ya%20SmartKembo" target="_blank" class="btn btn-blue">📱 WhatsApp Us Now</a>
-      <a href="https://t.me/Givenkembo" target="_blank" class="btn btn-ghost">✈ Telegram @Givenkembo</a>
+      <a href="apply-water.html" class="btn btn-blue">📋 Register Your Interest</a>
+      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost">📱 WhatsApp Us</a>
     </div>
-    <div class="cta-note">FREE consultation · No commitment required</div>
+    <div class="cta-note">FREE registration · No commitment required · We contact you when ready</div>
   </div>
 </section>
 
@@ -393,8 +309,8 @@ h2 span{color:var(--blue);}
   <div class="footer-links">
     <a href="index.html">Home</a>
     <a href="wifi.html">WiFi Vending</a>
+    <a href="apply-water.html">Register Interest</a>
     <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
-    <a href="https://t.me/smartkembo" target="_blank">Telegram</a>
     <a href="mailto:admin@smartkembo.com">Email</a>
   </div>
 </footer>
@@ -402,12 +318,11 @@ h2 span{color:var(--blue);}
 <script>
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
 function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
-
-window.addEventListener('load', function(){
+window.addEventListener('load',function(){
   document.querySelectorAll('.prog-fill').forEach(function(bar){
-    var w = bar.getAttribute('data-width');
-    bar.style.width = '0';
-    setTimeout(function(){ bar.style.width = w; }, 400);
+    var w=bar.getAttribute('data-width');
+    bar.style.width='0';
+    setTimeout(function(){bar.style.width=w;},400);
   });
 });
 </script>
