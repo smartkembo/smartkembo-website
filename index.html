@@ -31,7 +31,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(-
 ::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
 img{max-width:100%;display:block;}
 a{text-decoration:none;}
-  
+
+/* ── TOPBAR ── */
+.topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:7px 5%;display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:0.5px;}
+.topbar-social{display:flex;gap:14px;}
+.topbar-social a{color:var(--gray1);transition:color .15s;}
+.topbar-social a:hover{color:var(--cyan);}
+.topbar-contact a{color:var(--gray2);transition:color .15s;}
+.topbar-contact a:hover{color:var(--cyan);}
+
 /* ── NAV ── */
 .nav{position:sticky;top:0;z-index:100;height:var(--h);display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
 .nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
@@ -284,6 +292,13 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
+  <div class="topbar-contact">
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp: +255 768 303 190</a>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
@@ -655,10 +670,10 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
     <div class="ft-col">
       <h4 data-i="ft.contact">Contact</h4>
-      <a href="tel:+255767830319">+255 768 303 190</a>
-      <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
+      <a href="tel:+255768303190">+255 768 303 190</a>
+      <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
       <a href="https://t.me/smartkembo" target="_blank">@smartkembo</a>
-      <a href="/cdn-cgi/l/email-protection#3756535a5e5977445a5645435c525a55581954585a"><span class="__cf_email__" data-cfemail="157471787c7b5566787467617e7078777a3b767a78">[email&#160;protected]</span></a>
+      <a href="mailto:admin@smartkembo.com">admin@smartkembo.com</a>
       <a style="color:rgba(255,255,255,.2);cursor:default">Dar es Salaam, TZ 🇹🇿</a>
     </div>
   </div>
@@ -668,7 +683,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ── i18n ── */
 const T={
   en:{'nav.platform':'Platform','nav.electronics':'Electronics','nav.shop':'Shop','nav.pricing':'Pricing','nav.contact':'Contact','nav.login':'Login','nav.apply':'Get Started','hero.tag':"SMARTKEMBO give you alternative life hacks and interesting projects",'hero.p':'WiFi vending, water vending and electronics education — one platform for entrepreneurs and engineers across East Africa.','hero.cta1':'Start Free Today','hero.cta2':'Explore Learning','hero.s1':'Daily transactions','hero.s2':'Active owners','hero.s3':'Uptime','hero.m1':'WiFi Vending','hero.m1s':'Active','hero.m2':'Water Vending','hero.m2s':'Active','hero.m3':'Power Vending','hero.m4':'Electronics Hub','hero.m4s':'120+ articles','hero.rev':'JOIN TO SEE YOUR REVENUE','hero.rev2':'Your dashboard awaits','stats.s1':'Daily Customers','stats.s2':'Business Owners','stats.s3':'Tech Articles','stats.s4':'Made in Tanzania','plat.tag':'Vending Platform','plat.p':'Automate your business. Customers pay via mobile money — your service delivers automatically, 24/7.','plat.wifi':'WiFi Vending','plat.water':'Water Vending','wifi.tag':'WiFi Module','wifi.p':'Customers connect, choose a package, pay via M-Pesa — internet starts in seconds. No staff needed. Revenue flows 24/7.','wifi.f1':'Mikrotik RouterOS integration','wifi.f2':'M-Pesa, Tigo & Airtel payments','wifi.f3':'Auto session & MAC management','wifi.f4':'Real-time revenue dashboard','wifi.f5':'Custom branded captive portal','wifi.cta1':'Learn More →','wifi.cta2':'Get Started','wifi.d1':'Customers Today','wifi.d2':'Revenue (Tsh)','wifi.d3':'Online Now','wifi.d4':'This Month','wifi.empty':'NO TRANSACTIONS YET — JOIN TO START','water.tag':'Water Module','water.p':'Smart IoT dispensers. Pay per litre via mobile money — the valve opens for exactly what was paid, then closes automatically.','water.f1':'IoT smart dispenser integration','water.f2':'Flexible per-litre pricing','water.f3':'Automatic valve control','water.f4':'Daily & weekly sales reports','water.f5':'Low stock SMS alerts','water.cta1':'Learn More →','water.cta2':'Get Started','water.d1':'Litres Today','water.d2':'Revenue (Tsh)','water.d3':'Customers','water.d4':'This Month','water.empty':'NO TRANSACTIONS YET — JOIN TO START','elec.tag':'Electronics Hub','elec.p':'Tutorials, IoT projects, videos and components — everything you need to build smart electronics.','elec.all':'View All →','ecat.all':'All','ecat.arduino':'Arduino','ecat.rpi':'Raspberry Pi','ecat.iot':'IoT Projects','ecat.video':'Videos','ecat.basics':'Basics','ef.cat':'IoT Project','ef.title':'Build a Smart Water Meter with Arduino & GSM','ef.desc':'Learn to build an IoT water flow meter that sends SMS alerts and tracks consumption remotely using Arduino Uno and SIM800L.','ef.time':'12 min read','ef.read':'Read →','ea1':'Arduino Uno Starter Guide — Zero to Hero','ea2':'Set Up Pi-Hole DNS Ad Blocker in 20 Minutes','ea3':'ESP32 WiFi Sensor — Send Data to Cloud','ea4':"Understanding Ohm's Law — Practical Examples",'ev1':'Build a Mikrotik Hotspot from Scratch','ev2':'Temperature Monitor with DHT22 + Blynk','ev3':'GSM & M-Pesa Integration for IoT — Full Course','shop.tag':'Electronics Shop','shop.all':'View All →','sp1.n':'Arduino Uno R3','sp1.d':'Original board with ATmega328P — perfect for beginners','sp2.n':'Raspberry Pi 4 (4GB)','sp2.d':'Quad-core 64-bit, ideal for IoT and AI projects','sp3.n':'ESP32 WiFi Module','sp3.d':'Dual-core WiFi+Bluetooth SoC for IoT automation','sp4.n':'SIM800L GSM Module','sp4.d':'GSM/GPRS for M-Pesa and SMS integrations','shop.add':'Add to Cart','how.tag':'Process','hw1.t':'Apply','hw1.d':'Fill the application form. We contact you within 24 hours to set up your account.','hw2.t':'Configure','hw2.d':'We connect your Mikrotik router or IoT dispenser to the platform. Takes 1–2 days.','hw3.t':'Earn','hw3.d':'Customers pay via M-Pesa. Money goes directly to your account, 24/7 automatically.','hw4.t':'Scale','hw4.d':'Add more modules as you grow. WiFi + Water + Power — one dashboard, one subscription.','pr.tag':'Pricing','pr.p':'One plan covers all your vending modules. No hidden fees.','pr.b':'Basic','pr.bd':'Small shops & offices','pr.mo':'Tsh / month','pr.start':'Get Started','pr.b1':'500 customers/month','pr.b2':'3 packages per module','pr.b3':'Basic reports','pr.b4':'Email support','pr.p':'Pro','pr.pd':'Hotels, cafes & offices','pr.startp':'Start with Pro','pr.p1':'Unlimited customers','pr.p2':'10 packages per module','pr.p3':'Advanced reports','pr.p4':'WhatsApp support','pr.p5':'3 admin accounts','pr.e':'Enterprise','pr.ed':'Large organizations','pr.contact':'Contact Us','pr.e1':'Everything in Pro','pr.e2':'Full API access','pr.e3':'99.9% SLA','pr.e4':'24/7 priority support','cta.p':"Join 24+ business owners already using SMD's SmartKembo platform across East Africa.",'cta.b1':'Apply for Free Account','cta.b2':'WhatsApp Us','cta.note':'No credit card · Setup in 1–2 days · Cancel anytime','ft.desc':"Smart vending automation & electronics education — built for East Africa's innovators and entrepreneurs.",'ft.platform':'Platform','ft.wifi':'WiFi Vending','ft.water':'Water Vending','ft.power':'Power (soon)','ft.apply':'Apply Now','ft.learn':'Learn','ft.tut':'Tutorials','ft.iot':'IoT Projects','ft.vid':'Videos','ft.shop':'Shop','ft.company':'Company','ft.about':"About SMD's",'ft.projects':'Projects','ft.pricing':'Pricing','ft.contact':'Contact'},
@@ -695,4 +710,13 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 /* ── HERO BAR FILL ── */
 setTimeout(()=>{const f=document.getElementById('hfill');if(f)f.style.width='68%';},600);
 
-/* ── ECAT FI
+/* ── ECAT FILTER ── */
+document.querySelectorAll('.ecat').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.ecat').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
