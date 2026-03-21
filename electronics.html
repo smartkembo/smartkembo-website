@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics Hub — SMD's SmartKembo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;font-size:15px;}
+a{text-decoration:none;}
+
+/* NAV */
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
+.logo-name span{color:var(--cyan);}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;}
+.mob{position:fixed;inset:0;background:rgba(6,16,30,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .3s ease;}
+.mob.open{transform:translateX(0);}
+.mob a{font-size:22px;font-weight:600;color:rgba(255,255,255,.6);padding:10px;}
+.mob a:hover{color:var(--cyan);}
+.mob-x{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;}
+
+/* PAGE */
+.page{max-width:1280px;margin:0 auto;padding:48px 5% 80px;}
+
+/* HEADER */
+.page-header{margin-bottom:40px;}
+.ph-tag{font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.ph-tag::before{content:'//';opacity:.4;}
+.ph-h1{font-size:clamp(28px,4vw,46px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;line-height:1.1;}
+.ph-h1 span{color:var(--cyan);}
+.ph-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:540px;line-height:1.75;}
+
+/* FILTERS */
+.filters{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.cats{display:flex;gap:6px;flex-wrap:wrap;}
+.cat{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--gray2);transition:all .15s;font-family:inherit;}
+.cat.on,.cat:hover{background:var(--cyan2);border-color:var(--cyan);color:var(--cyan);}
+.results-count{font-size:12px;color:var(--gray2);}
+.results-count span{color:var(--cyan);font-weight:600;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;}
+
+/* ARTICLES GRID */
+.articles{display:flex;flex-direction:column;gap:16px;}
+
+/* FEATURED */
+.art-featured{background:var(--navy2);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .25s;cursor:pointer;}
+.art-featured:hover{border-color:var(--b2);transform:translateY(-3px);}
+.art-featured.hidden{display:none;}
+.af-inner{display:grid;grid-template-columns:280px 1fr;}
+.af-thumb{height:100%;min-height:200px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:72px;position:relative;flex-shrink:0;}
+.af-body{padding:28px;}
+.af-badges{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.art-badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;}
+.badge-featured{background:var(--cyan);color:var(--navy);}
+.badge-new{background:rgba(34,197,94,.15);color:#22C55E;border:1px solid rgba(34,197,94,.2);}
+.badge-video{background:rgba(239,68,68,.15);color:#F87171;border:1px solid rgba(239,68,68,.2);}
+.badge-project{background:rgba(251,146,60,.15);color:#FB923C;border:1px solid rgba(251,146,60,.2);}
+.badge-tutorial{background:var(--cyan2);color:var(--cyan);border:1px solid var(--border);}
+.badge-beginner{background:rgba(34,197,94,.1);color:#4ADE80;}
+.badge-intermediate{background:rgba(251,191,36,.1);color:#FCD34D;}
+.badge-advanced{background:rgba(239,68,68,.1);color:#FCA5A5;}
+.af-cat{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.af-title{font-size:20px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.3;}
+.af-desc{font-size:13px;color:var(--gray2);line-height:1.75;margin-bottom:16px;}
+.af-meta{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--gray2);}
+.af-meta span{display:flex;align-items:center;gap:4px;}
+.af-read{color:var(--cyan);margin-left:auto;font-weight:600;font-size:12px;}
+
+/* ARTICLE CARD */
+.art-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;transition:all .2s;cursor:pointer;}
+.art-card:hover{border-color:var(--b2);transform:translateX(4px);}
+.art-card.hidden{display:none;}
+.ac-icon{width:56px;height:56px;border-radius:12px;background:var(--navy3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.ac-body{flex:1;min-width:0;}
+.ac-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.ac-cat{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;}
+.ac-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:5px;line-height:1.4;}
+.ac-desc{font-size:12px;color:var(--gray2);line-height:1.6;margin-bottom:8px;}
+.ac-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--gray2);}
+.ac-read{color:var(--cyan);font-weight:600;margin-left:auto;font-size:11px;white-space:nowrap;}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:48px 20px;display:none;}
+.empty-state.show{display:block;}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:14px;position:sticky;top:80px;}
+.side-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.sc-title{font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.sc-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.topic-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:all .15s;}
+.topic-item:last-child{border:none;}
+.topic-item:hover .topic-name{color:var(--cyan);}
+.topic-icon{font-size:18px;flex-shrink:0;}
+.topic-name{font-size:13px;color:var(--gray1);transition:color .15s;}
+.topic-count{margin-left:auto;font-size:10px;color:var(--gray2);background:var(--gray3);padding:2px 7px;border-radius:10px;}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--gray3);color:var(--gray2);border:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.tag:hover{background:var(--cyan2);border-color:var(--cyan);color:var(--cyan);}
+.yt-link{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);border-radius:10px;transition:all .2s;}
+.yt-link:hover{background:rgba(239,68,68,.15);}
+.yt-icon{font-size:22px;}
+.yt-text{font-size:12px;font-weight:500;color:var(--white);}
+.yt-sub{font-size:10px;color:var(--gray2);margin-top:2px;}
+.wa-link{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.15);border-radius:10px;margin-top:8px;transition:all .2s;}
+.wa-link:hover{background:rgba(37,211,102,.15);}
+.wa-icon{font-size:22px;}
+.wa-text{font-size:12px;font-weight:500;color:var(--white);}
+.wa-sub{font-size:10px;color:var(--gray2);margin-top:2px;}
+
+/* FOOTER */
+.footer{background:var(--navy2);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
+.footer-links a:hover{color:var(--cyan);}
+
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;}
+  .af-inner{grid-template-columns:1fr;}
+  .af-thumb{min-height:160px;}
+}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .nav-back{display:none;}
+  .page{padding:28px 4% 60px;}
+  .af-inner{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .art-card{flex-direction:column;gap:10px;}
+  .ac-icon{width:44px;height:44px;font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SMD</div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="index.html" class="nav-back">← Rudi Nyumbani</a>
+    <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob" id="mob">
+  <button class="mob-x" onclick="closeMenu()">✕</button>
+  <a href="index.html" onclick="closeMenu()">← Home</a>
+  <a href="shop.html" onclick="closeMenu()">🛒 Shop</a>
+  <a href="https://wa.me/255768303190" target="_blank" onclick="closeMenu()" style="color:var(--cyan)">📱 WhatsApp</a>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <div class="ph-tag">Electronics Hub</div>
+    <h1 class="ph-h1">Learn, Build &amp; <span>Discover</span></h1>
+    <p class="ph-p">Tutorials, IoT projects, video guides and practical electronics for makers and engineers across East Africa.</p>
+  </div>
+
+  <div class="filters">
+    <div class="cats">
+      <button class="cat on" onclick="filter('all',this)">All</button>
+      <button class="cat" onclick="filter('arduino',this)">Arduino</button>
+      <button class="cat" onclick="filter('raspberry',this)">Raspberry Pi</button>
+      <button class="cat" onclick="filter('iot',this)">IoT Projects</button>
+      <button class="cat" onclick="filter('video',this)">Videos</button>
+      <button class="cat" onclick="filter('basics',this)">Basics</button>
+      <button class="cat" onclick="filter('gsm',this)">GSM / M-Pesa</button>
+    </div>
+    <div class="results-count">Showing <span id="art-count">0</span> articles</div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="articles" id="articles">
+
+        <!-- FEATURED -->
+        <div class="art-featured" data-cat="iot" onclick="openYT()">
+          <div class="af-inner">
+            <div class="af-thumb">🔌
+              <div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;">
+                <span class="art-badge badge-featured">FEATURED</span>
+                <span class="art-badge badge-project">IoT Project</span>
+              </div>
+            </div>
+            <div class="af-body">
+              <div class="af-cat">IoT Project · Intermediate</div>
+              <div class="af-title">Build a Smart Water Meter with Arduino &amp; GSM</div>
+              <div class="af-desc">Learn to build a complete IoT water flow meter that measures consumption, sends SMS alerts when levels are low, and reports data remotely using Arduino Uno and SIM800L GSM module. Perfect for water vending systems.</div>
+              <div class="af-badges">
+                <span class="art-badge badge-intermediate">Intermediate</span>
+                <span class="art-badge badge-tutorial">Tutorial</span>
+              </div>
+              <div class="af-meta">
+                <span>📅 SMD Labs</span>
+                <span>⏱ 12 min read</span>
+                <span>🔧 Arduino + SIM800L</span>
+                <span class="af-read">Read Article →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARDUINO -->
+        <div class="art-card" data-cat="arduino" onclick="openYT()">
+          <div class="ac-icon">🤖</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Arduino</span><span class="art-badge badge-beginner">Beginner</span><span class="art-badge badge-tutorial">Tutorial</span></div>
+            <div class="ac-title">Arduino Uno Starter Guide — Zero to Hero</div>
+            <div class="ac-desc">Complete beginner guide to Arduino Uno. Covers pins, programming, LED blinking, sensors and basic circuits step by step.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 8 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="arduino" onclick="openYT()">
+          <div class="ac-icon">🔢</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Arduino</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">7-Segment Display with Arduino — Show Numbers &amp; Text</div>
+            <div class="ac-desc">How to connect and program a 7-segment display to show digits, countdown timers and scrolling text using Arduino.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 6 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="arduino" onclick="openYT()">
+          <div class="ac-icon">🎛️</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Arduino</span><span class="art-badge badge-intermediate">Intermediate</span></div>
+            <div class="ac-title">Arduino PWM — Control Motor Speed and LED Brightness</div>
+            <div class="ac-desc">Learn Pulse Width Modulation with Arduino. Control DC motor speed, servo angle and LED dimming with analogWrite().</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 7 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <!-- RASPBERRY PI -->
+        <div class="art-card" data-cat="raspberry" onclick="openYT()">
+          <div class="ac-icon">🍓</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Raspberry Pi</span><span class="art-badge badge-intermediate">Intermediate</span><span class="art-badge badge-tutorial">Tutorial</span></div>
+            <div class="ac-title">Set Up Pi-Hole DNS Ad Blocker in 20 Minutes</div>
+            <div class="ac-desc">Turn your Raspberry Pi into a network-wide ad blocker. Block ads on all devices in your home or office without any browser extensions.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 15 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="raspberry" onclick="openYT()">
+          <div class="ac-icon">🖥️</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Raspberry Pi</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">Raspberry Pi 4 First Setup — Complete Beginner Guide</div>
+            <div class="ac-desc">Install Raspberry Pi OS, configure WiFi, enable SSH and get your Pi running for the first time. Complete step-by-step guide.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 10 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <!-- IOT -->
+        <div class="art-card" data-cat="iot" onclick="openYT()">
+          <div class="ac-icon">📡</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">IoT</span><span class="art-badge badge-intermediate">Intermediate</span><span class="art-badge badge-project">Project</span></div>
+            <div class="ac-title">ESP32 WiFi Sensor — Send Data to Google Sheets</div>
+            <div class="ac-desc">Build an IoT temperature and humidity monitor that automatically logs readings to Google Sheets every 5 minutes using ESP32 and DHT22.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 10 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="iot" onclick="openYT()">
+          <div class="ac-icon">💡</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">IoT</span><span class="art-badge badge-intermediate">Intermediate</span><span class="art-badge badge-project">Project</span></div>
+            <div class="ac-title">Smart Home Light Control with ESP8266 and Telegram Bot</div>
+            <div class="ac-desc">Control your home lights from anywhere in the world using a Telegram bot and ESP8266. No cloud subscription needed.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 12 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="iot" onclick="openYT()">
+          <div class="ac-icon">🚰</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">IoT</span><span class="art-badge badge-advanced">Advanced</span><span class="art-badge badge-project">Project</span></div>
+            <div class="ac-title">IoT Solenoid Valve Controller for Water Dispensing</div>
+            <div class="ac-desc">Build an automated water dispenser using a solenoid valve, flow sensor and ESP32. Core component of the SmartKembo Water Vending system.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 18 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <!-- VIDEO -->
+        <div class="art-card" data-cat="video" onclick="openYT()">
+          <div class="ac-icon">🎬</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Video Tutorial</span><span class="art-badge badge-video">Video</span><span class="art-badge badge-intermediate">Intermediate</span></div>
+            <div class="ac-title">Build a Mikrotik Hotspot from Scratch — Full Video Guide</div>
+            <div class="ac-desc">Step by step video guide to setting up a Mikrotik hotspot with user management, bandwidth limits and custom login page.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 25 min watch</span><span class="ac-read">Watch →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="video" onclick="openYT()">
+          <div class="ac-icon">🌡️</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Video Tutorial</span><span class="art-badge badge-video">Video</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">Temperature Monitor with DHT22 + Blynk App</div>
+            <div class="ac-desc">Build a real-time temperature monitor that sends data to your phone via Blynk app. Video walkthrough with Arduino and DHT22 sensor.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 18 min watch</span><span class="ac-read">Watch →</span></div>
+          </div>
+        </div>
+
+        <!-- GSM / M-PESA -->
+        <div class="art-card" data-cat="gsm" onclick="openYT()">
+          <div class="ac-icon">📱</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">GSM / M-Pesa</span><span class="art-badge badge-video">Video</span><span class="art-badge badge-advanced">Advanced</span></div>
+            <div class="ac-title">GSM &amp; M-Pesa Integration for IoT — Full Course</div>
+            <div class="ac-desc">Complete video series on integrating SIM800L with Arduino for SMS payments, M-Pesa webhooks and building automated payment systems.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 45 min watch</span><span class="ac-read">Watch →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="gsm" onclick="openYT()">
+          <div class="ac-icon">💳</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">GSM / M-Pesa</span><span class="art-badge badge-intermediate">Intermediate</span></div>
+            <div class="ac-title">Send SMS Alerts with SIM800L and Arduino</div>
+            <div class="ac-desc">How to use SIM800L GSM module with Arduino to send automatic SMS alerts for sensor readings, alarms and system notifications.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 9 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <!-- BASICS -->
+        <div class="art-card" data-cat="basics" onclick="openYT()">
+          <div class="ac-icon">🔧</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Basics</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">Understanding Ohm's Law — Practical Examples</div>
+            <div class="ac-desc">Learn voltage, current and resistance with real examples. How to calculate resistor values, protect LEDs and design safe circuits.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 6 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="basics" onclick="openYT()">
+          <div class="ac-icon">🪛</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Basics</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">How to Read a Resistor Color Code</div>
+            <div class="ac-desc">Master the resistor color band system. Learn to identify resistance values quickly and never connect the wrong resistor again.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 4 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+        <div class="art-card" data-cat="basics" onclick="openYT()">
+          <div class="ac-icon">⚡</div>
+          <div class="ac-body">
+            <div class="ac-top"><span class="ac-cat">Basics</span><span class="art-badge badge-beginner">Beginner</span></div>
+            <div class="ac-title">Breadboard Basics — Prototype Without Soldering</div>
+            <div class="ac-desc">How a breadboard works, how to connect components correctly, and how to avoid common wiring mistakes in your first projects.</div>
+            <div class="ac-meta"><span>📅 SMD Labs</span><span>⏱ 5 min read</span><span class="ac-read">Read →</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="empty-state" id="empty-state">
+        <div style="font-size:48px;margin-bottom:14px">🔍</div>
+        <div style="font-size:15px;color:var(--gray1);font-weight:500;margin-bottom:6px">No articles found</div>
+        <div style="font-size:13px;color:var(--gray2)">Try a different category</div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="side-card">
+        <div class="sc-title">Topics</div>
+        <div class="topic-item" onclick="filterTopic('arduino')">
+          <span class="topic-icon">🤖</span>
+          <span class="topic-name">Arduino</span>
+          <span class="topic-count">3</span>
+        </div>
+        <div class="topic-item" onclick="filterTopic('raspberry')">
+          <span class="topic-icon">🍓</span>
+          <span class="topic-name">Raspberry Pi</span>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-item" onclick="filterTopic('iot')">
+          <span class="topic-icon">📡</span>
+          <span class="topic-name">IoT Projects</span>
+          <span class="topic-count">4</span>
+        </div>
+        <div class="topic-item" onclick="filterTopic('video')">
+          <span class="topic-icon">🎬</span>
+          <span class="topic-name">Video Tutorials</span>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-item" onclick="filterTopic('gsm')">
+          <span class="topic-icon">📱</span>
+          <span class="topic-name">GSM / M-Pesa</span>
+          <span class="topic-count">2</span>
+        </div>
+        <div class="topic-item" onclick="filterTopic('basics')">
+          <span class="topic-icon">🔧</span>
+          <span class="topic-name">Basics</span>
+          <span class="topic-count">3</span>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="sc-title">Tags</div>
+        <div class="tag-cloud">
+          <span class="tag" onclick="filterTopic('arduino')">Arduino</span>
+          <span class="tag" onclick="filterTopic('iot')">IoT</span>
+          <span class="tag" onclick="filterTopic('gsm')">SIM800L</span>
+          <span class="tag" onclick="filterTopic('raspberry')">Raspberry Pi</span>
+          <span class="tag" onclick="filterTopic('basics')">Ohm's Law</span>
+          <span class="tag" onclick="filterTopic('iot')">ESP32</span>
+          <span class="tag" onclick="filterTopic('gsm')">M-Pesa</span>
+          <span class="tag" onclick="filterTopic('video')">Mikrotik</span>
+          <span class="tag" onclick="filterTopic('basics')">Breadboard</span>
+          <span class="tag" onclick="filterTopic('iot')">Solenoid</span>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="sc-title">Watch &amp; Learn</div>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="yt-link">
+          <span class="yt-icon">▶️</span>
+          <div>
+            <div class="yt-text">SMD's YouTube Channel</div>
+            <div class="yt-sub">Video tutorials &amp; project builds</div>
+          </div>
+        </a>
+        <a href="https://wa.me/255768303190" target="_blank" class="wa-link">
+          <span class="wa-icon">📱</span>
+          <div>
+            <div class="wa-text">Ask a Question</div>
+            <div class="wa-sub">WhatsApp: +255 768 303 190</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="side-card">
+        <div class="sc-title">Need Components?</div>
+        <div style="font-size:13px;color:var(--gray2);margin-bottom:12px;line-height:1.6;">We stock Arduino, ESP32, sensors and more. Order via WhatsApp.</div>
+        <a href="shop.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);border-radius:9px;font-size:13px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='var(--cyan)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cyan2)';this.style.color='var(--cyan)'">🛒 Visit Shop →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">YouTube</a>
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+  </div>
+</footer>
+
+<script>
+function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
+function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
+
+function openYT(){
+  window.open('https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q','_blank');
+}
+
+function filter(cat, btn){
+  document.querySelectorAll('.cat').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  applyFilter(cat);
+}
+
+function filterTopic(cat){
+  document.querySelectorAll('.cat').forEach(function(b){
+    b.classList.toggle('on', b.textContent.toLowerCase().includes(cat) || (cat==='all' && b.textContent==='All'));
+  });
+  applyFilter(cat);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function applyFilter(cat){
+  var all = document.querySelectorAll('.art-featured, .art-card');
+  var visible = 0;
+  all.forEach(function(a){
+    var show = cat==='all' || a.getAttribute('data-cat')===cat;
+    a.classList.toggle('hidden',!show);
+    if(show) visible++;
+  });
+  document.getElementById('art-count').textContent = visible;
+  document.getElementById('empty-state').classList.toggle('show', visible===0);
+}
+
+// Init
+document.getElementById('art-count').textContent = document.querySelectorAll('.art-featured, .art-card').length;
+</script>
+</body>
+</html>
