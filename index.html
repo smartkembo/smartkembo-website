@@ -629,28 +629,35 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 <script>
 (function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
-  // Load latest announcement
-  fetch(API + '/content/public?type=announcement')
-    .then(function(r){ return r.json(); })
-    .catch(function(){ return null; })
-    .then(function(res) {
-      if (!res || !res.data || !res.data.length) return;
-      var p = res.data[0];
-      var bar = document.createElement('div');
-      bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;position:relative;z-index:1000;';
-      bar.innerHTML = '📢 ' + p.title + (p.body ? ' — ' + p.body : '');
+
+  function showBanner(text) {
+    // Remove existing banner first
+    var existing = document.getElementById('sk-announce-bar');
+    if (existing) existing.remove();
+
+    var bar = document.createElement('div');
+    bar.id = 'sk-announce-bar';
+    bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;z-index:9999;width:100%;box-sizing:border-box;';
+    bar.innerHTML = text;
+
+    // Insert after nav/header or at top of body
+    var nav = document.querySelector('nav, header, .nav');
+    if (nav && nav.nextSibling) {
+      nav.parentNode.insertBefore(bar, nav.nextSibling);
+    } else {
       document.body.insertBefore(bar, document.body.firstChild);
-    });
-  // Load updates
-  fetch(API + '/content/public?type=update')
+    }
+  }
+
+  fetch(API + '/content/public?type=announcement', { mode: 'cors' })
     .then(function(r){ return r.json(); })
-    .catch(function(){ return null; })
     .then(function(res) {
       if (!res || !res.data || !res.data.length) return;
       var p = res.data[0];
-      var el = document.getElementById('latest-update');
-      if (el) { el.textContent = p.title; el.style.display = 'block'; }
-    });
+      showBanner('📢 <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : ''));
+    })
+    .catch(function(e){ console.log('Announcement fetch error:', e); });
+
 })();
 </script>
 
