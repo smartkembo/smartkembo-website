@@ -442,11 +442,11 @@ a{text-decoration:none;}
             <div class="yt-sub">Video tutorials &amp; project builds</div>
           </div>
         </a>
-        <a href="https://wa.me/255767830319" target="_blank" class="wa-link">
+        <a href="https://wa.me/255768303190" target="_blank" class="wa-link">
           <span class="wa-icon">📱</span>
           <div>
             <div class="wa-text">Ask a Question</div>
-            <div class="wa-sub">WhatsApp: +255 767 830 319</div>
+            <div class="wa-sub">WhatsApp: +255 768 303 190</div>
           </div>
         </a>
       </div>
@@ -466,7 +466,7 @@ a{text-decoration:none;}
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
     <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">YouTube</a>
-    <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
   </div>
 </footer>
 
@@ -507,5 +507,50 @@ function applyFilter(cat){
 // Init
 document.getElementById('art-count').textContent = document.querySelectorAll('.art-featured, .art-card').length;
 </script>
+
+<script>
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+
+  // Load articles
+  fetch(API + '/content/public?type=article')
+    .then(function(r){ return r.json(); })
+    .catch(function(){ return null; })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var grid = document.querySelector('.articles-grid, #articles-grid, .art-grid');
+      if (!grid) return;
+
+      res.data.forEach(function(p) {
+        var div = document.createElement('div');
+        div.className = 'art-card';
+        div.setAttribute('data-cat', (p.category||'general').toLowerCase());
+        div.innerHTML =
+          '<div class="art-icon">📝</div>' +
+          '<div class="art-body">' +
+            '<div class="art-cat">' + (p.category||'Article') + '</div>' +
+            '<div class="art-name">' + p.title + '</div>' +
+            '<div class="art-desc">' + (p.body ? p.body.substring(0,120) + '...' : '') + '</div>' +
+          '</div>';
+        grid.insertBefore(div, grid.firstChild);
+      });
+    });
+
+  // Load announcements — show as banner
+  fetch(API + '/content/public?type=announcement')
+    .then(function(r){ return r.json(); })
+    .catch(function(){ return null; })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var latest = res.data[0];
+      var banner = document.createElement('div');
+      banner.style.cssText = 'background:linear-gradient(135deg,#00C8E8,#0D3D2E);color:white;padding:14px 20px;border-radius:12px;margin-bottom:20px;font-size:14px;';
+      banner.innerHTML = '<strong>📢 ' + latest.title + '</strong>' + (latest.body ? ' — ' + latest.body : '');
+      var main = document.querySelector('main, .main-content, .articles-wrap, body');
+      if (main && main.firstChild) main.insertBefore(banner, main.firstChild);
+    });
+})();
+</script>
+
 </body>
 </html>
