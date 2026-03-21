@@ -649,7 +649,7 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
     }
   }
 
-  fetch(API + '/content/public?type=announcement', { mode: 'cors' })
+  fetch(API + '/content/public', { mode: 'cors' })
     .then(function(r){ return r.json(); })
     .then(function(res) {
       if (!res || !res.data || !res.data.length) return;
