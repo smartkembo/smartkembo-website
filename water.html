@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Vending — SMD's SmartKembo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;
+  --cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--cyan3:rgba(0,200,232,0.15);
+  --blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);
+  --white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);
+  --gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;font-size:15px;}
+
+/* NAV */
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
+.logo-name span{color:var(--cyan);}
+.nav-back{display:flex;align-items:center;gap:6px;color:var(--gray2);font-size:13px;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2);}
+
+/* HERO */
+.hero{padding:80px 5% 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(96,165,250,0.06),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+.status-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue2);border:1px solid var(--blue3);padding:6px 16px;border-radius:20px;font-size:11px;font-weight:600;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;}
+.status-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-icon{font-size:72px;margin-bottom:20px;display:block;}
+h1{font-size:clamp(36px,5vw,58px);font-weight:600;line-height:1.1;letter-spacing:-0.5px;margin-bottom:16px;}
+h1 span{color:var(--blue);}
+.hero-p{font-size:17px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto;}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;text-decoration:none;}
+.btn-blue{background:var(--blue);color:var(--navy);}
+.btn-blue:hover{opacity:.9;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--b2);}
+.btn-ghost:hover{background:var(--cyan2);border-color:var(--cyan);}
+
+/* PROGRESS */
+.progress-section{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:580px;margin:0 auto 64px;}
+.prog-title{font-size:13px;font-weight:600;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;text-align:left;}
+.prog-item{margin-bottom:16px;}
+.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.prog-name{font-size:13px;font-weight:500;color:var(--white);}
+.prog-pct{font-size:12px;color:var(--blue);}
+.prog-bar{height:5px;background:var(--gray3);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width 1.5s ease;}
+.fill-done{background:var(--cyan);}
+.fill-prog{background:var(--blue);}
+.fill-soon{background:rgba(255,255,255,0.1);}
+
+/* FEATURES */
+.features{padding:0 5% 80px;}
+.feat-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-tag::before{content:'//';opacity:.4;}
+h2{font-size:clamp(28px,3.5vw,42px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
+h2 span{color:var(--blue);}
+.sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:500px;line-height:1.75;margin-bottom:48px;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.feat{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s;}
+.feat:hover{border-color:var(--blue3);transform:translateY(-3px);}
+.feat-icon{font-size:32px;margin-bottom:14px;}
+.feat-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;}
+.feat-desc{font-size:13px;color:var(--gray2);line-height:1.7;}
+.feat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:10px;letter-spacing:.5px;}
+.badge-done{background:rgba(0,200,232,.1);color:var(--cyan);}
+.badge-dev{background:rgba(96,165,250,.1);color:var(--blue);}
+.badge-plan{background:rgba(255,255,255,.05);color:var(--gray2);}
+
+/* HOW */
+.how{padding:0 5% 80px;background:var(--navy);}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px;}
+.hw{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:22px 18px;position:relative;}
+.hw::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--border);}
+.hw:last-child::after{display:none;}
+.hw-num{font-size:36px;font-weight:700;color:rgba(96,165,250,0.06);line-height:1;margin-bottom:10px;}
+.hw-icon{font-size:22px;margin-bottom:8px;}
+.hw-title{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:5px;}
+.hw-desc{font-size:12px;color:var(--gray2);line-height:1.7;}
+
+/* SPECS */
+.specs{padding:0 5% 80px;}
+.specs-inner{max-width:1100px;margin:0 auto;}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
+.spec-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:28px;}
+.spec-card-title{font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.spec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;}
+.spec-row:last-child{border:none;}
+.spec-lbl{color:var(--gray2);}
+.spec-val{font-weight:500;color:var(--white);}
+
+/* CTA */
+.cta{background:var(--navy2);border-top:1px solid var(--border);padding:80px 5%;text-align:center;}
+.cta-inner{max-width:600px;margin:0 auto;}
+.cta h2{font-size:clamp(28px,4vw,46px);font-weight:600;letter-spacing:-0.3px;margin-bottom:12px;}
+.cta h2 span{color:var(--blue);}
+.cta-p{font-size:15px;color:var(--gray1);font-weight:300;margin-bottom:28px;line-height:1.75;}
+.cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.cta-note{font-size:11px;color:var(--gray2);letter-spacing:.5px;}
+
+/* FOOTER */
+.footer{background:var(--navy);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+.footer-links{display:flex;gap:16px;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--cyan);}
+
+@media(max-width:768px){
+  .feat-grid,.how-grid,.spec-grid{grid-template-columns:1fr;}
+  .hw::after{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SMD</div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="index.html" class="nav-back">← Rudi Nyumbani</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="status-badge"><div class="status-dot"></div>In Development — Q3 2025</div>
+    <span class="hero-icon">💧</span>
+    <h1>Smart <span>Water Vending</span> Platform</h1>
+    <p class="hero-p">Automate your water business completely. Customers pay via M-Pesa — the smart dispenser releases exactly the amount paid, then stops automatically. No cashier needed, no water wasted.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-blue">📱 Get Notified When Live</a>
+      <a href="index.html#pricing" class="btn btn-ghost">View Pricing →</a>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section">
+      <div class="prog-title">Development Progress</div>
+      <div class="prog-item">
+        <div class="prog-header"><span class="prog-name">Backend API & Database</span><span class="prog-pct">100%</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-header"><span class="prog-name">Owner Dashboard</span><span class="prog-pct">100%</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-header"><span class="prog-name">Payment Integration (M-Pesa)</span><span class="prog-pct">80%</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-prog" style="width:80%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-header"><span class="prog-name">IoT Dispenser Hardware</span><span class="prog-pct">60%</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-prog" style="width:60%"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-header"><span class="prog-name">Field Testing</span><span class="prog-pct">Planned</span></div>
+        <div class="prog-bar"><div class="prog-fill fill-soon" style="width:15%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="feat-inner">
+    <div class="sec-tag">Features</div>
+    <h2>Everything You Need to <span>Sell Water</span></h2>
+    <p class="sec-p">A complete system from payment to dispensing — built for kiosks, estates, schools, and water points across East Africa.</p>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-icon">📱</div>
+        <div class="feat-title">M-Pesa Payment</div>
+        <div class="feat-desc">Customer sends payment via M-Pesa, Tigo Pesa or Airtel Money. No cash handling required.</div>
+        <span class="feat-badge badge-done">✓ Ready</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🚰</div>
+        <div class="feat-title">Smart IoT Dispenser</div>
+        <div class="feat-desc">Solenoid valve controlled by microcontroller. Releases exact litres paid for — not a drop more.</div>
+        <span class="feat-badge badge-dev">In Development</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Real-Time Dashboard</div>
+        <div class="feat-desc">Track litres sold, daily revenue, and customer count from your phone anywhere, anytime.</div>
+        <span class="feat-badge badge-done">✓ Ready</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">⚖️</div>
+        <div class="feat-title">Flexible Pricing</div>
+        <div class="feat-desc">Set your own price per litre. Offer bundles — 10L, 20L, 50L — you decide the packages.</div>
+        <span class="feat-badge badge-done">✓ Ready</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔔</div>
+        <div class="feat-title">Low Stock Alerts</div>
+        <div class="feat-desc">Get SMS notification when water tank level is low. Never miss a sale due to empty tank.</div>
+        <span class="feat-badge badge-dev">In Development</span>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📈</div>
+        <div class="feat-title">Sales Reports</div>
+        <div class="feat-desc">Daily, weekly, monthly reports. See peak hours, best-selling packages, and revenue trends.</div>
+        <span class="feat-badge badge-done">✓ Ready</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <div class="sec-tag">Process</div>
+    <h2>How It <span>Works</span></h2>
+    <div class="how-grid">
+      <div class="hw">
+        <div class="hw-num">01</div>
+        <div class="hw-icon">📱</div>
+        <div class="hw-title">Customer Pays</div>
+        <div class="hw-desc">Customer sends M-Pesa to your business number. They choose litres — 10L, 20L or 50L.</div>
+      </div>
+      <div class="hw">
+        <div class="hw-num">02</div>
+        <div class="hw-icon">⚡</div>
+        <div class="hw-title">System Confirms</div>
+        <div class="hw-desc">SmartKembo backend receives M-Pesa webhook instantly and confirms the payment.</div>
+      </div>
+      <div class="hw">
+        <div class="hw-num">03</div>
+        <div class="hw-icon">🚰</div>
+        <div class="hw-title">Valve Opens</div>
+        <div class="hw-desc">IoT dispenser valve opens automatically. Releases exact litres paid — then closes.</div>
+      </div>
+      <div class="hw">
+        <div class="hw-num">04</div>
+        <div class="hw-icon">💰</div>
+        <div class="hw-title">Money is Yours</div>
+        <div class="hw-desc">Revenue goes directly to your M-Pesa. View all sales on your dashboard in real time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs">
+  <div class="specs-inner">
+    <div class="sec-tag">Technical Details</div>
+    <h2>System <span>Specifications</span></h2>
+    <div class="spec-grid">
+      <div class="spec-card">
+        <div class="spec-card-title">💧 Dispenser Unit</div>
+        <div class="spec-row"><span class="spec-lbl">Controller</span><span class="spec-val">ESP32 / Arduino</span></div>
+        <div class="spec-row"><span class="spec-lbl">Valve Type</span><span class="spec-val">Solenoid (12V DC)</span></div>
+        <div class="spec-row"><span class="spec-lbl">Flow Meter</span><span class="spec-val">YF-S201 Hall Sensor</span></div>
+        <div class="spec-row"><span class="spec-lbl">Accuracy</span><span class="spec-val">±0.1 Litres</span></div>
+        <div class="spec-row"><span class="spec-lbl">Connectivity</span><span class="spec-val">WiFi / GSM (SIM800L)</span></div>
+        <div class="spec-row"><span class="spec-lbl">Power</span><span class="spec-val">220V AC / Solar Ready</span></div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-card-title">📡 Software & Payments</div>
+        <div class="spec-row"><span class="spec-lbl">Payments</span><span class="spec-val">M-Pesa, Tigo, Airtel</span></div>
+        <div class="spec-row"><span class="spec-lbl">API</span><span class="spec-val">Selcom / Azampesa</span></div>
+        <div class="spec-row"><span class="spec-lbl">Dashboard</span><span class="spec-val">Web + Mobile</span></div>
+        <div class="spec-row"><span class="spec-lbl">Reports</span><span class="spec-val">Daily / Weekly / Monthly</span></div>
+        <div class="spec-row"><span class="spec-lbl">Alerts</span><span class="spec-val">SMS + Dashboard</span></div>
+        <div class="spec-row"><span class="spec-lbl">Uptime</span><span class="spec-val">99.9% guaranteed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-inner">
+    <h2>Be First When <span>Water Vending</span> Launches</h2>
+    <p class="cta-p">Register your interest now — we will contact you personally when the Water Vending module is ready for deployment in your area.</p>
+    <div class="cta-acts">
+      <a href="https://wa.me/255768303190?text=Ninataka%20kujua%20zaidi%20kuhusu%20Water%20Vending%20ya%20SmartKembo" target="_blank" class="btn btn-blue">📱 WhatsApp Us Now</a>
+      <a href="https://t.me/Givenkembo" target="_blank" class="btn btn-ghost">✈ Telegram @Givenkembo</a>
+    </div>
+    <div class="cta-note">FREE consultation · No commitment required</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+    <a href="https://t.me/smartkembo" target="_blank">Telegram</a>
+    <a href="mailto:admin@smartkembo.com">Email</a>
+  </div>
+</footer>
+
+<script>
+// Animate progress bars on load
+window.addEventListener('load', function(){
+  document.querySelectorAll('.prog-fill').forEach(function(bar){
+    var w = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(function(){ bar.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>
