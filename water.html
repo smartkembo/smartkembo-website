@@ -95,7 +95,31 @@ h2 span{color:var(--blue);}
 .footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
 .footer-links a:hover{color:var(--cyan);}
 @media(max-width:768px){
-  .nav-back span{display:none;}
+  .hamburger{display:flex;}
+  h1{font-size:28px;}
+  h2{font-size:22px;}
+  section{padding:56px 5%;}
+  .feat-grid,.how-grid,.spec-grid{grid-template-columns:1fr;}
+  .hw::after{display:none;}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn{width:100%;justify-content:center;}
+  .progress-section{padding:20px;}
+  .cta-acts{flex-direction:column;align-items:stretch;}
+  .cta-acts .btn{width:100%;justify-content:center;}
+  .footer{flex-direction:column;text-align:center;}
+  .footer-links{justify-content:center;flex-wrap:wrap;}
+  .nav-back{font-size:12px;padding:6px 10px;}
+}
+@media(max-width:480px){
+  h1{font-size:24px;}
+  h2{font-size:20px;}
+  .hero{padding:48px 4% 40px;}
+  .hero-icon{font-size:52px;}
+  .progress-section{margin-bottom:40px;}
+  .spec-grid{grid-template-columns:1fr;}
+  section{padding:48px 4%;}
+  .status-badge{font-size:10px;padding:5px 12px;}
+}
   .hamburger{display:flex;}
   h1{font-size:28px;}
   h2{font-size:22px;}
