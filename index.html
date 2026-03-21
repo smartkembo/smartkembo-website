@@ -3,45 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SMD's SmartKembo — Smart Vending Platform & Electronics Hub. WiFi, Water Vending and Electronics Education for East Africa.">
 <title>SMD's SmartKembo — Smart Tech Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:   #06101E;
-  --navy2:  #0C1A2E;
-  --navy3:  #112238;
-  --cyan:   #00C8E8;
-  --cyan2:  rgba(0,200,232,0.08);
-  --cyan3:  rgba(0,200,232,0.15);
-  --white:  #F2F8FF;
-  --gray1:  rgba(255,255,255,0.55);
-  --gray2:  rgba(255,255,255,0.25);
-  --gray3:  rgba(255,255,255,0.07);
-  --border: rgba(0,200,232,0.1);
-  --b2:     rgba(0,200,232,0.2);
-  --r:      12px;
-  --r2:     20px;
-  --h:      68px;
-}
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--cyan3:rgba(0,200,232,0.15);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--r:12px;--r2:20px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;font-size:15px;}
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
-img{max-width:100%;display:block;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
 a{text-decoration:none;}
-
-/* ── TOPBAR ── */
-
-
-
-/* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;height:var(--h);display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
 .nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none;}
-.logo-mark{width:40px;height:40px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--navy);letter-spacing:1px;flex-shrink:0;}
-.logo-name{font-size:15px;font-weight:600;color:var(--white);letter-spacing:0.3px;}
+.logo{display:flex;align-items:center;gap:11px;}
+.logo-mark{width:40px;height:40px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--navy);flex-shrink:0;}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
 .logo-name span{color:var(--cyan);}
 .logo-tag{font-size:9px;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
 .nav-links{display:flex;gap:2px;list-style:none;}
@@ -51,74 +26,66 @@ a{text-decoration:none;}
 .lang{display:flex;background:var(--gray3);border-radius:7px;padding:2px;border:1px solid var(--border);}
 .lang button{padding:4px 11px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray2);transition:all .15s;font-family:inherit;}
 .lang button.on{background:var(--cyan);color:var(--navy);}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;letter-spacing:0.2px;}
-.btn-cyan{background:var(--cyan);color:var(--navy);}
-.btn-cyan:hover{opacity:.9;transform:translateY(-1px);}
-.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--b2);}
-.btn-ghost:hover{background:var(--cyan2);border-color:var(--cyan);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;}
+.btn-cyan{background:var(--cyan);color:var(--navy);}.btn-cyan:hover{opacity:.9;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--b2);}.btn-ghost:hover{background:var(--cyan2);border-color:var(--cyan);}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none;}
-.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;transition:all .3s;}
-
-/* ── HERO ── */
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;}
+.mob{position:fixed;inset:0;background:rgba(6,16,30,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .3s ease;}
+.mob.open{transform:translateX(0);}
+.mob a{font-size:26px;font-weight:600;color:rgba(255,255,255,.6);padding:10px;}
+.mob a:hover{color:var(--cyan);}
+.mob-x{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;}
 .hero{padding:80px 5% 90px;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 65% 50%,rgba(0,40,80,0.5),transparent 70%);pointer-events:none;}
 .hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;}
 .hero-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;}
 .hero-tag::before{content:'';width:5px;height:5px;background:var(--cyan);border-radius:50%;}
-.hero-h1{font-size:clamp(38px,5vw,60px);font-weight:600;line-height:1.1;letter-spacing:-0.5px;margin-bottom:18px;}
+.hero-h1{font-size:clamp(36px,5vw,58px);font-weight:600;line-height:1.1;letter-spacing:-0.5px;margin-bottom:18px;}
 .hero-h1 span{color:var(--cyan);}
 .hero-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:460px;margin-bottom:32px;}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;}
 .hero-stats{display:flex;gap:32px;padding-top:32px;border-top:1px solid var(--border);}
 .hs-val{font-size:26px;font-weight:600;color:var(--cyan);}
-.hs-lbl{font-size:11px;color:var(--gray2);margin-top:3px;letter-spacing:0.3px;}
-
-/* Hero card */
+.hs-lbl{font-size:11px;color:var(--gray2);margin-top:3px;}
 .hero-card{background:var(--navy2);border:1px solid var(--b2);border-radius:var(--r2);overflow:hidden;}
 .hc-bar{background:var(--navy3);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
 .hc-dots{display:flex;gap:5px;}
 .hc-dot{width:9px;height:9px;border-radius:50%;}
 .hc-title{font-size:11px;font-weight:500;color:var(--gray2);letter-spacing:1px;}
-.hc-live{display:flex;align-items:center;gap:5px;font-size:10px;color:#22C55E;font-weight:600;}
+.hc-live{display:flex;align-items:center;gap:5px;font-size:9px;color:#22C55E;font-weight:600;}
 .hc-live-dot{width:5px;height:5px;background:#22C55E;border-radius:50%;animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hc-body{padding:18px;}
 .hc-mods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.hc-mod{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;transition:all .2s;}
-.hc-mod:hover,.hc-mod.on{border-color:var(--cyan);background:var(--cyan2);}
+.hc-mod{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:12px;}
+.hc-mod.on{border-color:var(--cyan);background:var(--cyan2);}
 .hm-icon{font-size:20px;margin-bottom:6px;}
 .hm-name{font-size:11px;font-weight:600;color:var(--white);margin-bottom:2px;}
 .hm-sub{font-size:10px;color:var(--gray2);}
 .hm-soon{font-size:9px;color:var(--gray2);background:var(--gray3);padding:1px 6px;border-radius:4px;display:inline-block;margin-top:3px;}
 .hc-rev{background:var(--navy3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;}
-.hcr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:10px;color:var(--gray2);letter-spacing:0.5px;}
+.hcr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:10px;color:var(--gray2);}
 .hcr-badge{background:rgba(34,197,94,.1);color:#22C55E;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;}
-.hcr-val{font-size:22px;font-weight:600;color:var(--cyan);margin-bottom:8px;}
+.hcr-val{font-size:18px;font-weight:600;color:var(--cyan);margin-bottom:8px;}
 .hcr-bar{height:3px;background:var(--gray3);border-radius:2px;overflow:hidden;}
 .hcr-fill{height:100%;background:var(--cyan);border-radius:2px;width:0;transition:width 1.5s ease .5s;}
-
-/* ── STATS BAR ── */
 .stats-bar{background:var(--cyan);padding:36px 5%;}
 .stats-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;}
-.sb-val{font-size:40px;font-weight:700;color:var(--navy);}
+.sb-val{font-size:38px;font-weight:700;color:var(--navy);}
 .sb-lbl{font-size:13px;color:rgba(6,16,30,.65);margin-top:4px;font-weight:500;}
-
-/* ── SECTIONS ── */
-section{padding:88px 5%;position:relative;}
+section{padding:88px 5%;}
 .sec-inner{max-width:1280px;margin:0 auto;}
 .sec-tag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
 .sec-tag::before{content:'//';opacity:.4;}
-.sec-h2{font-size:clamp(28px,3.5vw,46px);font-weight:600;letter-spacing:-0.3px;line-height:1.1;margin-bottom:12px;}
+.sec-h2{font-size:clamp(28px,3.5vw,44px);font-weight:600;letter-spacing:-0.3px;line-height:1.1;margin-bottom:12px;}
 .sec-h2 span{color:var(--cyan);}
 .sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:520px;line-height:1.75;}
-
-/* ── PLATFORM ── */
 .platform{background:var(--navy2);}
 .plat-head{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:48px;}
 .plat-tabs{display:flex;gap:6px;flex-wrap:wrap;}
 .ptab{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--gray3);color:var(--gray1);cursor:pointer;transition:all .2s;}
 .ptab:hover,.ptab.on{background:var(--cyan2);border-color:var(--cyan);color:var(--cyan);}
-
 .pshow{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;background:var(--navy3);border:1px solid var(--border);border-radius:var(--r2);padding:44px;margin-bottom:14px;transition:border-color .2s;}
 .pshow:hover{border-color:var(--b2);}
 .pshow.rev{direction:rtl;}
@@ -126,8 +93,9 @@ section{padding:88px 5%;position:relative;}
 .ps-tag{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
 .ps-tag.wifi{background:rgba(0,200,232,.08);color:var(--cyan);border:1px solid rgba(0,200,232,.15);}
 .ps-tag.water{background:rgba(96,165,250,.08);color:#60A5FA;border:1px solid rgba(96,165,250,.15);}
-.ps-h3{font-size:30px;font-weight:600;letter-spacing:-0.3px;line-height:1.1;margin-bottom:12px;}
-.pshow:first-of-type .ps-h3 span{color:var(--cyan);}
+.ps-h3{font-size:30px;font-weight:600;letter-spacing:-0.3px;line-height:1.1;margin-bottom:12px;color:var(--white);}
+.ps-h3 span{color:var(--cyan);}
+.ps-h3 span.blue{color:#60A5FA;}
 .ps-p{font-size:14px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:20px;}
 .ps-feats{display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
 .ps-feat{display:flex;align-items:center;gap:9px;font-size:13px;color:rgba(255,255,255,.6);}
@@ -135,30 +103,26 @@ section{padding:88px 5%;position:relative;}
 .pf-c{background:rgba(0,200,232,.12);color:var(--cyan);}
 .pf-b{background:rgba(96,165,250,.12);color:#60A5FA;}
 .ps-acts{display:flex;gap:8px;}
-
-/* Dashboard mock */
 .dmock{background:var(--navy2);border:1px solid var(--b2);border-radius:16px;padding:16px;}
 .dm-head{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:12px;}
 .dm-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
 .dm-name{font-size:11px;font-weight:600;color:var(--white);letter-spacing:.5px;}
-.dm-live{margin-left:auto;font-size:9px;color:#22C55E;font-weight:700;letter-spacing:.5px;}
+.dm-live{margin-left:auto;font-size:9px;color:#22C55E;font-weight:700;}
 .dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
 .dm-stat{background:var(--navy3);border:1px solid var(--border);border-radius:9px;padding:9px 11px;}
 .dm-val{font-size:17px;font-weight:600;}
 .dm-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray2);margin-top:1px;}
-.dm-empty{background:var(--navy3);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;font-size:10px;color:var(--gray2);letter-spacing:.5px;}
-
-/* ── ELECTRONICS ── */
+.dm-empty{background:var(--navy3);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center;font-size:10px;color:var(--gray2);}
 .elec{background:var(--navy);}
-.elec-top{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:32px;}
+.elec-top{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:28px;}
 .ecats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;}
 .ecat{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--gray2);transition:all .15s;font-family:inherit;}
 .ecat.on,.ecat:hover{background:var(--cyan2);border-color:var(--cyan);color:var(--cyan);}
 .elec-layout{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;margin-bottom:20px;}
-.art-feat{background:var(--navy2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .25s;cursor:pointer;}
+.art-feat{background:var(--navy2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .25s;}
 .art-feat:hover{border-color:var(--b2);transform:translateY(-3px);}
 .af-thumb{height:200px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;}
-.af-badge{position:absolute;top:12px;left:12px;background:var(--cyan);color:var(--navy);font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;letter-spacing:.8px;}
+.af-badge{position:absolute;top:12px;left:12px;background:var(--cyan);color:var(--navy);font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;}
 .af-body{padding:20px;}
 .af-cat{font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
 .af-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3;}
@@ -166,14 +130,14 @@ section{padding:88px 5%;position:relative;}
 .af-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--gray2);}
 .af-read{color:var(--cyan);margin-left:auto;font-weight:600;}
 .art-cards{display:flex;flex-direction:column;gap:10px;}
-.art-card{background:var(--navy2);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:all .2s;}
+.art-card{background:var(--navy2);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:center;transition:all .2s;}
 .art-card:hover{border-color:var(--b2);transform:translateX(3px);}
 .ac-icon{width:48px;height:48px;border-radius:10px;background:var(--navy3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .ac-cat{font-size:8px;font-weight:700;color:var(--cyan);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;}
-.ac-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.35;margin-bottom:2px;}
+.ac-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.35;}
 .ac-meta{font-size:10px;color:var(--gray2);}
 .elec-bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.ec{background:var(--navy2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s;}
+.ec{background:var(--navy2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;}
 .ec:hover{border-color:var(--b2);transform:translateY(-3px);}
 .ec-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:44px;background:var(--navy3);}
 .ec-body{padding:14px;}
@@ -181,12 +145,10 @@ section{padding:88px 5%;position:relative;}
 .ec-title{font-size:12px;font-weight:600;color:var(--white);line-height:1.3;margin-bottom:8px;}
 .ec-tags{display:flex;gap:4px;flex-wrap:wrap;}
 .ec-tag{font-size:9px;padding:2px 7px;border-radius:4px;background:var(--cyan2);color:var(--cyan);}
-
-/* ── SHOP ── */
 .shop{background:var(--navy2);}
 .shop-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:40px;}
 .shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-.sc{background:var(--navy3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;cursor:pointer;}
+.sc{background:var(--navy3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;}
 .sc:hover{border-color:var(--b2);transform:translateY(-4px);}
 .sc-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--navy2);border-bottom:1px solid var(--border);position:relative;}
 .sc-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;}
@@ -199,25 +161,21 @@ section{padding:88px 5%;position:relative;}
 .sc-old{font-size:10px;color:var(--gray2);text-decoration:line-through;margin-left:5px;}
 .sc-btn{width:100%;margin-top:9px;padding:8px;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
 .sc-btn:hover{background:var(--cyan);color:var(--navy);}
-
-/* ── HOW ── */
 .how{background:var(--navy3);}
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;}
-.hw{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:24px 20px;transition:all .2s;position:relative;}
+.hw{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:24px 20px;position:relative;}
 .hw:hover{border-color:var(--b2);}
 .hw::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--border);}
 .hw:last-child::after{display:none;}
 .hw-num{font-size:40px;font-weight:700;color:rgba(0,200,232,.08);line-height:1;margin-bottom:12px;}
 .hw-icon{font-size:24px;margin-bottom:10px;}
-.hw-title{font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:6px;letter-spacing:.3px;}
+.hw-title{font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:6px;}
 .hw-desc{font-size:12px;color:var(--gray2);line-height:1.7;}
-
-/* ── PRICING ── */
 .pricing{background:var(--navy2);}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
 .pc{background:var(--navy3);border:1px solid var(--border);border-radius:20px;padding:28px 24px;position:relative;transition:all .2s;}
 .pc:hover{border-color:var(--b2);transform:translateY(-3px);}
-.pc.feat{background:linear-gradient(145deg,rgba(0,200,232,.07),transparent);border-color:var(--cyan);box-shadow:0 0 40px rgba(0,200,232,.05);transform:scale(1.03);}
+.pc.feat{background:linear-gradient(145deg,rgba(0,200,232,.07),transparent);border-color:var(--cyan);transform:scale(1.03);}
 .pc.feat:hover{transform:scale(1.03) translateY(-3px);}
 .pc-pop{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--cyan);color:var(--navy);font-size:9px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap;letter-spacing:.8px;}
 .pc-name{font-size:18px;font-weight:600;color:var(--white);margin-bottom:3px;}
@@ -231,17 +189,13 @@ section{padding:88px 5%;position:relative;}
 .pc:not(.feat) .pc-btn{background:var(--cyan2);color:var(--cyan);border:1px solid var(--b2);}
 .pc:not(.feat) .pc-btn:hover{background:var(--cyan);color:var(--navy);}
 .pc.feat .pc-btn{background:var(--cyan);color:var(--navy);border:none;}
-
-/* ── CTA ── */
 .cta{background:var(--navy);text-align:center;padding:100px 5%;}
 .cta-inner{max-width:640px;margin:0 auto;}
-.cta-h2{font-size:clamp(32px,5vw,56px);font-weight:600;letter-spacing:-0.5px;line-height:1.1;margin-bottom:14px;}
+.cta-h2{font-size:clamp(32px,5vw,54px);font-weight:600;letter-spacing:-0.5px;line-height:1.1;margin-bottom:14px;}
 .cta-h2 span{color:var(--cyan);}
 .cta-p{font-size:16px;color:var(--gray1);font-weight:300;margin-bottom:32px;line-height:1.75;}
 .cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
 .cta-note{font-size:11px;color:var(--gray2);letter-spacing:.5px;}
-
-/* ── FOOTER ── */
 footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5% 28px;}
 .ft-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--border);margin-bottom:24px;}
 .ft-brand p{font-size:13px;color:var(--gray2);line-height:1.75;margin-top:13px;max-width:250px;}
@@ -253,15 +207,8 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .ft-col a:hover{color:var(--cyan);}
 .ft-bottom{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.15);}
 .ft-bottom span{color:var(--cyan);}
-
-/* ── MOBILE MENU ── */
-.mob{position:fixed;inset:0;background:rgba(6,16,30,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .3s ease;backdrop-filter:blur(20px);}
-.mob.open{transform:translateX(0);}
-.mob a{font-size:26px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:1px;padding:10px;}
-.mob a:hover{color:var(--cyan);}
-.mob-x{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;}
-
-/* ── RESPONSIVE ── */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.rv.in{opacity:1;transform:translateY(0);}
 @media(max-width:1100px){
   .hero-inner,.plat-head,.pshow,.elec-layout,.elec-top,.shop-head{grid-template-columns:1fr;gap:28px;}
   .pshow.rev{direction:ltr;}
@@ -279,72 +226,59 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   .elec-bottom,.shop-grid{grid-template-columns:1fr;}
   .ft-grid{grid-template-columns:1fr;}
   .ft-bottom{flex-direction:column;gap:6px;text-align:center;}
-  .plat-tabs{justify-content:flex-start;}
 }
-
-/* ── REVEAL ── */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
-.rv.in{opacity:1;transform:translateY(0);}
 </style>
 </head>
 <body>
 
-</div>
-
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="#" class="logo">
+    <a href="index.html" class="logo">
       <div class="logo-mark">SMD</div>
-      <div>
-        <div class="logo-name">Smart<span>Kembo</span></div>
-        <div class="logo-tag">Discovery Science</div>
-      </div>
+      <div><div class="logo-name">Smart<span>Kembo</span></div><div class="logo-tag">Discovery Science</div></div>
     </a>
     <ul class="nav-links">
-      <li><a href="#platform" data-i="nav.platform">Platform</a></li>
-      <li><a href="#electronics" data-i="nav.electronics">Electronics</a></li>
-      <li><a href="#shop" data-i="nav.shop">Shop</a></li>
-      <li><a href="#pricing" data-i="nav.pricing">Pricing</a></li>
-      <li><a href="#contact" data-i="nav.contact">Contact</a></li>
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#electronics">Electronics</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
       <div class="lang">
         <button class="on" onclick="setLang('en')">EN</button>
         <button onclick="setLang('sw')">SW</button>
       </div>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost" data-i="nav.login">Login</a>
-      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan" data-i="nav.apply">Get Started</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost">Login</a>
+      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan">Get Started</a>
     </div>
     <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
-  <a href="#platform" onclick="closeMenu()" data-i="nav.platform">Platform</a>
-  <a href="#electronics" onclick="closeMenu()" data-i="nav.electronics">Electronics</a>
-  <a href="#shop" onclick="closeMenu()" data-i="nav.shop">Shop</a>
-  <a href="#pricing" onclick="closeMenu()" data-i="nav.pricing">Pricing</a>
-  <a href="https://smartkembo-app.vercel.app/apply.html" onclick="closeMenu()" style="color:var(--cyan);margin-top:12px" data-i="nav.apply">Get Started →</a>
+  <a href="#platform" onclick="closeMenu()">Platform</a>
+  <a href="#electronics" onclick="closeMenu()">Electronics</a>
+  <a href="#shop" onclick="closeMenu()">Shop</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="https://smartkembo-app.vercel.app/apply.html" onclick="closeMenu()" style="color:var(--cyan);margin-top:12px">Get Started →</a>
 </div>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
     <div>
-      <div class="hero-tag" data-i="hero.tag">SMARTKEMBO give you alternative life hacks and interesting projects</div>
+      <div class="hero-tag">SMARTKEMBO give you alternative life hacks and interesting projects</div>
       <h1 class="hero-h1">Smart <span>Vending</span> &amp; Electronics Discovery</h1>
-      <p class="hero-p" data-i="hero.p">WiFi vending, water vending and electronics education — one platform built for entrepreneurs and engineers across East Africa.</p>
+      <p class="hero-p">WiFi vending, water vending and electronics education — one platform built for entrepreneurs and engineers across East Africa.</p>
       <div class="hero-actions">
-        <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan" data-i="hero.cta1">Start Free Today</a>
-        <a href="#electronics" class="btn btn-ghost" data-i="hero.cta2">Explore Learning</a>
+        <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan" style="font-size:15px;padding:11px 24px">Start Free Today</a>
+        <a href="#electronics" class="btn btn-ghost" style="font-size:15px;padding:11px 24px">Explore Learning</a>
       </div>
       <div class="hero-stats">
-        <div><div class="hs-val">500+</div><div class="hs-lbl" data-i="hero.s1">Daily transactions</div></div>
-        <div><div class="hs-val">24</div><div class="hs-lbl" data-i="hero.s2">Active owners</div></div>
-        <div><div class="hs-val">99%</div><div class="hs-lbl" data-i="hero.s3">Uptime</div></div>
+        <div><div class="hs-val">500+</div><div class="hs-lbl">Daily transactions</div></div>
+        <div><div class="hs-val">24</div><div class="hs-lbl">Active owners</div></div>
+        <div><div class="hs-val">99%</div><div class="hs-lbl">Uptime</div></div>
       </div>
     </div>
     <div>
@@ -360,14 +294,14 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         </div>
         <div class="hc-body">
           <div class="hc-mods">
-            <div class="hc-mod on"><div class="hm-icon">📶</div><div class="hm-name" data-i="hero.m1">WiFi Vending</div><div class="hm-sub" data-i="hero.m1s">Active</div></div>
-            <div class="hc-mod"><div class="hm-icon">💧</div><div class="hm-name" data-i="hero.m2">Water Vending</div><div class="hm-sub" data-i="hero.m2s">Active</div></div>
-            <div class="hc-mod"><div class="hm-icon">⚡</div><div class="hm-name" data-i="hero.m3">Power Vending</div><div class="hm-soon">Q4 2025</div></div>
-            <div class="hc-mod"><div class="hm-icon">🔬</div><div class="hm-name" data-i="hero.m4">Electronics Hub</div><div class="hm-sub" data-i="hero.m4s">120+ articles</div></div>
+            <div class="hc-mod on"><div class="hm-icon">📶</div><div class="hm-name">WiFi Vending</div><div class="hm-sub">Active</div></div>
+            <div class="hc-mod"><div class="hm-icon">💧</div><div class="hm-name">Water Vending</div><div class="hm-sub">Active</div></div>
+            <div class="hc-mod"><div class="hm-icon">⚡</div><div class="hm-name">Power Vending</div><div class="hm-soon">Q4 2025</div></div>
+            <div class="hc-mod"><div class="hm-icon">🔬</div><div class="hm-name">Electronics Hub</div><div class="hm-sub">120+ articles</div></div>
           </div>
           <div class="hc-rev">
-            <div class="hcr-top"><span data-i="hero.rev">JOIN TO SEE YOUR REVENUE</span><span class="hcr-badge">LIVE TRACKING</span></div>
-            <div class="hcr-val" data-i="hero.rev2">Your dashboard awaits</div>
+            <div class="hcr-top"><span>JOIN TO SEE YOUR REVENUE</span><span class="hcr-badge">LIVE</span></div>
+            <div class="hcr-val">Your dashboard awaits</div>
             <div class="hcr-bar"><div class="hcr-fill" id="hfill"></div></div>
           </div>
         </div>
@@ -376,297 +310,267 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   </div>
 </section>
 
-<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
-    <div><div class="sb-val">500+</div><div class="sb-lbl" data-i="stats.s1">Daily Customers</div></div>
-    <div><div class="sb-val">24</div><div class="sb-lbl" data-i="stats.s2">Business Owners</div></div>
-    <div><div class="sb-val">120+</div><div class="sb-lbl" data-i="stats.s3">Tech Articles</div></div>
-    <div><div class="sb-val">TZ 🇹🇿</div><div class="sb-lbl" data-i="stats.s4">Made in Tanzania</div></div>
+    <div><div class="sb-val">500+</div><div class="sb-lbl">Daily Customers</div></div>
+    <div><div class="sb-val">24</div><div class="sb-lbl">Business Owners</div></div>
+    <div><div class="sb-val">120+</div><div class="sb-lbl">Tech Articles</div></div>
+    <div><div class="sb-val">TZ 🇹🇿</div><div class="sb-lbl">Made in Tanzania</div></div>
   </div>
 </div>
 
-<!-- PLATFORM -->
 <section id="platform" class="platform">
   <div class="sec-inner">
     <div class="plat-head">
       <div>
-        <div class="sec-tag" data-i="plat.tag">Vending Platform</div>
+        <div class="sec-tag">Vending Platform</div>
         <h2 class="sec-h2">Smart <span>Vending</span> Modules</h2>
-        <p class="sec-p" data-i="plat.p">Automate your business. Customers pay via mobile money — your service delivers automatically, 24/7.</p>
+        <p class="sec-p">Automate your business. Customers pay via mobile money — your service delivers automatically, 24/7.</p>
       </div>
       <div class="plat-tabs">
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="ptab on">📶 <span data-i="plat.wifi">WiFi Vending</span></a>
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="ptab">💧 <span data-i="plat.water">Water Vending</span></a>
+        <a href="wifi.html" class="ptab on">📶 WiFi Vending</a>
+        <a href="water.html" class="ptab">💧 Water Vending</a>
       </div>
     </div>
-
-    <!-- WiFi -->
     <div class="pshow rv">
       <div>
-        <div class="ps-tag wifi">📶 <span data-i="wifi.tag">WiFi Module</span></div>
+        <div class="ps-tag wifi">📶 WiFi Module</div>
         <h3 class="ps-h3">Sell WiFi <span>Automatically</span></h3>
-        <p class="ps-p" data-i="wifi.p">Customers connect, choose a package, pay via M-Pesa — internet starts in seconds. No staff needed. Revenue flows 24/7.</p>
+        <p class="ps-p">Customers connect, choose a package, pay via M-Pesa — internet starts in seconds. No staff needed. Revenue flows 24/7.</p>
         <div class="ps-feats">
-          <div class="ps-feat"><div class="pf-dot pf-c">✓</div><span data-i="wifi.f1">Mikrotik RouterOS integration</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-c">✓</div><span data-i="wifi.f2">M-Pesa, Tigo & Airtel payments</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-c">✓</div><span data-i="wifi.f3">Auto session & MAC management</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-c">✓</div><span data-i="wifi.f4">Real-time revenue dashboard</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-c">✓</div><span data-i="wifi.f5">Custom branded captive portal</span></div>
+          <div class="ps-feat"><div class="pf-dot pf-c">✓</div>Mikrotik RouterOS integration</div>
+          <div class="ps-feat"><div class="pf-dot pf-c">✓</div>M-Pesa, Tigo &amp; Airtel payments</div>
+          <div class="ps-feat"><div class="pf-dot pf-c">✓</div>Auto session &amp; MAC management</div>
+          <div class="ps-feat"><div class="pf-dot pf-c">✓</div>Real-time revenue dashboard</div>
+          <div class="ps-feat"><div class="pf-dot pf-c">✓</div>Custom branded captive portal</div>
         </div>
         <div class="ps-acts">
-          <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-cyan" data-i="wifi.cta1">Learn More →</a>
-          <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-ghost" data-i="wifi.cta2">Get Started</a>
+          <a href="wifi.html" class="btn btn-cyan">Learn More →</a>
+          <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-ghost">Get Started</a>
         </div>
       </div>
       <div class="dmock">
-        <div class="dm-head">
-          <div class="dm-icon" style="background:rgba(0,200,232,.1)">📶</div>
-          <div class="dm-name">WIFI DASHBOARD</div>
-          <div class="dm-live">● LIVE</div>
-        </div>
+        <div class="dm-head"><div class="dm-icon" style="background:rgba(0,200,232,.1)">📶</div><div class="dm-name">WIFI DASHBOARD</div><div class="dm-live">● LIVE</div></div>
         <div class="dm-grid">
-          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl" data-i="wifi.d1">Customers Today</div></div>
-          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl" data-i="wifi.d2">Revenue (Tsh)</div></div>
-          <div class="dm-stat"><div class="dm-val" style="color:#22C55E">0</div><div class="dm-lbl" data-i="wifi.d3">Online Now</div></div>
-          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl" data-i="wifi.d4">This Month</div></div>
+          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl">Customers Today</div></div>
+          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl">Revenue (Tsh)</div></div>
+          <div class="dm-stat"><div class="dm-val" style="color:#22C55E">0</div><div class="dm-lbl">Online Now</div></div>
+          <div class="dm-stat"><div class="dm-val" style="color:var(--cyan)">—</div><div class="dm-lbl">This Month</div></div>
         </div>
-        <div class="dm-empty" data-i="wifi.empty">NO TRANSACTIONS YET — JOIN TO START</div>
+        <div class="dm-empty">NO TRANSACTIONS YET — JOIN TO START</div>
       </div>
     </div>
-
-    <!-- Water -->
     <div class="pshow rev rv">
       <div>
-        <div class="ps-tag water">💧 <span data-i="water.tag">Water Module</span></div>
-        <h3 class="ps-h3" style="color:var(--white)">Sell Water <span style="color:#60A5FA">by the Litre</span></h3>
-        <p class="ps-p" data-i="water.p">Smart IoT dispensers. Pay per litre via mobile money — the valve opens exactly for what was paid, then closes automatically.</p>
+        <div class="ps-tag water">💧 Water Module</div>
+        <h3 class="ps-h3">Sell Water <span class="blue">by the Litre</span></h3>
+        <p class="ps-p">Smart IoT dispensers. Pay per litre via mobile money — the valve opens exactly for what was paid, then closes automatically.</p>
         <div class="ps-feats">
-          <div class="ps-feat"><div class="pf-dot pf-b">✓</div><span data-i="water.f1">IoT smart dispenser integration</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-b">✓</div><span data-i="water.f2">Flexible per-litre pricing</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-b">✓</div><span data-i="water.f3">Automatic valve control</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-b">✓</div><span data-i="water.f4">Daily & weekly sales reports</span></div>
-          <div class="ps-feat"><div class="pf-dot pf-b">✓</div><span data-i="water.f5">Low stock SMS alerts</span></div>
+          <div class="ps-feat"><div class="pf-dot pf-b">✓</div>IoT smart dispenser integration</div>
+          <div class="ps-feat"><div class="pf-dot pf-b">✓</div>Flexible per-litre pricing</div>
+          <div class="ps-feat"><div class="pf-dot pf-b">✓</div>Automatic valve control</div>
+          <div class="ps-feat"><div class="pf-dot pf-b">✓</div>Daily &amp; weekly sales reports</div>
+          <div class="ps-feat"><div class="pf-dot pf-b">✓</div>Low stock SMS alerts</div>
         </div>
         <div class="ps-acts">
-          <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-cyan" data-i="water.cta1">Learn More →</a>
-          <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-ghost" data-i="water.cta2">Get Started</a>
+          <a href="water.html" class="btn btn-cyan">Learn More →</a>
+          <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-ghost">Get Started</a>
         </div>
       </div>
       <div class="dmock" style="border-color:rgba(96,165,250,.2)">
-        <div class="dm-head" style="border-color:rgba(96,165,250,.1)">
-          <div class="dm-icon" style="background:rgba(96,165,250,.1)">💧</div>
-          <div class="dm-name">WATER DASHBOARD</div>
-          <div class="dm-live">● LIVE</div>
-        </div>
+        <div class="dm-head" style="border-color:rgba(96,165,250,.1)"><div class="dm-icon" style="background:rgba(96,165,250,.1)">💧</div><div class="dm-name">WATER DASHBOARD</div><div class="dm-live">● LIVE</div></div>
         <div class="dm-grid">
-          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl" data-i="water.d1">Litres Today</div></div>
-          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl" data-i="water.d2">Revenue (Tsh)</div></div>
-          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl" data-i="water.d3">Customers</div></div>
-          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl" data-i="water.d4">This Month</div></div>
+          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl">Litres Today</div></div>
+          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl">Revenue (Tsh)</div></div>
+          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl">Customers</div></div>
+          <div class="dm-stat" style="border-color:rgba(96,165,250,.1)"><div class="dm-val" style="color:#60A5FA">—</div><div class="dm-lbl">This Month</div></div>
         </div>
-        <div class="dm-empty" style="border-color:rgba(96,165,250,.1)" data-i="water.empty">NO TRANSACTIONS YET — JOIN TO START</div>
+        <div class="dm-empty" style="border-color:rgba(96,165,250,.1)">NO TRANSACTIONS YET — JOIN TO START</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ELECTRONICS HUB -->
 <section id="electronics" class="elec">
   <div class="sec-inner">
     <div class="elec-top">
       <div>
-        <div class="sec-tag" data-i="elec.tag">Electronics Hub</div>
+        <div class="sec-tag">Electronics Hub</div>
         <h2 class="sec-h2">Learn &amp; Build <span>Real Things</span></h2>
-        <p class="sec-p" data-i="elec.p">Tutorials, IoT projects, videos and components — everything you need to build smart electronics.</p>
+        <p class="sec-p">Tutorials, IoT projects, videos and components — everything you need to build smart electronics.</p>
       </div>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost" data-i="elec.all">View All →</a>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="btn btn-ghost">View All →</a>
     </div>
     <div class="ecats">
-      <button class="ecat on" data-i="ecat.all">All</button>
-      <button class="ecat" data-i="ecat.arduino">Arduino</button>
-      <button class="ecat" data-i="ecat.rpi">Raspberry Pi</button>
-      <button class="ecat" data-i="ecat.iot">IoT Projects</button>
-      <button class="ecat" data-i="ecat.video">Videos</button>
-      <button class="ecat" data-i="ecat.basics">Basics</button>
+      <button class="ecat on">All</button>
+      <button class="ecat">Arduino</button>
+      <button class="ecat">Raspberry Pi</button>
+      <button class="ecat">IoT Projects</button>
+      <button class="ecat">Videos</button>
+      <button class="ecat">Basics</button>
     </div>
     <div class="elec-layout rv">
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="art-feat">
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-feat">
         <div class="af-thumb"><div class="af-badge">FEATURED</div>🔌</div>
         <div class="af-body">
-          <div class="af-cat" data-i="ef.cat">IoT Project</div>
-          <div class="af-title" data-i="ef.title">Build a Smart Water Meter with Arduino & GSM</div>
-          <div class="af-desc" data-i="ef.desc">Learn to build an IoT water flow meter that sends SMS alerts and tracks consumption remotely using Arduino Uno and SIM800L.</div>
-          <div class="af-meta"><span>SMD Labs</span><span>·</span><span data-i="ef.time">12 min read</span><span class="af-read" data-i="ef.read">Read →</span></div>
+          <div class="af-cat">IoT Project</div>
+          <div class="af-title">Build a Smart Water Meter with Arduino &amp; GSM</div>
+          <div class="af-desc">Learn to build an IoT water flow meter that sends SMS alerts and tracks consumption remotely.</div>
+          <div class="af-meta"><span>SMD Labs</span><span>·</span><span>12 min read</span><span class="af-read">Read →</span></div>
         </div>
       </a>
       <div class="art-cards">
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="art-card"><div class="ac-icon">🤖</div><div><div class="ac-cat">Arduino</div><div class="ac-title" data-i="ea1">Arduino Uno Starter Guide — Zero to Hero</div><div class="ac-meta">8 min · Beginner</div></div></a>
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="art-card"><div class="ac-icon">🍓</div><div><div class="ac-cat">Raspberry Pi</div><div class="ac-title" data-i="ea2">Set Up Pi-Hole DNS Ad Blocker in 20 Minutes</div><div class="ac-meta">15 min · Intermediate</div></div></a>
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="art-card"><div class="ac-icon">📡</div><div><div class="ac-cat">IoT</div><div class="ac-title" data-i="ea3">ESP32 WiFi Sensor — Send Data to Cloud</div><div class="ac-meta">10 min · Intermediate</div></div></a>
-        <a href="https://smartkembo-app.vercel.app/login-owner.html" class="art-card"><div class="ac-icon">🔧</div><div><div class="ac-cat">Basics</div><div class="ac-title" data-i="ea4">Understanding Ohm's Law — Practical Examples</div><div class="ac-meta">6 min · Beginner</div></div></a>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🤖</div><div><div class="ac-cat">Arduino</div><div class="ac-title">Arduino Uno Starter Guide — Zero to Hero</div><div class="ac-meta">8 min · Beginner</div></div></a>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🍓</div><div><div class="ac-cat">Raspberry Pi</div><div class="ac-title">Pi-Hole DNS Ad Blocker in 20 Minutes</div><div class="ac-meta">15 min · Intermediate</div></div></a>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">📡</div><div><div class="ac-cat">IoT</div><div class="ac-title">ESP32 WiFi Sensor — Send Data to Cloud</div><div class="ac-meta">10 min · Intermediate</div></div></a>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🔧</div><div><div class="ac-cat">Basics</div><div class="ac-title">Understanding Ohm's Law — Practical Examples</div><div class="ac-meta">6 min · Beginner</div></div></a>
       </div>
     </div>
-    <div class="elec-bottom rv" style="margin-top:20px">
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="ec"><div class="ec-thumb">🎬</div><div class="ec-body"><div class="ec-type">Video Tutorial</div><div class="ec-title" data-i="ev1">Build a Mikrotik Hotspot from Scratch</div><div class="ec-tags"><span class="ec-tag">Mikrotik</span><span class="ec-tag">WiFi</span></div></div></a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="ec"><div class="ec-thumb">🌡️</div><div class="ec-body"><div class="ec-type">IoT Project</div><div class="ec-title" data-i="ev2">Temperature Monitor with DHT22 + Blynk</div><div class="ec-tags"><span class="ec-tag">Arduino</span><span class="ec-tag">IoT</span></div></div></a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="ec"><div class="ec-thumb">📱</div><div class="ec-body"><div class="ec-type">Video Series</div><div class="ec-title" data-i="ev3">GSM & M-Pesa Integration for IoT — Full Course</div><div class="ec-tags"><span class="ec-tag">GSM</span><span class="ec-tag">M-Pesa</span></div></div></a>
+    <div class="elec-bottom rv">
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">🎬</div><div class="ec-body"><div class="ec-type">Video Tutorial</div><div class="ec-title">Build a Mikrotik Hotspot from Scratch</div><div class="ec-tags"><span class="ec-tag">Mikrotik</span><span class="ec-tag">WiFi</span></div></div></a>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">🌡️</div><div class="ec-body"><div class="ec-type">IoT Project</div><div class="ec-title">Temperature Monitor with DHT22 + Blynk</div><div class="ec-tags"><span class="ec-tag">Arduino</span><span class="ec-tag">IoT</span></div></div></a>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">📱</div><div class="ec-body"><div class="ec-type">Video Series</div><div class="ec-title">GSM &amp; M-Pesa Integration for IoT</div><div class="ec-tags"><span class="ec-tag">GSM</span><span class="ec-tag">M-Pesa</span></div></div></a>
     </div>
   </div>
 </section>
 
-<!-- SHOP -->
 <section id="shop" class="shop">
   <div class="sec-inner">
     <div class="shop-head">
       <div>
-        <div class="sec-tag" data-i="shop.tag">Electronics Shop</div>
+        <div class="sec-tag">Electronics Shop</div>
         <h2 class="sec-h2">Buy the Parts, <span>Build Your Ideas</span></h2>
       </div>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost" data-i="shop.all">View All →</a>
+      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost">View All →</a>
     </div>
     <div class="shop-grid">
-      <div class="sc rv"><div class="sc-img">🤖<div class="sc-badge badge-hot">HOT</div></div><div class="sc-body"><div class="sc-name" data-i="sp1.n">Arduino Uno R3</div><div class="sc-desc" data-i="sp1.d">Original board with ATmega328P — perfect for beginners</div><div><span class="sc-price">Tsh 35,000</span><span class="sc-old">45,000</span></div><button class="sc-btn" data-i="shop.add">Add to Cart</button></div></div>
-      <div class="sc rv"><div class="sc-img">🍓<div class="sc-badge badge-new">NEW</div></div><div class="sc-body"><div class="sc-name" data-i="sp2.n">Raspberry Pi 4 (4GB)</div><div class="sc-desc" data-i="sp2.d">Quad-core 64-bit, ideal for IoT and AI projects</div><div><span class="sc-price">Tsh 180,000</span></div><button class="sc-btn" data-i="shop.add">Add to Cart</button></div></div>
-      <div class="sc rv"><div class="sc-img">📡</div><div class="sc-body"><div class="sc-name" data-i="sp3.n">ESP32 WiFi Module</div><div class="sc-desc" data-i="sp3.d">Dual-core WiFi+Bluetooth SoC for IoT automation</div><div><span class="sc-price">Tsh 22,000</span></div><button class="sc-btn" data-i="shop.add">Add to Cart</button></div></div>
-      <div class="sc rv"><div class="sc-img">📱<div class="sc-badge badge-hot">HOT</div></div><div class="sc-body"><div class="sc-name" data-i="sp4.n">SIM800L GSM Module</div><div class="sc-desc" data-i="sp4.d">GSM/GPRS for M-Pesa and SMS integrations</div><div><span class="sc-price">Tsh 28,000</span></div><button class="sc-btn" data-i="shop.add">Add to Cart</button></div></div>
+      <div class="sc rv"><div class="sc-img">🤖<div class="sc-badge badge-hot">HOT</div></div><div class="sc-body"><div class="sc-name">Arduino Uno R3</div><div class="sc-desc">Original board — perfect for beginners</div><div><span class="sc-price">Tsh 35,000</span><span class="sc-old">45,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
+      <div class="sc rv"><div class="sc-img">🍓<div class="sc-badge badge-new">NEW</div></div><div class="sc-body"><div class="sc-name">Raspberry Pi 4 (4GB)</div><div class="sc-desc">Quad-core 64-bit, ideal for IoT</div><div><span class="sc-price">Tsh 180,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
+      <div class="sc rv"><div class="sc-img">📡</div><div class="sc-body"><div class="sc-name">ESP32 WiFi Module</div><div class="sc-desc">WiFi+Bluetooth SoC for IoT</div><div><span class="sc-price">Tsh 22,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
+      <div class="sc rv"><div class="sc-img">📱<div class="sc-badge badge-hot">HOT</div></div><div class="sc-body"><div class="sc-name">SIM800L GSM Module</div><div class="sc-desc">GSM/GPRS for M-Pesa integrations</div><div><span class="sc-price">Tsh 28,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how">
   <div class="sec-inner">
-    <div style="text-align:center;margin-bottom:0">
-      <div class="sec-tag" style="justify-content:center" data-i="how.tag">Process</div>
+    <div style="text-align:center">
+      <div class="sec-tag" style="justify-content:center">Process</div>
       <h2 class="sec-h2" style="text-align:center">How It <span>Works</span></h2>
     </div>
     <div class="how-grid">
-      <div class="hw rv"><div class="hw-num">01</div><div class="hw-icon">📋</div><div class="hw-title" data-i="hw1.t">Apply</div><div class="hw-desc" data-i="hw1.d">Fill the application form. We contact you within 24 hours to set up your account.</div></div>
-      <div class="hw rv"><div class="hw-num">02</div><div class="hw-icon">⚙️</div><div class="hw-title" data-i="hw2.t">Configure</div><div class="hw-desc" data-i="hw2.d">We connect your Mikrotik router or IoT dispenser to the platform. Takes 1–2 days.</div></div>
-      <div class="hw rv"><div class="hw-num">03</div><div class="hw-icon">💰</div><div class="hw-title" data-i="hw3.t">Earn</div><div class="hw-desc" data-i="hw3.d">Customers pay via M-Pesa. Money goes directly to your account, 24/7 automatically.</div></div>
-      <div class="hw rv"><div class="hw-num">04</div><div class="hw-icon">📈</div><div class="hw-title" data-i="hw4.t">Scale</div><div class="hw-desc" data-i="hw4.d">Add more modules as you grow. WiFi + Water + Power — one dashboard, one subscription.</div></div>
+      <div class="hw rv"><div class="hw-num">01</div><div class="hw-icon">📋</div><div class="hw-title">Apply</div><div class="hw-desc">Fill the application form. We contact you within 24 hours to set up your account.</div></div>
+      <div class="hw rv"><div class="hw-num">02</div><div class="hw-icon">⚙️</div><div class="hw-title">Configure</div><div class="hw-desc">We connect your Mikrotik router to the platform. Takes 1–2 days.</div></div>
+      <div class="hw rv"><div class="hw-num">03</div><div class="hw-icon">💰</div><div class="hw-title">Earn</div><div class="hw-desc">Customers pay via M-Pesa. Money goes directly to your account, 24/7.</div></div>
+      <div class="hw rv"><div class="hw-num">04</div><div class="hw-icon">📈</div><div class="hw-title">Scale</div><div class="hw-desc">Add more modules as you grow. WiFi + Water + Power — one subscription.</div></div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing" class="pricing">
   <div class="sec-inner">
     <div style="text-align:center">
-      <div class="sec-tag" style="justify-content:center" data-i="pr.tag">Pricing</div>
+      <div class="sec-tag" style="justify-content:center">Pricing</div>
       <h2 class="sec-h2" style="text-align:center">Simple <span>Pricing</span></h2>
-      <p class="sec-p" style="text-align:center;margin:0 auto" data-i="pr.p">One plan covers all your vending modules. No hidden fees.</p>
+      <p class="sec-p" style="text-align:center;margin:0 auto">One plan covers all your vending modules. No hidden fees.</p>
     </div>
     <div class="price-grid">
       <div class="pc rv">
-        <div class="pc-name" data-i="pr.b">Basic</div>
-        <div class="pc-desc" data-i="pr.bd">Small shops & offices</div>
-        <div class="pc-price">30K</div>
-        <div class="pc-mo" data-i="pr.mo">Tsh / month</div>
-        <a href="https://smartkembo-app.vercel.app/apply.html" class="pc-btn" data-i="pr.start">Get Started</a>
+        <div class="pc-name">Basic</div><div class="pc-desc">Small shops &amp; offices</div>
+        <div class="pc-price">30K</div><div class="pc-mo">Tsh / month</div>
+        <a href="https://smartkembo-app.vercel.app/apply.html" class="pc-btn">Get Started</a>
         <div class="pc-div"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.b1">500 customers/month</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.b2">3 packages per module</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.b3">Basic reports</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.b4">Email support</span></div>
+        <div class="pc-feat"><div class="pc-check">✓</div>500 customers/month</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>3 packages per module</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Basic reports</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Email support</div>
       </div>
       <div class="pc feat rv">
         <div class="pc-pop">⭐ MOST POPULAR</div>
-        <div class="pc-name" data-i="pr.p">Pro</div>
-        <div class="pc-desc" data-i="pr.pd">Hotels, cafes & offices</div>
-        <div class="pc-price">80K</div>
-        <div class="pc-mo" data-i="pr.mo">Tsh / month</div>
-        <a href="https://smartkembo-app.vercel.app/apply.html" class="pc-btn" data-i="pr.startp">Start with Pro</a>
+        <div class="pc-name">Pro</div><div class="pc-desc">Hotels, cafes &amp; offices</div>
+        <div class="pc-price">80K</div><div class="pc-mo">Tsh / month</div>
+        <a href="https://smartkembo-app.vercel.app/apply.html" class="pc-btn">Start with Pro</a>
         <div class="pc-div" style="background:rgba(0,200,232,.15)"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.p1">Unlimited customers</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.p2">10 packages per module</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.p3">Advanced reports</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.p4">WhatsApp support</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.p5">3 admin accounts</span></div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Unlimited customers</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>10 packages per module</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Advanced reports</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>WhatsApp support</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>3 admin accounts</div>
       </div>
       <div class="pc rv">
-        <div class="pc-name" data-i="pr.e">Enterprise</div>
-        <div class="pc-desc" data-i="pr.ed">Large organizations</div>
-        <div class="pc-price">200K</div>
-        <div class="pc-mo" data-i="pr.mo">Tsh / month</div>
-        <a href="#contact" class="pc-btn" data-i="pr.contact">Contact Us</a>
+        <div class="pc-name">Enterprise</div><div class="pc-desc">Large organizations</div>
+        <div class="pc-price">200K</div><div class="pc-mo">Tsh / month</div>
+        <a href="https://wa.me/255768303190" target="_blank" class="pc-btn">Contact Us</a>
         <div class="pc-div"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.e1">Everything in Pro</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.e2">Full API access</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.e3">99.9% SLA</span></div>
-        <div class="pc-feat"><div class="pc-check">✓</div><span data-i="pr.e4">24/7 priority support</span></div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Everything in Pro</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>Full API access</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>99.9% SLA</div>
+        <div class="pc-feat"><div class="pc-check">✓</div>24/7 priority support</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta" id="contact">
   <div class="cta-inner">
     <h2 class="cta-h2">Ready to Start <span>Earning?</span></h2>
-    <p class="cta-p" data-i="cta.p">Join 24+ business owners already using SMD's SmartKembo platform across East Africa.</p>
+    <p class="cta-p">Join 24+ business owners already using SMD's SmartKembo platform across East Africa.</p>
     <div class="cta-acts">
-      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan" style="font-size:15px;padding:12px 28px" data-i="cta.b1">Apply for Free Account</a>
-      <a href="https://wa.me/255768303190" class="btn btn-ghost" style="font-size:15px;padding:12px 28px" target="_blank" data-i="cta.b2">WhatsApp Us</a>
+      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan" style="font-size:15px;padding:13px 28px">Apply for Free Account</a>
+      <a href="https://wa.me/255768303190" class="btn btn-ghost" style="font-size:15px;padding:13px 28px" target="_blank">WhatsApp Us</a>
     </div>
-    <div class="cta-note" data-i="cta.note">No credit card · Setup in 1–2 days · Cancel anytime</div>
+    <div class="cta-note">No credit card · Setup in 1–2 days · Cancel anytime</div>
     <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
-      <a href="https://t.me/Givenkembo" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4);letter-spacing:.5px">✈ Telegram: @Givenkembo</a>
-      <a href="https://wa.me/255768303190" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4);letter-spacing:.5px">📱 +255 768 303 190</a>
+      <a href="https://t.me/Givenkembo" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4)">✈ Telegram: @Givenkembo</a>
+      <a href="https://wa.me/255768303190" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4)">📱 +255 768 303 190</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="ft-grid">
     <div class="ft-brand">
-      <a href="#" class="logo">
+      <a href="index.html" class="logo">
         <div class="logo-mark">SMD</div>
-        <div>
-          <div class="logo-name">Smart<span>Kembo</span></div>
-          <div class="logo-tag">Discovery Science</div>
-        </div>
+        <div><div class="logo-name">Smart<span>Kembo</span></div><div class="logo-tag">Discovery Science</div></div>
       </a>
-      <p data-i="ft.desc">Smart vending automation & electronics education — built for East Africa's innovators and entrepreneurs.</p>
+      <p>Smart vending automation &amp; electronics education — built for East Africa's innovators.</p>
       <div class="ft-social">
-        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ft-soc" title="YouTube">▶</a>
-        <a href="https://www.instagram.com/smartkembo" target="_blank" class="ft-soc" title="Instagram">◈</a>
-        <a href="http://tiktok.com/@smartkembo" target="_blank" class="ft-soc" title="TikTok">♪</a>
-        <a href="https://www.linkedin.com/company/smartkembo" target="_blank" class="ft-soc" title="LinkedIn" style="font-size:10px;font-weight:700">in</a>
-        <a href="https://twitter.com/Smartkembodisco?s=09" target="_blank" class="ft-soc" title="Twitter">𝕏</a>
-        <a href="https://t.me/smartkembo" target="_blank" class="ft-soc" title="Telegram">✈</a>
-        <a href="#" class="ft-soc" title="Facebook (coming soon)" style="opacity:.3">f</a>
+        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ft-soc">▶</a>
+        <a href="https://www.instagram.com/smartkembo" target="_blank" class="ft-soc">◈</a>
+        <a href="http://tiktok.com/@smartkembo" target="_blank" class="ft-soc">♪</a>
+        <a href="https://www.linkedin.com/company/smartkembo" target="_blank" class="ft-soc" style="font-size:10px;font-weight:700">in</a>
+        <a href="https://twitter.com/Smartkembodisco?s=09" target="_blank" class="ft-soc">𝕏</a>
+        <a href="https://t.me/smartkembo" target="_blank" class="ft-soc">✈</a>
       </div>
     </div>
     <div class="ft-col">
-      <h4 data-i="ft.platform">Platform</h4>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.wifi">WiFi Vending</a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.water">Water Vending</a>
-      <a href="#" style="opacity:.3" data-i="ft.power">Power (soon)</a>
-      <a href="https://smartkembo-app.vercel.app/apply.html" data-i="ft.apply">Apply Now</a>
+      <h4>Platform</h4>
+      <a href="wifi.html">WiFi Vending</a>
+      <a href="water.html">Water Vending</a>
+      <a href="#" style="opacity:.3">Power (soon)</a>
+      <a href="https://smartkembo-app.vercel.app/apply.html">Apply Now</a>
     </div>
     <div class="ft-col">
-      <h4 data-i="ft.learn">Learn</h4>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.tut">Tutorials</a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.iot">IoT Projects</a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.vid">Videos</a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" data-i="ft.shop">Shop</a>
+      <h4>Learn</h4>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">Tutorials</a>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">IoT Projects</a>
+      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">Videos</a>
+      <a href="https://wa.me/255768303190" target="_blank">Shop</a>
     </div>
     <div class="ft-col">
-      <h4 data-i="ft.company">Company</h4>
-      <a href="#" data-i="ft.about">About SMD's</a>
-      <a href="#" data-i="ft.projects">Projects</a>
-      <a href="#pricing" data-i="ft.pricing">Pricing</a>
+      <h4>Company</h4>
+      <a href="#">About SMD's</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html">Owner Login</a>
+      <a href="https://smartkembo-app.vercel.app/login-admin.html">Admin Login</a>
     </div>
     <div class="ft-col">
-      <h4 data-i="ft.contact">Contact</h4>
-      <a href="tel:+255768303190">+255 768 303 190</a>
+      <h4>Contact</h4>
+      <a href="tel:+255767830319">+255 768 303 190</a>
       <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
       <a href="https://t.me/smartkembo" target="_blank">@smartkembo</a>
       <a href="mailto:admin@smartkembo.com">admin@smartkembo.com</a>
-      <a style="color:rgba(255,255,255,.2);cursor:default">Dar es Salaam, TZ 🇹🇿</a>
     </div>
   </div>
   <div class="ft-bottom">
@@ -676,39 +580,13 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 </footer>
 
 <script>
-/* ── i18n ── */
-const T={
-  en:{'nav.platform':'Platform','nav.electronics':'Electronics','nav.shop':'Shop','nav.pricing':'Pricing','nav.contact':'Contact','nav.login':'Login','nav.apply':'Get Started','hero.tag':"SMARTKEMBO give you alternative life hacks and interesting projects",'hero.p':'WiFi vending, water vending and electronics education — one platform for entrepreneurs and engineers across East Africa.','hero.cta1':'Start Free Today','hero.cta2':'Explore Learning','hero.s1':'Daily transactions','hero.s2':'Active owners','hero.s3':'Uptime','hero.m1':'WiFi Vending','hero.m1s':'Active','hero.m2':'Water Vending','hero.m2s':'Active','hero.m3':'Power Vending','hero.m4':'Electronics Hub','hero.m4s':'120+ articles','hero.rev':'JOIN TO SEE YOUR REVENUE','hero.rev2':'Your dashboard awaits','stats.s1':'Daily Customers','stats.s2':'Business Owners','stats.s3':'Tech Articles','stats.s4':'Made in Tanzania','plat.tag':'Vending Platform','plat.p':'Automate your business. Customers pay via mobile money — your service delivers automatically, 24/7.','plat.wifi':'WiFi Vending','plat.water':'Water Vending','wifi.tag':'WiFi Module','wifi.p':'Customers connect, choose a package, pay via M-Pesa — internet starts in seconds. No staff needed. Revenue flows 24/7.','wifi.f1':'Mikrotik RouterOS integration','wifi.f2':'M-Pesa, Tigo & Airtel payments','wifi.f3':'Auto session & MAC management','wifi.f4':'Real-time revenue dashboard','wifi.f5':'Custom branded captive portal','wifi.cta1':'Learn More →','wifi.cta2':'Get Started','wifi.d1':'Customers Today','wifi.d2':'Revenue (Tsh)','wifi.d3':'Online Now','wifi.d4':'This Month','wifi.empty':'NO TRANSACTIONS YET — JOIN TO START','water.tag':'Water Module','water.p':'Smart IoT dispensers. Pay per litre via mobile money — the valve opens for exactly what was paid, then closes automatically.','water.f1':'IoT smart dispenser integration','water.f2':'Flexible per-litre pricing','water.f3':'Automatic valve control','water.f4':'Daily & weekly sales reports','water.f5':'Low stock SMS alerts','water.cta1':'Learn More →','water.cta2':'Get Started','water.d1':'Litres Today','water.d2':'Revenue (Tsh)','water.d3':'Customers','water.d4':'This Month','water.empty':'NO TRANSACTIONS YET — JOIN TO START','elec.tag':'Electronics Hub','elec.p':'Tutorials, IoT projects, videos and components — everything you need to build smart electronics.','elec.all':'View All →','ecat.all':'All','ecat.arduino':'Arduino','ecat.rpi':'Raspberry Pi','ecat.iot':'IoT Projects','ecat.video':'Videos','ecat.basics':'Basics','ef.cat':'IoT Project','ef.title':'Build a Smart Water Meter with Arduino & GSM','ef.desc':'Learn to build an IoT water flow meter that sends SMS alerts and tracks consumption remotely using Arduino Uno and SIM800L.','ef.time':'12 min read','ef.read':'Read →','ea1':'Arduino Uno Starter Guide — Zero to Hero','ea2':'Set Up Pi-Hole DNS Ad Blocker in 20 Minutes','ea3':'ESP32 WiFi Sensor — Send Data to Cloud','ea4':"Understanding Ohm's Law — Practical Examples",'ev1':'Build a Mikrotik Hotspot from Scratch','ev2':'Temperature Monitor with DHT22 + Blynk','ev3':'GSM & M-Pesa Integration for IoT — Full Course','shop.tag':'Electronics Shop','shop.all':'View All →','sp1.n':'Arduino Uno R3','sp1.d':'Original board with ATmega328P — perfect for beginners','sp2.n':'Raspberry Pi 4 (4GB)','sp2.d':'Quad-core 64-bit, ideal for IoT and AI projects','sp3.n':'ESP32 WiFi Module','sp3.d':'Dual-core WiFi+Bluetooth SoC for IoT automation','sp4.n':'SIM800L GSM Module','sp4.d':'GSM/GPRS for M-Pesa and SMS integrations','shop.add':'Add to Cart','how.tag':'Process','hw1.t':'Apply','hw1.d':'Fill the application form. We contact you within 24 hours to set up your account.','hw2.t':'Configure','hw2.d':'We connect your Mikrotik router or IoT dispenser to the platform. Takes 1–2 days.','hw3.t':'Earn','hw3.d':'Customers pay via M-Pesa. Money goes directly to your account, 24/7 automatically.','hw4.t':'Scale','hw4.d':'Add more modules as you grow. WiFi + Water + Power — one dashboard, one subscription.','pr.tag':'Pricing','pr.p':'One plan covers all your vending modules. No hidden fees.','pr.b':'Basic','pr.bd':'Small shops & offices','pr.mo':'Tsh / month','pr.start':'Get Started','pr.b1':'500 customers/month','pr.b2':'3 packages per module','pr.b3':'Basic reports','pr.b4':'Email support','pr.p':'Pro','pr.pd':'Hotels, cafes & offices','pr.startp':'Start with Pro','pr.p1':'Unlimited customers','pr.p2':'10 packages per module','pr.p3':'Advanced reports','pr.p4':'WhatsApp support','pr.p5':'3 admin accounts','pr.e':'Enterprise','pr.ed':'Large organizations','pr.contact':'Contact Us','pr.e1':'Everything in Pro','pr.e2':'Full API access','pr.e3':'99.9% SLA','pr.e4':'24/7 priority support','cta.p':"Join 24+ business owners already using SMD's SmartKembo platform across East Africa.",'cta.b1':'Apply for Free Account','cta.b2':'WhatsApp Us','cta.note':'No credit card · Setup in 1–2 days · Cancel anytime','ft.desc':"Smart vending automation & electronics education — built for East Africa's innovators and entrepreneurs.",'ft.platform':'Platform','ft.wifi':'WiFi Vending','ft.water':'Water Vending','ft.power':'Power (soon)','ft.apply':'Apply Now','ft.learn':'Learn','ft.tut':'Tutorials','ft.iot':'IoT Projects','ft.vid':'Videos','ft.shop':'Shop','ft.company':'Company','ft.about':"About SMD's",'ft.projects':'Projects','ft.pricing':'Pricing','ft.contact':'Contact'},
-  sw:{'nav.platform':'Mfumo','nav.electronics':'Elektroni','nav.shop':'Duka','nav.pricing':'Bei','nav.contact':'Wasiliana','nav.login':'Ingia','nav.apply':'Anza Sasa','hero.tag':'Jukwaa la Teknolojia — Afrika Mashariki','hero.p':'WiFi vending, maji vending na elimu ya elektroni — jukwaa moja kwa wajasiriamali na wahandisi wa Afrika Mashariki.','hero.cta1':'Anza Bure Leo','hero.cta2':'Jifunze Zaidi','hero.s1':'Manunuzi kila siku','hero.s2':'Wamiliki wanaotumia','hero.s3':'Uptime','hero.m1':'WiFi Vending','hero.m1s':'Hai','hero.m2':'Maji Vending','hero.m2s':'Hai','hero.m3':'Umeme Vending','hero.m4':'Kituo cha Elektroni','hero.m4s':'Makala 120+','hero.rev':'JIUNGE UONE MAPATO YAKO','hero.rev2':'Dashibodi yako inakungoja','stats.s1':'Wateja Kila Siku','stats.s2':'Wamiliki wa Biashara','stats.s3':'Makala ya Teknolojia','stats.s4':'Imetengenezwa Tanzania','plat.tag':'Mfumo wa Vending','plat.p':'Fanya biashara yako kiotomatiki. Wateja wanalipa kwa simu — huduma yako inatoa kiotomatiki, saa 24/7.','plat.wifi':'WiFi Vending','plat.water':'Maji Vending','wifi.tag':'Moduli ya WiFi','wifi.p':'Wateja wanaunganika, wanachagua pakiti, wanalipa kwa M-Pesa — intaneti inaanza sekunde chache. Huhitaji wafanyakazi.','wifi.f1':'Unganisho la Mikrotik RouterOS','wifi.f2':'Malipo ya M-Pesa, Tigo na Airtel','wifi.f3':'Usimamizi wa vikao na MAC kiotomatiki','wifi.f4':'Dashibodi ya mapato ya wakati halisi','wifi.f5':'Portal ya mteja yenye brand yako','wifi.cta1':'Jua Zaidi →','wifi.cta2':'Anza Sasa','wifi.d1':'Wateja Leo','wifi.d2':'Mapato (Tsh)','wifi.d3':'Wanaounganika','wifi.d4':'Mwezi Huu','wifi.empty':'HAKUNA MANUNUZI BADO — JIUNGE UANZE','water.tag':'Moduli ya Maji','water.p':'Dispensers za IoT. Lipa kwa lita kwa simu — valve inafunguka kwa lita walizolipa, kisha inafunga kiotomatiki.','water.f1':'Unganisho la IoT dispenser','water.f2':'Bei inayobadilika kwa lita','water.f3':'Udhibiti wa valve kiotomatiki','water.f4':'Ripoti za kila siku na wiki','water.f5':'Arifa za SMS za stoo ndogo','water.cta1':'Jua Zaidi →','water.cta2':'Anza Sasa','water.d1':'Lita Leo','water.d2':'Mapato (Tsh)','water.d3':'Wateja','water.d4':'Mwezi Huu','water.empty':'HAKUNA MANUNUZI BADO — JIUNGE UANZE','elec.tag':'Kituo cha Elektroni','elec.p':'Mafunzo, miradi ya IoT, video na vipande — kila unachohitaji kujenga elektroni za kisasa.','elec.all':'Ona Zote →','ecat.all':'Zote','ecat.arduino':'Arduino','ecat.rpi':'Raspberry Pi','ecat.iot':'Miradi ya IoT','ecat.video':'Video','ecat.basics':'Misingi','ef.cat':'Mradi wa IoT','ef.title':'Jenga Kipimo cha Maji na Arduino & GSM','ef.desc':'Jifunza kujenga kipimo cha maji cha IoT kinachotuma arifa za SMS na kufuatilia matumizi kwa mbali.','ef.time':'Dakika 12 kusoma','ef.read':'Soma →','ea1':'Mwongozo wa Arduino Uno — Kutoka Mwanzo','ea2':'Weka Pi-Hole DNS Ad Blocker kwa Dakika 20','ea3':'ESP32 WiFi Sensor — Tuma Data kwenye Cloud','ea4':"Kuelewa Sheria ya Ohm — Mifano ya Vitendo",'ev1':'Jenga Mfumo wa Mikrotik Hotspot Kutoka Mwanzo','ev2':'Kipimo cha Joto na DHT22 + Blynk','ev3':'Unganisho la GSM & M-Pesa kwa IoT — Kozi Kamili','shop.tag':'Duka la Elektroni','shop.all':'Ona Bidhaa Zote →','sp1.n':'Arduino Uno R3','sp1.d':'Bodi ya asili na ATmega328P — nzuri kwa wanaoanza','sp2.n':'Raspberry Pi 4 (4GB)','sp2.d':'Processor ya quad-core 64-bit, bora kwa IoT na AI','sp3.n':'ESP32 WiFi Module','sp3.d':'WiFi+Bluetooth SoC ya dual-core kwa IoT','sp4.n':'SIM800L GSM Module','sp4.d':'GSM/GPRS kwa M-Pesa na SMS','shop.add':'Ongeza Kikapu','how.tag':'Mchakato','hw1.t':'Omba','hw1.d':'Jaza fomu ya maombi. Tutakupigia simu ndani ya saa 24 kuweka akaunti yako.','hw2.t':'Sanidi','hw2.d':'Tunaunganisha router yako ya Mikrotik au dispenser ya IoT kwenye mfumo. Inachukua siku 1–2.','hw3.t':'Pata Pesa','hw3.d':'Wateja wanalipa kwa M-Pesa. Pesa inaingia kwenye akaunti yako kiotomatiki, saa 24/7.','hw4.t':'Kukua','hw4.d':'Ongeza moduli zaidi unavyokua. WiFi + Maji + Umeme — dashibodi moja, ada moja.','pr.tag':'Bei','pr.p':'Ada moja inafunika moduli zako zote. Hakuna ada za siri.','pr.b':'Basic','pr.bd':'Maduka na ofisi ndogo','pr.mo':'Tsh / mwezi','pr.start':'Anza Sasa','pr.b1':'Wateja 500/mwezi','pr.b2':'Pakiti 3 kwa moduli','pr.b3':'Ripoti ya msingi','pr.b4':'Msaada wa email','pr.p':'Pro','pr.pd':'Hoteli, café na ofisi','pr.startp':'Anza na Pro','pr.p1':'Wateja bila kikomo','pr.p2':'Pakiti 10 kwa moduli','pr.p3':'Ripoti ya kina','pr.p4':'Msaada wa WhatsApp','pr.p5':'Wasimamizi 3','pr.e':'Enterprise','pr.ed':'Makampuni makubwa','pr.contact':'Wasiliana Nasi','pr.e1':'Kila kitu cha Pro','pr.e2':'API kamili','pr.e3':'SLA ya 99.9%','pr.e4':'Msaada wa saa 24/7','cta.p':"Jiunge na wamiliki 24+ wanaotumia SMD's SmartKembo kote Afrika Mashariki.",'cta.b1':'Omba Akaunti Bure','cta.b2':'Piga WhatsApp','cta.note':'Huhitaji kadi ya benki · Usanidi siku 1–2 · Acha wakati wowote','ft.desc':'Otomatiki ya vending na elimu ya elektroni — imeundwa kwa wavumbuzi na wajasiriamali wa Afrika Mashariki.','ft.platform':'Mfumo','ft.wifi':'WiFi Vending','ft.water':'Maji Vending','ft.power':'Umeme (hivi karibuni)','ft.apply':'Omba Sasa','ft.learn':'Jifunze','ft.tut':'Mafunzo','ft.iot':'Miradi ya IoT','ft.vid':'Video','ft.shop':'Duka','ft.company':'Kampuni','ft.about':"Kuhusu SMD's",'ft.projects':'Miradi','ft.pricing':'Bei','ft.contact':'Wasiliana'}
-};
-let lang='en';
-function setLang(l){
-  lang=l;
-  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.textContent.toLowerCase()===l));
-  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[l]&&T[l][k])el.textContent=T[l][k];});
-  document.documentElement.lang=l;
-}
-
-/* ── MOBILE MENU ── */
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
 function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
-
-/* ── REVEAL on scroll ── */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*60);});
-},{threshold:0.12});
+function setLang(l){document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.textContent.toLowerCase()===l));}
+const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*60);});},{threshold:0.12});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-
-/* ── HERO BAR FILL ── */
 setTimeout(()=>{const f=document.getElementById('hfill');if(f)f.style.width='68%';},600);
-
-/* ── ECAT FILTER ── */
-document.querySelectorAll('.ecat').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.ecat').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-  });
-});
+document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.ecat').forEach(x=>x.classList.remove('on'));b.classList.add('on');});});
 </script>
 </body>
 </html>
