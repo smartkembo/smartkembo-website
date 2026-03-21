@@ -431,6 +431,40 @@ function filter(cat, btn){
       filterProducts();
     });
 })();
+// Dynamic products from API
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+  fetch(API + '/content/public?type=product', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      if (!res || !res.data || !res.data.length) return;
+      var grid = document.getElementById('products-grid');
+      if (!grid) return;
+      res.data.forEach(function(p) {
+        var price = p.price ? parseFloat(p.price) : 0;
+        var cat = (p.category || 'other').toLowerCase().replace(/\s+/g,'-');
+        var div = document.createElement('div');
+        div.className = 'product';
+        div.setAttribute('data-cat', cat);
+        div.innerHTML =
+          '<div class="prod-img">📦<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
+          '<div class="prod-body">' +
+            '<div class="prod-cat">' + (p.category||'Bidhaa') + '</div>' +
+            '<div class="prod-name">' + p.title + '</div>' +
+            '<div class="prod-desc">' + (p.body||'') + '</div>' +
+            '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
+            '<div class="prod-actions">' +
+              '<button class="btn-cart" onclick="addCart(this,'' + p.title.replace(/'/g,'\\'') + '',' + price + ','📦')">+ Add to Cart</button>' +
+              '<button class="btn-wa" onclick="quickWA('' + p.title.replace(/'/g,'\\'') + '','' + price.toLocaleString() + '')">WhatsApp</button>' +
+            '</div>' +
+          '</div>';
+        grid.insertBefore(div, grid.firstChild);
+      });
+      filterProducts();
+    })
+    .catch(function(){});
+})();
+
 </script>
 <script src="js/layout.js"></script>
 </body>
