@@ -6,86 +6,47 @@
 <title>WiFi Vending — SMD's SmartKembo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;
-  --cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--cyan3:rgba(0,200,232,0.15);
-  --white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);
-  --gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);
-}
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;font-size:15px;}
-
-/* NAV */
+a{text-decoration:none;}
 .nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
 .nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo{display:flex;align-items:center;gap:10px;}
 .logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
 .logo-name{font-size:15px;font-weight:600;color:var(--white);}
 .logo-name span{color:var(--cyan);}
-.nav-right{display:flex;align-items:center;gap:8px;}
-.nav-back{display:flex;align-items:center;gap:6px;color:var(--gray2);font-size:13px;text-decoration:none;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
 .nav-back:hover{color:var(--cyan);border-color:var(--b2);}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;text-decoration:none;}
-.btn-cyan{background:var(--cyan);color:var(--navy);}
-.btn-cyan:hover{opacity:.9;transform:translateY(-1px);}
-.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--b2);}
-.btn-ghost:hover{background:var(--cyan2);border-color:var(--cyan);}
-.btn-lg{padding:13px 28px;font-size:15px;}
-
-/* HERO */
-.hero{padding:80px 5% 70px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:0;right:0;width:700px;height:700px;background:radial-gradient(circle,rgba(0,200,232,0.05),transparent 70%);pointer-events:none;}
-.hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;}
-.status-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;color:#22C55E;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;}
-.live-dot{width:6px;height:6px;background:#22C55E;border-radius:50%;animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-h1{font-size:clamp(36px,4.5vw,58px);font-weight:600;line-height:1.1;letter-spacing:-0.5px;margin-bottom:16px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;}
+.mob{position:fixed;inset:0;background:rgba(6,16,30,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .3s ease;}
+.mob.open{transform:translateX(0);}
+.mob a{font-size:24px;font-weight:600;color:rgba(255,255,255,.6);padding:10px;}
+.mob a:hover{color:var(--cyan);}
+.mob-x{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;}
+.btn-cyan{background:var(--cyan);color:var(--navy);}.btn-cyan:hover{opacity:.9;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--b2);}.btn-ghost:hover{background:var(--cyan2);border-color:var(--cyan);}
+.hero{padding:80px 5% 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,200,232,0.06),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+.status-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);padding:6px 16px;border-radius:20px;font-size:11px;font-weight:600;color:#22C55E;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;}
+.live-dot{width:7px;height:7px;background:#22C55E;border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-icon{font-size:72px;margin-bottom:20px;display:block;}
+h1{font-size:clamp(32px,5vw,56px);font-weight:600;line-height:1.1;letter-spacing:-0.5px;margin-bottom:16px;}
 h1 span{color:var(--cyan);}
-.hero-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:480px;margin-bottom:28px;}
-.hero-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
-.hf{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);}
-.hf-dot{width:18px;height:18px;border-radius:50%;background:var(--cyan2);border:1px solid rgba(0,200,232,.2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--cyan);flex-shrink:0;}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;}
-
-/* Hero mockup */
-.mockup{background:var(--navy2);border:1px solid var(--b2);border-radius:20px;overflow:hidden;}
-.mock-bar{background:var(--navy3);border-bottom:1px solid var(--border);padding:11px 16px;display:flex;align-items:center;gap:8px;}
-.mock-dots{display:flex;gap:5px;}
-.mock-dot{width:9px;height:9px;border-radius:50%;}
-.mock-title{font-size:10px;color:var(--gray2);letter-spacing:1px;margin-left:4px;}
-.mock-live{margin-left:auto;font-size:9px;color:#22C55E;font-weight:700;display:flex;align-items:center;gap:4px;}
-.mock-ld{width:5px;height:5px;background:#22C55E;border-radius:50%;}
-.mock-body{padding:18px;}
-.mock-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.ms{background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
-.ms-val{font-size:20px;font-weight:700;color:var(--cyan);}
-.ms-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray2);margin-top:2px;}
-.mock-sessions{background:var(--navy3);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.mock-sh{background:rgba(255,255,255,.03);padding:8px 12px;font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--gray2);text-transform:uppercase;border-bottom:1px solid var(--border);}
-.mock-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.03);font-size:11px;}
-.mock-row:last-child{border:none;}
-.mock-mac{font-family:monospace;color:var(--gray2);font-size:10px;}
-.mock-pkg{color:var(--cyan);font-weight:500;}
-.mock-time{margin-left:auto;font-size:10px;color:rgba(255,255,255,.3);}
-.mock-badge{font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,.1);color:#22C55E;}
-
-/* STATS BAR */
-.stats-bar{background:var(--cyan);padding:32px 5%;}
-.stats-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;}
-.sb-val{font-size:36px;font-weight:700;color:var(--navy);}
-.sb-lbl{font-size:12px;color:rgba(6,16,30,.6);margin-top:3px;font-weight:500;}
-
-/* SECTIONS */
+.hero-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto;}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
 section{padding:80px 5%;}
-.sec-inner{max-width:1280px;margin:0 auto;}
+.sec-inner{max-width:1100px;margin:0 auto;}
 .sec-tag{font-size:10px;font-weight:600;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .sec-tag::before{content:'//';opacity:.4;}
-h2{font-size:clamp(28px,3.5vw,44px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;line-height:1.1;}
+h2{font-size:clamp(26px,3.5vw,42px);font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
 h2 span{color:var(--cyan);}
-.sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:520px;line-height:1.75;margin-bottom:48px;}
-
-/* FEATURES */
+.sec-p{font-size:15px;color:var(--gray1);font-weight:300;max-width:500px;line-height:1.75;margin-bottom:40px;}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .feat{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s;}
 .feat:hover{border-color:var(--b2);transform:translateY(-3px);}
@@ -93,177 +54,128 @@ h2 span{color:var(--cyan);}
 .feat-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;}
 .feat-desc{font-size:13px;color:var(--gray2);line-height:1.7;}
 .feat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:10px;letter-spacing:.5px;background:rgba(0,200,232,.1);color:var(--cyan);}
-
-/* HOW */
 .how-section{background:var(--navy2);}
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px;}
 .hw{background:var(--navy3);border:1px solid var(--border);border-radius:16px;padding:22px 18px;position:relative;}
 .hw::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--border);}
 .hw:last-child::after{display:none;}
-.hw-num{font-size:36px;font-weight:700;color:var(--cyan2);line-height:1;margin-bottom:10px;}
+.hw-num{font-size:36px;font-weight:700;color:rgba(0,200,232,0.06);line-height:1;margin-bottom:10px;}
 .hw-icon{font-size:22px;margin-bottom:8px;}
 .hw-title{font-size:13px;font-weight:600;color:var(--cyan);margin-bottom:5px;}
 .hw-desc{font-size:12px;color:var(--gray2);line-height:1.7;}
-
-/* PLANS */
 .plans-section{background:var(--navy);}
 .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
 .plan{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;position:relative;transition:all .2s;}
 .plan:hover{transform:translateY(-3px);}
 .plan.feat{border-color:var(--cyan);background:linear-gradient(145deg,var(--cyan2),transparent);}
 .plan-pop{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--cyan);color:var(--navy);font-size:9px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap;letter-spacing:.8px;}
-.plan-name{font-size:18px;font-weight:600;margin-bottom:3px;}
+.plan-name{font-size:18px;font-weight:600;color:var(--white);margin-bottom:3px;}
 .plan-desc{font-size:12px;color:var(--gray2);margin-bottom:16px;}
 .plan-price{font-size:42px;font-weight:700;color:var(--cyan);line-height:1;}
-.plan-mo{font-size:11px;color:var(--gray2);margin-bottom:18px;}
-.plan-div{height:1px;background:var(--border);margin:16px 0;}
+.plan-mo{font-size:11px;color:var(--gray2);margin-bottom:14px;}
+.plan-div{height:1px;background:var(--border);margin:14px 0;}
 .plan-feat{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:rgba(255,255,255,.55);}
 .pf-check{width:15px;height:15px;border-radius:50%;background:var(--cyan2);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:7px;flex-shrink:0;}
-.plan-btn{width:100%;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;margin-top:18px;transition:all .2s;display:block;text-align:center;font-family:inherit;text-decoration:none;}
+.plan-btn{width:100%;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;transition:all .2s;display:block;text-align:center;font-family:inherit;}
 .plan:not(.feat) .plan-btn{background:var(--cyan2);color:var(--cyan);border:1px solid var(--b2);}
 .plan:not(.feat) .plan-btn:hover{background:var(--cyan);color:var(--navy);}
 .plan.feat .plan-btn{background:var(--cyan);color:var(--navy);border:none;}
-
-/* SPECS */
+.spec-section{background:var(--navy2);}
 .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px;}
-.spec-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:28px;}
+.spec-card{background:var(--navy3);border:1px solid var(--border);border-radius:16px;padding:28px;}
 .spec-card-title{font-size:12px;font-weight:600;color:var(--cyan);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
 .spec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
 .spec-row:last-child{border:none;}
 .spec-lbl{color:var(--gray2);}
 .spec-val{font-weight:500;color:var(--white);}
-
-/* FAQ */
-.faq-section{background:var(--navy2);}
-.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px;}
-.faq{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+.faq-section{background:var(--navy);}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px;}
+.faq{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
 .faq-q{font-size:13px;font-weight:600;color:var(--white);margin-bottom:7px;}
 .faq-a{font-size:12px;color:var(--gray2);line-height:1.7;}
-
-/* CTA */
-.cta-section{background:var(--navy);text-align:center;}
-.cta-inner{max-width:620px;margin:0 auto;}
+.cta-section{background:var(--navy2);border-top:1px solid var(--border);padding:80px 5%;text-align:center;}
+.cta-inner{max-width:600px;margin:0 auto;}
 .cta-inner h2{margin-bottom:12px;}
-.cta-p{font-size:16px;color:var(--gray1);font-weight:300;margin-bottom:28px;line-height:1.75;}
-.cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.cta-p{font-size:15px;color:var(--gray1);font-weight:300;margin-bottom:28px;line-height:1.75;}
+.cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
 .cta-note{font-size:11px;color:var(--gray2);letter-spacing:.5px;}
-
-/* FOOTER */
-.footer{background:var(--navy2);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer{background:var(--navy);border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
-.footer-links{display:flex;gap:16px;}
-.footer-links a{font-size:11px;color:rgba(255,255,255,.25);text-decoration:none;transition:color .15s;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
 .footer-links a:hover{color:var(--cyan);}
-
-@media(max-width:900px){
-  .hero-inner,.spec-grid,.faq-grid{grid-template-columns:1fr;}
-  .feat-grid,.how-grid,.plans-grid{grid-template-columns:1fr;}
-  .stats-inner{grid-template-columns:repeat(2,1fr);}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .nav-back{font-size:12px;padding:6px 10px;}
+  h1{font-size:28px;}
+  h2{font-size:22px;}
+  section{padding:56px 5%;}
+  .feat-grid,.how-grid,.plans-grid,.spec-grid,.faq-grid{grid-template-columns:1fr;}
   .hw::after{display:none;}
   .plan.feat{transform:none;}
-  .nav-links,.nav-right .btn-ghost,.nav-right .btn-cyan{display:none;}
-  .hamburger{display:flex;}
-  h1{font-size:32px;}
-  section{padding:56px 5%;}
-  .stats-bar{padding:24px 5%;}
-  .sb-val{font-size:28px;}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn{width:100%;justify-content:center;}
+  .cta-acts{flex-direction:column;align-items:stretch;}
+  .cta-acts .btn{width:100%;justify-content:center;}
+  .footer{flex-direction:column;text-align:center;}
+  .footer-links{justify-content:center;}
 }
 @media(max-width:480px){
-  h1{font-size:26px;}
-  h2{font-size:22px;}
-  .nav-right{gap:4px;}
-  .stats-inner{grid-template-columns:1fr 1fr;gap:12px;}
-  .spec-grid{grid-template-columns:1fr;}
+  h1{font-size:24px;}
+  h2{font-size:20px;}
+  .hero{padding:48px 4% 40px;}
+  .hero-icon{font-size:52px;}
+  section{padding:48px 4%;}
+  .cta-section{padding:56px 4%;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="logo">
       <div class="logo-mark">SMD</div>
       <div class="logo-name">Smart<span>Kembo</span></div>
     </a>
-    <div class="nav-right">
-      <a href="index.html" class="nav-back">← Back</a>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost">Login</a>
-      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan">Get Started</a>
-    </div>
+    <a href="index.html" class="nav-back">← Rudi Nyumbani</a>
+    <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section style="padding:80px 5% 70px;position:relative;overflow:hidden;">
-  <div style="position:absolute;top:0;right:0;width:700px;height:700px;background:radial-gradient(circle,rgba(0,200,232,0.05),transparent 70%);pointer-events:none;"></div>
-  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;" class="hero-inner">
-    <div>
-      <div class="status-badge"><div class="live-dot"></div>LIVE — Available Now</div>
-      <h1>Sell <span>WiFi</span> Automatically — 24/7</h1>
-      <p class="hero-p">Your customers connect to your WiFi, choose a package, pay via M-Pesa — internet starts in seconds. No cashier. No manual work. Revenue flows while you sleep.</p>
-      <div class="hero-feats">
-        <div class="hf"><div class="hf-dot">✓</div>Works with Mikrotik RouterOS</div>
-        <div class="hf"><div class="hf-dot">✓</div>M-Pesa, Tigo Pesa & Airtel Money</div>
-        <div class="hf"><div class="hf-dot">✓</div>Auto session management — no manual work</div>
-        <div class="hf"><div class="hf-dot">✓</div>Real-time revenue dashboard</div>
-        <div class="hf"><div class="hf-dot">✓</div>Custom branded captive portal for your business</div>
-      </div>
-      <div class="hero-actions">
-        <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan btn-lg">Start Free Today →</a>
-        <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost btn-lg">📱 Ask a Question</a>
-      </div>
-    </div>
-    <div class="mockup">
-      <div class="mock-bar">
-        <div class="mock-dots">
-          <div class="mock-dot" style="background:#FF5F57"></div>
-          <div class="mock-dot" style="background:#FFBD2E"></div>
-          <div class="mock-dot" style="background:#28C840"></div>
-        </div>
-        <span class="mock-title">WIFI DASHBOARD</span>
-        <div class="mock-live"><div class="mock-ld"></div>LIVE</div>
-      </div>
-      <div class="mock-body">
-        <div class="mock-stats">
-          <div class="ms"><div class="ms-val">—</div><div class="ms-lbl">Customers Today</div></div>
-          <div class="ms"><div class="ms-val">—</div><div class="ms-lbl">Revenue (Tsh)</div></div>
-          <div class="ms"><div class="ms-val" style="color:#22C55E">0</div><div class="ms-lbl">Online Now</div></div>
-          <div class="ms"><div class="ms-val">—</div><div class="ms-lbl">This Month</div></div>
-        </div>
-        <div class="mock-sessions">
-          <div class="mock-sh">Active Sessions</div>
-          <div style="padding:20px;text-align:center;font-size:11px;color:var(--gray2);">
-            No active sessions yet.<br>
-            <span style="color:var(--cyan);font-size:10px;">Join to start tracking →</span>
-          </div>
-        </div>
-      </div>
+<div class="mob" id="mob">
+  <button class="mob-x" onclick="closeMenu()">✕</button>
+  <a href="index.html" onclick="closeMenu()">← Home</a>
+  <a href="#features" onclick="closeMenu()">Features</a>
+  <a href="#how" onclick="closeMenu()">How it Works</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="https://smartkembo-app.vercel.app/apply.html" onclick="closeMenu()" style="color:var(--cyan);margin-top:12px">Get Started →</a>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="status-badge"><div class="live-dot"></div>LIVE — Available Now</div>
+    <span class="hero-icon">📶</span>
+    <h1>Sell <span>WiFi</span> Automatically — 24/7</h1>
+    <p class="hero-p">Customers connect to your WiFi, choose a package, pay via M-Pesa — internet starts in seconds. No cashier needed. Revenue flows while you sleep.</p>
+    <div class="hero-actions">
+      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan">Start Free Today →</a>
+      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost">📱 Ask a Question</a>
     </div>
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div><div class="sb-val">24</div><div class="sb-lbl">Active Business Owners</div></div>
-    <div><div class="sb-val">500+</div><div class="sb-lbl">Daily Transactions</div></div>
-    <div><div class="sb-val">99%</div><div class="sb-lbl">Platform Uptime</div></div>
-    <div><div class="sb-val">TZ 🇹🇿</div><div class="sb-lbl">Made in Tanzania</div></div>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<section>
+<section id="features">
   <div class="sec-inner">
     <div class="sec-tag">Features</div>
     <h2>Everything Built In — <span>Nothing Extra</span></h2>
-    <p class="sec-p">One subscription covers everything. No extra charges for features — it all works out of the box from day one.</p>
+    <p class="sec-p">One subscription covers everything. No extra charges — it all works from day one.</p>
     <div class="feat-grid">
       <div class="feat">
         <div class="feat-icon">📶</div>
         <div class="feat-title">Mikrotik Integration</div>
-        <div class="feat-desc">Works directly with Mikrotik RouterOS via API. We configure it for you — you don't touch the router settings.</div>
+        <div class="feat-desc">Works directly with Mikrotik RouterOS via API. We configure it for you — no technical knowledge needed.</div>
         <span class="feat-badge">✓ Live</span>
       </div>
       <div class="feat">
@@ -275,7 +187,7 @@ h2 span{color:var(--cyan);}
       <div class="feat">
         <div class="feat-icon">🎨</div>
         <div class="feat-title">Branded Captive Portal</div>
-        <div class="feat-desc">Your business name and packages on the payment page customers see. Looks professional and builds trust.</div>
+        <div class="feat-desc">Your business name and packages on the page customers see. Professional and builds trust.</div>
         <span class="feat-badge">✓ Live</span>
       </div>
       <div class="feat">
@@ -287,21 +199,20 @@ h2 span{color:var(--cyan);}
       <div class="feat">
         <div class="feat-icon">📊</div>
         <div class="feat-title">Real-Time Dashboard</div>
-        <div class="feat-desc">See who is online right now, today's revenue, and monthly totals — from your phone anywhere.</div>
+        <div class="feat-desc">See who is online right now, today's revenue and monthly totals — from your phone anywhere.</div>
         <span class="feat-badge">✓ Live</span>
       </div>
       <div class="feat">
         <div class="feat-icon">🔧</div>
         <div class="feat-title">Custom Packages</div>
-        <div class="feat-desc">Set your own packages — 1 Hour, 3 Hours, Day Pass. Set your own prices. Change them anytime.</div>
+        <div class="feat-desc">Set your own packages and prices — 1 Hour, 3 Hours, Day Pass. Change them anytime.</div>
         <span class="feat-badge">✓ Live</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how-section">
+<section id="how" class="how-section">
   <div class="sec-inner">
     <div class="sec-tag">Process</div>
     <h2>How It <span>Works</span></h2>
@@ -316,7 +227,7 @@ h2 span{color:var(--cyan);}
       <div class="hw">
         <div class="hw-num">02</div>
         <div class="hw-icon">💰</div>
-        <div class="hw-title">Chooses & Pays</div>
+        <div class="hw-title">Chooses &amp; Pays</div>
         <div class="hw-desc">They pick a package — 1 Hour for Tsh 1,000 — enter their phone number and confirm M-Pesa PIN.</div>
       </div>
       <div class="hw">
@@ -335,8 +246,7 @@ h2 span{color:var(--cyan);}
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="plans-section">
+<section id="pricing" class="plans-section">
   <div class="sec-inner">
     <div class="sec-tag" style="justify-content:center">Pricing</div>
     <h2 style="text-align:center">Simple <span>Monthly Plans</span></h2>
@@ -344,7 +254,7 @@ h2 span{color:var(--cyan);}
     <div class="plans-grid">
       <div class="plan">
         <div class="plan-name">Basic</div>
-        <div class="plan-desc">Small shops & kiosks</div>
+        <div class="plan-desc">Small shops &amp; kiosks</div>
         <div class="plan-price">30K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="https://smartkembo-app.vercel.app/apply.html" class="plan-btn">Get Started</a>
@@ -357,20 +267,20 @@ h2 span{color:var(--cyan);}
       <div class="plan feat">
         <div class="plan-pop">⭐ MOST POPULAR</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-desc">Hotels, cafes & offices</div>
+        <div class="plan-desc">Hotels, cafes &amp; offices</div>
         <div class="plan-price">80K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="https://smartkembo-app.vercel.app/apply.html" class="plan-btn">Start with Pro</a>
         <div class="plan-div" style="background:rgba(0,200,232,.15)"></div>
         <div class="plan-feat"><div class="pf-check">✓</div>Unlimited customers</div>
         <div class="plan-feat"><div class="pf-check">✓</div>10 WiFi packages</div>
-        <div class="plan-feat"><div class="pf-check">✓</div>Advanced reports & export</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Advanced reports &amp; export</div>
         <div class="plan-feat"><div class="pf-check">✓</div>WhatsApp support</div>
         <div class="plan-feat"><div class="pf-check">✓</div>3 admin accounts</div>
       </div>
       <div class="plan">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-desc">Large organizations & ISPs</div>
+        <div class="plan-desc">Large organizations &amp; ISPs</div>
         <div class="plan-price">200K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="https://wa.me/255768303190" target="_blank" class="plan-btn">Contact Us</a>
@@ -384,8 +294,7 @@ h2 span{color:var(--cyan);}
   </div>
 </section>
 
-<!-- REQUIREMENTS -->
-<section>
+<section class="spec-section">
   <div class="sec-inner">
     <div class="sec-tag">Requirements</div>
     <h2>What You <span>Need</span> to Start</h2>
@@ -396,7 +305,7 @@ h2 span{color:var(--cyan);}
         <div class="spec-row"><span class="spec-lbl">Recommended</span><span class="spec-val">hAP ac², RB951, CCR</span></div>
         <div class="spec-row"><span class="spec-lbl">Internet</span><span class="spec-val">Any ISP connection</span></div>
         <div class="spec-row"><span class="spec-lbl">RouterOS</span><span class="spec-val">v6.x or v7.x</span></div>
-        <div class="spec-row"><span class="spec-lbl">Don't have Mikrotik?</span><span class="spec-val">We can help source one</span></div>
+        <div class="spec-row"><span class="spec-lbl">No Mikrotik?</span><span class="spec-val">We can help you get one</span></div>
       </div>
       <div class="spec-card">
         <div class="spec-card-title">📱 Business Requirements</div>
@@ -410,15 +319,14 @@ h2 span{color:var(--cyan);}
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq-section">
+<section id="faq" class="faq-section">
   <div class="sec-inner">
     <div class="sec-tag">FAQ</div>
     <h2>Common <span>Questions</span></h2>
-    <div class="faq-grid" style="margin-top:32px">
+    <div class="faq-grid">
       <div class="faq">
-        <div class="faq-q">Do I need technical knowledge to use this?</div>
-        <div class="faq-a">No. We handle all the technical setup — Mikrotik configuration, portal setup, and payment integration. You just manage your business from the dashboard.</div>
+        <div class="faq-q">Do I need technical knowledge?</div>
+        <div class="faq-a">No. We handle all the setup — Mikrotik configuration, portal and payment integration. You just manage your business from the dashboard.</div>
       </div>
       <div class="faq">
         <div class="faq-q">How fast does internet start after payment?</div>
@@ -426,47 +334,50 @@ h2 span{color:var(--cyan);}
       </div>
       <div class="faq">
         <div class="faq-q">Where does the money go?</div>
-        <div class="faq-a">Directly to your M-Pesa business number. SmartKembo never holds or passes through your customer payments. We only charge you the monthly subscription fee.</div>
+        <div class="faq-a">Directly to your M-Pesa business number. SmartKembo never holds your customer payments. We only charge the monthly subscription fee.</div>
       </div>
       <div class="faq">
-        <div class="faq-q">What happens if a customer's time expires?</div>
-        <div class="faq-a">The system automatically disconnects them from the internet. They need to purchase a new package to reconnect. No manual action needed from you.</div>
+        <div class="faq-q">What happens when a customer's time expires?</div>
+        <div class="faq-a">The system automatically disconnects them. They need to buy a new package to reconnect. No manual action needed from you.</div>
       </div>
       <div class="faq">
         <div class="faq-q">Can I change my package prices?</div>
-        <div class="faq-a">Yes, anytime. Log into your dashboard, go to Packages, and update prices or add new ones. Changes take effect immediately on the customer portal.</div>
+        <div class="faq-a">Yes, anytime. Log into your dashboard, go to Packages and update prices or add new ones. Changes take effect immediately.</div>
       </div>
       <div class="faq">
         <div class="faq-q">What if I want to stop using the service?</div>
-        <div class="faq-a">Simply stop paying the monthly fee. Your account will be suspended automatically. No contracts, no cancellation fees, no paperwork required.</div>
+        <div class="faq-a">Simply stop paying the monthly fee. Your account suspends automatically. No contracts, no cancellation fees, no paperwork.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
     <h2>Ready to Start <span>Earning?</span></h2>
     <p class="cta-p">Join 24+ business owners already running WiFi vending across Tanzania with SMD's SmartKembo.</p>
     <div class="cta-acts">
-      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan btn-lg">Apply for Free Account</a>
-      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost btn-lg">📱 WhatsApp Us</a>
+      <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-cyan">Apply for Free Account</a>
+      <a href="https://wa.me/255768303190" target="_blank" class="btn btn-ghost">📱 WhatsApp Us</a>
     </div>
     <div class="cta-note">No credit card · Setup in 1–2 days · Cancel anytime</div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
-  <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science. All rights reserved.</span>
+  <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science</span>
   <div class="footer-links">
     <a href="index.html">Home</a>
     <a href="water.html">Water Vending</a>
     <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+    <a href="https://t.me/smartkembo" target="_blank">Telegram</a>
     <a href="mailto:admin@smartkembo.com">Email</a>
   </div>
 </footer>
 
+<script>
+function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
+function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
+</script>
 </body>
 </html>
