@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Vending Registration — SMD's SmartKembo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.6;}
+a{text-decoration:none;}
+
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{width:100%;max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
+.logo-name span{color:var(--cyan);}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2);}
+
+.page{max-width:1000px;margin:0 auto;padding:48px 5% 80px;display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;}
+
+/* BANNER */
+.banner{background:var(--blue2);border:1px solid var(--blue3);border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;margin-bottom:28px;grid-column:1/-1;}
+.banner-icon{font-size:24px;flex-shrink:0;}
+.banner-title{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:3px;}
+.banner-desc{font-size:12px;color:var(--gray1);line-height:1.7;}
+.dev-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(96,165,250,0.15);border:1px solid var(--blue3);padding:3px 10px;border-radius:10px;font-size:9px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.dev-dot{width:5px;height:5px;background:var(--blue);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* FORM CARD */
+.form-card{background:var(--navy2);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.form-card-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.fch-icon{width:40px;height:40px;border-radius:10px;background:var(--blue2);border:1px solid var(--blue3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.fch-title{font-size:15px;font-weight:600;color:var(--white);}
+.fch-sub{font-size:12px;color:var(--gray2);margin-top:2px;}
+.form-body{padding:24px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg-full{grid-column:1/-1;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:12px;font-weight:500;color:var(--gray1);}
+.req{color:var(--blue);}
+.form-control{background:var(--navy3);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--white);font-family:inherit;outline:none;transition:all .15s;width:100%;}
+.form-control:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(96,165,250,0.08);}
+.form-control::placeholder{color:rgba(255,255,255,0.2);}
+select.form-control option{background:var(--navy2);}
+textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
+.form-hint{font-size:10px;color:var(--gray2);line-height:1.5;}
+
+.divider{height:1px;background:var(--border);margin:20px 0;}
+.section-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* RADIO */
+.radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.radio-opt{background:var(--navy3);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;}
+.radio-opt:hover{border-color:var(--blue3);}
+.radio-opt.on{border-color:var(--blue);background:var(--blue2);}
+.radio-opt input{display:none;}
+.ro-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.radio-opt.on .ro-dot{border-color:var(--blue);background:var(--blue);}
+.radio-opt.on .ro-dot::after{content:'';width:4px;height:4px;background:white;border-radius:50%;}
+.ro-icon{font-size:16px;}
+.ro-text{font-size:12px;font-weight:500;color:var(--white);}
+.ro-sub{font-size:10px;color:var(--gray2);}
+
+/* ALERT */
+.alert{padding:11px 14px;border-radius:9px;font-size:12px;margin-bottom:16px;display:none;line-height:1.6;align-items:center;gap:8px;}
+.alert.show{display:flex;}
+.alert-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#FCA5A5;}
+
+/* SUBMIT */
+.form-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap;}
+.btn-submit{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--blue);color:var(--navy);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.form-note{font-size:10px;color:var(--gray2);line-height:1.6;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(6,16,30,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* SUCCESS */
+.success{display:none;text-align:center;padding:48px 24px;}
+.success.show{display:block;}
+.success-icon{font-size:64px;margin-bottom:16px;}
+.success-title{font-size:26px;font-weight:600;margin-bottom:8px;}
+.success-title span{color:var(--blue);}
+.success-p{font-size:14px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:420px;margin:0 auto 24px;}
+.success-ref{background:var(--navy3);border:1px solid var(--blue3);border-radius:12px;padding:14px 18px;max-width:360px;margin:0 auto 24px;font-size:12px;}
+.success-ref-lbl{color:var(--gray2);margin-bottom:4px;}
+.success-ref-val{font-size:18px;font-weight:700;color:var(--blue);font-family:monospace;letter-spacing:2px;}
+.success-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-wa{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:var(--blue);color:var(--navy);border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-home{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:transparent;color:var(--cyan);border:1px solid var(--b2);border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+.info-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.ic-title{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.ic-item{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;color:var(--gray1);line-height:1.5;}
+.ic-item:last-child{border:none;}
+.ic-dot{width:5px;height:5px;background:var(--blue);border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tl{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:10px;padding-bottom:14px;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:10px;top:24px;bottom:0;width:2px;background:var(--border);}
+.tl-dot{width:22px;height:22px;border-radius:50%;background:var(--blue2);border:1px solid var(--blue3);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;color:var(--blue);font-weight:700;z-index:1;}
+.tl-title{font-size:12px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.tl-desc{font-size:11px;color:var(--gray2);line-height:1.5;}
+.contact-card{background:var(--blue2);border:1px solid var(--blue3);border-radius:14px;padding:18px 20px;}
+.cc-title{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:12px;}
+.cc-link{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:12px;color:var(--gray1);border-bottom:1px solid rgba(255,255,255,0.05);transition:color .15s;}
+.cc-link:last-child{border:none;}
+.cc-link:hover{color:var(--cyan);}
+.cc-icon{font-size:14px;flex-shrink:0;}
+
+@media(max-width:800px){
+  .page{grid-template-columns:1fr;padding:32px 4% 60px;}
+  .banner{grid-column:1;}
+  .form-grid{grid-template-columns:1fr;}
+  .radio-grid{grid-template-columns:1fr;}
+  .form-footer{flex-direction:column;}
+  .btn-submit{width:100%;justify-content:center;}
+  .sidebar{order:3;}
+}
+@media(max-width:480px){
+  .form-body{padding:16px;}
+  .form-card-head{padding:16px;}
+  .success{padding:32px 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SMD</div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="water.html" class="nav-back">← Water Vending</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-icon">⏳</div>
+    <div>
+      <div class="dev-badge"><div class="dev-dot"></div>Coming Q3 2025</div>
+      <div class="banner-title">Water Vending is not live yet — Register your interest now</div>
+      <div class="banner-desc">We are building and testing the Water Vending system. Fill this form and we will contact you personally when it is ready in your area. No payment required — this is just a pre-registration.</div>
+    </div>
+  </div>
+
+  <!-- MAIN FORM -->
+  <div>
+    <div class="form-card" id="form-card">
+      <div class="form-card-head">
+        <div class="fch-icon">💧</div>
+        <div>
+          <div class="fch-title">Water Vending Pre-Registration</div>
+          <div class="fch-sub">Tell us about your business — we will reach out when ready</div>
+        </div>
+      </div>
+      <div class="form-body">
+        <div id="alert" class="alert alert-error"></div>
+
+        <div class="section-label">Personal Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input class="form-control" id="name" type="text" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone / WhatsApp <span class="req">*</span></label>
+            <input class="form-control" id="phone" type="tel" placeholder="0712 345 678">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-control" id="email" type="email" placeholder="you@email.com">
+            <span class="form-hint">Optional — for updates and notifications</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location / Region <span class="req">*</span></label>
+            <input class="form-control" id="location" type="text" placeholder="e.g. Dar es Salaam, Arusha">
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-label">Business Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Business Name <span class="req">*</span></label>
+            <input class="form-control" id="biz" type="text" placeholder="Your business or water point name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Business Type <span class="req">*</span></label>
+            <select class="form-control" id="biz-type">
+              <option value="" disabled selected>Select type...</option>
+              <option>Water Kiosk</option>
+              <option>Water Point / Borehole</option>
+              <option>Estate / Apartment</option>
+              <option>School / Institution</option>
+              <option>Market / Commercial Area</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Type of Water Source <span class="req">*</span></label>
+            <div class="radio-grid">
+              <label class="radio-opt" onclick="selectRadio(this,'source')">
+                <input type="radio" name="source" value="Borehole">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🕳️</div>
+                <div><div class="ro-text">Borehole</div><div class="ro-sub">Underground water</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'source')">
+                <input type="radio" name="source" value="DAWASCO / MAJI">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🚿</div>
+                <div><div class="ro-text">DAWASCO / MAJI</div><div class="ro-sub">Municipal supply</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'source')">
+                <input type="radio" name="source" value="Water Tank">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🛢️</div>
+                <div><div class="ro-text">Water Tank</div><div class="ro-sub">Delivered by truck</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'source')">
+                <input type="radio" name="source" value="Other">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">💧</div>
+                <div><div class="ro-text">Other</div><div class="ro-sub">River, spring, etc.</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Estimated Daily Customers</label>
+            <select class="form-control" id="customers">
+              <option value="" disabled selected>Select range...</option>
+              <option>Less than 20</option>
+              <option>20 – 50</option>
+              <option>50 – 100</option>
+              <option>100 – 200</option>
+              <option>More than 200</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Plan</label>
+            <select class="form-control" id="plan">
+              <option value="" disabled selected>Select plan...</option>
+              <option>Basic — Tsh 30,000/month</option>
+              <option>Pro — Tsh 80,000/month</option>
+              <option>Enterprise — Tsh 200,000/month</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Do you have electricity at your water point?</label>
+            <div class="radio-grid">
+              <label class="radio-opt" onclick="selectRadio(this,'power')">
+                <input type="radio" name="power" value="Yes">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">⚡</div>
+                <div><div class="ro-text">Yes</div><div class="ro-sub">Grid / Generator</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'power')">
+                <input type="radio" name="power" value="No">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🔋</div>
+                <div><div class="ro-text">No</div><div class="ro-sub">Solar or none</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Any additional information or questions</label>
+            <textarea class="form-control" id="notes" placeholder="Tell us anything useful — location details, current challenges, questions about the system..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <div class="form-note">By submitting you agree to be contacted by SMD's SmartKembo.<br>No payment required. This is a pre-registration only.</div>
+          <button class="btn-submit" id="submitBtn" onclick="doSubmit()">Register Interest →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="form-card success" id="success-card">
+      <div class="success-icon">✅</div>
+      <h2 class="success-title">You're on the <span>List!</span></h2>
+      <p class="success-p">Thank you for registering your interest in Water Vending. We have received your details and will contact you personally on WhatsApp as soon as the service is ready in your area.</p>
+      <div class="success-ref">
+        <div class="success-ref-lbl">Reference Number</div>
+        <div class="success-ref-val" id="ref-num">WV-000000</div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:20px">Keep this number for your records</p>
+      <div class="success-btns">
+        <a href="https://wa.me/255768303190?text=Nimejisajili%20Water%20Vending%20SmartKembo" target="_blank" class="btn-wa">📱 Follow Up on WhatsApp</a>
+        <a href="index.html" class="btn-home">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="info-card">
+      <div class="ic-title">💧 What to Expect</div>
+      <div class="ic-item"><div class="ic-dot"></div>We will call or WhatsApp you within 2 days</div>
+      <div class="ic-item"><div class="ic-dot"></div>We will explain the system and answer your questions</div>
+      <div class="ic-item"><div class="ic-dot"></div>You will be first to know when Water Vending goes live</div>
+      <div class="ic-item"><div class="ic-dot"></div>No payment until you are fully satisfied</div>
+    </div>
+
+    <div class="info-card">
+      <div class="ic-title">📅 Timeline</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot">✓</div>
+          <div><div class="tl-title">Backend Ready</div><div class="tl-desc">Server and database complete</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">✓</div>
+          <div><div class="tl-title">Dashboard Ready</div><div class="tl-desc">Owner dashboard complete</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:rgba(96,165,250,0.3);border-color:var(--blue)">~</div>
+          <div><div class="tl-title">IoT Hardware</div><div class="tl-desc">Dispenser testing in progress</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="color:var(--gray2);border-color:var(--border);background:transparent">4</div>
+          <div><div class="tl-title">Live Launch — Q3 2025</div><div class="tl-desc">First customers go live</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="cc-title">💬 Questions? Talk to us directly</div>
+      <a href="https://wa.me/255768303190" target="_blank" class="cc-link"><span class="cc-icon">📱</span>WhatsApp: +255 768 303 190</a>
+      <a href="https://t.me/Givenkembo" target="_blank" class="cc-link"><span class="cc-icon">✈</span>Telegram: @Givenkembo</a>
+      <a href="mailto:admin@smartkembo.com" class="cc-link"><span class="cc-icon">📧</span>admin@smartkembo.com</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function selectRadio(el, name){
+  document.querySelectorAll('[name="'+name+'"]').forEach(function(r){
+    r.closest('.radio-opt').classList.remove('on');
+  });
+  el.classList.add('on');
+  el.querySelector('input').checked = true;
+}
+
+function showAlert(msg){
+  var a = document.getElementById('alert');
+  a.textContent = msg;
+  a.classList.add('show');
+  setTimeout(function(){ a.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+}
+
+function hideAlert(){
+  document.getElementById('alert').classList.remove('show');
+}
+
+async function doSubmit(){
+  hideAlert();
+  var btn = document.getElementById('submitBtn');
+
+  var name     = document.getElementById('name').value.trim();
+  var phone    = document.getElementById('phone').value.trim();
+  var location = document.getElementById('location').value.trim();
+  var biz      = document.getElementById('biz').value.trim();
+  var bizType  = document.getElementById('biz-type').value;
+  var source   = document.querySelector('[name="source"]:checked');
+
+  if(!name){ showAlert('⚠ Please enter your full name.'); return; }
+  if(!phone){ showAlert('⚠ Please enter your phone number.'); return; }
+  if(!location){ showAlert('⚠ Please enter your location.'); return; }
+  if(!biz){ showAlert('⚠ Please enter your business name.'); return; }
+  if(!bizType){ showAlert('⚠ Please select your business type.'); return; }
+  if(!source){ showAlert('⚠ Please select your water source type.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Generate reference number
+  var ref = 'WV-' + Date.now().toString().slice(-6);
+  document.getElementById('ref-num').textContent = ref;
+
+  // Send to WhatsApp as backup (always works without backend)
+  var msg = 'WATER VENDING PRE-REGISTRATION\n\n'
+    + 'Name: ' + name + '\n'
+    + 'Phone: ' + phone + '\n'
+    + 'Location: ' + location + '\n'
+    + 'Business: ' + biz + '\n'
+    + 'Type: ' + bizType + '\n'
+    + 'Water Source: ' + source.value + '\n'
+    + 'Plan: ' + (document.getElementById('plan').value || 'Not selected') + '\n'
+    + 'Customers/day: ' + (document.getElementById('customers').value || 'Not specified') + '\n'
+    + 'Ref: ' + ref;
+
+  // Try backend first
+  try {
+    await fetch('https://web-production-62329d.up.railway.app/api/applications/water', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        email: document.getElementById('email').value.trim(),
+        location: location,
+        businessName: biz,
+        businessType: bizType,
+        waterSource: source.value,
+        plan: document.getElementById('plan').value,
+        dailyCustomers: document.getElementById('customers').value,
+        notes: document.getElementById('notes').value.trim(),
+        ref: ref
+      })
+    });
+  } catch(e) {
+    // Backend not critical — continue to success
+  }
+
+  // Show success
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('success-card').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // Auto open WhatsApp after 2 seconds
+  setTimeout(function(){
+    window.open('https://wa.me/255768303190?text=' + encodeURIComponent(msg), '_blank');
+  }, 2000);
+}
+</script>
+</body>
+</html>
