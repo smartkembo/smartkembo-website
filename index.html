@@ -6,7 +6,7 @@
 <title>SMD's SmartKembo — Smart Tech Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--cyan3:rgba(0,200,232,0.15);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--r:12px;--r2:20px;}
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--r:12px;--r2:20px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;font-size:15px;}
@@ -33,7 +33,7 @@ a{text-decoration:none;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;}
 .mob{position:fixed;inset:0;background:rgba(6,16,30,.97);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transform:translateX(100%);transition:transform .3s ease;}
 .mob.open{transform:translateX(0);}
-.mob a{font-size:26px;font-weight:600;color:rgba(255,255,255,.6);padding:10px;}
+.mob a{font-size:24px;font-weight:600;color:rgba(255,255,255,.6);padding:10px;}
 .mob a:hover{color:var(--cyan);}
 .mob-x{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;}
 .hero{padding:80px 5% 90px;position:relative;overflow:hidden;}
@@ -226,6 +226,24 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   .elec-bottom,.shop-grid{grid-template-columns:1fr;}
   .ft-grid{grid-template-columns:1fr;}
   .ft-bottom{flex-direction:column;gap:6px;text-align:center;}
+  .hero-actions,.ps-acts,.cta-acts{flex-direction:column;align-items:stretch;}
+  .hero-actions .btn,.ps-acts .btn,.cta-acts .btn{width:100%;justify-content:center;}
+  .pshow{padding:24px 16px;}
+  .plat-head{grid-template-columns:1fr;}
+  .shop-head{flex-direction:column;gap:12px;}
+  .elec-top{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .hero{padding:48px 4% 56px;}
+  .hero-h1{font-size:26px;}
+  .hero-card{display:none;}
+  .stats-inner{grid-template-columns:1fr 1fr;gap:14px;}
+  .sb-val{font-size:26px;}
+  .ps-h3{font-size:20px;}
+  .elec-layout{grid-template-columns:1fr;}
+  .elec-bottom{grid-template-columns:1fr;}
+  section{padding:48px 4%;}
+  .ft-social{gap:5px;}
 }
 </style>
 </head>
@@ -374,7 +392,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         </div>
         <div class="ps-acts">
           <a href="water.html" class="btn btn-cyan">Learn More →</a>
-          <a href="https://smartkembo-app.vercel.app/apply.html" class="btn btn-ghost">Get Started</a>
+          <a href="apply-water.html" class="btn btn-ghost">Get Started</a>
         </div>
       </div>
       <div class="dmock" style="border-color:rgba(96,165,250,.2)">
@@ -567,7 +585,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
     <div class="ft-col">
       <h4>Contact</h4>
-      <a href="tel:+255767830319">+255 768 303 190</a>
+      <a href="tel:+255768303190">+255 768 303 190</a>
       <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
       <a href="https://t.me/smartkembo" target="_blank">@smartkembo</a>
       <a href="mailto:admin@smartkembo.com">admin@smartkembo.com</a>
