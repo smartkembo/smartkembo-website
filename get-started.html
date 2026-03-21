@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started — SMD's SmartKembo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);--green:#22C55E;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+a{text-decoration:none;}
+
+/* NAV */
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-inner{width:100%;max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
+.logo-name span{color:var(--cyan);}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2);}
+
+/* MAIN */
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 5%;}
+.inner{max-width:960px;width:100%;margin:0 auto;}
+
+/* HEADER */
+.header{text-align:center;margin-bottom:56px;}
+.step-pill{display:inline-flex;align-items:center;gap:7px;background:var(--gray3);border:1px solid var(--border);padding:5px 16px;border-radius:20px;font-size:11px;font-weight:600;color:var(--gray2);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;}
+.step-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(30px,5vw,52px);font-weight:600;letter-spacing:-0.5px;line-height:1.1;margin-bottom:14px;}
+h1 span{color:var(--cyan);}
+.header-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:500px;margin:0 auto;}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px;}
+
+.card{background:var(--navy2);border:2px solid var(--border);border-radius:24px;padding:36px 32px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s;}
+.card:hover{transform:translateY(-6px);}
+.card:hover::before{opacity:1;}
+
+.card-wifi::before{background:radial-gradient(circle at 30% 30%,rgba(0,200,232,0.06),transparent 60%);}
+.card-wifi:hover{border-color:var(--cyan);box-shadow:0 20px 60px rgba(0,200,232,0.1);}
+.card-water::before{background:radial-gradient(circle at 30% 30%,rgba(96,165,250,0.06),transparent 60%);}
+.card-water:hover{border-color:var(--blue);box-shadow:0 20px 60px rgba(96,165,250,0.1);}
+
+.card-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px;width:fit-content;}
+.badge-live{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);}
+.badge-live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;}
+.badge-soon{background:var(--blue2);border:1px solid var(--blue3);color:var(--blue);}
+.badge-soon-dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 1.5s infinite;}
+
+.card-icon{font-size:56px;margin-bottom:20px;}
+.card-title{font-size:26px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
+.card-wifi .card-title{color:var(--cyan);}
+.card-water .card-title{color:var(--blue);}
+.card-desc{font-size:14px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:28px;flex:1;}
+
+.card-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.card-feat{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--gray1);}
+.feat-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.feat-check-cyan{background:rgba(0,200,232,.12);color:var(--cyan);}
+.feat-check-blue{background:rgba(96,165,250,.12);color:var(--blue);}
+
+.card-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;transition:all .2s;}
+.btn-wifi{background:var(--cyan);color:var(--navy);}
+.btn-wifi:hover{opacity:.9;}
+.btn-water{background:var(--blue2);border:1px solid var(--blue3);color:var(--blue);}
+.btn-water:hover{background:var(--blue);color:var(--navy);}
+.btn-arrow{font-size:18px;transition:transform .2s;}
+.card:hover .btn-arrow{transform:translateX(4px);}
+
+/* OR DIVIDER */
+.or-divider{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:40px;}
+.or-line{flex:1;height:1px;background:var(--border);}
+.or-text{font-size:12px;color:var(--gray2);font-weight:500;}
+
+/* BOTTOM */
+.bottom{text-align:center;}
+.bottom-title{font-size:14px;color:var(--gray2);margin-bottom:16px;}
+.bottom-options{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.bottom-opt{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--gray3);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--gray1);cursor:pointer;transition:all .15s;}
+.bottom-opt:hover{border-color:var(--b2);color:var(--white);}
+.bottom-opt-icon{font-size:18px;}
+
+/* TRUST BAR */
+.trust{display:flex;align-items:center;justify-content:center;gap:32px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray2);}
+.trust-icon{font-size:16px;}
+
+/* FOOTER */
+.footer{padding:20px 5%;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15);}
+.footer-links{display:flex;gap:16px;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);transition:color .15s;}
+.footer-links a:hover{color:var(--cyan);}
+
+@media(max-width:700px){
+  .cards{grid-template-columns:1fr;}
+  .card{padding:28px 24px;}
+  h1{font-size:28px;}
+  .header{margin-bottom:36px;}
+  .trust{gap:16px;}
+  .bottom-options{flex-direction:column;align-items:stretch;}
+  .bottom-opt{justify-content:center;}
+}
+@media(max-width:480px){
+  .main{padding:32px 4%;}
+  .card{padding:24px 20px;}
+  .card-icon{font-size:44px;}
+  .card-title{font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SMD</div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="index.html" class="nav-back">← Rudi Nyumbani</a>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="inner">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="step-pill"><div class="step-dot"></div>Hatua ya 1 kati ya 2</div>
+      <h1>Chagua Huduma Yako ya <span>Kwanza</span></h1>
+      <p class="header-p">Unataka kuanza na nini? Unaweza kuongeza huduma nyingine baadaye — plan moja inashughulikia zote.</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+      <!-- WiFi Card -->
+      <div class="card card-wifi" onclick="goWifi()">
+        <div class="card-badge badge-live"><div class="badge-live-dot"></div>Live — Inapatikana Sasa</div>
+        <div class="card-icon">📶</div>
+        <div class="card-title">WiFi Vending</div>
+        <p class="card-desc">Uza WiFi otomatiki 24/7. Wateja wanalipa M-Pesa — internet inaanza sekunde 5. Hakuna cashier, hakuna kazi ya mkono.</p>
+        <div class="card-feats">
+          <div class="card-feat"><div class="feat-check feat-check-cyan">✓</div>Inaunganika na Mikrotik yako</div>
+          <div class="card-feat"><div class="feat-check feat-check-cyan">✓</div>M-Pesa, Tigo, Airtel payments</div>
+          <div class="card-feat"><div class="feat-check feat-check-cyan">✓</div>Dashibodi ya real-time</div>
+          <div class="card-feat"><div class="feat-check feat-check-cyan">✓</div>Setup ndani ya siku 1-2</div>
+        </div>
+        <div class="card-btn btn-wifi">
+          <span>Anza na WiFi Vending</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </div>
+
+      <!-- Water Card -->
+      <div class="card card-water" onclick="goWater()">
+        <div class="card-badge badge-soon"><div class="badge-soon-dot"></div>In Development — Q3 2025</div>
+        <div class="card-icon">💧</div>
+        <div class="card-title">Water Vending</div>
+        <p class="card-desc">Uza maji kwa lita otomatiki. Mteja analipa M-Pesa — valve inafunguka kwa lita alizolipa hasa, kisha inafunga yenyewe.</p>
+        <div class="card-feats">
+          <div class="card-feat"><div class="feat-check feat-check-blue">✓</div>IoT smart dispenser</div>
+          <div class="card-feat"><div class="feat-check feat-check-blue">✓</div>Bei kwa lita — flexible</div>
+          <div class="card-feat"><div class="feat-check feat-check-blue">✓</div>Low stock SMS alerts</div>
+          <div class="card-feat"><div class="feat-check feat-check-blue">⏳</div>Bado haijaanza — jisajili</div>
+        </div>
+        <div class="card-btn btn-water">
+          <span>Jisajili kwa Water Vending</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Both option -->
+    <div class="or-divider">
+      <div class="or-line"></div>
+      <span class="or-text">au</span>
+      <div class="or-line"></div>
+    </div>
+
+    <div class="bottom">
+      <div class="bottom-title">Unataka zote mbili? Au una swali kwanza?</div>
+      <div class="bottom-options">
+        <a href="https://wa.me/255768303190?text=Nataka%20WiFi%20na%20Water%20Vending%20zote%20mbili" target="_blank" class="bottom-opt">
+          <span class="bottom-opt-icon">📱</span>
+          <span>Ninataka WiFi + Water — Nipigie WhatsApp</span>
+        </a>
+        <a href="https://wa.me/255768303190?text=Nina%20swali%20kuhusu%20SmartKembo%20kabla%20sijaanza" target="_blank" class="bottom-opt">
+          <span class="bottom-opt-icon">💬</span>
+          <span>Nina swali kwanza</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Trust bar -->
+    <div class="trust">
+      <div class="trust-item"><span class="trust-icon">✅</span>Hakuna mkataba — acha wakati wowote</div>
+      <div class="trust-item"><span class="trust-icon">⚡</span>Setup ndani ya siku 1-2</div>
+      <div class="trust-item"><span class="trust-icon">🔒</span>Data yako iko salama</div>
+      <div class="trust-item"><span class="trust-icon">📱</span>Msaada wa WhatsApp 24/7</div>
+      <div class="trust-item"><span class="trust-icon">🇹🇿</span>Imetengenezwa Tanzania</div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <span class="footer-copy">© 2025 SMD's SmartKembo Discovery Science</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+    <a href="mailto:admin@smartkembo.com">Email</a>
+  </div>
+</footer>
+
+<script>
+function goWifi(){
+  // Small animation then navigate
+  document.querySelector('.card-wifi').style.transform = 'scale(0.98)';
+  setTimeout(function(){
+    window.location.href = 'https://smartkembo-app.vercel.app/apply.html';
+  }, 150);
+}
+function goWater(){
+  document.querySelector('.card-water').style.transform = 'scale(0.98)';
+  setTimeout(function(){
+    window.location.href = 'apply-water.html';
+  }, 150);
+}
+</script>
+</body>
+</html>
