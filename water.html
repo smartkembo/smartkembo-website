@@ -99,7 +99,8 @@ h2 span{color:var(--blue);}
   h1{font-size:28px;}
   h2{font-size:22px;}
   section{padding:56px 5%;}
-  .feat-grid,.how-grid,.spec-grid{grid-template-columns:1fr;}
+  .feat-grid,.how-grid,.spec-grid,.plans-grid{grid-template-columns:1fr;}
+  .plan.feat{transform:none;}
   .hw::after{display:none;}
   .hero-actions{flex-direction:column;align-items:stretch;}
   .hero-actions .btn{width:100%;justify-content:center;}
@@ -124,7 +125,8 @@ h2 span{color:var(--blue);}
   h1{font-size:28px;}
   h2{font-size:22px;}
   section{padding:56px 5%;}
-  .feat-grid,.how-grid,.spec-grid{grid-template-columns:1fr;}
+  .feat-grid,.how-grid,.spec-grid,.plans-grid{grid-template-columns:1fr;}
+  .plan.feat{transform:none;}
   .hw::after{display:none;}
   .hero-actions{flex-direction:column;align-items:center;}
   .hero-actions .btn{width:100%;max-width:320px;justify-content:center;}
@@ -141,6 +143,24 @@ h2 span{color:var(--blue);}
   .hero-icon{font-size:52px;}
   .progress-section{margin-bottom:40px;}
 }
+
+.plans-section{background:var(--navy);}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.plan{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;position:relative;transition:all .2s;}
+.plan:hover{transform:translateY(-3px);}
+.plan.feat{border-color:var(--blue);background:linear-gradient(145deg,var(--blue2),transparent);}
+.plan-pop{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--navy);font-size:9px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap;letter-spacing:.8px;}
+.plan-name{font-size:18px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.plan-desc{font-size:12px;color:var(--gray2);margin-bottom:16px;}
+.plan-price{font-size:42px;font-weight:700;color:var(--blue);line-height:1;}
+.plan-mo{font-size:11px;color:var(--gray2);margin-bottom:14px;}
+.plan-div{height:1px;background:var(--border);margin:14px 0;}
+.plan-feat{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:rgba(255,255,255,.55);}
+.pf-check{width:15px;height:15px;border-radius:50%;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:7px;flex-shrink:0;}
+.plan-btn{width:100%;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;transition:all .2s;display:block;text-align:center;font-family:inherit;}
+.plan:not(.feat) .plan-btn{background:var(--blue2);color:var(--blue);border:1px solid var(--blue3);}
+.plan:not(.feat) .plan-btn:hover{background:var(--blue);color:var(--navy);}
+.plan.feat .plan-btn{background:var(--blue);color:var(--navy);border:none;}
 </style>
 </head>
 <body>
@@ -161,6 +181,7 @@ h2 span{color:var(--blue);}
   <a href="index.html" onclick="closeMenu()">← Home</a>
   <a href="#features" onclick="closeMenu()">Features</a>
   <a href="#howworks" onclick="closeMenu()">How it works</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
   <a href="https://smartkembo-app.vercel.app/apply.html" onclick="closeMenu()" style="color:var(--blue);margin-top:12px">Get Notified →</a>
 </div>
 
@@ -172,7 +193,7 @@ h2 span{color:var(--blue);}
     <p class="hero-p">Automate your water business completely. Customers pay via M-Pesa — the smart dispenser releases exactly the amount paid, then stops automatically. No cashier needed, no water wasted.</p>
     <div class="hero-actions">
       <a href="https://wa.me/255768303190?text=Ninataka%20kujua%20zaidi%20kuhusu%20Water%20Vending%20ya%20SmartKembo" target="_blank" class="btn btn-blue">📱 Get Notified When Live</a>
-      <a href="index.html#pricing" class="btn btn-ghost">View Pricing →</a>
+      <a href="#pricing" class="btn btn-ghost">View Pricing →</a>
     </div>
     <div class="progress-section">
       <div class="prog-title">Development Progress</div>
@@ -301,6 +322,55 @@ h2 span{color:var(--blue);}
         <div class="spec-row"><span class="spec-lbl">Reports</span><span class="spec-val">Daily / Weekly / Monthly</span></div>
         <div class="spec-row"><span class="spec-lbl">Alerts</span><span class="spec-val">SMS + Dashboard</span></div>
         <div class="spec-row"><span class="spec-lbl">Uptime</span><span class="spec-val">99.9% guaranteed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="pricing" class="plans-section">
+  <div class="sec-inner">
+    <div class="sec-tag" style="justify-content:center">Pricing</div>
+    <h2 style="text-align:center">Simple <span>Monthly Plans</span></h2>
+    <p class="sec-p" style="text-align:center;margin:0 auto 40px">Water Vending module is included in all plans — no extra cost.</p>
+    <div class="plans-grid">
+      <div class="plan">
+        <div class="plan-name">Basic</div>
+        <div class="plan-desc">Small water kiosks</div>
+        <div class="plan-price">30K</div>
+        <div class="plan-mo">Tsh per month</div>
+        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Basic%20Plan" target="_blank" class="plan-btn">Get Notified</a>
+        <div class="plan-div"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Up to 500 customers/month</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>3 water packages</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Basic reports</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Email support</div>
+      </div>
+      <div class="plan feat">
+        <div class="plan-pop">⭐ MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-desc">Water points &amp; estates</div>
+        <div class="plan-price">80K</div>
+        <div class="plan-mo">Tsh per month</div>
+        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Pro%20Plan" target="_blank" class="plan-btn">Get Notified</a>
+        <div class="plan-div" style="background:rgba(96,165,250,.15)"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Unlimited customers</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>10 water packages</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Advanced reports</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>WhatsApp support</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Low stock SMS alerts</div>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-desc">Large water suppliers</div>
+        <div class="plan-price">200K</div>
+        <div class="plan-mo">Tsh per month</div>
+        <a href="https://wa.me/255768303190?text=Ninataka%20Water%20Vending%20Enterprise" target="_blank" class="plan-btn">Contact Us</a>
+        <div class="plan-div"></div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Everything in Pro</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>Full API access</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>99.9% SLA guarantee</div>
+        <div class="plan-feat"><div class="pf-check">✓</div>24/7 priority support</div>
       </div>
     </div>
   </div>
