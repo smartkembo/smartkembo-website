@@ -409,7 +409,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   </div>
 </section>
 
-<section id="electronics" class="elec">
+<section id="electronics" class="elec" data-dynamic="true">
   <div class="sec-inner">
     <div class="elec-top">
       <div>
@@ -461,7 +461,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       </div>
       <a href="shop.html" class="btn btn-ghost">View All →</a>
     </div>
-    <div class="shop-grid">
+    <div class="shop-grid" id="home-shop-grid">
       <div class="sc rv"><div class="sc-img">🤖<div class="sc-badge badge-hot">HOT</div></div><div class="sc-body"><div class="sc-name">Arduino Uno R3</div><div class="sc-desc">Original board — perfect for beginners</div><div><span class="sc-price">Tsh 35,000</span><span class="sc-old">45,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
       <div class="sc rv"><div class="sc-img">🍓<div class="sc-badge badge-new">NEW</div></div><div class="sc-body"><div class="sc-name">Raspberry Pi 4 (4GB)</div><div class="sc-desc">Quad-core 64-bit, ideal for IoT</div><div><span class="sc-price">Tsh 180,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
       <div class="sc rv"><div class="sc-img">📡</div><div class="sc-body"><div class="sc-name">ESP32 WiFi Module</div><div class="sc-desc">WiFi+Bluetooth SoC for IoT</div><div><span class="sc-price">Tsh 22,000</span></div><button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button></div></div>
@@ -630,33 +630,79 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 (function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
 
-  function showBanner(text) {
-    // Remove existing banner first
-    var existing = document.getElementById('sk-announce-bar');
-    if (existing) existing.remove();
-
-    var bar = document.createElement('div');
-    bar.id = 'sk-announce-bar';
-    bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;z-index:9999;width:100%;box-sizing:border-box;';
-    bar.innerHTML = text;
-
-    // Insert after nav/header or at top of body
-    var nav = document.querySelector('nav, header, .nav');
-    if (nav && nav.nextSibling) {
-      nav.parentNode.insertBefore(bar, nav.nextSibling);
-    } else {
-      document.body.insertBefore(bar, document.body.firstChild);
-    }
-  }
-
   fetch(API + '/content/public', { mode: 'cors' })
     .then(function(r){ return r.json(); })
     .then(function(res) {
-      if (!res || !res.data || !res.data.length) return;
-      var p = res.data[0];
-      showBanner('📢 <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : ''));
+      if (!res || !res.data) return;
+      var posts = res.data;
+
+      posts.forEach(function(p) {
+
+        // 📢 ANNOUNCEMENT — Banner juu ya page
+        if (p.type === 'announcement') {
+          var existing = document.getElementById('sk-announce-bar');
+          if (existing) return; // show only one
+          var bar = document.createElement('div');
+          bar.id = 'sk-announce-bar';
+          bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;z-index:9999;width:100%;box-sizing:border-box;';
+          bar.innerHTML = '📢 <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : '');
+          var nav = document.querySelector('nav, .nav-wrap');
+          if (nav && nav.nextSibling) {
+            nav.parentNode.insertBefore(bar, nav.nextSibling);
+          } else {
+            document.body.insertBefore(bar, document.body.firstChild);
+          }
+        }
+
+        // 🛍 BIDHAA — Shop grid kwenye homepage
+        if (p.type === 'product') {
+          var grid = document.getElementById('home-shop-grid');
+          if (!grid) return;
+          var price = p.price ? parseFloat(p.price).toLocaleString() : '0';
+          var div = document.createElement('div');
+          div.className = 'sc rv';
+          div.innerHTML =
+            '<div class="sc-img">📦<div class="sc-badge badge-new">NEW</div></div>' +
+            '<div class="sc-body">' +
+              '<div class="sc-name">' + p.title + '</div>' +
+              '<div class="sc-desc">' + (p.body || '') + '</div>' +
+              '<div><span class="sc-price">Tsh ' + price + '</span></div>' +
+              '<button class="sc-btn" onclick="window.open('https://wa.me/255768303190','_blank')">Order via WhatsApp</button>' +
+            '</div>';
+          grid.insertBefore(div, grid.firstChild);
+        }
+
+        // 🔔 UPDATE — Sehemu ya habari kwenye homepage
+        if (p.type === 'update') {
+          var updatesWrap = document.getElementById('sk-updates-wrap');
+          if (!updatesWrap) {
+            // Create updates section if not exists
+            var section = document.createElement('div');
+            section.style.cssText = 'background:#0C1A2E;padding:20px;border-top:1px solid rgba(0,200,232,0.1);';
+            section.innerHTML = '<div style="max-width:1100px;margin:0 auto">' +
+              '<div style="font-size:12px;color:#00C8E8;font-weight:600;margin-bottom:12px;letter-spacing:1px">🔔 UPDATES</div>' +
+              '<div id="sk-updates-wrap"></div>' +
+            '</div>';
+            var footer = document.querySelector('footer, .footer');
+            if (footer) footer.parentNode.insertBefore(section, footer);
+            updatesWrap = document.getElementById('sk-updates-wrap');
+          }
+          if (updatesWrap) {
+            var item = document.createElement('div');
+            item.style.cssText = 'display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;';
+            item.innerHTML =
+              '<span style="color:#00C8E8;font-size:18px;flex-shrink:0">🔔</span>' +
+              '<div>' +
+                '<div style="font-weight:600;color:#F2F8FF;font-size:14px">' + p.title + '</div>' +
+                (p.body ? '<div style="color:rgba(242,248,255,0.6);font-size:12px;margin-top:2px">' + p.body + '</div>' : '') +
+              '</div>';
+            updatesWrap.appendChild(item);
+          }
+        }
+
+      });
     })
-    .catch(function(e){ console.log('Announcement fetch error:', e); });
+    .catch(function(e){ console.log('Content error:', e); });
 
 })();
 </script>
