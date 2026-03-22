@@ -345,9 +345,21 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
       var grid = document.getElementById('articles');
       if (!grid) return;
 
-      res.data.forEach(function(p) {
-        var cat = (p.category || 'general').toLowerCase();
-        var excerpt = p.body ? p.body.substring(0, 120) + '...' : 'Bonyeza kusoma zaidi...';
+      // Store all articles globally for modal access
+      window._articles = res.data;
+
+      res.data.forEach(function(p, idx) {
+        // Smart category mapping — match sidebar topics
+        var rawCat = (p.category || '').toLowerCase();
+        var cat = rawCat;
+        if (rawCat.includes('arduino')) cat = 'arduino';
+        else if (rawCat.includes('raspberry') || rawCat.includes('pi')) cat = 'raspberry';
+        else if (rawCat.includes('iot') || rawCat.includes('esp') || rawCat.includes('wifi')) cat = 'iot';
+        else if (rawCat.includes('gsm') || rawCat.includes('sim') || rawCat.includes('4g')) cat = 'gsm';
+        else if (rawCat.includes('video') || rawCat.includes('youtube')) cat = 'video';
+        else if (rawCat.includes('basic') || rawCat.includes('beginner')) cat = 'basics';
+
+        var excerpt = p.body ? p.body.substring(0, 130) + '...' : 'Bonyeza Read More kusoma zaidi...';
 
         var imgSection = (p.image_url && p.image_url.startsWith('http'))
           ? '<img class="art-card-img" src="' + p.image_url + '" alt="' + p.title + '">'
@@ -356,14 +368,16 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
         var div = document.createElement('div');
         div.className = 'art-card';
         div.setAttribute('data-cat', cat);
-        div.onclick = function() { openArtModal(p); };
+        div.setAttribute('data-idx', idx);
+
+        // Use data-idx to avoid closure issue
         div.innerHTML =
           imgSection +
           '<div class="art-card-body">' +
             '<div class="art-cat" style="font-size:11px;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:6px">' + (p.category || 'Article').toUpperCase() + '</div>' +
             '<div class="art-name" style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.4">' + p.title + '</div>' +
             '<div class="art-card-excerpt">' + excerpt + '</div>' +
-            '<span class="art-read-more">Read More →</span>' +
+            '<button onclick="openArtModal(window._articles[' + idx + '])" style="background:none;border:none;color:var(--cyan);font-size:13px;font-weight:600;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">Read More <span style="font-size:16px">→</span></button>' +
           '</div>';
 
         grid.insertBefore(div, grid.firstChild);
