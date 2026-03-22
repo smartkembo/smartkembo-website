@@ -462,7 +462,8 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <a href="shop.html" class="btn btn-ghost">View All →</a>
     </div>
     <div class="shop-grid" id="home-shop-grid">
-      <!-- Dynamic products loaded from API -->
+      <!-- loading -->
+      <div id="shop-loading" style="grid-column:1/-1;text-align:center;padding:30px;color:rgba(255,255,255,0.4);font-size:13px">Inapakia bidhaa...</div>
     </div>
   </div>
 </section>
@@ -680,6 +681,9 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
           };
           div.querySelector('.sc-body').appendChild(waBtn);
           grid.insertBefore(div, grid.firstChild);
+          // Remove loading placeholder
+          var loading = document.getElementById('shop-loading');
+          if (loading) loading.remove();
         }
 
         // 🔔 UPDATE — Sehemu ya habari kwenye homepage
@@ -712,7 +716,11 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 
       });
     })
-    .catch(function(e){ console.log('Content error:', e); });
+    .catch(function(e){
+      console.log('Content error:', e);
+      var loading = document.getElementById('shop-loading');
+      if (loading) loading.textContent = 'Imeshindwa kupakia bidhaa';
+    });
 
 })();
 </script>
