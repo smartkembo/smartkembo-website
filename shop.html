@@ -413,26 +413,35 @@ function filterProducts(){ filter('all', null); }
           ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">'
           : '📦';
 
+        var smartCat = getCategory(p.title, p.category);
+        var catLabel = p.category || (smartCat.charAt(0).toUpperCase() + smartCat.slice(1));
+
         var div = document.createElement('div');
         div.className = 'product';
-        div.setAttribute('data-cat', cat);
+        div.setAttribute('data-cat', smartCat);
+        div.style.cursor = 'pointer';
+
+        // Click on card opens detail modal
+        div.onclick = function(e) {
+          if (!e.target.closest('button')) openProdModal(p);
+        };
 
         var btn = document.createElement('button');
         btn.className = 'btn-cart';
         btn.textContent = '+ Add to Cart';
-        btn.onclick = function(){ addCart(btn, p.title, price, '📦'); };
+        btn.onclick = function(e){ e.stopPropagation(); addCart(btn, p.title, price, '📦'); };
 
         var wa = document.createElement('button');
         wa.className = 'btn-wa';
         wa.textContent = 'WhatsApp';
-        wa.onclick = function(){ quickWA(p.title, price.toLocaleString()); };
+        wa.onclick = function(e){ e.stopPropagation(); quickWA(p.title, price.toLocaleString()); };
 
         div.innerHTML =
-          '<div class="prod-img" style="display:flex;align-items:center;justify-content:center;font-size:48px">' + imgHtml + '<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
+          '<div class="prod-img" style="display:flex;align-items:center;justify-content:center;font-size:48px;overflow:hidden">' + imgHtml + '<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
           '<div class="prod-body">' +
-            '<div class="prod-cat">' + (p.category || 'Bidhaa') + '</div>' +
+            '<div class="prod-cat">' + catLabel + '</div>' +
             '<div class="prod-name">' + p.title + '</div>' +
-            '<div class="prod-desc">' + (p.body ? p.body.substring(0, 100) + '...' : '') + '</div>' +
+            '<div class="prod-desc">' + (p.body ? p.body.substring(0, 80) + '...' : '') + '</div>' +
             '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
             '<div class="prod-actions"></div>' +
           '</div>';
@@ -446,7 +455,86 @@ function filterProducts(){ filter('all', null); }
     .catch(function(e){ console.log('Shop error:', e); });
 })();
 
+
+// Smart category mapping
+function getCategory(title, category) {
+  if (category) return category.toLowerCase().replace(/\s+/g, '-');
+  var t = title.toLowerCase();
+  if (t.includes('arduino')) return 'arduino';
+  if (t.includes('raspberry') || t.includes('pi')) return 'raspberry';
+  if (t.includes('esp')) return 'esp';
+  if (t.includes('sim') || t.includes('gsm') || t.includes('4g') || t.includes('lte')) return 'gsm';
+  if (t.includes('sensor') || t.includes('temperature') || t.includes('motion')) return 'sensors';
+  if (t.includes('battery') || t.includes('power') || t.includes('solar')) return 'power';
+  if (t.includes('tool') || t.includes('solder') || t.includes('wire')) return 'tools';
+  if (t.includes('mikrotik') || t.includes('wifi') || t.includes('router')) return 'mikrotik';
+  return 'other';
+}
+
+var currentProd = null;
+
+function openProdModal(p) {
+  currentProd = p;
+  var modal = document.getElementById('prod-modal');
+  var imgDiv = document.getElementById('pm-img');
+
+  // Image
+  if (p.image_url && p.image_url.startsWith('http')) {
+    imgDiv.innerHTML = '<button onclick="closeProdModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.5);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>' +
+      '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">';
+  } else {
+    imgDiv.innerHTML = '<button onclick="closeProdModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.5);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>' +
+      '<span style="font-size:80px">📦</span>';
+  }
+
+  document.getElementById('pm-cat').textContent   = (p.category || 'Bidhaa').toUpperCase();
+  document.getElementById('pm-name').textContent  = p.title;
+  document.getElementById('pm-price').textContent = 'Tsh ' + parseFloat(p.price||0).toLocaleString();
+  document.getElementById('pm-body').textContent  = p.body || '';
+
+  var price = parseFloat(p.price || 0);
+  document.getElementById('pm-cart-btn').onclick = function() {
+    addCart(this, p.title, price, '📦');
+    closeProdModal();
+  };
+  document.getElementById('pm-wa-btn').onclick = function() {
+    window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+  };
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProdModal() {
+  document.getElementById('prod-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeProdModal();
+});
+
 </script>
 <script src="js/layout.js"></script>
+
+<!-- Product Detail Modal -->
+<div id="prod-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;padding:20px" onclick="if(event.target===this)closeProdModal()">
+  <div style="background:#0C1A2E;border:1px solid rgba(0,200,232,0.2);border-radius:16px;max-width:600px;margin:40px auto;overflow:hidden">
+    <div id="pm-img" style="height:220px;background:#112238;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative">
+      <button onclick="closeProdModal()" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.5);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div style="padding:24px">
+      <div id="pm-cat" style="font-size:11px;color:#00C8E8;font-weight:600;letter-spacing:1px;margin-bottom:6px"></div>
+      <div id="pm-name" style="font-size:22px;font-weight:700;color:white;margin-bottom:8px"></div>
+      <div id="pm-price" style="font-size:28px;font-weight:800;color:#00C8E8;margin-bottom:16px"></div>
+      <div id="pm-body" style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:20px;white-space:pre-line"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button id="pm-cart-btn" style="flex:1;padding:12px;background:#00C8E8;color:#06101E;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer">+ Add to Cart</button>
+        <button id="pm-wa-btn" style="flex:1;padding:12px;background:#25D366;color:white;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer">📱 Order WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
