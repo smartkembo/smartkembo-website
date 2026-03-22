@@ -333,63 +333,7 @@ function filter(cat, btn){
 function filterProducts(){ filter('all', null); }
 
 // Dynamic products from API
-(function() {
-  var API = 'https://web-production-62329d.up.railway.app/api';
-  fetch(API + '/content/public?type=product', { mode: 'cors' })
-    .then(function(r){ return r.json(); })
-    .then(function(res) {
-      if (!res || !res.data || !res.data.length) return;
-      var grid = document.getElementById('products-grid');
-      if (!grid) return;
-      res.data.forEach(function(p) {
-        var price = p.price ? parseFloat(p.price) : 0;
-        var cat   = (p.category || 'other').toLowerCase().replace(/\s+/g, '-');
-        var name  = p.title.replace(/"/g, '&quot;');
-        var imgHtml = (p.image_url && p.image_url.startsWith('http'))
-          ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">'
-          : '📦';
 
-        var smartCat = getCategory(p.title, p.category);
-        var catLabel = p.category || (smartCat.charAt(0).toUpperCase() + smartCat.slice(1));
-
-        var div = document.createElement('div');
-        div.className = 'product';
-        div.setAttribute('data-cat', smartCat);
-        div.style.cursor = 'pointer';
-
-        // Click on card opens detail modal
-        div.onclick = function(e) {
-          if (!e.target.closest('button')) openProdModal(p);
-        };
-
-        var btn = document.createElement('button');
-        btn.className = 'btn-cart';
-        btn.textContent = '+ Add to Cart';
-        btn.onclick = function(e){ e.stopPropagation(); addCart(btn, p.title, price, '📦'); };
-
-        var wa = document.createElement('button');
-        wa.className = 'btn-wa';
-        wa.textContent = 'WhatsApp';
-        wa.onclick = function(e){ e.stopPropagation(); quickWA(p.title, price.toLocaleString()); };
-
-        div.innerHTML =
-          '<div class="prod-img" style="display:flex;align-items:center;justify-content:center;font-size:48px;overflow:hidden">' + imgHtml + '<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
-          '<div class="prod-body">' +
-            '<div class="prod-cat">' + catLabel + '</div>' +
-            '<div class="prod-name">' + p.title + '</div>' +
-            '<div class="prod-desc">' + (p.body ? p.body.substring(0, 80) + '...' : '') + '</div>' +
-            '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
-            '<div class="prod-actions"></div>' +
-          '</div>';
-
-        div.querySelector('.prod-actions').appendChild(btn);
-        div.querySelector('.prod-actions').appendChild(wa);
-        grid.insertBefore(div, grid.firstChild);
-      });
-      filterProducts();
-    })
-    .catch(function(e){ console.log('Shop error:', e); });
-})();
 
 
 // Smart category mapping
