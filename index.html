@@ -658,17 +658,30 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
         if (p.type === 'product') {
           var grid = document.getElementById('home-shop-grid');
           if (!grid) return;
-          var price = p.price ? parseFloat(p.price).toLocaleString() : '0';
+          // Max 4 dynamic products on homepage
+          if (grid.querySelectorAll('.sc.dynamic').length >= 4) return;
+          var price = p.price ? parseFloat(p.price) : 0;
+          var shortDesc = p.body ? p.body.substring(0, 60) + '...' : '';
+          var imgHtml = (p.image_url && p.image_url.startsWith('http'))
+            ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px">'
+            : '📦';
           var div = document.createElement('div');
-          div.className = 'sc rv';
+          div.className = 'sc rv dynamic';
+          div.style.cursor = 'pointer';
           div.innerHTML =
-            '<div class="sc-img">📦<div class="sc-badge badge-new">NEW</div></div>' +
+            '<div class="sc-img" style="overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:48px">' + imgHtml + '<div class="sc-badge badge-new">NEW</div></div>' +
             '<div class="sc-body">' +
               '<div class="sc-name">' + p.title + '</div>' +
-              '<div class="sc-desc">' + (p.body || '') + '</div>' +
-              '<div><span class="sc-price">Tsh ' + price + '</span></div>' +
-              '<button class="sc-btn" onclick="window.open(&quot;https://wa.me/255768303190&quot;,&quot;_blank&quot;)">Order via WhatsApp</button>' +
+              '<div class="sc-desc">' + shortDesc + '</div>' +
+              '<div><span class="sc-price">Tsh ' + price.toLocaleString() + '</span></div>' +
             '</div>';
+          var waBtn = document.createElement('button');
+          waBtn.className = 'sc-btn';
+          waBtn.textContent = 'Order via WhatsApp';
+          waBtn.onclick = function() {
+            window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+          };
+          div.querySelector('.sc-body').appendChild(waBtn);
           grid.insertBefore(div, grid.firstChild);
         }
 
