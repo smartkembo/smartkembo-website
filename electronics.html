@@ -452,5 +452,139 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
   </div>
 </div>
 
+
+<script>
+function renderArticleBody(text) {
+  if (!text) return '<p style="color:rgba(255,255,255,0.4)">Hakuna maelezo.</p>';
+  var html = '';
+  var lines = text.split('\n');
+  var inCode = false;
+  var codeLines = [];
+  var lang = '';
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+
+    // Code block
+    if (line.trim().startsWith('```')) {
+      if (!inCode) {
+        inCode = true;
+        codeLines = [];
+        lang = line.trim().replace('```','').trim() || 'code';
+      } else {
+        inCode = false;
+        html += '<div style="background:#050D1A;border:1px solid rgba(0,200,232,0.2);border-radius:10px;margin:20px 0;overflow:hidden">' +
+          '<div style="background:rgba(0,200,232,0.08);padding:6px 14px;font-size:11px;color:#00C8E8;font-weight:600;letter-spacing:1px;border-bottom:1px solid rgba(0,200,232,0.1);display:flex;justify-content:space-between">' +
+            '<span>' + lang.toUpperCase() + '</span>' +
+            '<button onclick="copyCode(this)" style="background:none;border:none;color:rgba(0,200,232,0.6);cursor:pointer;font-size:11px">Copy</button>' +
+          '</div>' +
+          '<pre style="margin:0;padding:16px;font-family:monospace;font-size:13px;color:#00FF88;line-height:1.7;overflow-x:auto;white-space:pre">' +
+          escHtml(codeLines.join('\n')) + '</pre></div>';
+        codeLines = [];
+      }
+      continue;
+    }
+    if (inCode) { codeLines.push(line); continue; }
+
+    if (line.startsWith('# ')) {
+      html += '<h1 style="font-size:22px;font-weight:800;color:white;margin:24px 0 12px">' + escHtml(line.slice(2)) + '</h1>';
+    } else if (line.startsWith('## ')) {
+      html += '<h2 style="font-size:17px;font-weight:700;color:#00C8E8;margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,232,0.15)">' + escHtml(line.slice(3)) + '</h2>';
+    } else if (line.trim().match(/^!\[.*\]\(.*\)$/)) {
+      var m = line.trim().match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (m) {
+        html += '<div style="margin:20px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)">' +
+          '<img src="' + m[2] + '" alt="' + m[1] + '" style="width:100%;display:block;max-height:400px;object-fit:contain;background:#0C1A2E">' +
+          (m[1] ? '<div style="padding:8px 14px;font-size:12px;color:rgba(255,255,255,0.4);text-align:center">' + escHtml(m[1]) + '</div>' : '') +
+        '</div>';
+      }
+    } else if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+      html += '<div style="display:flex;gap:10px;margin:5px 0;align-items:flex-start">' +
+        '<span style="color:#00C8E8;flex-shrink:0;margin-top:3px">▸</span>' +
+        '<span style="color:rgba(255,255,255,0.8)">' + inlineFormat(line.trim().slice(2)) + '</span></div>';
+    } else if (line.trim().match(/^\d+\. /)) {
+      var nm = line.trim().match(/^(\d+)\. (.*)/);
+      if (nm) {
+        html += '<div style="display:flex;gap:12px;margin:8px 0">' +
+          '<span style="color:#00C8E8;font-weight:700;min-width:20px;flex-shrink:0">' + nm[1] + '.</span>' +
+          '<span style="color:rgba(255,255,255,0.8)">' + inlineFormat(nm[2]) + '</span></div>';
+      }
+    } else if (line.trim() === '') {
+      html += '<div style="height:10px"></div>';
+    } else {
+      html += '<p style="margin:6px 0;line-height:1.85;color:rgba(255,255,255,0.8)">' + inlineFormat(line) + '</p>';
+    }
+  }
+  return html;
+}
+
+function inlineFormat(text) {
+  return escHtml(text)
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:white">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(0,200,232,0.1);color:#00C8E8;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px">$1</code>');
+}
+
+function escHtml(t) {
+  return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyCode(btn) {
+  var pre = btn.closest('div').nextElementSibling;
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent).then(function(){
+    btn.textContent = 'Copied!';
+    setTimeout(function(){ btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+function openArtModal(p) {
+  if (!p) return;
+  var modal   = document.getElementById('art-modal');
+  var imgWrap = document.getElementById('am-img-wrap');
+
+  if (p.image_url && p.image_url.startsWith('http')) {
+    imgWrap.style.display = 'block';
+    imgWrap.style.height  = '320px';
+    imgWrap.innerHTML =
+      '<div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(6,16,30,1));z-index:1"></div>' +
+      '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+
+  var cat = (p.category || 'Article').toUpperCase();
+  var el;
+  el = document.getElementById('am-cat');     if(el) el.textContent = cat;
+  el = document.getElementById('am-cat-top'); if(el) el.textContent = cat;
+  el = document.getElementById('am-title');   if(el) el.textContent = p.title || '';
+  el = document.getElementById('am-body');    if(el) el.innerHTML = renderArticleBody(p.body);
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+}
+
+function closeArtModal() {
+  var modal = document.getElementById('art-modal');
+  if(modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function shareArticle() {
+  var title = document.getElementById('am-title');
+  if (navigator.share) {
+    navigator.share({ title: title ? title.textContent : '', url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(function(){
+      alert('Link imekiliwa!');
+    });
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeArtModal();
+});
+</script>
+
 </body>
 </html>
