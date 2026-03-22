@@ -464,8 +464,43 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <a href="shop.html" class="btn btn-ghost">View All →</a>
     </div>
     <div class="shop-grid" id="home-shop-grid">
-      <!-- loading -->
-      <div id="shop-loading" style="grid-column:1/-1;text-align:center;padding:30px;color:rgba(255,255,255,0.4);font-size:13px">Inapakia bidhaa...</div>
+      <!-- Demo products — zinabadilishwa na database ukiwa na bidhaa -->
+      <div class="sc rv demo-prod">
+        <div class="sc-img">🤖<div class="sc-badge badge-hot">HOT</div></div>
+        <div class="sc-body">
+          <div class="sc-name">Arduino Uno R3</div>
+          <div class="sc-desc">Original board — perfect for beginners</div>
+          <div><span class="sc-price">Tsh 35,000</span><span class="sc-old">45,000</span></div>
+          <button class="sc-btn" onclick="window.open('https://wa.me/255768303190?text=Nataka%20Arduino%20Uno%20R3','_blank')">Order via WhatsApp</button>
+        </div>
+      </div>
+      <div class="sc rv demo-prod">
+        <div class="sc-img">🍓<div class="sc-badge badge-new">NEW</div></div>
+        <div class="sc-body">
+          <div class="sc-name">Raspberry Pi 4 (4GB)</div>
+          <div class="sc-desc">Quad-core 64-bit, ideal for IoT</div>
+          <div><span class="sc-price">Tsh 180,000</span></div>
+          <button class="sc-btn" onclick="window.open('https://wa.me/255768303190?text=Nataka%20Raspberry%20Pi%204','_blank')">Order via WhatsApp</button>
+        </div>
+      </div>
+      <div class="sc rv demo-prod">
+        <div class="sc-img">📡</div>
+        <div class="sc-body">
+          <div class="sc-name">ESP32 WiFi Module</div>
+          <div class="sc-desc">WiFi+Bluetooth SoC for IoT</div>
+          <div><span class="sc-price">Tsh 22,000</span></div>
+          <button class="sc-btn" onclick="window.open('https://wa.me/255768303190?text=Nataka%20ESP32','_blank')">Order via WhatsApp</button>
+        </div>
+      </div>
+      <div class="sc rv demo-prod">
+        <div class="sc-img">📱<div class="sc-badge badge-hot">HOT</div></div>
+        <div class="sc-body">
+          <div class="sc-name">SIM800L GSM Module</div>
+          <div class="sc-desc">GSM/GPRS for M-Pesa integrations</div>
+          <div><span class="sc-price">Tsh 28,000</span></div>
+          <button class="sc-btn" onclick="window.open('https://wa.me/255768303190?text=Nataka%20SIM800L','_blank')">Order via WhatsApp</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -652,25 +687,24 @@ function loadHomeContent() {
           document.body.insertBefore(bar, document.body.firstChild);
         }
 
-        // PRODUCT - shop grid
+        // PRODUCT - shop grid — futa demo, weka za kweli
         if (p.type === 'product') {
           var grid = document.getElementById('home-shop-grid');
           if (!grid) return;
-          if (grid.querySelectorAll('.dyn-prod').length >= 4) return;
 
-          // Remove loading
-          var loading = document.getElementById('shop-loading');
-          if (loading) loading.remove();
+          // Futa demo products mara ya kwanza
+          if (!window._prodReplaced) {
+            window._prodReplaced = true;
+            var demos = grid.querySelectorAll('.demo-prod');
+            demos.forEach(function(d){ d.remove(); });
+          }
+
+          if (grid.querySelectorAll('.dyn-prod').length >= 4) return;
 
           var price = parseFloat(p.price || 0);
           var imgHtml = (p.image_url && p.image_url.startsWith('http'))
-            ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px">'
+            ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
             : '<span style="font-size:52px">&#128230;</span>';
-
-          var scImg = document.createElement('div');
-          scImg.className = 'sc-img';
-          scImg.style.overflow = 'hidden';
-          scImg.innerHTML = imgHtml + '<div class="sc-badge badge-new">NEW</div>';
 
           var waBtn = document.createElement('button');
           waBtn.className = 'sc-btn';
@@ -678,6 +712,11 @@ function loadHomeContent() {
           waBtn.onclick = function() {
             window.open('https://wa.me/255768303190?text=' + encodeURIComponent('Nataka: ' + p.title + ' - Tsh ' + price.toLocaleString()), '_blank');
           };
+
+          var scImg = document.createElement('div');
+          scImg.className = 'sc-img';
+          scImg.style.overflow = 'hidden';
+          scImg.innerHTML = imgHtml + '<div class="sc-badge badge-new">NEW</div>';
 
           var scBody = document.createElement('div');
           scBody.className = 'sc-body';
