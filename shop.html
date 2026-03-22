@@ -450,6 +450,78 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeProdModal();
 });
 
+// Load products from database
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+  var grid = document.getElementById('products-grid');
+
+  fetch(API + '/content/public?type=product', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      var data = res && res.data ? res.data : [];
+
+      if (!data.length) {
+        var empty = document.getElementById('empty-state');
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+
+      data.forEach(function(p) {
+        var price  = p.price ? parseFloat(p.price) : 0;
+        var cat    = getCategory(p.title, p.category);
+        var imgHtml = (p.image_url && p.image_url.startsWith('http'))
+          ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
+          : '<span style="font-size:52px">📦</span>';
+
+        var div = document.createElement('div');
+        div.className = 'product';
+        div.setAttribute('data-cat', cat);
+        div.style.cursor = 'pointer';
+        div.onclick = function(e) {
+          if (!e.target.closest('button')) openProdModal(p);
+        };
+
+        var catLabel = p.category || (cat.charAt(0).toUpperCase() + cat.slice(1));
+
+        var btnCart = document.createElement('button');
+        btnCart.className = 'btn-cart';
+        btnCart.textContent = '+ Add to Cart';
+        btnCart.onclick = function(e) {
+          e.stopPropagation();
+          addCart(btnCart, p.title, price, '📦');
+        };
+
+        var btnWa = document.createElement('button');
+        btnWa.className = 'btn-wa';
+        btnWa.textContent = 'WhatsApp';
+        btnWa.onclick = function(e) {
+          e.stopPropagation();
+          window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+        };
+
+        div.innerHTML =
+          '<div class="prod-img">' + imgHtml + '<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
+          '<div class="prod-body">' +
+            '<div class="prod-cat">' + catLabel + '</div>' +
+            '<div class="prod-name">' + p.title + '</div>' +
+            '<div class="prod-desc">' + (p.body ? p.body.substring(0,80) + '...' : '') + '</div>' +
+            '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
+            '<div class="prod-actions"></div>' +
+          '</div>';
+
+        div.querySelector('.prod-actions').appendChild(btnCart);
+        div.querySelector('.prod-actions').appendChild(btnWa);
+
+        if (grid) grid.insertBefore(div, grid.firstChild);
+      });
+
+      // Update count
+      var countEl = document.getElementById('prod-count');
+      if (countEl && grid) countEl.textContent = grid.querySelectorAll('.product').length;
+    })
+    .catch(function(e) { console.log('Shop fetch error:', e); });
+})();
+
 </script>
 <script src="js/layout.js"></script>
 
