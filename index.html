@@ -594,7 +594,7 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 </script>
 
 <script>
-(function() {
+document.addEventListener("DOMContentLoaded", function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
   fetch(API + '/applications/plans/public')
     .then(function(r){ return r.json(); })
@@ -608,12 +608,12 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
         if (el) el.textContent = price;
       });
     });
-})();
+});
 </script>
 
 
 <script>
-(function() {
+document.addEventListener("DOMContentLoaded", function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
 
   fetch(API + '/content/public', { mode: 'cors' })
@@ -771,6 +771,7 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 })();
 
 function goElec(){ window.location.href='electronics.html'; }
+</script>
 </script>
 
 </body>
