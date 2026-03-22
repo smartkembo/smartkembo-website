@@ -168,14 +168,14 @@ a{text-decoration:none;}
   <button class="mob-x" onclick="closeMenu()">✕</button>
   <a href="index.html" onclick="closeMenu()">← Home</a>
   <a href="shop.html" onclick="closeMenu()">🛒 Shop</a>
-  <a href="https://wa.me/255768303190" target="_blank" onclick="closeMenu()" style="color:var(--cyan)">📱 WhatsApp</a>
+  <a href="https://wa.me/255767830319" target="_blank" onclick="closeMenu()" style="color:var(--cyan)">📱 WhatsApp</a>
 </div>
 
 <div class="page">
   <div class="page-header">
     <div class="ph-tag">Electronics Hub</div>
     <h1 class="ph-h1">Learn, Build &amp; <span>Discover</span></h1>
-    <p class="ph-p">Tutorials, IoT projects, video guides and practical electronics for makers and engineers across East Africa.</p>
+    <p class="ph-p">Tutorials, IoT projects, video guides and practical electronics for makers and engineers across the World.</p>
   </div>
 
   <div class="filters">
@@ -207,35 +207,35 @@ a{text-decoration:none;}
     <div class="sidebar">
       <div class="side-card">
         <div class="sc-title">Topics</div>
-        <div class="topic-item" onclick="filterTopic('arduino')">
+        <div class="topic-item" data-topic="arduino" onclick="filterTopic('arduino')">
           <span class="topic-icon">🤖</span>
           <span class="topic-name">Arduino</span>
-          <span class="topic-count">3</span>
+          <span class="topic-count" id="tc-arduino">0</span>
         </div>
-        <div class="topic-item" onclick="filterTopic('raspberry')">
+        <div class="topic-item" data-topic="raspberry" onclick="filterTopic('raspberry')">
           <span class="topic-icon">🍓</span>
           <span class="topic-name">Raspberry Pi</span>
-          <span class="topic-count">2</span>
+          <span class="topic-count" id="tc-raspberry">0</span>
         </div>
-        <div class="topic-item" onclick="filterTopic('iot')">
+        <div class="topic-item" data-topic="iot" onclick="filterTopic('iot')">
           <span class="topic-icon">📡</span>
           <span class="topic-name">IoT Projects</span>
-          <span class="topic-count">4</span>
+          <span class="topic-count" id="tc-iot">0</span>
         </div>
-        <div class="topic-item" onclick="filterTopic('video')">
+        <div class="topic-item" data-topic="video" onclick="filterTopic('video')">
           <span class="topic-icon">🎬</span>
           <span class="topic-name">Video Tutorials</span>
-          <span class="topic-count">2</span>
+          <span class="topic-count" id="tc-video">0</span>
         </div>
-        <div class="topic-item" onclick="filterTopic('gsm')">
+        <div class="topic-item" data-topic="gsm" onclick="filterTopic('gsm')">
           <span class="topic-icon">📱</span>
           <span class="topic-name">GSM / M-Pesa</span>
-          <span class="topic-count">2</span>
+          <span class="topic-count" id="tc-gsm">0</span>
         </div>
-        <div class="topic-item" onclick="filterTopic('basics')">
+        <div class="topic-item" data-topic="basics" onclick="filterTopic('basics')">
           <span class="topic-icon">🔧</span>
           <span class="topic-name">Basics</span>
-          <span class="topic-count">3</span>
+          <span class="topic-count" id="tc-basics">0</span>
         </div>
       </div>
 
@@ -264,11 +264,11 @@ a{text-decoration:none;}
             <div class="yt-sub">Video tutorials &amp; project builds</div>
           </div>
         </a>
-        <a href="https://wa.me/255768303190" target="_blank" class="wa-link">
+        <a href="https://wa.me/255767830319" target="_blank" class="wa-link">
           <span class="wa-icon">📱</span>
           <div>
             <div class="wa-text">Ask a Question</div>
-            <div class="wa-sub">WhatsApp: +255 768 303 190</div>
+            <div class="wa-sub">WhatsApp: +255 767 830 319</div>
           </div>
         </a>
       </div>
@@ -290,7 +290,7 @@ a{text-decoration:none;}
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
     <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank">YouTube</a>
-    <a href="https://wa.me/255768303190" target="_blank">WhatsApp</a>
+    <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
   </div>
 </footer>
 
@@ -383,9 +383,20 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
         grid.insertBefore(div, grid.firstChild);
       });
 
-      // Update count
+      // Update total count
       var countEl = document.getElementById('art-count');
       if (countEl) countEl.textContent = grid.querySelectorAll('.art-card').length;
+
+      // Update category counts dynamically
+      var counts = {};
+      grid.querySelectorAll('.art-card').forEach(function(card) {
+        var cat = card.getAttribute('data-cat') || 'general';
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+      Object.keys(counts).forEach(function(cat) {
+        var el = document.getElementById('tc-' + cat);
+        if (el) el.textContent = counts[cat];
+      });
 
       // Hide empty state
       var empty = document.getElementById('empty-state');
@@ -446,7 +457,7 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
       <!-- Footer -->
       <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:12px;flex-wrap:wrap">
         <button onclick="closeArtModal()" style="padding:12px 24px;background:rgba(0,200,232,0.1);border:1px solid rgba(0,200,232,0.3);color:#00C8E8;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600">← Back to Articles</button>
-        <a href="https://wa.me/255768303190" target="_blank" style="padding:12px 24px;background:#25D366;border:none;color:white;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;text-decoration:none">Ask on WhatsApp</a>
+        <a href="https://wa.me/255767830319" target="_blank" style="padding:12px 24px;background:#25D366;border:none;color:white;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;text-decoration:none">Ask on WhatsApp</a>
       </div>
     </div>
   </div>
