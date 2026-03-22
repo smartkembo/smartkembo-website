@@ -307,12 +307,12 @@ function orderWA(){
   });
   msg += '\nTOTAL: Tsh '+total.toLocaleString();
   msg += '\n\nNinataka kujua bei ya delivery na upatikanaji.';
-  window.open('https://wa.me/255768303190?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/255767830319?text='+encodeURIComponent(msg),'_blank');
 }
 
 function quickWA(name, price){
   var msg = 'Nataka kununua: '+name+' — Tsh '+price+'\n\nNiambie upatikanaji na delivery.';
-  window.open('https://wa.me/255768303190?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/255767830319?text='+encodeURIComponent(msg),'_blank');
 }
 
 function filter(cat, btn){
@@ -378,7 +378,7 @@ function openProdModal(p) {
     closeProdModal();
   };
   document.getElementById('pm-wa-btn').onclick = function() {
-    window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+    window.open('https://wa.me/255767830319?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
   };
 
   modal.style.display = 'block';
@@ -440,7 +440,7 @@ document.addEventListener('keydown', function(e) {
         btnWa.textContent = 'WhatsApp';
         btnWa.onclick = function(e) {
           e.stopPropagation();
-          window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+          window.open('https://wa.me/25576783019?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
         };
 
         div.innerHTML =
