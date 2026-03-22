@@ -614,165 +614,142 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
+
 <script>
+var API = 'https://web-production-62329d.up.railway.app/api';
 
-  var API = 'https://web-production-62329d.up.railway.app/api';
-  console.log('CONTENT SCRIPT: Starting fetch...');
-
+function loadHomeContent() {
   fetch(API + '/content/public', { mode: 'cors' })
     .then(function(r){ return r.json(); })
     .then(function(res) {
       if (!res || !res.data) return;
-      var posts = res.data;
 
-      posts.forEach(function(p) {
+      res.data.forEach(function(p) {
 
-        // 📢 ANNOUNCEMENT — Banner juu ya page
+        // ANNOUNCEMENT - banner juu
         if (p.type === 'announcement') {
-          var existing = document.getElementById('sk-announce-bar');
-          if (existing) return; // show only one
-          var bar = document.createElement('div');
+          var bar = document.getElementById('sk-announce-bar');
+          if (bar) return;
+          bar = document.createElement('div');
           bar.id = 'sk-announce-bar';
-          bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;z-index:9999;width:100%;box-sizing:border-box;';
-          bar.innerHTML = '📢 <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : '');
-          var nav = document.querySelector('nav, .nav-wrap');
-          if (nav && nav.nextSibling) {
-            nav.parentNode.insertBefore(bar, nav.nextSibling);
-          } else {
-            document.body.insertBefore(bar, document.body.firstChild);
-          }
+          bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;width:100%;box-sizing:border-box;';
+          bar.innerHTML = '&#128226; <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : '');
+          document.body.insertBefore(bar, document.body.firstChild);
         }
 
-        // 🛍 BIDHAA — Shop grid kwenye homepage
+        // PRODUCT - shop grid
         if (p.type === 'product') {
           var grid = document.getElementById('home-shop-grid');
-          console.log('SHOP DEBUG: grid=', grid, 'product=', p.title);
-          if (!grid) { console.log('home-shop-grid NOT FOUND'); return; }
-          if (grid.querySelectorAll('.dynamic').length >= 4) { console.log('Max products reached'); return; }
-          var price = p.price ? parseFloat(p.price) : 0;
-          var shortDesc = p.body ? p.body.substring(0, 60) + '...' : '';
+          if (!grid) return;
+          if (grid.querySelectorAll('.dyn-prod').length >= 4) return;
+
+          // Remove loading
+          var loading = document.getElementById('shop-loading');
+          if (loading) loading.remove();
+
+          var price = parseFloat(p.price || 0);
           var imgHtml = (p.image_url && p.image_url.startsWith('http'))
             ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px">'
-            : '<span style="font-size:52px">📦</span>';
+            : '<span style="font-size:52px">&#128230;</span>';
 
-          var div = document.createElement('div');
-          div.className = 'sc rv dynamic';
-          div.style.cursor = 'pointer';
+          var scImg = document.createElement('div');
+          scImg.className = 'sc-img';
+          scImg.style.overflow = 'hidden';
+          scImg.innerHTML = imgHtml + '<div class="sc-badge badge-new">NEW</div>';
 
           var waBtn = document.createElement('button');
           waBtn.className = 'sc-btn';
           waBtn.textContent = 'Order via WhatsApp';
           waBtn.onclick = function() {
-            window.open('https://wa.me/255768303190?text=Nataka%20kuorder:%20' + encodeURIComponent(p.title) + '%20-%20Tsh%20' + price.toLocaleString(), '_blank');
+            window.open('https://wa.me/255768303190?text=' + encodeURIComponent('Nataka: ' + p.title + ' - Tsh ' + price.toLocaleString()), '_blank');
           };
-
-          var scImg = document.createElement('div');
-          scImg.className = 'sc-img';
-          scImg.style.cssText = 'overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative';
-          scImg.innerHTML = imgHtml + '<div class="sc-badge badge-new">NEW</div>';
 
           var scBody = document.createElement('div');
           scBody.className = 'sc-body';
-          scBody.innerHTML =
-            '<div class="sc-name">' + p.title + '</div>' +
-            '<div class="sc-desc">' + shortDesc + '</div>' +
+          scBody.innerHTML = '<div class="sc-name">' + p.title + '</div>' +
+            '<div class="sc-desc">' + (p.body ? p.body.substring(0,60) + '...' : '') + '</div>' +
             '<div><span class="sc-price">Tsh ' + price.toLocaleString() + '</span></div>';
           scBody.appendChild(waBtn);
 
+          var div = document.createElement('div');
+          div.className = 'sc rv dyn-prod';
           div.appendChild(scImg);
           div.appendChild(scBody);
           grid.insertBefore(div, grid.firstChild);
-
-          var loading = document.getElementById('shop-loading');
-          if (loading) loading.remove();
         }
 
-        // 📝 ARTICLE — Electronics section kwenye homepage
+        // ARTICLE - electronics section
         if (p.type === 'article') {
           var cards = document.getElementById('home-art-cards');
-          var featured = document.getElementById('home-featured');
-          var featWrap = document.getElementById('home-featured-wrap');
           if (!cards) return;
+          if (cards.querySelectorAll('.ac-dynamic').length >= 3) return;
 
-          // First article = featured
-          if (featured && featured.style.display === 'none' && cards.querySelectorAll('.ac-dynamic').length === 0) {
-            var imgHtml = (p.image_url && p.image_url.startsWith('http'))
-              ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
-              : '<span style="font-size:52px">📝</span>';
-            featured.innerHTML =
-              '<div style="cursor:pointer" onclick="goElec()">' +
-              '<div class="af-thumb" style="overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:52px">' +
-                '<div class="af-badge">LATEST</div>' + imgHtml +
-              '</div>' +
-              '<div class="af-body">' +
-                '<div class="af-cat">' + (p.category || 'Article') + '</div>' +
-                '<div class="af-title">' + p.title + '</div>' +
-                '<div class="af-desc">' + (p.body ? p.body.substring(0,120) + '...' : '') + '</div>' +
-                '<div class="af-meta"><span>SmartKembo</span><span>·</span><span class="af-read">Read → electronics.html</span></div>' +
-              '</div></div>';
-            featured.style.display = 'block';
-          } else {
-            // Other articles = small cards
-            if (cards.querySelectorAll('.ac-dynamic').length >= 4) return;
-            // Clear loading placeholder
-            var loading = cards.querySelector('div[style*="Inapakia"]');
-            if (loading) loading.remove();
+          var loading = cards.querySelector('[style*="Inapakia"]');
+          if (loading) loading.remove();
 
-            var icon = p.image_url && p.image_url.startsWith('http')
-              ? '<img src="' + p.image_url + '" style="width:36px;height:36px;object-fit:cover;border-radius:6px">'
-              : '📝';
+          var card = document.createElement('a');
+          card.href = 'electronics.html';
+          card.className = 'art-card ac-dynamic';
+          card.style.textDecoration = 'none';
 
-            var card = document.createElement('a');
-            card.href = 'electronics.html';
-            card.className = 'art-card ac-dynamic';
-            card.innerHTML =
-              '<div class="ac-icon">' + icon + '</div>' +
-              '<div>' +
-                '<div class="ac-cat">' + (p.category || 'Article') + '</div>' +
-                '<div class="ac-title">' + p.title + '</div>' +
-                '<div class="ac-meta">SmartKembo · Read more</div>' +
-              '</div>';
-            cards.appendChild(card);
-          }
+          var icon = (p.image_url && p.image_url.startsWith('http'))
+            ? '<img src="' + p.image_url + '" style="width:36px;height:36px;border-radius:6px;object-fit:cover">'
+            : '&#128203;';
+
+          card.innerHTML = '<div class="ac-icon">' + icon + '</div>' +
+            '<div><div class="ac-cat">' + (p.category || 'Article') + '</div>' +
+            '<div class="ac-title">' + p.title + '</div>' +
+            '<div class="ac-meta">Read more &#8594;</div></div>';
+          cards.appendChild(card);
         }
 
-        // 🔔 UPDATE — Sehemu ya habari kwenye homepage
+        // UPDATE - show below homepage
         if (p.type === 'update') {
-          var updatesWrap = document.getElementById('sk-updates-wrap');
-          if (!updatesWrap) {
-            // Create updates section if not exists
-            var section = document.createElement('div');
-            section.style.cssText = 'background:#0C1A2E;padding:20px;border-top:1px solid rgba(0,200,232,0.1);';
-            section.innerHTML = '<div style="max-width:1100px;margin:0 auto">' +
-              '<div style="font-size:12px;color:#00C8E8;font-weight:600;margin-bottom:12px;letter-spacing:1px">🔔 UPDATES</div>' +
-              '<div id="sk-updates-wrap"></div>' +
-            '</div>';
-            var footer = document.querySelector('footer, .footer');
-            if (footer) footer.parentNode.insertBefore(section, footer);
-            updatesWrap = document.getElementById('sk-updates-wrap');
+          var wrap = document.getElementById('sk-updates-wrap');
+          if (!wrap) {
+            var sec = document.createElement('div');
+            sec.style.cssText = 'background:#0C1A2E;padding:16px 20px;border-top:1px solid rgba(0,200,232,0.1)';
+            sec.innerHTML = '<div style="max-width:1100px;margin:0 auto"><div style="font-size:11px;color:#00C8E8;font-weight:700;letter-spacing:1px;margin-bottom:10px">&#128276; UPDATES</div><div id="sk-updates-wrap"></div></div>';
+            var footer = document.querySelector('footer');
+            if (footer) footer.parentNode.insertBefore(sec, footer);
+            wrap = document.getElementById('sk-updates-wrap');
           }
-          if (updatesWrap) {
+          if (wrap) {
             var item = document.createElement('div');
-            item.style.cssText = 'display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;';
-            item.innerHTML =
-              '<span style="color:#00C8E8;font-size:18px;flex-shrink:0">🔔</span>' +
-              '<div>' +
-                '<div style="font-weight:600;color:#F2F8FF;font-size:14px">' + p.title + '</div>' +
-                (p.body ? '<div style="color:rgba(242,248,255,0.6);font-size:12px;margin-top:2px">' + p.body + '</div>' : '') +
-              '</div>';
-            updatesWrap.appendChild(item);
+            item.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px';
+            item.textContent = p.title + (p.body ? ' — ' + p.body : '');
+            wrap.appendChild(item);
           }
         }
 
       });
+
+      // Update pricing
+      fetch(API + '/applications/plans/public', { mode: 'cors' })
+        .then(function(r){ return r.json(); })
+        .then(function(res) {
+          if (!res || !res.data) return;
+          res.data.forEach(function(plan) {
+            var price = Math.round(parseFloat(plan.price_monthly) / 1000) + 'K';
+            var el = document.getElementById('price-' + plan.name.toLowerCase());
+            if (el) el.textContent = price;
+          });
+        }).catch(function(){});
+
     })
-    .catch(function(e){
-      console.log('Content error:', e);
-      var loading = document.getElementById('shop-loading');
-      if (loading) loading.textContent = 'Imeshindwa kupakia bidhaa';
-    });
+    .catch(function(e){ console.error('Content error:', e); });
+}
+
+// Run after page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadHomeContent);
+} else {
+  loadHomeContent();
+}
 
 function goElec(){ window.location.href='electronics.html'; }
 </script>
+
 </body>
 </html>
