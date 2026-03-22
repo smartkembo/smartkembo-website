@@ -79,9 +79,15 @@ a{text-decoration:none;}
 .af-read{color:var(--cyan);margin-left:auto;font-weight:600;font-size:12px;}
 
 /* ARTICLE CARD */
-.art-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;transition:all .2s;cursor:pointer;}
-.art-card:hover{border-color:var(--b2);transform:translateX(4px);}
+.art-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .2s;cursor:pointer;display:block;}
+.art-card:hover{border-color:var(--b2);transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,200,232,0.1);}
 .art-card.hidden{display:none;}
+.art-card-img{width:100%;height:200px;object-fit:cover;display:block;background:var(--navy3);}
+.art-card-img-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:64px;background:var(--navy3);}
+.art-card-body{padding:18px 20px;}
+.art-card-excerpt{font-size:13px;color:var(--gray2);line-height:1.7;margin:8px 0 14px;}
+.art-read-more{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);font-size:13px;font-weight:600;}
+.art-read-more:hover{opacity:0.8;}
 .ac-icon{width:56px;height:56px;border-radius:12px;background:var(--navy3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
 .ac-body{flex:1;min-width:0;}
 .ac-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
@@ -140,7 +146,7 @@ a{text-decoration:none;}
   .af-inner{grid-template-columns:1fr;}
 }
 @media(max-width:480px){
-  .art-card{flex-direction:column;gap:10px;}
+  .art-card{}
   .ac-icon{width:44px;height:44px;font-size:20px;}
 }
 </style>
@@ -341,21 +347,23 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
 
       res.data.forEach(function(p) {
         var cat = (p.category || 'general').toLowerCase();
+        var excerpt = p.body ? p.body.substring(0, 120) + '...' : 'Bonyeza kusoma zaidi...';
 
-        // Image or icon
-        var imgHtml = (p.image_url && p.image_url.startsWith('http'))
-          ? '<div class="art-icon" style="width:80px;height:80px;flex-shrink:0;border-radius:10px;overflow:hidden;"><img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover"></div>'
-          : '<div class="art-icon">📝</div>';
+        var imgSection = (p.image_url && p.image_url.startsWith('http'))
+          ? '<img class="art-card-img" src="' + p.image_url + '" alt="' + p.title + '">'
+          : '<div class="art-card-img-placeholder">📝</div>';
 
         var div = document.createElement('div');
-        div.className = 'art-card rv';
+        div.className = 'art-card';
         div.setAttribute('data-cat', cat);
+        div.onclick = function() { openArtModal(p); };
         div.innerHTML =
-          imgHtml +
-          '<div class="art-body">' +
-            '<div class="art-cat">' + (p.category || 'Article') + '</div>' +
-            '<div class="art-name">' + p.title + '</div>' +
-            '<div class="art-desc">' + (p.body ? p.body.substring(0, 150) + '...' : '') + '</div>' +
+          imgSection +
+          '<div class="art-card-body">' +
+            '<div class="art-cat" style="font-size:11px;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:6px">' + (p.category || 'Article').toUpperCase() + '</div>' +
+            '<div class="art-name" style="font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.4">' + p.title + '</div>' +
+            '<div class="art-card-excerpt">' + excerpt + '</div>' +
+            '<span class="art-read-more">Read More →</span>' +
           '</div>';
 
         grid.insertBefore(div, grid.firstChild);
@@ -472,6 +480,24 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
     });
 })();
 </script>
+
+
+<!-- Article Detail Modal -->
+<div id="art-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;overflow-y:auto;padding:20px 16px">
+  <div style="background:#0C1A2E;border:1px solid rgba(0,200,232,0.15);border-radius:16px;max-width:720px;margin:40px auto;overflow:hidden">
+    <div id="am-img-wrap" style="width:100%;height:280px;overflow:hidden;position:relative">
+      <button onclick="closeArtModal()" style="position:absolute;top:14px;right:14px;z-index:10;background:rgba(0,0,0,0.6);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div style="padding:28px">
+      <div id="am-cat" style="font-size:11px;color:#00C8E8;font-weight:700;letter-spacing:1.5px;margin-bottom:10px"></div>
+      <h1 id="am-title" style="font-size:24px;font-weight:800;color:white;margin:0 0 16px;line-height:1.3"></h1>
+      <div id="am-body" style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.9;white-space:pre-line"></div>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08)">
+        <button onclick="closeArtModal()" style="padding:10px 24px;background:rgba(0,200,232,0.1);border:1px solid rgba(0,200,232,0.3);color:#00C8E8;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">← Rudi</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
