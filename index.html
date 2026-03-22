@@ -692,13 +692,7 @@ function loadHomeContent() {
           var grid = document.getElementById('home-shop-grid');
           if (!grid) return;
 
-          // Futa demo products mara ya kwanza
-          if (!window._prodReplaced) {
-            window._prodReplaced = true;
-            var demos = grid.querySelectorAll('.demo-prod');
-            demos.forEach(function(d){ d.remove(); });
-          }
-
+          // Ongeza juu ya demo — usizifute
           if (grid.querySelectorAll('.dyn-prod').length >= 4) return;
 
           var price = parseFloat(p.price || 0);
