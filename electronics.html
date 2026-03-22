@@ -268,9 +268,11 @@ a{text-decoration:none;}
       </div>
 
       <div class="side-card">
-        <div class="sc-title">Need Components?</div>
-        <div style="font-size:13px;color:var(--gray2);margin-bottom:12px;line-height:1.6;">We stock Arduino, ESP32, sensors and more. Order via WhatsApp.</div>
-        <a href="shop.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);border-radius:9px;font-size:13px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='var(--cyan)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cyan2)';this.style.color='var(--cyan)'">🛒 Visit Shop →</a>
+        <div class="sc-title">Featured Products</div>
+        <div id="elec-products">
+          <div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Inapakia...</div>
+        </div>
+        <a href="shop.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);border-radius:9px;font-size:13px;font-weight:600;margin-top:10px;transition:all .2s;" onmouseover="this.style.background='var(--cyan)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cyan2)';this.style.color='var(--cyan)'">🛒 View All Products →</a>
       </div>
     </div>
   </div>
@@ -329,27 +331,43 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
   var API = 'https://web-production-62329d.up.railway.app/api';
 
   // Load articles
-  fetch(API + '/content/public?type=article')
+  fetch(API + '/content/public?type=article', { mode: 'cors' })
     .then(function(r){ return r.json(); })
     .catch(function(){ return null; })
     .then(function(res) {
       if (!res || !res.data || !res.data.length) return;
-      var grid = document.querySelector('.articles-grid, #articles-grid, .art-grid');
+      var grid = document.getElementById('articles');
       if (!grid) return;
 
       res.data.forEach(function(p) {
+        var cat = (p.category || 'general').toLowerCase();
+
+        // Image or icon
+        var imgHtml = (p.image_url && p.image_url.startsWith('http'))
+          ? '<div class="art-icon" style="width:80px;height:80px;flex-shrink:0;border-radius:10px;overflow:hidden;"><img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover"></div>'
+          : '<div class="art-icon">📝</div>';
+
         var div = document.createElement('div');
-        div.className = 'art-card';
-        div.setAttribute('data-cat', (p.category||'general').toLowerCase());
+        div.className = 'art-card rv';
+        div.setAttribute('data-cat', cat);
         div.innerHTML =
-          '<div class="art-icon">📝</div>' +
+          imgHtml +
           '<div class="art-body">' +
-            '<div class="art-cat">' + (p.category||'Article') + '</div>' +
+            '<div class="art-cat">' + (p.category || 'Article') + '</div>' +
             '<div class="art-name">' + p.title + '</div>' +
-            '<div class="art-desc">' + (p.body ? p.body.substring(0,120) + '...' : '') + '</div>' +
+            '<div class="art-desc">' + (p.body ? p.body.substring(0, 150) + '...' : '') + '</div>' +
           '</div>';
+
         grid.insertBefore(div, grid.firstChild);
       });
+
+      // Update count
+      var countEl = document.getElementById('art-count');
+      if (countEl) countEl.textContent = grid.querySelectorAll('.art-card').length;
+
+      // Hide empty state
+      var empty = document.getElementById('empty-state');
+      if (empty) empty.style.display = 'none';
     });
 
   // Load announcements — show as banner
@@ -417,6 +435,41 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
     })
     .catch(function(){});
 
+})();
+</script>
+
+
+<script>
+(function() {
+  var API = 'https://web-production-62329d.up.railway.app/api';
+  fetch(API + '/content/public?type=product', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .then(function(res) {
+      var wrap = document.getElementById('elec-products');
+      if (!wrap) return;
+      var data = res && res.data ? res.data : [];
+      if (!data.length) {
+        wrap.innerHTML = '<div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Bidhaa zinaongezwa hivi karibuni</div>';
+        return;
+      }
+      wrap.innerHTML = data.slice(0,3).map(function(p) {
+        var price = parseFloat(p.price || 0).toLocaleString();
+        var img = (p.image_url && p.image_url.startsWith('http'))
+          ? '<img src="' + p.image_url + '" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0">'
+          : '<div style="width:40px;height:40px;background:var(--navy2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📦</div>';
+        return '<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">' +
+          img +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-size:12px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p.title + '</div>' +
+            '<div style="font-size:11px;color:var(--cyan)">Tsh ' + price + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    })
+    .catch(function(){
+      var wrap = document.getElementById('elec-products');
+      if(wrap) wrap.innerHTML = '';
+    });
 })();
 </script>
 
