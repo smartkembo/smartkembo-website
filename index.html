@@ -247,6 +247,18 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   section{padding:48px 4%;}
   .ft-social{gap:5px;}
 }
+
+/* Announcement ticker */
+.ticker-wrap{background:var(--cyan);padding:0;overflow:hidden;height:44px;display:flex;align-items:center;position:relative;}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;}
+.ticker-wrap::before{left:0;background:linear-gradient(to right,var(--cyan),transparent);}
+.ticker-wrap::after{right:0;background:linear-gradient(to left,var(--cyan),transparent);}
+.ticker-label{background:var(--navy);color:var(--cyan);font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:4px;white-space:nowrap;margin-left:16px;flex-shrink:0;z-index:3;}
+.ticker-track{display:flex;animation:ticker 20s linear infinite;white-space:nowrap;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{font-size:13px;font-weight:600;color:var(--navy);padding:0 48px;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 </style>
 </head>
 <body>
@@ -330,7 +342,18 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   </div>
 </section>
 
-<div class="stats-bar">
+<!-- Announcement ticker (shown when Super Admin posts announcement) -->
+<div class="ticker-wrap" id="announce-ticker" style="display:none">
+  <div class="ticker-label">📢 LIVE</div>
+  <div style="overflow:hidden;flex:1">
+    <div class="ticker-track" id="ticker-track">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Stats bar (shown when no announcement) -->
+<div class="stats-bar" id="stats-bar">
   <div class="stats-inner">
     <div><div class="sb-val">500+</div><div class="sb-lbl">Daily Customers</div></div>
     <div><div class="sb-val">24</div><div class="sb-lbl">Business Owners</div></div>
@@ -574,7 +597,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
     <div class="cta-note">No credit card · Setup in 1–2 days · Cancel anytime</div>
     <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap">
-      <a href="https://t.me/Givenkembo" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4)">✈ Telegram: @Givenkembo</a>
+      <a href="https://t.me/Givenkembo" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4)">✈ Telegram: @smartkembo1</a>
       <a href="https://wa.me/255767830319" target="_blank" style="font-size:11px;color:rgba(0,200,232,.4)">📱 +255 767 830 319</a>
     </div>
   </div>
@@ -594,7 +617,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <a href="http://tiktok.com/@smartkembo" target="_blank" class="ft-soc">♪</a>
         <a href="https://www.linkedin.com/company/smartkembo" target="_blank" class="ft-soc" style="font-size:10px;font-weight:700">in</a>
         <a href="https://twitter.com/Smartkembodisco?s=09" target="_blank" class="ft-soc">𝕏</a>
-        <a href="https://t.me/smartkembo" target="_blank" class="ft-soc">✈</a>
+        <a href="https://t.me/smartkembo1" target="_blank" class="ft-soc">✈</a>
       </div>
     </div>
     <div class="ft-col">
@@ -622,7 +645,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <h4>Contact</h4>
       <a href="tel:+255767830319">+255 767 830 319</a>
       <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
-      <a href="https://t.me/smartkembo" target="_blank">@smartkembo</a>
+      <a href="https://t.me/smartkembo1" target="_blank">@smartkembo</a>
       <a href="/cdn-cgi/l/email-protection#caabaea7a3a48ab9a7abb8bea1afa7a8a5e4a9a5a7"><span class="__cf_email__" data-cfemail="89e8ede4e0e7c9fae4e8fbfde2ece4ebe6a7eae6e4">[email&#160;protected]</span></a>
     </div>
   </div>
@@ -676,15 +699,22 @@ function loadHomeContent() {
 
       res.data.forEach(function(p) {
 
-        // ANNOUNCEMENT - banner juu
+        // ANNOUNCEMENT - ticker inabadilisha stats bar
         if (p.type === 'announcement') {
-          var bar = document.getElementById('sk-announce-bar');
-          if (bar) return;
-          bar = document.createElement('div');
-          bar.id = 'sk-announce-bar';
-          bar.style.cssText = 'background:#00C8E8;color:#06101E;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;width:100%;box-sizing:border-box;';
-          bar.innerHTML = '&#128226; <strong>' + p.title + '</strong>' + (p.body ? ' &mdash; ' + p.body : '');
-          document.body.insertBefore(bar, document.body.firstChild);
+          var ticker = document.getElementById('announce-ticker');
+          var track  = document.getElementById('ticker-track');
+          var statsBar = document.getElementById('stats-bar');
+          if (!ticker || !track) return;
+
+          // Build ticker text — duplicate for seamless loop
+          var text = '📢 ' + p.title + (p.body ? ' — ' + p.body : '');
+          var item = '<span class="ticker-item">' + text + '</span>';
+          // Repeat many times for smooth infinite scroll
+          track.innerHTML = item.repeat(8);
+
+          // Show ticker, hide stats bar
+          ticker.style.display = 'flex';
+          if (statsBar) statsBar.style.display = 'none';
         }
 
         // PRODUCT - index inatumia demo tu — bidhaa za kweli ziko shop.html
