@@ -687,44 +687,7 @@ function loadHomeContent() {
           document.body.insertBefore(bar, document.body.firstChild);
         }
 
-        // PRODUCT - shop grid — futa demo, weka za kweli
-        if (p.type === 'product') {
-          var grid = document.getElementById('home-shop-grid');
-          if (!grid) return;
-
-          // Ongeza juu ya demo — usizifute
-          if (grid.querySelectorAll('.dyn-prod').length >= 4) return;
-
-          var price = parseFloat(p.price || 0);
-          var imgHtml = (p.image_url && p.image_url.startsWith('http'))
-            ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
-            : '<span style="font-size:52px">&#128230;</span>';
-
-          var waBtn = document.createElement('button');
-          waBtn.className = 'sc-btn';
-          waBtn.textContent = 'Order via WhatsApp';
-          waBtn.onclick = function() {
-            window.open('https://wa.me/255768303190?text=' + encodeURIComponent('Nataka: ' + p.title + ' - Tsh ' + price.toLocaleString()), '_blank');
-          };
-
-          var scImg = document.createElement('div');
-          scImg.className = 'sc-img';
-          scImg.style.overflow = 'hidden';
-          scImg.innerHTML = imgHtml + '<div class="sc-badge badge-new">NEW</div>';
-
-          var scBody = document.createElement('div');
-          scBody.className = 'sc-body';
-          scBody.innerHTML = '<div class="sc-name">' + p.title + '</div>' +
-            '<div class="sc-desc">' + (p.body ? p.body.substring(0,60) + '...' : '') + '</div>' +
-            '<div><span class="sc-price">Tsh ' + price.toLocaleString() + '</span></div>';
-          scBody.appendChild(waBtn);
-
-          var div = document.createElement('div');
-          div.className = 'sc rv dyn-prod';
-          div.appendChild(scImg);
-          div.appendChild(scBody);
-          grid.insertBefore(div, grid.firstChild);
-        }
+        // PRODUCT - index inatumia demo tu — bidhaa za kweli ziko shop.html
 
         // ARTICLE - electronics section
         if (p.type === 'article') {
