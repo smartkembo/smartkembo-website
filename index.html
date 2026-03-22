@@ -429,28 +429,14 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <button class="ecat">Videos</button>
       <button class="ecat">Basics</button>
     </div>
-    <div class="elec-layout rv">
-      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-feat">
-        <div class="af-thumb"><div class="af-badge">FEATURED</div>🔌</div>
-        <div class="af-body">
-          <div class="af-cat">IoT Project</div>
-          <div class="af-title">Build a Smart Water Meter with Arduino &amp; GSM</div>
-          <div class="af-desc">Learn to build an IoT water flow meter that sends SMS alerts and tracks consumption remotely.</div>
-          <div class="af-meta"><span>SMD Labs</span><span>·</span><span>12 min read</span><span class="af-read">Read →</span></div>
-        </div>
-      </a>
-      <div class="art-cards">
-        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🤖</div><div><div class="ac-cat">Arduino</div><div class="ac-title">Arduino Uno Starter Guide — Zero to Hero</div><div class="ac-meta">8 min · Beginner</div></div></a>
-        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🍓</div><div><div class="ac-cat">Raspberry Pi</div><div class="ac-title">Pi-Hole DNS Ad Blocker in 20 Minutes</div><div class="ac-meta">15 min · Intermediate</div></div></a>
-        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">📡</div><div><div class="ac-cat">IoT</div><div class="ac-title">ESP32 WiFi Sensor — Send Data to Cloud</div><div class="ac-meta">10 min · Intermediate</div></div></a>
-        <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="art-card"><div class="ac-icon">🔧</div><div><div class="ac-cat">Basics</div><div class="ac-title">Understanding Ohm's Law — Practical Examples</div><div class="ac-meta">6 min · Beginner</div></div></a>
+    <!-- Featured article -->
+    <div class="elec-layout rv" id="home-featured-wrap">
+      <div id="home-featured" style="display:none"></div>
+      <div class="art-cards" id="home-art-cards">
+        <div style="color:rgba(255,255,255,0.3);font-size:13px;padding:20px;text-align:center;grid-column:1/-1">Inapakia articles...</div>
       </div>
     </div>
-    <div class="elec-bottom rv">
-      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">🎬</div><div class="ec-body"><div class="ec-type">Video Tutorial</div><div class="ec-title">Build a Mikrotik Hotspot from Scratch</div><div class="ec-tags"><span class="ec-tag">Mikrotik</span><span class="ec-tag">WiFi</span></div></div></a>
-      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">🌡️</div><div class="ec-body"><div class="ec-type">IoT Project</div><div class="ec-title">Temperature Monitor with DHT22 + Blynk</div><div class="ec-tags"><span class="ec-tag">Arduino</span><span class="ec-tag">IoT</span></div></div></a>
-      <a href="https://youtube.com/channel/UCr4KFnMPy1mLFRKqDAFOc6Q" target="_blank" class="ec"><div class="ec-thumb">📱</div><div class="ec-body"><div class="ec-type">Video Series</div><div class="ec-title">GSM &amp; M-Pesa Integration for IoT</div><div class="ec-tags"><span class="ec-tag">GSM</span><span class="ec-tag">M-Pesa</span></div></div></a>
-    </div>
+    <div class="elec-bottom rv" id="home-art-bottom" style="display:none"></div>
   </div>
 </section>
 
@@ -697,6 +683,55 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
           if (loading) loading.remove();
         }
 
+        // 📝 ARTICLE — Electronics section kwenye homepage
+        if (p.type === 'article') {
+          var cards = document.getElementById('home-art-cards');
+          var featured = document.getElementById('home-featured');
+          var featWrap = document.getElementById('home-featured-wrap');
+          if (!cards) return;
+
+          // First article = featured
+          if (featured && featured.style.display === 'none' && cards.querySelectorAll('.ac-dynamic').length === 0) {
+            var imgHtml = (p.image_url && p.image_url.startsWith('http'))
+              ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
+              : '<span style="font-size:52px">📝</span>';
+            featured.innerHTML =
+              '<div style="cursor:pointer" onclick="goElec()">' +
+              '<div class="af-thumb" style="overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:52px">' +
+                '<div class="af-badge">LATEST</div>' + imgHtml +
+              '</div>' +
+              '<div class="af-body">' +
+                '<div class="af-cat">' + (p.category || 'Article') + '</div>' +
+                '<div class="af-title">' + p.title + '</div>' +
+                '<div class="af-desc">' + (p.body ? p.body.substring(0,120) + '...' : '') + '</div>' +
+                '<div class="af-meta"><span>SmartKembo</span><span>·</span><span class="af-read">Read → electronics.html</span></div>' +
+              '</div></div>';
+            featured.style.display = 'block';
+          } else {
+            // Other articles = small cards
+            if (cards.querySelectorAll('.ac-dynamic').length >= 4) return;
+            // Clear loading placeholder
+            var loading = cards.querySelector('div[style*="Inapakia"]');
+            if (loading) loading.remove();
+
+            var icon = p.image_url && p.image_url.startsWith('http')
+              ? '<img src="' + p.image_url + '" style="width:36px;height:36px;object-fit:cover;border-radius:6px">'
+              : '📝';
+
+            var card = document.createElement('a');
+            card.href = 'electronics.html';
+            card.className = 'art-card ac-dynamic';
+            card.innerHTML =
+              '<div class="ac-icon">' + icon + '</div>' +
+              '<div>' +
+                '<div class="ac-cat">' + (p.category || 'Article') + '</div>' +
+                '<div class="ac-title">' + p.title + '</div>' +
+                '<div class="ac-meta">SmartKembo · Read more</div>' +
+              '</div>';
+            cards.appendChild(card);
+          }
+        }
+
         // 🔔 UPDATE — Sehemu ya habari kwenye homepage
         if (p.type === 'update') {
           var updatesWrap = document.getElementById('sk-updates-wrap');
@@ -734,6 +769,8 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
     });
 
 })();
+
+function goElec(){ window.location.href='electronics.html'; }
 </script>
 
 </body>
