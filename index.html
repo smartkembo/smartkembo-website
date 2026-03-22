@@ -615,6 +615,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
+  console.log('CONTENT SCRIPT: Starting fetch...');
 
   fetch(API + '/content/public', { mode: 'cors' })
     .then(function(r){ return r.json(); })
@@ -643,8 +644,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // 🛍 BIDHAA — Shop grid kwenye homepage
         if (p.type === 'product') {
           var grid = document.getElementById('home-shop-grid');
-          if (!grid) { console.log('home-shop-grid not found'); return; }
-          if (grid.querySelectorAll('.dynamic').length >= 4) return;
+          console.log('SHOP DEBUG: grid=', grid, 'product=', p.title);
+          if (!grid) { console.log('home-shop-grid NOT FOUND'); return; }
+          if (grid.querySelectorAll('.dynamic').length >= 4) { console.log('Max products reached'); return; }
           var price = p.price ? parseFloat(p.price) : 0;
           var shortDesc = p.body ? p.body.substring(0, 60) + '...' : '';
           var imgHtml = (p.image_url && p.image_url.startsWith('http'))
