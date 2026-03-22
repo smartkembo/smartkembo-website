@@ -381,7 +381,7 @@ function quickWA(name, price){
 
 function filter(cat, btn){
   document.querySelectorAll('.cat').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
+  if(btn) btn.classList.add('on');
   var all = document.querySelectorAll('.product');
   var visible = 0;
   all.forEach(function(p){
@@ -391,12 +391,10 @@ function filter(cat, btn){
   });
   document.getElementById('prod-count').textContent = visible;
   var empty = document.getElementById('empty-state');
-  empty.classList.toggle('hidden', !show);
-  });
-  document.getElementById('prod-count').textContent = visible;
-  var empty = document.getElementById('empty-state');
   if(empty) empty.style.display = visible === 0 ? 'block' : 'none';
 }
+
+function filterProducts(){ filter('all', null); }
 
 // Dynamic products from API
 (function() {
@@ -409,27 +407,43 @@ function filter(cat, btn){
       if (!grid) return;
       res.data.forEach(function(p) {
         var price = p.price ? parseFloat(p.price) : 0;
-        var cat = (p.category || 'other').toLowerCase().replace(/\s+/g,'-');
+        var cat   = (p.category || 'other').toLowerCase().replace(/\s+/g, '-');
+        var name  = p.title.replace(/"/g, '&quot;');
+        var imgHtml = (p.image_url && p.image_url.startsWith('http'))
+          ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">'
+          : '📦';
+
         var div = document.createElement('div');
         div.className = 'product';
         div.setAttribute('data-cat', cat);
+
+        var btn = document.createElement('button');
+        btn.className = 'btn-cart';
+        btn.textContent = '+ Add to Cart';
+        btn.onclick = function(){ addCart(btn, p.title, price, '📦'); };
+
+        var wa = document.createElement('button');
+        wa.className = 'btn-wa';
+        wa.textContent = 'WhatsApp';
+        wa.onclick = function(){ quickWA(p.title, price.toLocaleString()); };
+
         div.innerHTML =
-          '<div class="prod-img">📦<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
+          '<div class="prod-img" style="display:flex;align-items:center;justify-content:center;font-size:48px">' + imgHtml + '<div class="prod-badges"><span class="badge badge-new">NEW</span></div></div>' +
           '<div class="prod-body">' +
-            '<div class="prod-cat">' + (p.category||'Bidhaa') + '</div>' +
+            '<div class="prod-cat">' + (p.category || 'Bidhaa') + '</div>' +
             '<div class="prod-name">' + p.title + '</div>' +
-            '<div class="prod-desc">' + (p.body||'') + '</div>' +
+            '<div class="prod-desc">' + (p.body ? p.body.substring(0, 100) + '...' : '') + '</div>' +
             '<div class="prod-price-row"><span class="prod-price">Tsh ' + price.toLocaleString() + '</span></div>' +
-            '<div class="prod-actions">' +
-              '<button class="btn-cart" onclick="addCart(this,'' + p.title.replace(/'/g,'\\'') + '',' + price + ','📦')">+ Add to Cart</button>' +
-              '<button class="btn-wa" onclick="quickWA('' + p.title.replace(/'/g,'\\'') + '','' + price.toLocaleString() + '')">WhatsApp</button>' +
-            '</div>' +
+            '<div class="prod-actions"></div>' +
           '</div>';
+
+        div.querySelector('.prod-actions').appendChild(btn);
+        div.querySelector('.prod-actions').appendChild(wa);
         grid.insertBefore(div, grid.firstChild);
       });
       filterProducts();
     })
-    .catch(function(){});
+    .catch(function(e){ console.log('Shop error:', e); });
 })();
 
 </script>
