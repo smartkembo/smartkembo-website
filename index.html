@@ -556,10 +556,13 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <div class="pc-price" id="price-basic">30K</div><div class="pc-mo">Tsh / month</div>
         <a href="get-started.html" class="pc-btn">Get Started</a>
         <div class="pc-div"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div>500 customers/month</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>3 packages per module</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Basic reports</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Email support</div>
+        <div id="feats-basic">
+          <div class="pc-feat"><div class="pc-check">✓</div>500 customers/month</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>3 packages per module</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>MikroTik routers: 9</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>Basic reports</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>Email support</div>
+        </div>
       </div>
       <div class="pc feat rv">
         <div class="pc-pop">⭐ MOST POPULAR</div>
@@ -567,21 +570,28 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <div class="pc-price" id="price-pro">80K</div><div class="pc-mo">Tsh / month</div>
         <a href="get-started.html" class="pc-btn">Start with Pro</a>
         <div class="pc-div" style="background:rgba(0,200,232,.15)"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Unlimited customers</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>10 packages per module</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Advanced reports</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>WhatsApp support</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>3 admin accounts</div>
+        <div id="feats-pro">
+          <div class="pc-feat"><div class="pc-check">✓</div>Unlimited customers</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>10 packages per module</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>MikroTik routers: 50</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>Advanced reports</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>WhatsApp support</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>3 admin accounts</div>
+        </div>
       </div>
       <div class="pc rv">
         <div class="pc-name">Enterprise</div><div class="pc-desc">Large organizations</div>
         <div class="pc-price" id="price-enterprise">200K</div><div class="pc-mo">Tsh / month</div>
         <a href="https://wa.me/255767830319" target="_blank" class="pc-btn">Contact Us</a>
         <div class="pc-div"></div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Everything in Pro</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>Full API access</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>99.9% SLA</div>
-        <div class="pc-feat"><div class="pc-check">✓</div>24/7 priority support</div>
+        <div id="feats-enterprise">
+          <div class="pc-feat"><div class="pc-check">✓</div>Unlimited customers</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>50 packages per module</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>MikroTik routers: ∞ Bila Kikomo</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>Full API access</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>99.9% SLA</div>
+          <div class="pc-feat"><div class="pc-check">✓</div>24/7 priority support</div>
+        </div>
       </div>
     </div>
   </div>
@@ -781,15 +791,42 @@ function loadHomeContent() {
 
       });
 
-      // Update pricing
+      // Sasisha bei na features kutoka API
       fetch(API + '/applications/plans/public', { mode: 'cors' })
         .then(function(r){ return r.json(); })
         .then(function(res) {
           if (!res || !res.data) return;
           res.data.forEach(function(plan) {
-            var price = Math.round(parseFloat(plan.price_monthly) / 1000) + 'K';
-            var el = document.getElementById('price-' + plan.name.toLowerCase());
-            if (el) el.textContent = price;
+            var key = plan.name.toLowerCase();
+
+            // Bei
+            var priceEl = document.getElementById('price-' + key);
+            if (priceEl) priceEl.textContent = Math.round(parseFloat(plan.price_monthly) / 1000) + 'K';
+
+            // Features — sasisha kwa max_packages, max_sessions, max_routers
+            var featEl = document.getElementById('feats-' + key);
+            if (!featEl) return;
+
+            var isEnt = plan.name === 'Enterprise';
+            var sess  = (!plan.max_sessions || plan.max_sessions >= 99999) ? 'Bila Kikomo' : parseInt(plan.max_sessions).toLocaleString();
+            var pkgs  = plan.max_packages || '—';
+            var routers = (!plan.max_routers || plan.max_routers >= 9999) ? '∞ Bila Kikomo' : plan.max_routers;
+
+            var features = [];
+            if (!isEnt) features.push(sess + ' customers/month');
+            else        features.push('Unlimited customers');
+            features.push(pkgs + ' packages per module');
+            features.push('MikroTik routers: ' + routers);
+
+            // Ongeza features za ziada kutoka DB
+            try {
+              var dbFeats = JSON.parse(plan.features || '[]');
+              dbFeats.forEach(function(f){ features.push(f); });
+            } catch(e){}
+
+            featEl.innerHTML = features.slice(0, 6).map(function(f){
+              return '<div class="pc-feat"><div class="pc-check">✓</div>' + f + '</div>';
+            }).join('');
           });
         }).catch(function(){});
 
