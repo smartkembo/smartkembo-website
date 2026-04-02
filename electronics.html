@@ -336,6 +336,42 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
 (function() {
   var API = 'https://web-production-62329d.up.railway.app/api';
 
+  // Load products — mpya juu
+  fetch(API + '/content/public?type=product&limit=6', { mode: 'cors' })
+    .then(function(r){ return r.json(); })
+    .catch(function(){ return null; })
+    .then(function(res) {
+      var wrap = document.getElementById('elec-products');
+      if (!wrap) return;
+      if (!res || !res.data || !res.data.length) {
+        wrap.innerHTML = '<div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Hakuna bidhaa bado</div>';
+        return;
+      }
+      wrap.innerHTML = '';
+      // API inarudisha DESC — mpya kwanza
+      res.data.forEach(function(p) {
+        var price  = p.price ? 'Tsh ' + parseFloat(p.price).toLocaleString() : '';
+        var img    = (p.image_url && p.image_url.startsWith('http'))
+          ? '<img src="' + p.image_url + '" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0">'
+          : '<div style="width:44px;height:44px;border-radius:8px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📦</div>';
+        var waMsg  = encodeURIComponent('Nataka kununua: ' + p.title + (price ? ' — ' + price : ''));
+
+        var item = document.createElement('a');
+        item.href   = 'https://wa.me/255767830319?text=' + waMsg;
+        item.target = '_blank';
+        item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:opacity .15s';
+        item.onmouseover = function(){ this.style.opacity = '0.75'; };
+        item.onmouseout  = function(){ this.style.opacity = '1'; };
+        item.innerHTML   =
+          img +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p.title + '</div>' +
+            (price ? '<div style="font-size:12px;color:var(--cyan);font-weight:700;margin-top:2px">' + price + '</div>' : '') +
+          '</div>';
+        wrap.appendChild(item);
+      });
+    });
+
   // Load articles
   fetch(API + '/content/public?type=article', { mode: 'cors' })
     .then(function(r){ return r.json(); })
