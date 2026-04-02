@@ -727,40 +727,7 @@ function loadHomeContent() {
           if (statsBar) statsBar.style.display = 'none';
         }
 
-        // PRODUCT — onyesha kutoka database, mpya juu
-        if (p.type === 'product') {
-          var grid = document.getElementById('home-shop-grid');
-          if (!grid) return;
-
-          // Ondoa demo products mara ya kwanza tu
-          if (!window._demoRemoved) {
-            grid.querySelectorAll('.demo-prod').forEach(function(el){ el.remove(); });
-            window._demoRemoved = true;
-          }
-
-          // Usiongeze zaidi ya 4
-          if (grid.querySelectorAll('.sc.rv:not(.demo-prod)').length >= 4) return;
-
-          var price = p.price ? 'Tsh ' + parseFloat(p.price).toLocaleString() : '';
-          var img   = (p.image_url && p.image_url.startsWith('http'))
-            ? '<img src="' + p.image_url + '" style="width:100%;height:100%;object-fit:cover">'
-            : '<span style="font-size:52px">📦</span>';
-          var waMsg = encodeURIComponent('Nataka kununua: ' + p.title + (price ? ' — ' + price : ''));
-
-          var card = document.createElement('div');
-          card.className = 'sc rv';
-          card.innerHTML =
-            '<div class="sc-img" style="padding:0;overflow:hidden">' + img + '</div>' +
-            '<div class="sc-body">' +
-              '<div class="sc-name">' + p.title + '</div>' +
-              '<div class="sc-desc">' + (p.body ? p.body.substring(0,60) + (p.body.length > 60 ? '...' : '') : '') + '</div>' +
-              '<div>' + (price ? '<span class="sc-price">' + price + '</span>' : '') + '</div>' +
-              '<button class="sc-btn" onclick="window.open(\'https://wa.me/255767830319?text=' + waMsg + '\',\'_blank\')">Order via WhatsApp</button>' +
-            '</div>';
-
-          // Weka mpya JUU — prepend
-          grid.insertBefore(card, grid.firstChild);
-        }
+        // PRODUCT — index.html inatumia demo products zake — bidhaa za kweli ziko electronics.html na shop.html
 
         // ARTICLE - electronics section
         if (p.type === 'article') {
