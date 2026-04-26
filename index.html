@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>  
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -665,7 +665,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
 function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
 function setLang(l){document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.textContent.toLowerCase()===l));}
@@ -844,5 +844,16 @@ if (document.readyState === 'loading') {
 function goElec(){ window.location.href='electronics.html'; }
 </script>
 
+<script>
+// Keepalive — zuia Render isizime (ping kila dakika 10)
+(function keepAlive() {
+  var API = 'https://smartkembo-backend.onrender.com/api';
+  function ping() {
+    fetch(API + '/health', { mode: 'cors' }).catch(function(){});
+  }
+  ping(); // Ping mara moja ukurasa ukifunguka
+  setInterval(ping, 10 * 60 * 1000); // Kila dakika 10
+})();
+</script>
 </body>
 </html>
