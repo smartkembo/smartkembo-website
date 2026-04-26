@@ -181,8 +181,8 @@
             <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 30</span>
             <span class="badge" style="background:#FEF2F2;color:#991B1B">Ya Juu</span>
           </div>
-          <div class="tut-title">Jinsi ya Kuweka SmartKembo Online (Railway + Vercel)</div>
-          <p class="tut-desc">Mwongozo kamili wa kuweka mfumo wako online — GitHub, Railway, Vercel, na domain yako.</p>
+          <div class="tut-title">Jinsi ya Kuweka SmartKembo Online (Render + Vercel)</div>
+          <p class="tut-desc">Mwongozo kamili wa kuweka mfumo wako online — GitHub, Render, Vercel, na domain yako.</p>
         </div>
         <div class="tut-footer">
           <span class="tut-author">Na SmartKembo Team</span>
@@ -257,8 +257,8 @@ const tutorials = {
     title: 'Jinsi ya Kuweka SmartKembo Online',
     steps: [
       { title: 'Pakia GitHub', desc: 'Fungua akaunti GitHub (github.com) → tengeneza repos mbili: <strong>smartkembo-backend</strong> na <strong>smartkembo-frontend</strong> → pakia msimbo wako.', code: 'git init\ngit add .\ngit commit -m "First commit"\ngit push origin main' },
-      { title: 'Weka Backend kwenye Railway', desc: 'Nenda railway.app → "New Project" → "Deploy from GitHub" → chagua smartkembo-backend → ongeza PostgreSQL database → weka variables (NODE_ENV, JWT_SECRET, n.k.)' },
-      { title: 'Run Migration', desc: 'Railway → project → shell → andika:', code: 'npm run migrate\nnpm run seed' },
+      { title: 'Weka Backend kwenye Render', desc: 'Nenda render.com → "New +" → "Web Service" → unganisha GitHub → chagua smartkembo-backend → ongeza PostgreSQL database → weka variables (NODE_ENV, JWT_SECRET, DATABASE_URL, n.k.)' },
+      { title: 'Run Migration', desc: 'Render → smartkembo-backend → Shell → andika:', code: 'npm run migrate\nnpm run seed' },
       { title: 'Weka Frontend kwenye Vercel', desc: 'Nenda vercel.com → "New Project" → chagua smartkembo-frontend → deploy. Utapata URL kama <strong>smartkembo.vercel.app</strong>' },
       { title: 'Unganisha Domain', desc: 'Vercel → Settings → Domains → ongeza domain yako (mf. smartkembo.co.tz) → Vercel itakupa DNS records → weka kwenye Namecheap DNS.', tip: 'DNS inachukua saa 24-48 kusambaa duniani. Baada ya hapo domain yako itafanya kazi!' },
     ]
