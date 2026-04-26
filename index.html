@@ -849,7 +849,7 @@ function goElec(){ window.location.href='electronics.html'; }
 (function keepAlive() {
   var API = 'https://smartkembo-backend.onrender.com/api';
   function ping() {
-    fetch(API + '/health', { mode: 'cors' }).catch(function(){});
+    fetch('https://smartkembo-backend.onrender.com/health', { mode: 'cors' }).catch(function(){});
   }
   ping(); // Ping mara moja ukurasa ukifunguka
   setInterval(ping, 10 * 60 * 1000); // Kila dakika 10
