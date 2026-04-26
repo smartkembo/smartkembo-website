@@ -413,7 +413,7 @@ async function doSubmit(){
 
   // Try backend first
   try {
-    await fetch('https://web-production-62329d.up.railway.app/api/applications/water', {
+    await fetch('https://smartkembo-backend.onrender.com/api/applications/water', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
