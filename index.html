@@ -677,7 +677,7 @@ document.querySelectorAll('.ecat').forEach(b=>{b.addEventListener('click',()=>{d
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  var API = 'https://smartkembo-backend.onrender.com/api';
+  var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api';
   fetch(API + '/applications/plans/public')
     .then(function(r){ return r.json(); })
     .catch(function(){ return null; })
@@ -699,7 +699,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 <script>
-var API = 'https://smartkembo-backend.onrender.com/api';
+var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api';
 
 function loadHomeContent() {
   fetch(API + '/content/public', { mode: 'cors' })
@@ -847,9 +847,9 @@ function goElec(){ window.location.href='electronics.html'; }
 <script>
 // Keepalive — zuia Render isizime (ping kila dakika 10)
 (function keepAlive() {
-  var API = 'https://smartkembo-backend.onrender.com/api';
+  var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api';
   function ping() {
-    fetch('https://smartkembo-backend.onrender.com/health', { mode: 'cors' }).catch(function(){});
+    fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/health', { mode: 'cors' }).catch(function(){});
   }
   ping(); // Ping mara moja ukurasa ukifunguka
   setInterval(ping, 10 * 60 * 1000); // Kila dakika 10
