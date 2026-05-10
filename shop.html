@@ -396,7 +396,7 @@ document.addEventListener('keydown', function(e) {
 
 // Load products from database
 (function() {
-  var API = 'https://smartkembo-backend.onrender.com/api';
+  var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api';
   var grid = document.getElementById('products-grid');
 
   fetch(API + '/content/public?type=product', { mode: 'cors' })
