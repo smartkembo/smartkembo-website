@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SmartKembo Water Vending — Mfumo wa kisasa wa kuuza maji. Wateja wanaweka sarafu, maji yanatoka kiasi halisi. Simamia biashara yako ya maji popote ulipo.">
-<title>Maji Vending — SMD's SmartKembo</title>
+<meta name="description" content="SWV — SmartKembo Water Vending. Automated coin-operated water dispensing with real-time dashboard, IoT hardware, and 4G connectivity. Built for Tanzania.">
+<title>SWV — SmartKembo Water Vending</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#05111F;--ink2:#0A1C30;--ink3:#0F2340;--water:#00C8E8;--water2:rgba(0,200,232,0.10);--water3:rgba(0,200,232,0.20);--blue:#3B8BF5;--blue2:rgba(59,139,245,0.10);--teal:#00E5C4;--white:#F0F8FF;--g1:rgba(240,248,255,0.60);--g2:rgba(240,248,255,0.28);--g3:rgba(240,248,255,0.07);--border:rgba(0,200,232,0.12);--b2:rgba(0,200,232,0.22);--r:14px;--r2:22px;}
@@ -13,14 +13,13 @@ html{scroll-behavior:smooth;}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;line-height:1.65;font-size:15px;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--water);border-radius:2px;}
 a{text-decoration:none;color:inherit;}
-
-/* Nav */
 .nav{position:sticky;top:0;z-index:200;height:66px;display:flex;align-items:center;padding:0 5%;background:rgba(5,17,31,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
 .nav-inner{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
 .logo{display:flex;align-items:center;gap:11px;}
 .logo-mark{width:40px;height:40px;background:var(--water);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .logo-name{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--white);}
 .logo-name span{color:var(--water);}
+.swv-badge{font-size:9px;font-weight:700;background:rgba(0,200,232,0.15);border:1px solid var(--b2);color:var(--water);padding:2px 7px;border-radius:5px;letter-spacing:.8px;margin-left:4px;vertical-align:middle;}
 .nav-links{display:flex;gap:2px;list-style:none;}
 .nav-links a{display:block;padding:7px 13px;color:var(--g1);font-size:13px;font-weight:500;border-radius:8px;transition:all .15s;}
 .nav-links a:hover,.nav-links a.active{color:var(--white);background:var(--g3);}
@@ -37,8 +36,6 @@ a{text-decoration:none;color:inherit;}
 .mob a{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:var(--g1);padding:10px 20px;transition:color .15s;}
 .mob a:hover{color:var(--water);}
 .mob-x{position:absolute;top:22px;right:22px;background:none;border:none;color:var(--white);font-size:24px;cursor:pointer;}
-
-/* Hero */
 .hero{min-height:92vh;display:flex;align-items:center;padding:80px 5% 60px;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
 .ripple{position:absolute;border-radius:50%;border:1px solid rgba(0,200,232,0.10);animation:rippleOut 7s ease-out infinite;}
@@ -56,7 +53,6 @@ a{text-decoration:none;color:inherit;}
 .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
 .orb1{width:480px;height:480px;background:rgba(0,200,232,0.05);top:-80px;right:-80px;}
 .orb2{width:280px;height:280px;background:rgba(59,139,245,0.05);bottom:0;left:-60px;}
-
 .hero-inner{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--water2);border:1px solid var(--b2);padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;color:var(--water);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px;}
 .live-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;box-shadow:0 0 6px var(--teal);animation:glow 1.8s ease-in-out infinite;flex-shrink:0;}
@@ -69,8 +65,6 @@ a{text-decoration:none;color:inherit;}
 .hero-trust{display:flex;align-items:center;gap:22px;padding-top:26px;border-top:1px solid var(--border);flex-wrap:wrap;}
 .trust-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g2);}
 .trust-icon{width:26px;height:26px;background:var(--water2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
-
-/* Machine Card */
 .machine-card{background:var(--ink2);border:1px solid var(--b2);border-radius:var(--r2);overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.45);}
 .mc-header{background:var(--ink3);border-bottom:1px solid var(--border);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;}
 .mc-dots{display:flex;gap:5px;}
@@ -90,15 +84,11 @@ a{text-decoration:none;color:inherit;}
 .mc-btn:hover{opacity:.88;}
 .mc-btn:disabled{opacity:.45;cursor:not-allowed;}
 .mc-msg{text-align:center;font-size:12px;color:var(--teal);margin-top:9px;min-height:18px;}
-
-/* Stats Bar */
 .stats-bar{background:linear-gradient(90deg,var(--water),var(--teal));padding:0 5%;}
 .sbi{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:30px 0;}
 .sb{text-align:center;}
 .sb-val{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--ink);}
 .sb-lbl{font-size:12px;color:rgba(5,17,31,.55);font-weight:500;margin-top:3px;}
-
-/* Sections */
 section{padding:88px 5%;}
 .sec-inner{max-width:1200px;margin:0 auto;}
 .eyebrow{font-size:10px;font-weight:700;color:var(--water);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
@@ -106,8 +96,6 @@ section{padding:88px 5%;}
 .sec-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.8vw,44px);font-weight:700;letter-spacing:-.5px;line-height:1.1;margin-bottom:12px;}
 .sec-h2 span{color:var(--water);}
 .sec-p{font-size:15px;color:var(--g1);font-weight:300;line-height:1.8;max-width:500px;}
-
-/* How it works */
 .how-wrap{background:var(--ink2);}
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:var(--r2);overflow:hidden;margin-top:44px;}
 .hw{background:var(--ink2);padding:30px 22px;position:relative;transition:background .2s;}
@@ -118,8 +106,6 @@ section{padding:88px 5%;}
 .hw-desc{font-size:12.5px;color:var(--g2);line-height:1.75;}
 .hw-arr{position:absolute;right:-1px;top:50%;transform:translateY(-50%);color:var(--border);}
 .hw:last-child .hw-arr{display:none;}
-
-/* Features */
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
 .feat{background:var(--ink2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;transition:all .25s;position:relative;overflow:hidden;}
 .feat::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--water2),transparent 55%);opacity:0;transition:opacity .25s;}
@@ -131,8 +117,6 @@ section{padding:88px 5%;}
 .feat-tag{display:inline-block;font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;margin-top:11px;letter-spacing:.4px;position:relative;z-index:1;}
 .tag-live{background:rgba(0,229,196,.1);color:var(--teal);}
 .tag-soon{background:var(--blue2);color:var(--blue);}
-
-/* Dashboard */
 .dash-wrap{background:var(--ink2);}
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;margin-top:44px;}
 .dash-screen{background:var(--ink3);border:1px solid var(--b2);border-radius:var(--r2);overflow:hidden;}
@@ -163,8 +147,6 @@ section{padding:88px 5%;}
 .df-icon{width:40px;height:40px;border-radius:10px;background:var(--water2);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .df-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;}
 .df-desc{font-size:13px;color:var(--g2);line-height:1.65;}
-
-/* Specs */
 .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px;}
 .spec-card{background:var(--ink2);border:1px solid var(--border);border-radius:var(--r2);padding:26px;}
 .spec-title{font-size:11px;font-weight:700;color:var(--water);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:7px;}
@@ -172,8 +154,6 @@ section{padding:88px 5%;}
 .spec-row:last-child{border:none;}
 .spec-lbl{color:var(--g2);}
 .spec-val{font-weight:500;color:var(--white);text-align:right;}
-
-/* Pricing */
 .pricing-wrap{background:var(--ink2);}
 .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;}
 .plan{background:var(--ink);border:1px solid var(--border);border-radius:var(--r2);padding:28px 24px;position:relative;transition:all .2s;}
@@ -192,8 +172,6 @@ section{padding:88px 5%;}
 .plan:not(.featured) .plan-btn:hover{background:var(--water);color:var(--ink);}
 .plan.featured .plan-btn{background:var(--water);color:var(--ink);border:none;}
 .plan.featured .plan-btn:hover{opacity:.88;}
-
-/* CTA */
 .cta-section{position:relative;overflow:hidden;padding:100px 5%;text-align:center;}
 .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,200,232,0.055),transparent 70%);pointer-events:none;}
 .cta-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
@@ -202,30 +180,19 @@ section{padding:88px 5%;}
 .cta-p{font-size:16px;color:var(--g1);font-weight:300;line-height:1.8;margin-bottom:34px;}
 .cta-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
 .cta-note{font-size:11px;color:var(--g2);letter-spacing:.4px;}
-
-/* Footer */
 footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .ft-copy{font-size:11px;color:rgba(255,255,255,.14);}
 .ft-links{display:flex;gap:16px;flex-wrap:wrap;}
 .ft-links a{font-size:12px;color:var(--g2);transition:color .15s;}
 .ft-links a:hover{color:var(--water);}
-
-/* Reveal */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
 .rv.in{opacity:1;transform:translateY(0);}
-
-/* Responsive */
 @media(max-width:960px){
-  .hamburger{display:flex;}
-  .nav-links,.nav-right{display:none;}
-  .hero-inner{grid-template-columns:1fr;}
-  .machine-card{max-width:440px;margin:0 auto;}
-  .how-grid{grid-template-columns:1fr 1fr;}
-  .hw-arr{display:none;}
-  .feat-grid{grid-template-columns:1fr 1fr;}
-  .dash-grid{grid-template-columns:1fr;}
-  .specs-grid,.plans-grid{grid-template-columns:1fr;}
-  .sbi{grid-template-columns:1fr 1fr;}
+  .hamburger{display:flex;}.nav-links,.nav-right{display:none;}
+  .hero-inner{grid-template-columns:1fr;}.machine-card{max-width:440px;margin:0 auto;}
+  .how-grid{grid-template-columns:1fr 1fr;}.hw-arr{display:none;}
+  .feat-grid{grid-template-columns:1fr 1fr;}.dash-grid{grid-template-columns:1fr;}
+  .specs-grid,.plans-grid{grid-template-columns:1fr;}.sbi{grid-template-columns:1fr 1fr;}
   .plan.featured{transform:none;}
 }
 @media(max-width:580px){
@@ -234,16 +201,15 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
   .hero-acts,.cta-acts{flex-direction:column;align-items:stretch;}
   .hero-acts .btn,.cta-acts .btn{justify-content:center;}
   .hero-trust{flex-direction:column;gap:10px;}
-  section{padding:60px 4%;}
-  .cta-section{padding:68px 4%;}
-  footer{flex-direction:column;text-align:center;}
-  .ft-links{justify-content:center;}
+  section{padding:60px 4%;}.cta-section{padding:68px 4%;}
+  footer{flex-direction:column;text-align:center;}.ft-links{justify-content:center;}
   .mc-stats{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
 <body>
 
+<!-- Nav -->
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="logo">
@@ -256,17 +222,17 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
           <circle cx="20" cy="20" r="1.8" fill="#00C8E8"/>
         </svg>
       </div>
-      <div class="logo-name">Smart<span>Kembo</span></div>
+      <div class="logo-name">Smart<span>Kembo</span> <span class="swv-badge">SWV</span></div>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Nyumbani</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="wifi.html">WiFi Vending</a></li>
-      <li><a href="water.html" class="active">Maji Vending</a></li>
-      <li><a href="contact.html">Wasiliana</a></li>
+      <li><a href="water.html" class="active">Water Vending</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost btn-sm">Ingia</a>
-      <a href="apply-water.html" class="btn btn-water btn-sm">Omba Mashine</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="apply-water.html" class="btn btn-water btn-sm">Apply for Machine</a>
     </div>
     <button class="hamburger" onclick="openMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -276,11 +242,11 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
-  <a href="index.html" onclick="closeMenu()">Nyumbani</a>
+  <a href="index.html" onclick="closeMenu()">Home</a>
   <a href="wifi.html" onclick="closeMenu()">WiFi Vending</a>
-  <a href="water.html" onclick="closeMenu()" style="color:var(--water)">Maji Vending</a>
-  <a href="contact.html" onclick="closeMenu()">Wasiliana</a>
-  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px">Omba Mashine →</a>
+  <a href="water.html" onclick="closeMenu()" style="color:var(--water)">Water Vending</a>
+  <a href="contact.html" onclick="closeMenu()">Contact</a>
+  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px">Apply for Machine →</a>
 </div>
 
 <!-- HERO -->
@@ -292,23 +258,23 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
   </div>
   <div class="hero-inner">
     <div>
-      <div class="hero-eyebrow"><div class="live-dot"></div>SmartKembo Water Vend · S.W.V</div>
+      <div class="hero-eyebrow"><div class="live-dot"></div>SWV — SmartKembo Water Vending</div>
       <h1 class="hero-h1">
-        Uza Maji Kwa <span class="accent">Akili</span>
-        <span class="line2">Bila Kasher · Bila Upotevu · Mapato 24/7</span>
+        Sell Water <span class="accent">Intelligently</span>
+        <span class="line2">No Cashier · No Waste · Revenue 24/7</span>
       </h1>
-      <p class="hero-p">Mteja anaweka sarafu — mashine inatoa lita halisi alizolipa, kisha inazima otomatiki. Wewe unaona kila kitu kwenye simu yako: mapato, lita zilizouzwa, hali ya mashine — popote ulipo.</p>
+      <p class="hero-p">A customer inserts coins — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
       <div class="hero-acts">
-        <a href="apply-water.html" class="btn btn-water btn-lg">Omba Mashine Yako →</a>
-        <a href="#jinsi" class="btn btn-ghost btn-lg">Jinsi Inavyofanya Kazi</a>
+        <a href="apply-water.html" class="btn btn-water btn-lg">Apply for Your SWV Machine →</a>
+        <a href="#how" class="btn btn-ghost btn-lg">How It Works</a>
       </div>
       <div class="hero-trust">
-        <div class="trust-item"><div class="trust-icon">⚡</div><span>Inafanya kazi bila kasher</span></div>
-        <div class="trust-item"><div class="trust-icon">📡</div><span>Online hata bila WiFi (4G)</span></div>
-        <div class="trust-item"><div class="trust-icon">🇹🇿</div><span>Imetengenezwa Tanzania</span></div>
+        <div class="trust-item"><div class="trust-icon">⚡</div><span>Works without a cashier</span></div>
+        <div class="trust-item"><div class="trust-icon">📡</div><span>Online via 4G SIM card</span></div>
+        <div class="trust-item"><div class="trust-icon">🇹🇿</div><span>Built in Tanzania</span></div>
       </div>
     </div>
-    <!-- Live Machine Demo -->
+    <!-- Live SWV Machine Demo -->
     <div>
       <div class="machine-card">
         <div class="mc-header">
@@ -317,11 +283,11 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
             <div class="mc-dot" style="background:#FFBD2E"></div>
             <div class="mc-dot" style="background:#28CA41"></div>
           </div>
-          <div class="mc-title">SWV-001 · DEMO YA MOJA KWA MOJA</div>
-          <div class="mc-status"><div class="live-dot"></div>Hai</div>
+          <div class="mc-title">SWV-001 · LIVE DEMO</div>
+          <div class="mc-status"><div class="live-dot"></div>Online</div>
         </div>
         <div class="mc-body">
-          <div class="mc-balance-label">Salio la Mteja</div>
+          <div class="mc-balance-label">Customer Balance</div>
           <div class="mc-balance" id="demo-bal"><span>Tsh</span> 0</div>
           <div class="bucket-wrap">
             <svg id="bsvg" width="158" height="168" viewBox="0 0 158 168">
@@ -347,13 +313,13 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
             </svg>
           </div>
           <div class="mc-stats">
-            <div class="mc-stat"><div class="mc-stat-val" id="demo-l">0.0</div><div class="mc-stat-lbl">Lita</div></div>
+            <div class="mc-stat"><div class="mc-stat-val" id="demo-l">0.0</div><div class="mc-stat-lbl">Litres</div></div>
             <div class="mc-stat"><div class="mc-stat-val" id="demo-a">0</div><div class="mc-stat-lbl">Tsh</div></div>
             <div class="mc-stat"><div class="mc-stat-val" style="color:var(--g2)">50</div><div class="mc-stat-lbl">Tsh/L</div></div>
           </div>
           <button class="mc-btn" id="demo-btn" onclick="insertCoin()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Weka Sarafu Tsh 50
+            Insert Coin (Tsh 50)
           </button>
           <div class="mc-msg" id="demo-msg"></div>
         </div>
@@ -365,46 +331,46 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Stats Bar -->
 <div class="stats-bar">
   <div class="sbi">
-    <div class="sb rv"><div class="sb-val">24+</div><div class="sb-lbl">Wamiliki wanaotumia</div></div>
-    <div class="sb rv"><div class="sb-val">±0.1L</div><div class="sb-lbl">Usahihi wa kutoa</div></div>
-    <div class="sb rv"><div class="sb-val">24/7</div><div class="sb-lbl">Inafanya kazi bila kasher</div></div>
-    <div class="sb rv"><div class="sb-val">4G</div><div class="sb-lbl">Online hata bila WiFi</div></div>
+    <div class="sb rv"><div class="sb-val">24+</div><div class="sb-lbl">Active machine owners</div></div>
+    <div class="sb rv"><div class="sb-val">±0.1L</div><div class="sb-lbl">Dispensing accuracy</div></div>
+    <div class="sb rv"><div class="sb-val">24/7</div><div class="sb-lbl">Operates without a cashier</div></div>
+    <div class="sb rv"><div class="sb-val">4G</div><div class="sb-lbl">Online without WiFi</div></div>
   </div>
 </div>
 
-<!-- How it Works -->
-<section id="jinsi" class="how-wrap">
+<!-- How It Works -->
+<section id="how" class="how-wrap">
   <div class="sec-inner">
-    <div class="eyebrow rv">Mchakato</div>
-    <h2 class="sec-h2 rv">Jinsi <span>Inavyofanya Kazi</span></h2>
-    <p class="sec-p rv">Rahisi kwa mteja — nguvu kwa mmiliki.</p>
+    <div class="eyebrow rv">Process</div>
+    <h2 class="sec-h2 rv">How <span>SWV Works</span></h2>
+    <p class="sec-p rv">Simple for the customer — powerful for the owner.</p>
     <div class="how-grid rv">
       <div class="hw">
         <div class="hw-num">01</div>
         <div class="hw-icon">🪙</div>
-        <div class="hw-title">Mteja Weka Sarafu</div>
-        <div class="hw-desc">Anaweka sarafu za TZS moja au zaidi. LCD inaonyesha salio lake na lita atakazopata kwa bei ya sasa.</div>
+        <div class="hw-title">Customer Inserts Coins</div>
+        <div class="hw-desc">They insert TZS coins — one or more. The LCD displays their balance and how many litres they will receive at the current price.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">02</div>
         <div class="hw-icon">▶</div>
-        <div class="hw-title">Abonyeze Kitufe</div>
-        <div class="hw-desc">Kitufe kimoja tu. Arduino Mega inafungua valve ya solenoid na maji yanaanza kutoka.</div>
+        <div class="hw-title">Press One Button</div>
+        <div class="hw-desc">A single button press. The Arduino Mega opens the solenoid valve and water starts flowing immediately.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">03</div>
         <div class="hw-icon">💧</div>
-        <div class="hw-title">Lita Halisi Zinatoka</div>
-        <div class="hw-desc">Flow sensor YF-S201 inahesabu lita kwa usahihi ±0.1L. Valve inazimika otomatiki — lita zake tu.</div>
+        <div class="hw-title">Exact Litres Dispensed</div>
+        <div class="hw-desc">The YF-S201 flow sensor counts litres with ±0.1L accuracy. The valve closes automatically — their litres only, not a drop more.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">04</div>
         <div class="hw-icon">📊</div>
-        <div class="hw-title">Wewe Unaona Dashboard</div>
-        <div class="hw-desc">ESP32 inatuma data kwa server kwa dakika chache. Unaona mapato na lita — wakati halisi simu yako.</div>
+        <div class="hw-title">You See It in Real Time</div>
+        <div class="hw-desc">The ESP32 sends transaction data to the server within minutes. View revenue and litres on your dashboard — live, from your phone.</div>
       </div>
     </div>
   </div>
@@ -413,45 +379,45 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Features -->
 <section id="features">
   <div class="sec-inner">
-    <div class="eyebrow rv">Vipengele</div>
-    <h2 class="sec-h2 rv">Kila Kitu Unachohitaji <span>Kuuza Maji</span></h2>
-    <p class="sec-p rv">Mfumo kamili kutoka sarafu ya kwanza hadi ripoti ya mwezi.</p>
+    <div class="eyebrow rv">Features</div>
+    <h2 class="sec-h2 rv">Everything You Need to <span>Sell Water</span></h2>
+    <p class="sec-p rv">A complete system — from the first coin to the monthly report.</p>
     <div class="feat-grid">
       <div class="feat rv">
         <div class="feat-icon">🪙</div>
         <div class="feat-title">Coin Vending</div>
-        <div class="feat-desc">Inakubali sarafu zote za TZS. Hakuna app ya M-Pesa inayohitajika — rahisi kwa wateja wote bila simu.</div>
-        <span class="feat-tag tag-live">✓ Tayari</span>
+        <div class="feat-desc">Accepts all TZS coins. No M-Pesa app required — accessible to every customer, even without a smartphone.</div>
+        <span class="feat-tag tag-live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">📡</div>
         <div class="feat-title">Online via 4G SIM</div>
-        <div class="feat-desc">SIM card ya mmiliki inaunganisha mashine na internet. Data inalipwa na SmartKembo — wewe hulazimiki kufanya chochote.</div>
-        <span class="feat-tag tag-live">✓ Tayari</span>
+        <div class="feat-desc">The owner's SIM card connects the SWV machine to the internet. Data is managed by SmartKembo — you don't need to do anything.</div>
+        <span class="feat-tag tag-live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">📊</div>
-        <div class="feat-title">Dashboard ya Wakati Halisi</div>
-        <div class="feat-desc">Ona mapato ya leo, lita zilizouzwa, na ndoo ya maji inayoonyesha mteja anachota — popote ulipo, saa yoyote.</div>
-        <span class="feat-tag tag-live">✓ Tayari (Subscription)</span>
+        <div class="feat-title">Real-Time Dashboard</div>
+        <div class="feat-desc">See today's revenue, litres dispensed, and a live animated bucket showing exactly what your customer is doing — from anywhere.</div>
+        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">💰</div>
-        <div class="feat-title">Badilisha Bei Haraka</div>
-        <div class="feat-desc">Ongeza au punguza bei ya lita moja kwa moja kutoka simu yako. Mashine itasasishwa dakika chache baadaye bila kwenda kwenye mashine.</div>
-        <span class="feat-tag tag-live">✓ Tayari (Subscription)</span>
+        <div class="feat-title">Update Price Instantly</div>
+        <div class="feat-desc">Raise or lower the price per litre directly from your phone. The SWV machine updates automatically within minutes — no site visit needed.</div>
+        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">🔵</div>
-        <div class="feat-title">Bluetooth Config</div>
-        <div class="feat-desc">Badilisha bei, calibration na mipangilio ya mashine kwa simu yako ya Bluetooth bila kugusa wiring. Kwa Basic Plan.</div>
-        <span class="feat-tag tag-live">✓ Tayari</span>
+        <div class="feat-title">Bluetooth Configuration</div>
+        <div class="feat-desc">Change price, flow calibration, and machine settings via your phone's Bluetooth — no wiring, no tools. Available on Basic Plan.</div>
+        <span class="feat-tag tag-live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">🔔</div>
-        <div class="feat-title">MB Inafuatiliwa na SmartKembo</div>
-        <div class="feat-desc">Mfumo wetu unafuatilia MB ya SIM yako. Ukishuka — SmartKembo inanunua MB mapya. Wewe hufanyi chochote.</div>
-        <span class="feat-tag tag-live">✓ Tayari</span>
+        <div class="feat-title">SIM Data Managed by SmartKembo</div>
+        <div class="feat-desc">We monitor the SIM card's data balance. When it gets low, SmartKembo buys more automatically. You never worry about connectivity.</div>
+        <span class="feat-tag tag-live">✓ Live</span>
       </div>
     </div>
   </div>
@@ -460,8 +426,8 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Dashboard Preview -->
 <section class="dash-wrap">
   <div class="sec-inner">
-    <div class="eyebrow rv">Dashboard ya Online</div>
-    <h2 class="sec-h2 rv">Simamia Biashara Yako <span>Kutoka Simu</span></h2>
+    <div class="eyebrow rv">Owner Dashboard</div>
+    <h2 class="sec-h2 rv">Manage Your Water Business <span>From Your Phone</span></h2>
     <div class="dash-grid">
       <div class="dash-screen rv">
         <div class="dash-bar">
@@ -470,17 +436,17 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
             <div class="dash-dot" style="background:#FFBD2E"></div>
             <div class="dash-dot" style="background:#28CA41"></div>
           </div>
-          <div class="dash-url">app.smartkembo.co.tz · Dashibodi ya Maji</div>
+          <div class="dash-url">app.smartkembo.co.tz · SWV Dashboard</div>
           <div style="width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 5px var(--teal)"></div>
         </div>
         <div class="dash-body">
           <div class="dash-row">
-            <div class="ds"><div class="ds-val">Tsh 47K</div><div class="ds-lbl">Leo</div></div>
-            <div class="ds"><div class="ds-val">940L</div><div class="ds-lbl">Lita Leo</div></div>
-            <div class="ds"><div class="ds-val">188</div><div class="ds-lbl">Wateja</div></div>
+            <div class="ds"><div class="ds-val">Tsh 47K</div><div class="ds-lbl">Today</div></div>
+            <div class="ds"><div class="ds-val">940L</div><div class="ds-lbl">Litres</div></div>
+            <div class="ds"><div class="ds-val">188</div><div class="ds-lbl">Customers</div></div>
           </div>
           <div class="dash-chart">
-            <div class="chart-lbl">Mapato — Siku 7 Zilizopita</div>
+            <div class="chart-lbl">Revenue — Last 7 Days</div>
             <div class="chart-bars">
               <div class="cbar" style="height:45%"></div>
               <div class="cbar" style="height:62%"></div>
@@ -502,112 +468,112 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="dash-feats">
         <div class="df rv">
           <div class="df-icon">💧</div>
-          <div><div class="df-title">Ndoo ya Maji — Wakati Halisi</div><div class="df-desc">Unaona ndoo inayojaa na kutoa maji kwenye screen yako — unaona mteja anachota hata ukiwa mbali kilomita nyingi.</div></div>
+          <div><div class="df-title">Live Bucket Animation</div><div class="df-desc">Watch the bucket fill and empty in real time as your customer collects water — even from hundreds of kilometres away.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">📈</div>
-          <div><div class="df-title">Ripoti za Kina</div><div class="df-desc">Mapato ya leo, wiki na mwezi. Ona masaa yanayouza zaidi na wiki zipi zinafanya vizuri.</div></div>
+          <div><div class="df-title">Detailed Reports</div><div class="df-desc">Daily, weekly, and monthly revenue. See your peak hours and identify your best-performing days.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">⚙️</div>
-          <div><div class="df-title">Badilisha Bei Bila Bluetooth</div><div class="df-desc">Badilisha bei ya lita kutoka simu. Mashine itasasishwa otomatiki — huhitaji kwenda mahali mashine ilipo.</div></div>
+          <div><div class="df-title">Update Price Without Bluetooth</div><div class="df-desc">Change the price per litre from your dashboard. The SWV machine syncs automatically — no physical visit required.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">🔐</div>
-          <div><div class="df-title">Akaunti Yako Peke Yako</div><div class="df-desc">Unaingia kwa email na neno la siri. Hakuna mtu mwingine anayeweza kuona data ya biashara yako.</div></div>
+          <div><div class="df-title">Your Account, Your Data</div><div class="df-desc">Log in with your email and password. Your business data is private — nobody else can see your revenue or transactions.</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Specs -->
+<!-- Technical Specs -->
 <section>
   <div class="sec-inner">
-    <div class="eyebrow rv">Vifaa</div>
-    <h2 class="sec-h2 rv">Maelezo ya <span>Kiufundi</span></h2>
+    <div class="eyebrow rv">Hardware</div>
+    <h2 class="sec-h2 rv">SWV <span>Technical Specifications</span></h2>
     <div class="specs-grid rv">
       <div class="spec-card">
         <div class="spec-title">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          Vifaa vya Mashine
+          SWV Machine Hardware
         </div>
-        <div class="spec-row"><span class="spec-lbl">Microcontroller Kuu</span><span class="spec-val">Arduino Mega 2560</span></div>
+        <div class="spec-row"><span class="spec-lbl">Main Controller</span><span class="spec-val">Arduino Mega 2560</span></div>
         <div class="spec-row"><span class="spec-lbl">Online Module</span><span class="spec-val">ESP32 + SIM800A</span></div>
-        <div class="spec-row"><span class="spec-lbl">Saa ya Wakati Halisi</span><span class="spec-val">RTC DS3231</span></div>
+        <div class="spec-row"><span class="spec-lbl">Real-Time Clock</span><span class="spec-val">RTC DS3231</span></div>
         <div class="spec-row"><span class="spec-lbl">Flow Sensor</span><span class="spec-val">YF-S201 Hall Effect</span></div>
         <div class="spec-row"><span class="spec-lbl">Valve</span><span class="spec-val">Solenoid 12V DC</span></div>
         <div class="spec-row"><span class="spec-lbl">Display</span><span class="spec-val">LCD 16×2 I2C</span></div>
-        <div class="spec-row"><span class="spec-lbl">Usahihi wa Kutoa</span><span class="spec-val">±0.1 Lita</span></div>
-        <div class="spec-row"><span class="spec-lbl">Nguvu</span><span class="spec-val">220V AC · Solar Ready</span></div>
+        <div class="spec-row"><span class="spec-lbl">Accuracy</span><span class="spec-val">±0.1 Litres</span></div>
+        <div class="spec-row"><span class="spec-lbl">Power</span><span class="spec-val">220V AC · Solar Ready</span></div>
       </div>
       <div class="spec-card">
         <div class="spec-title">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          Programu na Muunganiko
+          Software & Connectivity
         </div>
         <div class="spec-row"><span class="spec-lbl">Backend</span><span class="spec-val">Node.js + PostgreSQL</span></div>
         <div class="spec-row"><span class="spec-lbl">Hosting</span><span class="spec-val">Railway</span></div>
-        <div class="spec-row"><span class="spec-lbl">Muunganiko</span><span class="spec-val">HTTPS REST API</span></div>
-        <div class="spec-row"><span class="spec-lbl">Heartbeat</span><span class="spec-val">Kila dakika 5</span></div>
-        <div class="spec-row"><span class="spec-lbl">Mtandao Unaokubalika</span><span class="spec-val">Vodacom · Airtel · Tigo</span></div>
-        <div class="spec-row"><span class="spec-lbl">Data ya Mwezi</span><span class="spec-val">~5–15 MB tu</span></div>
-        <div class="spec-row"><span class="spec-lbl">Dashboard</span><span class="spec-val">Web (Mobile + Desktop)</span></div>
-        <div class="spec-row"><span class="spec-lbl">Uptime</span><span class="spec-val">99.9% iliyodhaminiwa</span></div>
+        <div class="spec-row"><span class="spec-lbl">Device Protocol</span><span class="spec-val">HTTPS REST API</span></div>
+        <div class="spec-row"><span class="spec-lbl">Heartbeat</span><span class="spec-val">Every 5 minutes</span></div>
+        <div class="spec-row"><span class="spec-lbl">Supported Networks</span><span class="spec-val">Vodacom · Airtel · Tigo</span></div>
+        <div class="spec-row"><span class="spec-lbl">Monthly Data Usage</span><span class="spec-val">~5–15 MB only</span></div>
+        <div class="spec-row"><span class="spec-lbl">Dashboard</span><span class="spec-val">Web · Mobile + Desktop</span></div>
+        <div class="spec-row"><span class="spec-lbl">Server Uptime</span><span class="spec-val">99.9% guaranteed</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Pricing -->
-<section id="bei" class="pricing-wrap">
+<section id="pricing" class="pricing-wrap">
   <div class="sec-inner">
     <div style="text-align:center">
-      <div class="eyebrow rv" style="justify-content:center">Bei</div>
-      <h2 class="sec-h2 rv" style="text-align:center">Chagua Mpango <span>Unaokufaa</span></h2>
-      <p class="sec-p rv" style="text-align:center;margin:0 auto 0">Mashine inafanya kazi bila subscription. Dashboard ya online inahitaji subscription tu.</p>
+      <div class="eyebrow rv" style="justify-content:center">Pricing</div>
+      <h2 class="sec-h2 rv" style="text-align:center">Choose the Plan <span>That Fits You</span></h2>
+      <p class="sec-p rv" style="text-align:center;margin:0 auto 0">The SWV machine works without a subscription. The online dashboard requires a subscription only.</p>
     </div>
     <div class="plans-grid">
       <div class="plan rv">
         <div class="plan-name">Basic</div>
-        <div class="plan-sub">Mashine peke yake · Offline</div>
-        <div class="plan-price" style="font-size:32px;margin-top:4px">Bure</div>
-        <div class="plan-mo">Hulipa chochote kila mwezi</div>
-        <a href="apply-water.html" class="plan-btn">Omba Mashine</a>
+        <div class="plan-sub">Machine only · Offline</div>
+        <div class="plan-price" style="font-size:32px;margin-top:4px">Free</div>
+        <div class="plan-mo">No monthly fee</div>
+        <a href="apply-water.html" class="plan-btn">Apply for Machine</a>
         <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Coin vending (sarafu zote)</div>
-        <div class="plan-feat"><div class="pfc">✓</div>LCD inaonyesha salio na lita</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Bluetooth config (bei, calibration)</div>
-        <div class="plan-feat"><div class="pfc">✓</div>SMS commands (salio, bei)</div>
-        <div class="plan-feat"><div class="pfc" style="background:var(--g3);color:var(--g2)">✗</div><span style="color:var(--g2)">Dashboard ya online</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div>Coin vending (all TZS coins)</div>
+        <div class="plan-feat"><div class="pfc">✓</div>LCD shows balance and litres</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Bluetooth config (price, calibration)</div>
+        <div class="plan-feat"><div class="pfc">✓</div>SMS commands (balance, price)</div>
+        <div class="plan-feat"><div class="pfc" style="background:var(--g3);color:var(--g2)">✗</div><span style="color:var(--g2)">Online dashboard</span></div>
       </div>
       <div class="plan featured rv">
-        <div class="plan-pop">⭐ MAARUFU ZAIDI</div>
+        <div class="plan-pop">⭐ MOST POPULAR</div>
         <div class="plan-name">Subscription</div>
-        <div class="plan-sub">Mashine + Dashboard ya Online</div>
+        <div class="plan-sub">Machine + Online Dashboard</div>
         <div class="plan-price">30K</div>
-        <div class="plan-mo">Tsh / mwezi · SmartKembo inalipia data</div>
-        <a href="apply-water.html" class="plan-btn">Anza Subscription</a>
+        <div class="plan-mo">Tsh / month · SmartKembo pays for data</div>
+        <a href="apply-water.html" class="plan-btn">Start Subscription</a>
         <div class="plan-div" style="background:rgba(0,200,232,.14)"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Kila kitu cha Basic</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Dashboard ya wakati halisi</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Ndoo ya maji — live animation</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Badilisha bei kutoka simu</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Historia kamili ya mauzo</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Data ya 4G — SmartKembo inalipa</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Everything in Basic</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Real-time dashboard</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Live bucket animation</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Update price from your phone</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Full transaction history</div>
+        <div class="plan-feat"><div class="pfc">✓</div>4G data — SmartKembo pays</div>
       </div>
       <div class="plan rv">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-sub">Mashine nyingi · Biashara kubwa</div>
+        <div class="plan-sub">Multiple machines · Large operations</div>
         <div class="plan-price">200K</div>
-        <div class="plan-mo">Tsh / mwezi</div>
-        <a href="https://wa.me/255767830319" target="_blank" class="plan-btn">Wasiliana Nasi</a>
+        <div class="plan-mo">Tsh / month</div>
+        <a href="https://wa.me/255767830319" target="_blank" class="plan-btn">Contact Us</a>
         <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Kila kitu cha Subscription</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Mashine nyingi — dashboard moja</div>
-        <div class="plan-feat"><div class="pfc">✓</div>API kamili</div>
-        <div class="plan-feat"><div class="pfc">✓</div>SLA 99.9% iliyodhaminiwa</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Msaada 24/7</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Everything in Subscription</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Multiple machines, one dashboard</div>
+        <div class="plan-feat"><div class="pfc">✓</div>Full API access</div>
+        <div class="plan-feat"><div class="pfc">✓</div>99.9% SLA guaranteed</div>
+        <div class="plan-feat"><div class="pfc">✓</div>24/7 priority support</div>
       </div>
     </div>
   </div>
@@ -616,26 +582,26 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
-    <div class="eyebrow rv" style="justify-content:center">Anza Leo</div>
-    <h2 class="cta-h2 rv">Tayari Kuanza <span>Kuuza Maji?</span></h2>
-    <p class="cta-p rv">Omba mashine yako leo. Tutawasiliana nawe ndani ya saa 24 kukubali ombi na kuanza ufungaji.</p>
+    <div class="eyebrow rv" style="justify-content:center">Get Started</div>
+    <h2 class="cta-h2 rv">Ready to Start <span>Selling Water?</span></h2>
+    <p class="cta-p rv">Apply for your SWV machine today. We'll contact you within 24 hours to approve your application and begin installation.</p>
     <div class="cta-acts rv">
-      <a href="apply-water.html" class="btn btn-water btn-lg">Omba Mashine Yako →</a>
+      <a href="apply-water.html" class="btn btn-water btn-lg">Apply for Your SWV Machine →</a>
       <a href="https://wa.me/255767830319" target="_blank" class="btn btn-ghost btn-lg">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.67 19.79 19.79 0 01.5 2.12 2 2 0 012.5 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.87a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-        WhatsApp Sasa
+        WhatsApp Us
       </a>
     </div>
-    <div class="cta-note rv">Hakuna ada ya usajili · Tunawasiliana nawe · Ufungaji ndani ya siku 2–3</div>
+    <div class="cta-note rv">No registration fee · We contact you · Installation within 2–3 days</div>
   </div>
 </section>
 
 <footer>
-  <span class="ft-copy">© 2025 SMD's SmartKembo Discovery Science · Made in Tanzania 🇹🇿</span>
+  <span class="ft-copy">© 2025 SMD's SmartKembo Discovery Science · SWV — SmartKembo Water Vending · Made in Tanzania 🇹🇿</span>
   <div class="ft-links">
-    <a href="index.html">Nyumbani</a>
+    <a href="index.html">Home</a>
     <a href="wifi.html">WiFi Vending</a>
-    <a href="apply-water.html">Omba Mashine</a>
+    <a href="apply-water.html">Apply for Machine</a>
     <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
     <a href="mailto:smdsgroups@gmail.com">Email</a>
   </div>
@@ -644,99 +610,20 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <script>
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
 function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
-
-/* Scroll reveal */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*65);});
-},{threshold:0.08});
+const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*65);});},{threshold:0.08});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>{document.querySelector('.nav').style.boxShadow=window.scrollY>20?'0 2px 24px rgba(0,0,0,.35)':'none';});
 
-/* Nav shadow on scroll */
-window.addEventListener('scroll',()=>{
-  document.querySelector('.nav').style.boxShadow=window.scrollY>20?'0 2px 24px rgba(0,0,0,.35)':'none';
-});
-
-/* ── Bucket Demo ── */
 const PRICE=50;
 let bal=0,dispensing=false,wOff=0,wTimer=null,dTimer=null;
-
 function getFY(p){const top=15,bot=157,h=bot-top;return bot-(h*Math.min(p,100)/100);}
-
-function drawWave(p){
-  const fy=getFY(p),amp=p>3?3.2:0.8;
-  let d=`M0 ${fy}`;
-  for(let x=0;x<=158;x+=7)d+=` L${x} ${fy+Math.sin((x+wOff)*0.12)*amp}`;
-  d+=` L158 ${fy+amp+2} L158 200 L0 200 Z`;
-  document.getElementById('wwave').setAttribute('d',d);
-}
-
-function updateBucket(p){
-  p=Math.min(100,Math.max(0,p));
-  const fy=getFY(p),wf=document.getElementById('wfill');
-  const wH=(157-15)*p/100;
-  wf.setAttribute('y',fy);wf.setAttribute('height',wH+5);
-  drawWave(p);
-  const pt=document.getElementById('ptxt');
-  pt.textContent=Math.round(p)+'%';
-  pt.setAttribute('y',fy+Math.max(16,(157-fy)/2));
-  pt.setAttribute('fill',p>11?'rgba(255,255,255,0.82)':'rgba(255,255,255,0)');
-}
-
-function animWave(){
-  wOff+=1.9;
-  drawWave(Math.min(100,(bal/500)*100));
-  wTimer=requestAnimationFrame(animWave);
-}
-
-function setDisplay(){
-  document.getElementById('demo-bal').innerHTML='<span>Tsh</span> '+bal;
-  document.getElementById('demo-l').textContent=(bal/PRICE).toFixed(1);
-  document.getElementById('demo-a').textContent=bal;
-  updateBucket((bal/500)*100);
-}
-
-function insertCoin(){
-  if(dispensing)return;
-  bal+=50;
-  if(bal===50&&!wTimer)animWave();
-  setDisplay();
-  if(bal>=50)setTimeout(startDisp,650);
-}
-
-function startDisp(){
-  if(dispensing||bal<50)return;
-  dispensing=true;
-  const btn=document.getElementById('demo-btn');
-  btn.disabled=true;
-  document.getElementById('demo-msg').textContent='Inatoa maji...';
-  const target=bal/PRICE;
-  let curr=0,step=0,steps=55;
-  const startP=(bal/500)*100;
-  const ms=(target*1700)/steps;
-  dTimer=setInterval(()=>{
-    step++;
-    const prog=step/steps;
-    curr=target*prog;
-    updateBucket(startP*(1-prog));
-    document.getElementById('demo-l').textContent=curr.toFixed(2);
-    if(step>=steps){clearInterval(dTimer);finishDisp(target);}
-  },ms);
-}
-
-function finishDisp(lita){
-  dispensing=false;
-  if(wTimer){cancelAnimationFrame(wTimer);wTimer=null;}
-  updateBucket(0);
-  document.getElementById('demo-bal').innerHTML='<span>Tsh</span> 0';
-  document.getElementById('demo-l').textContent='0.0';
-  document.getElementById('demo-a').textContent='0';
-  document.getElementById('demo-msg').textContent='✓ Lita '+lita.toFixed(1)+' zimetoka. Asante!';
-  bal=0;
-  setTimeout(()=>{
-    document.getElementById('demo-btn').disabled=false;
-    document.getElementById('demo-msg').textContent='';
-  },2600);
-}
+function drawWave(p){const fy=getFY(p),amp=p>3?3.2:0.8;let d=`M0 ${fy}`;for(let x=0;x<=158;x+=7)d+=` L${x} ${fy+Math.sin((x+wOff)*0.12)*amp}`;d+=` L158 ${fy+amp+2} L158 200 L0 200 Z`;document.getElementById('wwave').setAttribute('d',d);}
+function updateBucket(p){p=Math.min(100,Math.max(0,p));const fy=getFY(p),wf=document.getElementById('wfill');const wH=(157-15)*p/100;wf.setAttribute('y',fy);wf.setAttribute('height',wH+5);drawWave(p);const pt=document.getElementById('ptxt');pt.textContent=Math.round(p)+'%';pt.setAttribute('y',fy+Math.max(16,(157-fy)/2));pt.setAttribute('fill',p>11?'rgba(255,255,255,0.82)':'rgba(255,255,255,0)');}
+function animWave(){wOff+=1.9;drawWave(Math.min(100,(bal/500)*100));wTimer=requestAnimationFrame(animWave);}
+function setDisplay(){document.getElementById('demo-bal').innerHTML='<span>Tsh</span> '+bal;document.getElementById('demo-l').textContent=(bal/PRICE).toFixed(1);document.getElementById('demo-a').textContent=bal;updateBucket((bal/500)*100);}
+function insertCoin(){if(dispensing)return;bal+=50;if(bal===50&&!wTimer)animWave();setDisplay();if(bal>=50)setTimeout(startDisp,650);}
+function startDisp(){if(dispensing||bal<50)return;dispensing=true;const btn=document.getElementById('demo-btn');btn.disabled=true;document.getElementById('demo-msg').textContent='Dispensing water...';const target=bal/PRICE;let curr=0,step=0,steps=55;const startP=(bal/500)*100;const ms=(target*1700)/steps;dTimer=setInterval(()=>{step++;const prog=step/steps;curr=target*prog;updateBucket(startP*(1-prog));document.getElementById('demo-l').textContent=curr.toFixed(2);if(step>=steps){clearInterval(dTimer);finishDisp(target);}},ms);}
+function finishDisp(lita){dispensing=false;if(wTimer){cancelAnimationFrame(wTimer);wTimer=null;}updateBucket(0);document.getElementById('demo-bal').innerHTML='<span>Tsh</span> 0';document.getElementById('demo-l').textContent='0.0';document.getElementById('demo-a').textContent='0';document.getElementById('demo-msg').textContent='✓ '+lita.toFixed(1)+' litres dispensed. Thank you!';bal=0;setTimeout(()=>{document.getElementById('demo-btn').disabled=false;document.getElementById('demo-msg').textContent='';},2600);}
 </script>
 </body>
 </html>
