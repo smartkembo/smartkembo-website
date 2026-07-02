@@ -438,24 +438,35 @@ async function doSubmit(){
 
   // Try backend first
   try {
-    await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/owner/apply', {
+    var apiRes = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/owner/apply', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         applicant_name:  name,
         applicant_phone: phone,
-        applicant_email: document.getElementById('email').value.trim(),
+        applicant_email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
         business_name:   biz,
         location:        location,
         intended_use:    bizType,
         sim_number:      document.getElementById('sim-number') ? document.getElementById('sim-number').value.trim() : '',
         sim_network:     document.getElementById('sim-network') ? document.getElementById('sim-network').value : '',
         sim_owner_name:  name,
-        notes:           document.getElementById('notes').value.trim()
+        notes:           document.getElementById('notes') ? document.getElementById('notes').value.trim() : ''
       })
     });
+    var apiData = await apiRes.json();
+    if (!apiRes.ok || !apiData.success) {
+      // Onyesha error halisi
+      btn.disabled = false;
+      btn.innerHTML = 'Register Interest →';
+      showAlert('❌ Ombi halikufanikiwa: ' + (apiData.message || apiRes.status + ' ' + apiRes.statusText));
+      return;
+    }
   } catch(e) {
-    // Backend not critical — continue to success
+    btn.disabled = false;
+    btn.innerHTML = 'Register Interest →';
+    showAlert('❌ Tatizo la mtandao: ' + e.message + ' — Jaribu tena au wasiliana nasi kwa WhatsApp.');
+    return;
   }
 
   // Show success
