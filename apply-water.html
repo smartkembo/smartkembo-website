@@ -282,6 +282,31 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
             </div>
           </div>
 
+          <div class="form-group fg-full" style="margin-bottom:4px">
+            <div class="section-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+              SIM Card for Your Machine
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">SIM Card Number</label>
+              <input class="form-control" id="sim-number" type="tel" placeholder="+255 7XX XXX XXX">
+              <div class="form-hint">The SIM that will be inside your SWV machine. SmartKembo will manage the data for you.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">SIM Network</label>
+              <select class="form-control" id="sim-network">
+                <option value="">Select network...</option>
+                <option value="vodacom">Vodacom</option>
+                <option value="airtel">Airtel</option>
+                <option value="tigo">Tigo</option>
+                <option value="halotel">Halotel</option>
+                <option value="ttcl">TTCL</option>
+              </select>
+            </div>
+          </div>
+
           <div class="form-group fg-full">
             <label class="form-label">Any additional information or questions</label>
             <textarea class="form-control" id="notes" placeholder="Tell us anything useful — location details, current challenges, questions about the system..."></textarea>
@@ -413,23 +438,22 @@ async function doSubmit(){
 
   // Try backend first
   try {
-    await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/applications/water', {
+    await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/owner/apply', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        name: name,
-        phone: phone,
-        email: document.getElementById('email').value.trim(),
-        location: location,
-        businessName: biz,
-        businessType: bizType,
-        waterSource: source.value,
-        plan: document.getElementById('plan').value,
-        dailyCustomers: document.getElementById('customers').value,
-        notes: document.getElementById('notes').value.trim(),
-        ref: ref
+        applicant_name:  name,
+        applicant_phone: phone,
+        applicant_email: document.getElementById('email').value.trim(),
+        business_name:   biz,
+        location:        location,
+        intended_use:    bizType,
+        sim_number:      document.getElementById('sim-number') ? document.getElementById('sim-number').value.trim() : '',
+        sim_network:     document.getElementById('sim-network') ? document.getElementById('sim-network').value : '',
+        sim_owner_name:  name,
+        notes:           document.getElementById('notes').value.trim()
       })
-    }); 
+    });
   } catch(e) {
     // Backend not critical — continue to success
   }
