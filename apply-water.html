@@ -438,7 +438,7 @@ async function doSubmit(){
 
   // Try backend first
   try {
-    var apiRes = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/owner/apply', {
+    var apiRes = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/applications/water', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
