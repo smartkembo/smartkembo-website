@@ -84,6 +84,14 @@ a{text-decoration:none;color:inherit;}
 .mc-btn:hover{opacity:.88;}
 .mc-btn:disabled{opacity:.45;cursor:not-allowed;}
 .mc-msg{text-align:center;font-size:12px;color:var(--teal);margin-top:9px;min-height:18px;}
+.d-amt{background:rgba(0,200,232,0.06);border:1px solid rgba(0,200,232,0.15);border-radius:9px;padding:9px 6px;cursor:pointer;color:var(--white);font-family:inherit;transition:all .15s;width:100%;display:flex;flex-direction:column;align-items:center;gap:2px}
+.d-amt:hover,.d-amt.sel{background:rgba(0,200,232,0.16);border-color:rgba(0,200,232,0.5);transform:translateY(-1px)}
+.d-amt.sel{border-color:var(--water);box-shadow:0 0 0 2px rgba(0,200,232,0.18)}
+.d-amt-tsh{font-size:13px;font-weight:700}
+.d-amt-l{font-size:10px;color:var(--g2)}
+.demo-amt-btn{background:rgba(0,200,232,0.07);border:1px solid rgba(0,200,232,0.18);border-radius:9px;padding:10px 6px;cursor:pointer;color:#F0F8FF;font-family:inherit;transition:all .15s;width:100%;}
+.demo-amt-btn:hover,.demo-amt-btn.selected{background:rgba(0,200,232,0.18);border-color:rgba(0,200,232,0.5);transform:translateY(-1px);}
+.demo-amt-btn.selected{border-color:#00C8E8;box-shadow:0 0 0 2px rgba(0,200,232,0.2);}
 .stats-bar{background:linear-gradient(90deg,var(--water),var(--teal));padding:0 5%;}
 .sbi{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:30px 0;}
 .sb{text-align:center;}
@@ -287,45 +295,228 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
           <div class="mc-status"><div class="live-dot"></div>Online</div>
         </div>
         <div class="mc-body">
-          <div class="mc-balance-label">Customer Balance</div>
-          <div class="mc-balance" id="demo-bal"><span>Tsh</span> 0</div>
-          <div class="bucket-wrap">
-            <svg id="bsvg" width="158" height="168" viewBox="0 0 158 168">
+
+          <!-- ── STEP 1: Choose amount ── -->
+          <div id="s1">
+            <div style="font-size:10px;color:var(--g2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px">Select amount</div>
+
+            <!-- Quick amounts -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px">
+              <button class="qa" onclick="qa(this,50)">
+                <div style="font-size:12px;font-weight:700">50</div>
+                <div style="font-size:9px;opacity:.6">1.0 L</div>
+              </button>
+              <button class="qa" onclick="qa(this,100)">
+                <div style="font-size:12px;font-weight:700">100</div>
+                <div style="font-size:9px;opacity:.6">2.0 L</div>
+              </button>
+              <button class="qa" onclick="qa(this,250)">
+                <div style="font-size:12px;font-weight:700">250</div>
+                <div style="font-size:9px;opacity:.6">5.0 L</div>
+              </button>
+              <button class="qa" onclick="qa(this,500)">
+                <div style="font-size:12px;font-weight:700">500</div>
+                <div style="font-size:9px;opacity:.6">10.0 L</div>
+              </button>
+            </div>
+
+            <!-- Custom input -->
+            <div style="position:relative;margin-bottom:12px">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--g2)">Tsh</span>
+              <input id="qc" type="number" min="50" max="5000" step="50" placeholder="Custom amount"
+                oninput="qcust(this.value)"
+                style="width:100%;padding:8px 10px 8px 34px;border-radius:8px;border:1px solid var(--b2);background:rgba(0,200,232,0.04);color:var(--white);font-size:13px;font-family:inherit;outline:none">
+            </div>
+
+            <!-- Preview -->
+            <div id="s1-preview" style="display:none;margin-bottom:12px;background:rgba(0,200,232,0.06);border:1px solid rgba(0,200,232,0.18);border-radius:10px;padding:12px 14px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Your balance</div>
+                  <div id="s1-bal" style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;color:var(--water);line-height:1">Tsh 0</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">You will get</div>
+                  <div id="s1-lit" style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--white)">0.0 L</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bucket preview (empty, shown always) -->
+            <div style="display:flex;justify-content:center;margin-bottom:12px">
+              <svg id="bucket-idle" width="120" height="100" viewBox="0 0 120 100">
+                <defs>
+                  <clipPath id="bclip-idle"><polygon points="14,10 106,10 96,92 24,92"/></clipPath>
+                </defs>
+                <polygon points="14,10 106,10 96,92 24,92" fill="rgba(0,200,232,0.04)" stroke="rgba(0,200,232,0.25)" stroke-width="1.2"/>
+                <rect x="8" y="5" width="104" height="8" rx="4" fill="rgba(0,200,232,0.07)" stroke="rgba(0,200,232,0.2)" stroke-width=".8"/>
+                <path d="M28 5 Q60 -5 92 5" fill="none" stroke="rgba(0,200,232,0.15)" stroke-width="2" stroke-linecap="round"/>
+                <!-- Empty lines -->
+                <line x1="26" y1="40" x2="94" y2="40" stroke="rgba(0,200,232,0.08)" stroke-width=".6" stroke-dasharray="3,3"/>
+                <line x1="24" y1="60" x2="96" y2="60" stroke="rgba(0,200,232,0.08)" stroke-width=".6" stroke-dasharray="3,3"/>
+                <line x1="22" y1="78" x2="98" y2="78" stroke="rgba(0,200,232,0.08)" stroke-width=".6" stroke-dasharray="3,3"/>
+                <text x="60" y="55" text-anchor="middle" font-size="11" fill="rgba(0,200,232,0.2)" font-family="inherit">EMPTY</text>
+              </svg>
+            </div>
+
+            <button id="go-btn" onclick="dStart()" disabled
+              style="width:100%;padding:12px;background:var(--water);color:var(--ink);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;opacity:.3;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6 2 2 9 2 13a10 10 0 0 0 20 0c0-4-4-11-10-11z"/></svg>
+              Get Water
+            </button>
+          </div>
+
+          <!-- ── STEP 2: Dispensing ── -->
+          <div id="s2" style="display:none">
+
+            <!-- Valve + pipe + bucket in one SVG -->
+            <svg id="main-svg" width="100%" viewBox="0 0 280 330" style="display:block;overflow:visible">
               <defs>
-                <clipPath id="bclip"><polygon points="21,15 137,15 125,157 33,157"/></clipPath>
-                <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#00C8E8" stop-opacity=".88"/>
-                  <stop offset="100%" stop-color="#005E9E"/>
+                <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1a4060"/>
+                  <stop offset="100%" stop-color="#0a2035"/>
                 </linearGradient>
+                <linearGradient id="vg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1e6070"/>
+                  <stop offset="100%" stop-color="#0d3545"/>
+                </linearGradient>
+                <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#00C8E8" stop-opacity=".92"/>
+                  <stop offset="100%" stop-color="#0050A0"/>
+                </linearGradient>
+                <linearGradient id="stg" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="rgba(0,200,232,0.15)"/>
+                  <stop offset="40%" stop-color="rgba(0,200,232,0.9)"/>
+                  <stop offset="100%" stop-color="rgba(0,200,232,0.15)"/>
+                </linearGradient>
+                <clipPath id="bclip2"><polygon points="50,165 230,165 214,310 66,310"/></clipPath>
+                <filter id="wglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="glow2"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <clipPath id="sc"><rect x="125" y="100" width="30" height="165"/></clipPath>
               </defs>
-              <polygon points="21,15 137,15 125,157 33,157" fill="rgba(0,200,232,0.055)" stroke="rgba(0,200,232,0.18)" stroke-width=".8"/>
-              <g clip-path="url(#bclip)">
-                <rect id="wfill" x="0" y="157" width="158" height="0" fill="url(#wg)" opacity=".85"/>
-                <path id="wwave" d="" fill="#00C8E8" opacity=".45"/>
+
+              <!-- ══ PIPE SYSTEM (top) ══ -->
+
+              <!-- Horizontal input pipe -->
+              <rect x="10" y="42" width="75" height="18" rx="9" fill="url(#pg)" stroke="rgba(0,200,232,0.12)" stroke-width="1"/>
+              <!-- Water in input pipe -->
+              <rect id="pw-in" x="13" y="45" width="0" height="12" rx="6" fill="rgba(0,200,232,0.55)"/>
+              <text x="47" y="37" text-anchor="middle" font-size="8" fill="rgba(0,200,232,0.35)" font-family="inherit" letter-spacing="1">SUPPLY</text>
+
+              <!-- SOLENOID VALVE -->
+              <rect x="85" y="35" width="80" height="32" rx="7" fill="url(#vg)" stroke="rgba(0,200,232,0.28)" stroke-width="1.3"/>
+              <!-- Valve inner detail -->
+              <rect x="92" y="41" width="66" height="20" rx="4" fill="rgba(0,0,0,0.2)"/>
+              <!-- Valve labels -->
+              <text x="125" y="51" text-anchor="middle" font-size="8.5" font-weight="700" fill="rgba(0,200,232,0.9)" font-family="inherit" letter-spacing="0.5">SOLENOID</text>
+              <text x="125" y="61" text-anchor="middle" font-size="7.5" fill="rgba(0,200,232,0.5)" font-family="inherit">VALVE</text>
+              <!-- LED indicator -->
+              <circle id="vled" cx="97" cy="42" r="5" fill="#EF4444"/>
+              <circle id="vled-g" cx="97" cy="42" r="5" fill="#EF4444" opacity="0" style="filter:blur(4px)"/>
+              <!-- Valve handle bar -->
+              <g id="vhandle" style="transform-origin:125px 35px;transition:transform 0.7s cubic-bezier(.34,1.56,.64,1)">
+                <rect x="112" y="26" width="26" height="9" rx="4.5" fill="#00C8E8" opacity="0.75"/>
+                <text x="125" y="33" text-anchor="middle" font-size="7" font-weight="800" fill="#05111F" font-family="inherit">━━━</text>
               </g>
-              <polygon points="21,15 137,15 125,157 33,157" fill="none" stroke="rgba(0,200,232,0.3)" stroke-width="1.1"/>
-              <rect x="15" y="9" width="128" height="9" rx="4.5" fill="rgba(0,200,232,0.08)" stroke="rgba(0,200,232,0.22)" stroke-width=".8"/>
-              <path d="M45 9 Q79 -5 113 9" fill="none" stroke="rgba(0,200,232,0.18)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="38" y1="61" x2="120" y2="61" stroke="rgba(255,255,255,0.04)" stroke-width=".5" stroke-dasharray="3,3"/>
-              <line x1="35" y1="99" x2="123" y2="99" stroke="rgba(255,255,255,0.04)" stroke-width=".5" stroke-dasharray="3,3"/>
-              <line x1="32" y1="137" x2="126" y2="137" stroke="rgba(255,255,255,0.04)" stroke-width=".5" stroke-dasharray="3,3"/>
-              <text id="ptxt" x="79" y="92" text-anchor="middle" font-size="17" font-weight="600" fill="rgba(255,255,255,0)" font-family="Space Grotesk, sans-serif">0%</text>
+
+              <!-- Flow rate badge (left of valve) -->
+              <g id="flow-badge" opacity="0" style="transition:opacity 0.5s">
+                <rect x="10" y="65" width="72" height="26" rx="6" fill="rgba(0,200,232,0.08)" stroke="rgba(0,200,232,0.2)" stroke-width="1"/>
+                <text x="46" y="75" text-anchor="middle" font-size="7" fill="rgba(0,200,232,0.6)" font-family="inherit" letter-spacing="0.5">FLOW RATE</text>
+                <text id="flow-val" x="46" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="var(--water)" font-family="'Space Grotesk',sans-serif">0.0 L/min</text>
+              </g>
+
+              <!-- Pulse badge (right of valve) -->
+              <g id="pulse-badge" opacity="0" style="transition:opacity 0.5s">
+                <rect x="170" y="65" width="70" height="26" rx="6" fill="rgba(0,200,232,0.06)" stroke="rgba(0,200,232,0.15)" stroke-width="1"/>
+                <text x="205" y="75" text-anchor="middle" font-size="7" fill="rgba(0,200,232,0.5)" font-family="inherit" letter-spacing="0.5">YF-S201</text>
+                <text id="pulse-val" x="205" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="var(--teal)" font-family="'Space Grotesk',sans-serif">0 pulses</text>
+              </g>
+
+              <!-- Horizontal output pipe -->
+              <rect x="165" y="42" width="35" height="18" rx="0" fill="url(#pg)" stroke="rgba(0,200,232,0.12)" stroke-width="1"/>
+              <rect id="pw-out" x="165" y="45" width="0" height="12" fill="rgba(0,200,232,0.55)"/>
+
+              <!-- Vertical pipe down to nozzle -->
+              <rect x="183" y="58" width="18" height="55" rx="0" fill="url(#pg)" stroke="rgba(0,200,232,0.12)" stroke-width="1"/>
+              <rect id="pw-vert" x="186" y="58" width="12" height="0" fill="rgba(0,200,232,0.55)"/>
+
+              <!-- Nozzle -->
+              <path d="M179 112 L205 112 L201 125 L183 125 Z" fill="#0d3545" stroke="rgba(0,200,232,0.3)" stroke-width="1.2"/>
+              <rect x="188" y="118" width="8" height="7" rx="2" fill="rgba(0,200,232,0.15)"/>
+
+              <!-- ══ WATER STREAM ══ -->
+              <g id="stream" style="display:none" clip-path="url(#sc)">
+                <path id="str1" fill="none" stroke="url(#stg)" stroke-width="7" stroke-linecap="round" filter="url(#wglow)"/>
+                <path id="str2" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3" stroke-linecap="round"/>
+                <ellipse id="splash" cx="140" cy="163" rx="12" ry="4" fill="rgba(0,200,232,0.25)" style="display:none"/>
+              </g>
+
+              <!-- ══ BUCKET ══ -->
+              <!-- Shadow -->
+              <ellipse cx="140" cy="318" rx="72" ry="7" fill="rgba(0,0,0,0.25)"/>
+              <!-- Bucket body bg -->
+              <polygon points="50,165 230,165 214,310 66,310" fill="rgba(0,200,232,0.035)"/>
+              <!-- Water fill -->
+              <g clip-path="url(#bclip2)">
+                <rect id="wf2" x="0" y="310" width="280" height="0" fill="url(#wg2)" opacity=".88"/>
+                <path id="ww2" d="" fill="rgba(0,200,232,0.5)"/>
+                <!-- Shine on water -->
+                <rect id="wshine" x="65" y="310" width="80" height="0" fill="rgba(255,255,255,0.07)" rx="4"/>
+              </g>
+              <!-- Bucket outline -->
+              <polygon points="50,165 230,165 214,310 66,310" fill="none" stroke="rgba(0,200,232,0.38)" stroke-width="1.8"/>
+              <!-- Rim -->
+              <rect x="42" y="158" width="196" height="14" rx="7" fill="rgba(0,200,232,0.07)" stroke="rgba(0,200,232,0.22)" stroke-width="1.1"/>
+              <!-- Handle -->
+              <path d="M72 158 Q140 138 208 158" fill="none" stroke="rgba(0,200,232,0.2)" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- Measure lines -->
+              <line x1="80" y1="210" x2="200" y2="210" stroke="rgba(255,255,255,0.05)" stroke-width=".8" stroke-dasharray="5,5"/>
+              <line x1="75" y1="248" x2="205" y2="248" stroke="rgba(255,255,255,0.05)" stroke-width=".8" stroke-dasharray="5,5"/>
+              <line x1="70" y1="285" x2="210" y2="285" stroke="rgba(255,255,255,0.05)" stroke-width=".8" stroke-dasharray="5,5"/>
+              <!-- % label -->
+              <text id="bpct" x="140" y="250" text-anchor="middle" font-size="22" font-weight="800" fill="rgba(255,255,255,0)" font-family="'Space Grotesk',sans-serif">0%</text>
+              <!-- Litre labels -->
+              <text id="lbl25" x="225" y="289" font-size="8" fill="rgba(0,200,232,0)" font-family="inherit">— L</text>
+              <text id="lbl50" x="225" y="252" font-size="8" fill="rgba(0,200,232,0)" font-family="inherit">— L</text>
+              <text id="lbl75" x="225" y="214" font-size="8" fill="rgba(0,200,232,0)" font-family="inherit">— L</text>
             </svg>
+
+            <!-- Stats row -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">
+              <div class="mc-stat">
+                <div class="mc-stat-val" id="d-lit" style="color:var(--water)">0.00</div>
+                <div class="mc-stat-lbl">Litres</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-val" id="d-pls">0</div>
+                <div class="mc-stat-lbl">Pulses</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-val" id="d-flw" style="color:var(--teal)">0.0</div>
+                <div class="mc-stat-lbl">L/min</div>
+              </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div style="height:5px;background:rgba(0,200,232,0.1);border-radius:3px;overflow:hidden;margin-bottom:6px">
+              <div id="d-bar" style="height:100%;width:0%;background:var(--water);border-radius:3px;transition:width .35s ease"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--g2)">
+              <span id="d-done">0.0 L dispensed</span>
+              <span id="d-tgt">of 0.0 L</span>
+            </div>
+            <div id="d-msg" style="text-align:center;font-size:12px;color:var(--teal);margin-top:6px;min-height:18px"></div>
           </div>
-          <div class="mc-stats">
-            <div class="mc-stat"><div class="mc-stat-val" id="demo-l">0.0</div><div class="mc-stat-lbl">Litres</div></div>
-            <div class="mc-stat"><div class="mc-stat-val" id="demo-a">0</div><div class="mc-stat-lbl">Tsh</div></div>
-            <div class="mc-stat"><div class="mc-stat-val" style="color:var(--g2)">50</div><div class="mc-stat-lbl">Tsh/L</div></div>
-          </div>
-          <button class="mc-btn" id="demo-btn" onclick="insertCoin()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Insert Coin (Tsh 50)
-          </button>
-          <div class="mc-msg" id="demo-msg"></div>
+
         </div>
       </div>
     </div>
   </div>
+</section>
+
+</section>
+
 </section>
 
 <!-- Stats Bar -->
@@ -614,16 +805,301 @@ const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isInte
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 window.addEventListener('scroll',()=>{document.querySelector('.nav').style.boxShadow=window.scrollY>20?'0 2px 24px rgba(0,0,0,.35)':'none';});
 
-const PRICE=50;
-let bal=0,dispensing=false,wOff=0,wTimer=null,dTimer=null;
-function getFY(p){const top=15,bot=157,h=bot-top;return bot-(h*Math.min(p,100)/100);}
-function drawWave(p){const fy=getFY(p),amp=p>3?3.2:0.8;let d=`M0 ${fy}`;for(let x=0;x<=158;x+=7)d+=` L${x} ${fy+Math.sin((x+wOff)*0.12)*amp}`;d+=` L158 ${fy+amp+2} L158 200 L0 200 Z`;document.getElementById('wwave').setAttribute('d',d);}
-function updateBucket(p){p=Math.min(100,Math.max(0,p));const fy=getFY(p),wf=document.getElementById('wfill');const wH=(157-15)*p/100;wf.setAttribute('y',fy);wf.setAttribute('height',wH+5);drawWave(p);const pt=document.getElementById('ptxt');pt.textContent=Math.round(p)+'%';pt.setAttribute('y',fy+Math.max(16,(157-fy)/2));pt.setAttribute('fill',p>11?'rgba(255,255,255,0.82)':'rgba(255,255,255,0)');}
-function animWave(){wOff+=1.9;drawWave(Math.min(100,(bal/500)*100));wTimer=requestAnimationFrame(animWave);}
-function setDisplay(){document.getElementById('demo-bal').innerHTML='<span>Tsh</span> '+bal;document.getElementById('demo-l').textContent=(bal/PRICE).toFixed(1);document.getElementById('demo-a').textContent=bal;updateBucket((bal/500)*100);}
-function insertCoin(){if(dispensing)return;bal+=50;if(bal===50&&!wTimer)animWave();setDisplay();if(bal>=50)setTimeout(startDisp,650);}
-function startDisp(){if(dispensing||bal<50)return;dispensing=true;const btn=document.getElementById('demo-btn');btn.disabled=true;document.getElementById('demo-msg').textContent='Dispensing water...';const target=bal/PRICE;let curr=0,step=0,steps=55;const startP=(bal/500)*100;const ms=(target*1700)/steps;dTimer=setInterval(()=>{step++;const prog=step/steps;curr=target*prog;updateBucket(startP*(1-prog));document.getElementById('demo-l').textContent=curr.toFixed(2);if(step>=steps){clearInterval(dTimer);finishDisp(target);}},ms);}
-function finishDisp(lita){dispensing=false;if(wTimer){cancelAnimationFrame(wTimer);wTimer=null;}updateBucket(0);document.getElementById('demo-bal').innerHTML='<span>Tsh</span> 0';document.getElementById('demo-l').textContent='0.0';document.getElementById('demo-a').textContent='0';document.getElementById('demo-msg').textContent='✓ '+lita.toFixed(1)+' litres dispensed. Thank you!';bal=0;setTimeout(()=>{document.getElementById('demo-btn').disabled=false;document.getElementById('demo-msg').textContent='';},2600);}
+// ── SWV Demo ──
+// ═══════════════════════════════════════════════
+//  SWV DEMO — Valve + Pipe + Bucket Animation
+// ═══════════════════════════════════════════════
+var PRICE = 50;
+var dBal = 0, dDispensing = false;
+var dWOff = 0, dWTimer = null, dDispTimer = null;
+var dPulses = 0, dPulseTimer = null;
+var dFlowRate = 0, dDropTimer = null;
+
+// ── Bucket math ──
+function bFY(p){ return 162 - ((162-15)*Math.min(p,100)/100); }
+
+function drawWave(p){
+  var fy=bFY(p), amp=p>3?3.8:0.5, d='M0 '+fy;
+  for(var x=0;x<=180;x+=8) d+=' L'+x+' '+(fy+Math.sin((x+dWOff)*0.11)*amp);
+  d+=' L180 '+(fy+amp+3)+' L180 180 L0 180 Z';
+  var w=document.getElementById('wwave'); if(w) w.setAttribute('d',d);
+}
+
+function updateBucket(p, target){
+  p=Math.min(100,Math.max(0,p));
+  var fy=bFY(p);
+  var wf=document.getElementById('wfill');
+  if(wf){ wf.setAttribute('y',fy); wf.setAttribute('height',(162-15)*p/100+5); }
+  // Shine follows water level
+  var ws=document.getElementById('water-shine');
+  if(ws){ ws.setAttribute('y',fy); ws.setAttribute('height',Math.min(20,(162-15)*p/100)); }
+  drawWave(p);
+  var pt=document.getElementById('ptxt');
+  if(pt){
+    pt.textContent=Math.round(p)+'%';
+    pt.setAttribute('y', fy+Math.max(18,(162-fy)/2));
+    pt.setAttribute('fill', p>14?'rgba(255,255,255,0.9)':'rgba(255,255,255,0)');
+  }
+  // Litre markers
+  if(target){
+    var marks=[
+      {id:'bmark-1', pct:25}, {id:'bmark-2', pct:50}, {id:'bmark-3', pct:75}
+    ];
+    marks.forEach(function(m){
+      var el=document.getElementById(m.id);
+      if(el){
+        var lits=(target*m.pct/100).toFixed(1)+' L';
+        el.textContent=lits;
+        el.setAttribute('fill', p>m.pct-5?'rgba(0,200,232,0.5)':'rgba(0,200,232,0)');
+      }
+    });
+  }
+}
+
+function animWave(){
+  dWOff+=2.0;
+  drawWave(dDispensing ? (document.getElementById('wfill').getAttribute('height')||0)/((162-15)/100) : 0);
+  dWTimer=requestAnimationFrame(animWave);
+}
+
+// ── Stream animation ──
+var streamOff=0, streamTimer=null;
+function animStream(){
+  streamOff+=3;
+  // Animate stream path with slight wobble
+  var s1=document.getElementById('stream-path-1');
+  var amp=3+Math.sin(streamOff*0.1)*1.5;
+  if(s1) s1.setAttribute('d',
+    'M'+(127+Math.sin(streamOff*0.08)*amp)+' 88 Q'+(129+Math.sin(streamOff*0.12)*amp)+' 110 '+(127+Math.sin(streamOff*0.09)*amp)+' 130 Q'+(125+Math.sin(streamOff*0.1)*amp)+' 150 '+(129+Math.sin(streamOff*0.07)*amp)+' 170 Q'+(131+Math.sin(streamOff*0.11)*amp)+' 185 '+(128+Math.sin(streamOff*0.09)*amp)+' 200'
+  );
+  // Animate droplets falling
+  var drops=[
+    {id:'drop1', baseY:95, speed:0.8, offset:0},
+    {id:'drop2', baseY:120, speed:1.1, offset:Math.PI/2},
+    {id:'drop3', baseY:145, speed:0.9, offset:Math.PI},
+  ];
+  drops.forEach(function(d){
+    var dropEl=document.getElementById(d.id);
+    if(dropEl){
+      var y=d.baseY + ((streamOff*d.speed)%80);
+      var op=0.4+Math.sin(streamOff*0.15+d.offset)*0.3;
+      dropEl.setAttribute('cy',y);
+      dropEl.setAttribute('opacity',op);
+    }
+  });
+  streamTimer=requestAnimationFrame(animStream);
+}
+
+// ── Valve open/close ──
+function openValve(){
+  var handle=document.getElementById('valve-handle');
+  var led=document.getElementById('valve-led');
+  var ledGlow=document.getElementById('valve-led-glow');
+  // Rotate handle 90deg = open
+  if(handle) handle.style.transform='rotate(90deg)';
+  if(led){ led.setAttribute('fill','#10B981'); }
+  if(ledGlow){ ledGlow.setAttribute('fill','#10B981'); ledGlow.setAttribute('opacity','0.6'); }
+  // Fill pipes
+  setTimeout(function(){
+    var pl=document.getElementById('pipe-water-left');
+    var pr=document.getElementById('pipe-water-right');
+    var pd=document.getElementById('pipe-water-down');
+    if(pl) pl.style.width='91px';
+    if(pr) pr.style.width='30px';
+    setTimeout(function(){
+      if(pd) pd.style.height='38px';
+      // Show stream
+      setTimeout(function(){
+        var stream=document.getElementById('water-stream');
+        if(stream) stream.style.display='block';
+        if(!streamTimer) animStream();
+        // Show indicators
+        var fi=document.getElementById('flow-rate-indicator');
+        var pi=document.getElementById('pulse-indicator');
+        if(fi) fi.style.display='block';
+        if(pi) pi.style.display='block';
+      }, 400);
+    }, 200);
+  }, 600);
+}
+
+function closeValve(){
+  var handle=document.getElementById('valve-handle');
+  var led=document.getElementById('valve-led');
+  var ledGlow=document.getElementById('valve-led-glow');
+  if(handle) handle.style.transform='rotate(0deg)';
+  if(led){ led.setAttribute('fill','#EF4444'); }
+  if(ledGlow){ ledGlow.setAttribute('fill','#EF4444'); ledGlow.setAttribute('opacity','0'); }
+  // Drain pipes
+  var pl=document.getElementById('pipe-water-left');
+  var pr=document.getElementById('pipe-water-right');
+  var pd=document.getElementById('pipe-water-down');
+  if(pl) pl.style.width='0';
+  if(pr) pr.style.width='0';
+  if(pd) pd.style.height='0';
+  // Hide stream + indicators
+  var stream=document.getElementById('water-stream');
+  if(stream) stream.style.display='none';
+  if(streamTimer){ cancelAnimationFrame(streamTimer); streamTimer=null; }
+  var fi=document.getElementById('flow-rate-indicator');
+  var pi=document.getElementById('pulse-indicator');
+  if(fi) fi.style.display='none';
+  if(pi) pi.style.display='none';
+}
+
+// ── Amount selection ──
+function dSelect(amt){
+  dBal=amt;
+  document.querySelectorAll('.d-amt').forEach(function(b){ b.classList.remove('sel'); });
+  // Find clicked button
+  event.currentTarget.classList.add('sel');
+  document.getElementById('d-custom').value='';
+  updateSummary();
+}
+function dCustom(val){
+  var v=Math.round(parseInt(val||0)/50)*50;
+  if(v<50) return;
+  dBal=v;
+  document.querySelectorAll('.d-amt').forEach(function(b){ b.classList.remove('sel'); });
+  updateSummary();
+}
+function updateSummary(){
+  if(dBal<=0) return;
+  var liters=(dBal/PRICE).toFixed(1);
+  var sum=document.getElementById('d-summary');
+  var balShow=document.getElementById('d-bal-show');
+  var litWill=document.getElementById('d-lit-will');
+  if(sum) sum.style.display='block';
+  if(balShow) balShow.textContent='Tsh '+dBal;
+  if(litWill) litWill.textContent=liters+' L';
+  var btn=document.getElementById('d-get-btn');
+  if(btn){ btn.disabled=false; btn.style.opacity='1'; }
+}
+
+// ── Start dispensing ──
+function dStart(){
+  if(dDispensing||dBal<50) return;
+  dDispensing=true;
+  var target=dBal/PRICE;
+
+  // Switch steps
+  document.getElementById('demo-step-1').style.display='none';
+  document.getElementById('demo-step-2').style.display='block';
+
+  // Set labels
+  var el=function(id){return document.getElementById(id);};
+  if(el('d-lit-target-label')) el('d-lit-target-label').textContent='of '+target.toFixed(1)+' L';
+  if(el('d-msg'))              el('d-msg').textContent='Opening valve...';
+
+  // Start wave animation
+  if(!dWTimer) animWave();
+
+  // Pulse simulation (YF-S201 = ~450 pulses/litre)
+  dPulses=0;
+  var totalPulses=Math.round(target*450);
+  dFlowRate=0;
+
+  // Open valve first (delay 0.8s)
+  setTimeout(function(){
+    openValve();
+    if(el('d-msg')) el('d-msg').textContent='Valve open — water flowing...';
+
+    // Start dispensing after pipe fills (1.2s delay)
+    setTimeout(function(){
+      var curr=0, step=0;
+      var totalSteps=Math.round(60 + target*12);
+      var msPerStep=Math.round((target*2400)/totalSteps);
+      var pulsesPerStep=totalPulses/totalSteps;
+
+      // Flow rate simulation (ramps up then stable)
+      var flowRamp=0;
+
+      dDispTimer=setInterval(function(){
+        step++;
+        var prog=step/totalSteps;
+        curr=target*prog;
+
+        // Ramp flow rate
+        if(flowRamp<2.8) flowRamp+=0.12;
+        dFlowRate=Math.min(2.8, flowRamp)*(0.95+Math.random()*0.1);
+
+        // Pulses
+        dPulses=Math.round(curr*450);
+
+        // Update bucket
+        var pct=prog*100;
+        updateBucket(pct, target);
+
+        // Update UI
+        if(el('d-lit-out'))   el('d-lit-out').textContent=curr.toFixed(2);
+        if(el('d-pulses'))    el('d-pulses').textContent=dPulses;
+        if(el('d-flow'))      el('d-flow').textContent=dFlowRate.toFixed(1);
+        if(el('d-prog-bar'))  el('d-prog-bar').style.width=Math.min(100,Math.round(prog*100))+'%';
+        if(el('d-lit-done-label')) el('d-lit-done-label').textContent=curr.toFixed(2)+' L dispensed';
+
+        // Update flow rate in SVG
+        if(el('flow-rate-txt')) el('flow-rate-txt').textContent=dFlowRate.toFixed(1)+' L/min';
+        if(el('pulse-txt'))     el('pulse-txt').textContent=dPulses;
+
+        if(step>=totalSteps){
+          clearInterval(dDispTimer);
+          dFinish(target);
+        }
+      }, msPerStep);
+
+    }, 1200);
+  }, 800);
+}
+
+// ── Finish dispensing ──
+function dFinish(lita){
+  dDispensing=false;
+  dFlowRate=0;
+
+  // Close valve
+  closeValve();
+  if(dWTimer){ cancelAnimationFrame(dWTimer); dWTimer=null; }
+
+  var el=function(id){return document.getElementById(id);};
+  updateBucket(100, lita);
+
+  if(el('d-flow'))    el('d-flow').textContent='0.0';
+  if(el('d-msg')){
+    el('d-msg').style.color='var(--teal)';
+    el('d-msg').textContent='✓ '+lita.toFixed(1)+' L dispensed — Valve closed';
+  }
+  if(el('d-prog-bar')) el('d-prog-bar').style.background='#10B981';
+
+  // Reset after 3s
+  setTimeout(function(){
+    // Drain bucket visually
+    var drainSteps=30, s=0;
+    var drainTimer=setInterval(function(){
+      s++;
+      updateBucket((1-s/drainSteps)*100, lita);
+      if(s>=drainSteps){
+        clearInterval(drainTimer);
+        // Back to step 1
+        document.getElementById('demo-step-1').style.display='block';
+        document.getElementById('demo-step-2').style.display='none';
+        // Reset step 1 UI
+        document.querySelectorAll('.d-amt').forEach(function(b){b.classList.remove('sel');});
+        if(el('d-summary'))  el('d-summary').style.display='none';
+        if(el('d-get-btn')){ el('d-get-btn').disabled=true; el('d-get-btn').style.opacity='.35'; }
+        if(el('d-custom'))   el('d-custom').value='';
+        // Reset step 2
+        if(el('d-prog-bar')){ el('d-prog-bar').style.width='0%'; el('d-prog-bar').style.background='var(--water)'; }
+        if(el('d-lit-out'))  el('d-lit-out').textContent='0.00';
+        if(el('d-pulses'))   el('d-pulses').textContent='0';
+        if(el('d-flow'))     el('d-flow').textContent='0.0';
+        if(el('d-msg')){ el('d-msg').style.color=''; el('d-msg').textContent=''; }
+        updateBucket(0, 0);
+        dBal=0; dPulses=0;
+      }
+    }, 60);
+  }, 3000);
+}
+
 </script>
 </body>
 </html>
