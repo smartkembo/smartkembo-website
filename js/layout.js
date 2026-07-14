@@ -73,9 +73,9 @@ const footerHTML = `
     </div>
     <div class="footer-col">
       <h4>Wasiliana</h4>
-      <a href="tel:+255712000000">+255 712 000 000</a>
-      <a href="mailto:info@smartkembo.co.tz">info@smartkembo.co.tz</a>
-      <a href="#">WhatsApp</a>
+      <a href="tel:+255767830319">+255 767 830 319</a>
+      <a href="mailto:info@smartkembo.com">info@smartkembo.com</a>
+      <a href="https://wa.me/255767830319" target="_blank" rel="noopener">WhatsApp</a>
       <a href="#">Instagram</a>
     </div>
   </div>
