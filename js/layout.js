@@ -14,16 +14,16 @@ const navHTML = `
       <span class="logo-text">Smart<span>Kembo</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Nyumbani</a></li>
-      <li><a href="about.html">Kuhusu</a></li>
-      <li><a href="services.html">Huduma</a></li>
-      <li><a href="projects.html">Miradi</a></li>
-      <li><a href="tutorials.html">Mafunzo</a></li>
-      <li><a href="contact.html">Wasiliana</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="tutorials.html">Tutorials</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="smartkembo/login-owner.html" class="btn btn-outline btn-sm">Ingia</a>
-      <a href="smartkembo/apply.html" class="btn btn-primary btn-sm">Anza Bure</a>
+      <a href="smartkembo/login-owner.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="smartkembo/apply.html" class="btn btn-primary btn-sm">Start Free</a>
     </div>
     <button class="hamburger" onclick="openMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -32,13 +32,13 @@ const navHTML = `
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <button class="mobile-close" onclick="closeMenu()">✕</button>
-  <a href="index.html" onclick="closeMenu()">Nyumbani</a>
-  <a href="about.html" onclick="closeMenu()">Kuhusu</a>
-  <a href="services.html" onclick="closeMenu()">Huduma</a>
-  <a href="projects.html" onclick="closeMenu()">Miradi</a>
-  <a href="tutorials.html" onclick="closeMenu()">Mafunzo</a>
-  <a href="contact.html" onclick="closeMenu()">Wasiliana</a>
-  <a href="smartkembo/apply.html" onclick="closeMenu()" style="color:var(--accent);margin-top:12px">Anza Bure →</a>
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="services.html" onclick="closeMenu()">Services</a>
+  <a href="projects.html" onclick="closeMenu()">Projects</a>
+  <a href="tutorials.html" onclick="closeMenu()">Tutorials</a>
+  <a href="contact.html" onclick="closeMenu()">Contact</a>
+  <a href="smartkembo/apply.html" onclick="closeMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
 </div>`;
 
 const footerHTML = `
@@ -56,23 +56,23 @@ const footerHTML = `
         </div>
         <span class="logo-text">Smart<span>Kembo</span></span>
       </a>
-      <p>Mfumo wa kisasa wa WiFi Vending Management. Simamia WiFi yako, wateja na mapato kutoka sehemu moja.</p>
+      <p>Modern WiFi Vending Management platform. Manage your WiFi, customers, and revenue from one place.</p>
     </div>
     <div class="footer-col">
-      <h4>Mfumo</h4>
-      <a href="services.html">Huduma Zetu</a>
-      <a href="smartkembo/apply.html">Omba Akaunti</a>
-      <a href="smartkembo/login-owner.html">Ingia</a>
-      <a href="tutorials.html">Mafunzo</a>
+      <h4>Platform</h4>
+      <a href="services.html">Our Services</a>
+      <a href="smartkembo/apply.html">Apply for Account</a>
+      <a href="smartkembo/login-owner.html">Login</a>
+      <a href="tutorials.html">Tutorials</a>
     </div>
     <div class="footer-col">
-      <h4>Kampuni</h4>
-      <a href="about.html">Kuhusu Sisi</a>
-      <a href="projects.html">Miradi</a>
-      <a href="contact.html">Wasiliana</a>
+      <h4>Company</h4>
+      <a href="about.html">About Us</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
     </div>
     <div class="footer-col">
-      <h4>Wasiliana</h4>
+      <h4>Contact</h4>
       <a href="tel:+255767830319">+255 767 830 319</a>
       <a href="mailto:info@smartkembo.com">info@smartkembo.com</a>
       <a href="https://wa.me/255767830319" target="_blank" rel="noopener">WhatsApp</a>
@@ -80,8 +80,8 @@ const footerHTML = `
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 SmartKembo. Haki zote zimehifadhiwa.</span>
-    <span>Imetengenezwa Tanzania 🇹🇿</span>
+    <span>© 2025 SmartKembo. All rights reserved.</span>
+    <span>Made in Tanzania 🇹🇿</span>
   </div>
 </footer>`;
 
