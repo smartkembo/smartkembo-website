@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartKembo — Mafunzo</title>
+<title>SmartKembo — Tutorials</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .page-hero { background:var(--primary-2); padding:160px 5% 80px; text-align:center; position:relative; overflow:hidden; }
@@ -58,20 +58,20 @@
 <script src="js/layout.js"></script>
 
 <div class="page-hero">
-  <div class="section-tag" style="justify-content:center">Mafunzo</div>
-  <h1 class="page-hero-title">Jifunze<br><span>Kwa Urahisi</span></h1>
-  <p class="page-hero-sub">Mafunzo ya jinsi ya kutumia SmartKembo — hatua kwa hatua, kwa Kiswahili</p>
+  <div class="section-tag" style="justify-content:center">Tutorials</div>
+  <h1 class="page-hero-title">Learn<br><span>the Easy Way</span></h1>
+  <p class="page-hero-sub">Step-by-step tutorials on how to use SmartKembo</p>
 </div>
 
 <section>
   <div class="container">
     <div class="tuts-cats">
-      <div class="tut-cat active" onclick="filterTuts('all',this)">Yote</div>
-      <div class="tut-cat" onclick="filterTuts('kuanza',this)">Kuanza</div>
-      <div class="tut-cat" onclick="filterTuts('dashibodi',this)">Dashibodi</div>
-      <div class="tut-cat" onclick="filterTuts('malipo',this)">Malipo</div>
+      <div class="tut-cat active" onclick="filterTuts('all',this)">All</div>
+      <div class="tut-cat" onclick="filterTuts('kuanza',this)">Getting Started</div>
+      <div class="tut-cat" onclick="filterTuts('dashibodi',this)">Dashboard</div>
+      <div class="tut-cat" onclick="filterTuts('malipo',this)">Payments</div>
       <div class="tut-cat" onclick="filterTuts('router',this)">Router</div>
-      <div class="tut-cat" onclick="filterTuts('advanced',this)">Ya Juu</div>
+      <div class="tut-cat" onclick="filterTuts('advanced',this)">Advanced</div>
     </div>
 
     <div class="tuts-grid" id="tuts-grid">
@@ -79,114 +79,114 @@
       <div class="tut-card" data-cat="kuanza" onclick="openTut(1)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#EAF3DE,#D1FAE5)">
           🚀
-          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+          <div class="tut-level"><span class="badge badge-green">Beginner</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 10</span>
-            <span class="badge badge-green">Mwanzo</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 10 min</span>
+            <span class="badge badge-green">Beginner</span>
           </div>
-          <div class="tut-title">Jinsi ya Kuanzisha SmartKembo kwa Mara ya Kwanza</div>
-          <p class="tut-desc">Hatua zote za kuanzisha akaunti, kuweka pakiti za kwanza, na kuunganisha router yako.</p>
+          <div class="tut-title">How to Set Up SmartKembo for the First Time</div>
+          <p class="tut-desc">All the steps to set up your account, add your first packages, and connect your router.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
       <div class="tut-card" data-cat="malipo" onclick="openTut(2)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#E6F1FB,#BFDBFE)">
           💳
-          <div class="tut-level"><span class="badge badge-blue">Wastani</span></div>
+          <div class="tut-level"><span class="badge badge-blue">Intermediate</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 8</span>
-            <span class="badge badge-blue">Wastani</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 8 min</span>
+            <span class="badge badge-blue">Intermediate</span>
           </div>
-          <div class="tut-title">Jinsi Malipo ya M-Pesa Yanavyofanya Kazi</div>
-          <p class="tut-desc">Elewa jinsi wateja wanavyolipa na pesa inavyoingia kwenye akaunti yako ya simu moja kwa moja.</p>
+          <div class="tut-title">How M-Pesa Payments Work</div>
+          <p class="tut-desc">Understand how customers pay and how money lands directly in your mobile money account.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
       <div class="tut-card" data-cat="dashibodi" onclick="openTut(3)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#FAEEDA,#FDE68A)">
           📊
-          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+          <div class="tut-level"><span class="badge badge-green">Beginner</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 6</span>
-            <span class="badge badge-green">Mwanzo</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6 min</span>
+            <span class="badge badge-green">Beginner</span>
           </div>
-          <div class="tut-title">Jinsi ya Kusoma Ripoti za Mapato</div>
-          <p class="tut-desc">Elewa kila takwimu kwenye dashibodi yako — mapato, wateja, na pakiti zinazouza zaidi.</p>
+          <div class="tut-title">How to Read Your Revenue Reports</div>
+          <p class="tut-desc">Understand every stat on your dashboard — revenue, customers, and best-selling packages.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
       <div class="tut-card" data-cat="router" onclick="openTut(4)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">
           🔌
-          <div class="tut-level"><span class="badge" style="background:#EDE9FE;color:#5B21B6">Ya Juu</span></div>
+          <div class="tut-level"><span class="badge" style="background:#EDE9FE;color:#5B21B6">Advanced</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 20</span>
-            <span class="badge" style="background:#EDE9FE;color:#5B21B6">Ya Juu</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 20 min</span>
+            <span class="badge" style="background:#EDE9FE;color:#5B21B6">Advanced</span>
           </div>
-          <div class="tut-title">Jinsi ya Kuunganisha Router ya Mikrotik</div>
-          <p class="tut-desc">Mwongozo kamili wa kuunganisha Mikrotik na SmartKembo — hatua kwa hatua na picha.</p>
+          <div class="tut-title">How to Connect Your Mikrotik Router</div>
+          <p class="tut-desc">A full guide to connecting Mikrotik with SmartKembo — step by step, with screenshots.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
       <div class="tut-card" data-cat="dashibodi" onclick="openTut(5)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#ECFDF5,#A7F3D0)">
           📦
-          <div class="tut-level"><span class="badge badge-green">Mwanzo</span></div>
+          <div class="tut-level"><span class="badge badge-green">Beginner</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 5</span>
-            <span class="badge badge-green">Mwanzo</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 5 min</span>
+            <span class="badge badge-green">Beginner</span>
           </div>
-          <div class="tut-title">Jinsi ya Kuongeza na Kubadilisha Pakiti</div>
-          <p class="tut-desc">Weka pakiti mpya, badilisha bei, washa au zima pakiti — rahisi kabisa kupitia dashibodi.</p>
+          <div class="tut-title">How to Add and Edit Packages</div>
+          <p class="tut-desc">Add new packages, change prices, enable or disable packages — all easily from the dashboard.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
       <div class="tut-card" data-cat="advanced" onclick="openTut(6)">
         <div class="tut-thumb" style="background:linear-gradient(135deg,#FEF2F2,#FECACA)">
           🌐
-          <div class="tut-level"><span class="badge" style="background:#FEF2F2;color:#991B1B">Ya Juu</span></div>
+          <div class="tut-level"><span class="badge" style="background:#FEF2F2;color:#991B1B">Advanced</span></div>
         </div>
         <div class="tut-body">
           <div class="tut-meta">
-            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Dakika 30</span>
-            <span class="badge" style="background:#FEF2F2;color:#991B1B">Ya Juu</span>
+            <span class="tut-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 30 min</span>
+            <span class="badge" style="background:#FEF2F2;color:#991B1B">Advanced</span>
           </div>
-          <div class="tut-title">Jinsi ya Kuweka SmartKembo Online (Render + Vercel)</div>
-          <p class="tut-desc">Mwongozo kamili wa kuweka mfumo wako online — GitHub, Render, Vercel, na domain yako.</p>
+          <div class="tut-title">How to Deploy SmartKembo Online (Render + Vercel)</div>
+          <p class="tut-desc">A complete guide to putting your system online — GitHub, Render, Vercel, and your domain.</p>
         </div>
         <div class="tut-footer">
-          <span class="tut-author">Na SmartKembo Team</span>
-          <span class="tut-link">Soma → </span>
+          <span class="tut-author">By SmartKembo Team</span>
+          <span class="tut-link">Read → </span>
         </div>
       </div>
 
@@ -198,7 +198,7 @@
 <div class="tut-modal-bg" id="tut-modal">
   <div class="tut-modal">
     <div class="tut-modal-header">
-      <div class="tut-modal-title" id="modal-title">Mafunzo</div>
+      <div class="tut-modal-title" id="modal-title">Tutorial</div>
       <button class="tut-modal-close" onclick="closeTut()">✕</button>
     </div>
     <div class="tut-modal-body" id="modal-body"></div>
@@ -208,59 +208,59 @@
 <script>
 const tutorials = {
   1: {
-    title: 'Jinsi ya Kuanzisha SmartKembo kwa Mara ya Kwanza',
+    title: 'How to Set Up SmartKembo for the First Time',
     steps: [
-      { title: 'Omba Akaunti', desc: 'Nenda kwenye <strong>smartkembo.co.tz/apply</strong> → jaza fomu ya maombi yako — jina la biashara, eneo, simu na barua pepe. Tutakupigia simu ndani ya saa 24.' },
-      { title: 'Pata Taarifa za Kuingia', desc: 'Baada ya kukubaliwa, utapata barua pepe yenye <strong>email</strong> na <strong>nenosiri</strong> lako la mwanza. Nenda kwenye smartkembo.co.tz/login-owner na uingie.', tip: 'Badilisha nenosiri lako la mwanza mara moja ukiingia — nenda Mipangilio → Nenosiri.' },
-      { title: 'Weka Pakiti Zako', desc: 'Nenda <strong>Pakiti</strong> kwenye sidebar → bonyeza "Ongeza Pakiti Mpya" → weka jina (mf. "1 Saa"), muda (dakika 60), kasi (5 Mbps) na bei (Tsh 1,000) → Hifadhi.' },
-      { title: 'Shiriki Portal yako', desc: 'Nenda <strong>Portal Yangu</strong> → nakili URL ya portal yako. URL inaonekana kama: <code>wifi.smartkembo.co.tz?owner=UUID</code> — hii ndio wateja wataifungua wanapotaka kulipa.', tip: 'Weka URL hii kama "redirect" kwenye router yako ya Mikrotik ili wateja wapelekwe huko kiotomatiki.' },
+      { title: 'Apply for an Account', desc: 'Go to <strong>smartkembo.com/apply</strong> → fill in your application form — business name, location, phone and email. We will call you within 24 hours.' },
+      { title: 'Get Your Login Details', desc: 'Once approved, you\'ll receive an email with your <strong>email</strong> and starting <strong>password</strong>. Go to smartkembo.com/login-owner and log in.', tip: 'Change your starting password immediately after logging in — go to Settings → Password.' },
+      { title: 'Set Up Your Packages', desc: 'Go to <strong>Packages</strong> in the sidebar → click "Add New Package" → set name (e.g. "1 Hour"), duration (60 minutes), speed (5 Mbps) and price (Tsh 1,000) → Save.' },
+      { title: 'Share Your Portal', desc: 'Go to <strong>My Portal</strong> → copy your portal URL. The URL looks like: <code>wifi.smartkembo.com?owner=UUID</code> — this is what customers will open when they want to pay.', tip: 'Set this URL as the "redirect" on your Mikrotik router so customers are taken there automatically.' },
     ]
   },
   2: {
-    title: 'Jinsi Malipo ya M-Pesa Yanavyofanya Kazi',
+    title: 'How M-Pesa Payments Work',
     steps: [
-      { title: 'Mteja Anaingia Portal', desc: 'Mteja anaunganika WiFi yako → router inamwelekeza kwenye portal yako ya SmartKembo → anaona pakiti zako na bei zake.' },
-      { title: 'Anachagua Pakiti', desc: 'Anabonyeza pakiti anayotaka (mf. "3 Masaa — Tsh 2,500") → anaweka nambari yake ya simu ya M-Pesa → anabonyeza "Lipa".' },
-      { title: 'Malipo Yanatumwa', desc: 'SmartKembo inaitumia Selcom au Azampesa kutuma <strong>popup kwenye simu ya mteja</strong> — anaona: "Thibitisha kulipa Tsh 2,500 kwa SmartKembo".' },
-      { title: 'Mteja Anathibitisha', desc: 'Mteja anabonyeza "Confirm" na kuweka PIN yake ya M-Pesa → pesa inaenda moja kwa moja kwenye akaunti yako ya M-Pesa.', tip: 'Pesa inaingia kwenye akaunti yako kwa sekunde 30 hadi dakika 2 — inategemea mzigo wa mtandao wa M-Pesa.' },
-      { title: 'WiFi Inawashwa', desc: 'Backend ya SmartKembo inapokea uthibitisho → inaambia router kumruhusu mteja → <strong>mteja anapata WiFi papo hapo</strong> bila kufanya chochote zaidi.' },
+      { title: 'Customer Opens the Portal', desc: 'A customer connects to your WiFi → the router redirects them to your SmartKembo portal → they see your packages and prices.' },
+      { title: 'They Choose a Package', desc: 'They tap the package they want (e.g. "3 Hours — Tsh 2,500") → enter their M-Pesa phone number → tap "Pay".' },
+      { title: 'Payment Is Sent', desc: 'SmartKembo uses Selcom or Azampesa to send a <strong>popup to the customer\'s phone</strong> — they see: "Confirm payment of Tsh 2,500 to SmartKembo".' },
+      { title: 'Customer Confirms', desc: 'The customer taps "Confirm" and enters their M-Pesa PIN → the money goes directly into your M-Pesa account.', tip: 'Money lands in your account within 30 seconds to 2 minutes — depending on M-Pesa network load.' },
+      { title: 'WiFi Is Activated', desc: 'The SmartKembo backend receives confirmation → tells the router to authorize the customer → <strong>the customer gets WiFi instantly</strong> with nothing else to do.' },
     ]
   },
   3: {
-    title: 'Jinsi ya Kusoma Ripoti za Mapato',
+    title: 'How to Read Your Revenue Reports',
     steps: [
-      { title: 'Takwimu za Juu (Stats Cards)', desc: 'Kwenye dashibodi yako, unaona kadi 4 juu: <strong>Mapato Leo</strong>, <strong>Wateja Leo</strong>, <strong>Wanaounganika Sasa</strong>, na <strong>Mapato ya Mwezi</strong>. Hizi zinasasishwa kiotomatiki.' },
-      { title: 'Chati ya Wiki', desc: 'Chati ya bar inaonyesha mapato ya siku 7 zilizopita. Bar ya mwisho (leo) ni ya rangi ya kijani — nyingine ni za kijivu. Inakusaidia kuona mwelekeo wa mapato yako.' },
-      { title: 'Ripoti ya Kina', desc: 'Nenda <strong>Ripoti</strong> kwenye sidebar → chagua kipindi: Leo, Wiki, Mwezi, au Mwaka. Utaona: idadi ya wateja, malipo yaliyofanikiwa, na mapato jumla.' },
-      { title: 'Pakiti Zinazouza Zaidi', desc: 'Kwenye dashibodi, sehemu ya "Pakiti Zinazouza Zaidi" inaonyesha ni pakiti gani inayopendwa na wateja wako zaidi. Tumia taarifa hii kubadilisha pakiti na bei.', tip: 'Ukiona pakiti moja inauza zaidi ya 60% — fikiria kuongeza bei yake kidogo. Wateja wanaipenda maana yake watalipa zaidi.' },
+      { title: 'Top Stats Cards', desc: 'On your dashboard, you\'ll see 4 cards at the top: <strong>Today\'s Revenue</strong>, <strong>Today\'s Customers</strong>, <strong>Currently Connected</strong>, and <strong>Monthly Revenue</strong>. These update automatically.' },
+      { title: 'Weekly Chart', desc: 'The bar chart shows revenue for the last 7 days. The last bar (today) is green — the others are gray. It helps you see your revenue trend.' },
+      { title: 'Detailed Reports', desc: 'Go to <strong>Reports</strong> in the sidebar → choose a period: Today, Week, Month, or Year. You\'ll see: customer count, successful payments, and total revenue.' },
+      { title: 'Best-Selling Packages', desc: 'On the dashboard, the "Best-Selling Packages" section shows which package your customers prefer most. Use this to adjust your packages and pricing.', tip: 'If one package sells more than 60% of the time — consider raising its price slightly. Customers who love it will still pay.' },
     ]
   },
   4: {
-    title: 'Jinsi ya Kuunganisha Router ya Mikrotik',
+    title: 'How to Connect Your Mikrotik Router',
     steps: [
-      { title: 'Ingiza taarifa za Router', desc: 'Kwenye Dashibodi yako → <strong>Mipangilio</strong> → <strong>Router Settings</strong> → weka: Router Host (IP ya router yako, mf. 192.168.88.1), Port (8728), User (admin), Password.' },
-      { title: 'Washa API kwenye Mikrotik', desc: 'Ingia Mikrotik (kupitia Winbox au browser) → IP → Services → washa <strong>api</strong> port 8728. Hakikisha SmartKembo inaruhusiwa (IP ya seva yako).', code: '/ip service set api disabled=no' },
-      { title: 'Weka Hotspot', desc: 'Kwenye Mikrotik → IP → Hotspot → Setup → chagua interface yako (wlan1) → weka DNS name (mf. wifi.smartkembo.co.tz) → maliza setup.' },
-      { title: 'Badilisha Login Page', desc: 'Kwenye Mikrotik → Files → weka URL ya portal yako badala ya login.html ya default. Wateja watapelekwa portal yako ya SmartKembo moja kwa moja.', tip: 'URL ya portal: https://wifi.smartkembo.co.tz/portal.html?owner=UUID_YAKO' },
+      { title: 'Enter Router Details', desc: 'On your Dashboard → <strong>Settings</strong> → <strong>Router Settings</strong> → enter: Router Host (your router\'s IP, e.g. 192.168.88.1), Port (8728), User (admin), Password.' },
+      { title: 'Enable API on Mikrotik', desc: 'Log into Mikrotik (via Winbox or browser) → IP → Services → enable <strong>api</strong> on port 8728. Make sure SmartKembo is allowed (your server\'s IP).', code: '/ip service set api disabled=no' },
+      { title: 'Set Up Hotspot', desc: 'On Mikrotik → IP → Hotspot → Setup → select your interface (wlan1) → set DNS name (e.g. wifi.smartkembo.com) → finish setup.' },
+      { title: 'Change the Login Page', desc: 'On Mikrotik → Files → set your portal URL in place of the default login.html. Customers will be taken directly to your SmartKembo portal.', tip: 'Portal URL: https://wifi.smartkembo.com/portal.html?owner=YOUR_UUID' },
     ]
   },
   5: {
-    title: 'Jinsi ya Kuongeza na Kubadilisha Pakiti',
+    title: 'How to Add and Edit Packages',
     steps: [
-      { title: 'Nenda Pakiti', desc: 'Kwenye sidebar → bonyeza <strong>Pakiti</strong>. Utaona orodha ya pakiti zako zote za sasa pamoja na status yao (imewashwa/imezimwa).' },
-      { title: 'Ongeza Pakiti Mpya', desc: 'Bonyeza <strong>"Ongeza Pakiti Mpya"</strong> → jaza fomu: Jina la pakiti, Muda (dakika), Kasi ya juu (Mbps), Bei (Tsh) → Hifadhi.' },
-      { title: 'Badilisha Pakiti Iliyopo', desc: 'Bonyeza kitufe cha ✎ (hariri) kwenye pakiti unayotaka kubadilisha → badilisha bei, muda, au kasi → Hifadhi. Mabadiliko yanaanza mara moja.' },
-      { title: 'Zima au Washa Pakiti', desc: 'Toggle (kitufe cha kuzunguka) kwenye kila pakiti inakuwezesha kuizima bila kuifuta. Pakiti iliyozimwa haitaonekana kwa wateja lakini unaweza kuirudisha wakati wowote.', tip: 'Zima pakiti za bei ndogo wakati wa msimu wa watu wengi — weka pakiti za bei kubwa tu ili mapato yako yaongezeke.' },
+      { title: 'Go to Packages', desc: 'In the sidebar → click <strong>Packages</strong>. You\'ll see a list of all your current packages along with their status (enabled/disabled).' },
+      { title: 'Add a New Package', desc: 'Click <strong>"Add New Package"</strong> → fill in the form: Package name, Duration (minutes), Max speed (Mbps), Price (Tsh) → Save.' },
+      { title: 'Edit an Existing Package', desc: 'Click the ✎ (edit) button on the package you want to change → adjust the price, duration, or speed → Save. Changes take effect immediately.' },
+      { title: 'Enable or Disable a Package', desc: 'The toggle switch on each package lets you disable it without deleting it. A disabled package won\'t be visible to customers but you can re-enable it anytime.', tip: 'Disable cheaper packages during busy periods — leave only higher-priced packages active to boost your revenue.' },
     ]
   },
   6: {
-    title: 'Jinsi ya Kuweka SmartKembo Online',
+    title: 'How to Deploy SmartKembo Online',
     steps: [
-      { title: 'Pakia GitHub', desc: 'Fungua akaunti GitHub (github.com) → tengeneza repos mbili: <strong>smartkembo-backend</strong> na <strong>smartkembo-frontend</strong> → pakia msimbo wako.', code: 'git init\ngit add .\ngit commit -m "First commit"\ngit push origin main' },
-      { title: 'Weka Backend kwenye Render', desc: 'Nenda render.com → "New +" → "Web Service" → unganisha GitHub → chagua smartkembo-backend → ongeza PostgreSQL database → weka variables (NODE_ENV, JWT_SECRET, DATABASE_URL, n.k.)' },
-      { title: 'Run Migration', desc: 'Render → smartkembo-backend → Shell → andika:', code: 'npm run migrate\nnpm run seed' },
-      { title: 'Weka Frontend kwenye Vercel', desc: 'Nenda vercel.com → "New Project" → chagua smartkembo-frontend → deploy. Utapata URL kama <strong>smartkembo.vercel.app</strong>' },
-      { title: 'Unganisha Domain', desc: 'Vercel → Settings → Domains → ongeza domain yako (mf. smartkembo.co.tz) → Vercel itakupa DNS records → weka kwenye Namecheap DNS.', tip: 'DNS inachukua saa 24-48 kusambaa duniani. Baada ya hapo domain yako itafanya kazi!' },
+      { title: 'Push to GitHub', desc: 'Open a GitHub account (github.com) → create two repos: <strong>smartkembo-backend</strong> and <strong>smartkembo-frontend</strong> → push your code.', code: 'git init\ngit add .\ngit commit -m "First commit"\ngit push origin main' },
+      { title: 'Deploy Backend on Render', desc: 'Go to render.com → "New +" → "Web Service" → connect GitHub → select smartkembo-backend → add a PostgreSQL database → set environment variables (NODE_ENV, JWT_SECRET, DATABASE_URL, etc.)' },
+      { title: 'Run Migrations', desc: 'Render → smartkembo-backend → Shell → run:', code: 'npm run migrate\nnpm run seed' },
+      { title: 'Deploy Frontend on Vercel', desc: 'Go to vercel.com → "New Project" → select smartkembo-frontend → deploy. You\'ll get a URL like <strong>smartkembo.vercel.app</strong>' },
+      { title: 'Connect Your Domain', desc: 'Vercel → Settings → Domains → add your domain (e.g. smartkembo.com) → Vercel will give you DNS records → add them to your Namecheap DNS.', tip: 'DNS takes 24-48 hours to propagate worldwide. After that your domain will be live!' },
     ]
   }
 };
@@ -275,7 +275,7 @@ function openTut(id) {
         <div class="tut-step-title">${s.title}</div>
         <div class="tut-step-desc">${s.desc}</div>
         ${s.code ? `<code class="tut-code">${s.code}</code>` : ''}
-        ${s.tip ? `<div class="tut-tip">💡 <strong>Ushauri:</strong> ${s.tip}</div>` : ''}
+        ${s.tip ? `<div class="tut-tip">💡 <strong>Tip:</strong> ${s.tip}</div>` : ''}
       </div>
     </div>`).join('');
   document.getElementById('tut-modal').classList.add('open');
