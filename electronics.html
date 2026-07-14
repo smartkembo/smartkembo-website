@@ -159,7 +159,7 @@ a{text-decoration:none;}
       <div class="logo-mark"><svg viewBox="0 0 40 40" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2"/><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2" transform="rotate(60,20,20)"/><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2" transform="rotate(120,20,20)"/><circle cx="20" cy="20" r="4" fill="#06101E"/><circle cx="20" cy="20" r="2" fill="#00C8E8"/><circle cx="34" cy="20" r="2.5" fill="#06101E"/><circle cx="9" cy="10" r="2.5" fill="#06101E"/><circle cx="9" cy="30" r="2.5" fill="#06101E"/></svg></div>
       <div class="logo-name">Smart<span>Kembo</span></div>
     </a>
-    <a href="index.html" class="nav-back">← Rudi Nyumbani</a>
+    <a href="index.html" class="nav-back">← Back to Home</a>
     <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -276,7 +276,7 @@ a{text-decoration:none;}
       <div class="side-card">
         <div class="sc-title">Featured Products</div>
         <div id="elec-products">
-          <div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Inapakia...</div>
+          <div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Loading...</div>
         </div>
         <a href="shop.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);border-radius:9px;font-size:13px;font-weight:600;margin-top:10px;transition:all .2s;" onmouseover="this.style.background='var(--cyan)';this.style.color='var(--navy)'" onmouseout="this.style.background='var(--cyan2)';this.style.color='var(--cyan)'">🛒 View All Products →</a>
       </div>
@@ -336,7 +336,7 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
 (function() {
   var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api';
 
-  // Load products — mpya juu
+  // Load products — newest first
   fetch(API + '/content/public?type=product&limit=6', { mode: 'cors' })
     .then(function(r){ return r.json(); })
     .catch(function(){ return null; })
@@ -344,17 +344,17 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
       var wrap = document.getElementById('elec-products');
       if (!wrap) return;
       if (!res || !res.data || !res.data.length) {
-        wrap.innerHTML = '<div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">Hakuna bidhaa bado</div>';
+        wrap.innerHTML = '<div style="font-size:12px;color:var(--gray2);text-align:center;padding:10px">No products yet</div>';
         return;
       }
       wrap.innerHTML = '';
-      // API inarudisha DESC — mpya kwanza
+      // API returns DESC — newest first
       res.data.forEach(function(p) {
         var price  = p.price ? 'Tsh ' + parseFloat(p.price).toLocaleString() : '';
         var img    = (p.image_url && p.image_url.startsWith('http'))
           ? '<img src="' + p.image_url + '" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0">'
           : '<div style="width:44px;height:44px;border-radius:8px;background:var(--navy3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📦</div>';
-        var waMsg  = encodeURIComponent('Nataka kununua: ' + p.title + (price ? ' — ' + price : ''));
+        var waMsg  = encodeURIComponent('I want to buy: ' + p.title + (price ? ' — ' + price : ''));
 
         var item = document.createElement('a');
         item.href   = 'https://wa.me/255767830319?text=' + waMsg;
@@ -395,7 +395,7 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
         else if (rawCat.includes('video') || rawCat.includes('youtube')) cat = 'video';
         else if (rawCat.includes('basic') || rawCat.includes('beginner')) cat = 'basics';
 
-        var excerpt = p.body ? p.body.substring(0, 130) + '...' : 'Bonyeza Read More kusoma zaidi...';
+        var excerpt = p.body ? p.body.substring(0, 130) + '...' : 'Click Read More to learn more...';
 
         var imgSection = (p.image_url && p.image_url.startsWith('http'))
           ? '<img class="art-card-img" src="' + p.image_url + '" alt="' + p.title + '">'
@@ -502,7 +502,7 @@ document.getElementById('art-count').textContent = document.querySelectorAll('.a
 
 <script>
 function renderArticleBody(text) {
-  if (!text) return '<p style="color:rgba(255,255,255,0.4)">Hakuna maelezo.</p>';
+  if (!text) return '<p style="color:rgba(255,255,255,0.4)">No description available.</p>';
   var html = '';
   var lines = text.split('\n');
   var inCode = false;
@@ -623,7 +623,7 @@ function shareArticle() {
     navigator.share({ title: title ? title.textContent : '', url: window.location.href });
   } else {
     navigator.clipboard.writeText(window.location.href).then(function(){
-      alert('Link imekiliwa!');
+      alert('Link copied!');
     });
   }
 }
