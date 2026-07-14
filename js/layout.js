@@ -25,20 +25,20 @@ const navHTML = `
       <a href="smartkembo/login-owner.html" class="btn btn-outline btn-sm">Login</a>
       <a href="smartkembo/apply.html" class="btn btn-primary btn-sm">Start Free</a>
     </div>
-    <button class="hamburger" onclick="openMenu()" aria-label="Menu">
+    <button class="hamburger" onclick="openSiteMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
-  <button class="mobile-close" onclick="closeMenu()">✕</button>
-  <a href="index.html" onclick="closeMenu()">Home</a>
-  <a href="about.html" onclick="closeMenu()">About</a>
-  <a href="services.html" onclick="closeMenu()">Services</a>
-  <a href="projects.html" onclick="closeMenu()">Projects</a>
-  <a href="tutorials.html" onclick="closeMenu()">Tutorials</a>
-  <a href="contact.html" onclick="closeMenu()">Contact</a>
-  <a href="smartkembo/apply.html" onclick="closeMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
+  <button class="mobile-close" onclick="closeSiteMenu()">✕</button>
+  <a href="index.html" onclick="closeSiteMenu()">Home</a>
+  <a href="about.html" onclick="closeSiteMenu()">About</a>
+  <a href="services.html" onclick="closeSiteMenu()">Services</a>
+  <a href="projects.html" onclick="closeSiteMenu()">Projects</a>
+  <a href="tutorials.html" onclick="closeSiteMenu()">Tutorials</a>
+  <a href="contact.html" onclick="closeSiteMenu()">Contact</a>
+  <a href="smartkembo/apply.html" onclick="closeSiteMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
 </div>`;
 
 const footerHTML = `
@@ -87,10 +87,15 @@ const footerHTML = `
 
 // Inject nav and footer
 document.addEventListener('DOMContentLoaded', () => {
-  // Nav
-  const navEl = document.createElement('div');
-  navEl.innerHTML = navHTML;
-  document.body.prepend(...navEl.childNodes);
+  // Nav — ONLY inject if this page doesn't already have its own <nav>
+  // (baadhi ya kurasa, kama shop.html, zina nav yao maalum tayari iliyojengwa
+  // ndani ya ukurasa wenyewe — hazihitaji hii ya pamoja, kuiongeza kunasababisha
+  // nav mbili zikijirudia juu ya ukurasa)
+  if (!document.querySelector('nav')) {
+    const navEl = document.createElement('div');
+    navEl.innerHTML = navHTML;
+    document.body.prepend(...navEl.childNodes);
+  }
 
   // Footer
   const footEl = document.createElement('div');
@@ -104,11 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Scroll nav
-  window.addEventListener('scroll', () => {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
-  });
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+  const navBar = document.getElementById('nav');
+  if (navBar) {
+    window.addEventListener('scroll', () => {
+      navBar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+    navBar.classList.toggle('scrolled', window.scrollY > 20);
+  }
 });
 
-function openMenu()  { document.getElementById('mobile-menu').classList.add('open'); document.body.style.overflow = 'hidden'; }
-function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.body.style.overflow = ''; }
+function openSiteMenu()  { document.getElementById('mobile-menu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeSiteMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.body.style.overflow = ''; }
