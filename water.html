@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SWV — SmartKembo Water Vending. Automated coin-operated water dispensing with real-time dashboard, IoT hardware, and 4G connectivity. Built for Tanzania.">
+<meta name="description" content="SWV — SmartKembo Water Vending. Automated water dispensing with coin, RFID card, and mobile money (M-Pesa/Tigo/Airtel) payments, real-time dashboard, IoT hardware, and 4G connectivity. Built for Tanzania.">
 <title>SWV — SmartKembo Water Vending</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -284,7 +284,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         Sell Water <span class="accent">Intelligently</span>
         <span class="line2">No Cashier · No Waste · Revenue 24/7</span>
       </h1>
-      <p class="hero-p">A customer inserts coins — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
+      <p class="hero-p">A customer pays with coins, an RFID card, or M-Pesa/Tigo/Airtel on their phone — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
       <div class="hero-acts">
         <a href="apply-water.html" class="btn btn-water btn-lg">Apply for Your SWV Machine →</a>
         <a href="#how" class="btn btn-ghost btn-lg">How It Works</a>
@@ -504,6 +504,18 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <span class="feat-tag tag-live">✓ Live</span>
       </div>
       <div class="feat rv">
+        <div class="feat-icon">💳</div>
+        <div class="feat-title">RFID Card Payments</div>
+        <div class="feat-desc">Regular customers can use a reloadable card instead of coins — faster, cleaner, and their balance is tracked automatically. Works across all your machines.</div>
+        <span class="feat-tag tag-live">✓ Live (Optional Hardware)</span>
+      </div>
+      <div class="feat rv">
+        <div class="feat-icon">📱</div>
+        <div class="feat-title">Lipa kwa Simu (M-Pesa/Tigo/Airtel)</div>
+        <div class="feat-desc">Customers can pay by mobile money directly on the machine's keypad — no smartphone or data needed on their side. The machine sends a payment prompt straight to their phone.</div>
+        <span class="feat-tag tag-live">✓ Live (Optional Hardware)</span>
+      </div>
+      <div class="feat rv">
         <div class="feat-icon">📊</div>
         <div class="feat-title">Real-Time Dashboard</div>
         <div class="feat-desc">See today's revenue, litres dispensed, and a live animated bucket showing exactly what your customer is doing — from anywhere.</div>
@@ -513,6 +525,12 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <div class="feat-icon">💰</div>
         <div class="feat-title">Update Price Instantly</div>
         <div class="feat-desc">Raise or lower the price per litre directly from your phone. The SWV machine updates automatically within minutes — no site visit needed.</div>
+        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
+      </div>
+      <div class="feat rv">
+        <div class="feat-icon">🤖</div>
+        <div class="feat-title">AI Insights</div>
+        <div class="feat-desc">Get automatic sales trend analysis, peak-hour predictions, and hardware health alerts — powered by AI, in plain Swahili or English.</div>
         <span class="feat-tag tag-live">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
@@ -639,7 +657,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
     <div style="text-align:center">
       <div class="eyebrow rv" style="justify-content:center">Pricing</div>
       <h2 class="sec-h2 rv" style="text-align:center">Choose the Plan <span>That Fits You</span></h2>
-      <p class="sec-p rv" style="text-align:center;margin:0 auto 0">The SWV machine works without a subscription. The online dashboard requires a subscription only.</p>
+      <p class="sec-p rv" style="text-align:center;margin:0 auto 0">The SWV machine works without a subscription. The online dashboard requires a subscription only — <strong style="color:var(--water)">first month free on every new machine.</strong></p>
     </div>
     <div class="plans-grid">
       <div class="plan rv">
@@ -650,6 +668,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <a href="apply-water.html" class="plan-btn">Apply for Machine</a>
         <div class="plan-div"></div>
         <div class="plan-feat"><div class="pfc">✓</div>Coin vending (all TZS coins)</div>
+        <div class="plan-feat"><div class="pfc">✓</div>RFID card & Lipa kwa Simu (optional hardware)</div>
         <div class="plan-feat"><div class="pfc">✓</div>LCD shows balance and litres</div>
         <div class="plan-feat"><div class="pfc">✓</div>Bluetooth config (price, calibration)</div>
         <div class="plan-feat"><div class="pfc">✓</div>SMS commands (balance, price)</div>
@@ -658,13 +677,14 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="plan featured rv">
         <div class="plan-pop">⭐ MOST POPULAR</div>
         <div class="plan-name">Subscription</div>
-        <div class="plan-sub">Machine + Online Dashboard</div>
+        <div class="plan-sub">Machine + Online Dashboard · First Month Free</div>
         <div class="plan-price">30K</div>
         <div class="plan-mo">Tsh / month · SmartKembo pays for data</div>
-        <a href="apply-water.html" class="plan-btn">Start Subscription</a>
+        <a href="apply-water.html" class="plan-btn">Start Free Month</a>
         <div class="plan-div" style="background:rgba(0,200,232,.14)"></div>
         <div class="plan-feat"><div class="pfc">✓</div>Everything in Basic</div>
         <div class="plan-feat"><div class="pfc">✓</div>Real-time dashboard</div>
+        <div class="plan-feat"><div class="pfc">✓</div>AI Insights & sales predictions</div>
         <div class="plan-feat"><div class="pfc">✓</div>Live bucket animation</div>
         <div class="plan-feat"><div class="pfc">✓</div>Update price from your phone</div>
         <div class="plan-feat"><div class="pfc">✓</div>Full transaction history</div>
