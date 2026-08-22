@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Water Vending Registration — SMD's SmartKembo</title>
+<title>Apply for Your Water Vending Machine — SMD's SmartKembo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);}
@@ -151,11 +151,11 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
 
   <!-- BANNER -->
   <div class="banner">
-    <div class="banner-icon">⏳</div>
+    <div class="banner-icon">💧</div>
     <div>
-      <div class="dev-badge"><div class="dev-dot"></div>Coming Q3 2025</div>
-      <div class="banner-title">Water Vending is not live yet — Register your interest now</div>
-      <div class="banner-desc">We are building and testing the Water Vending system. Fill this form and we will contact you personally when it is ready in your area. No payment required — this is just a pre-registration.</div>
+      <div class="dev-badge" style="background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.2);color:#22C55E"><div class="dev-dot" style="background:#22C55E"></div>Live Now</div>
+      <div class="banner-title">Water Vending is LIVE — Apply for Your Machine</div>
+      <div class="banner-desc">Mashine zetu tayari zinafanya kazi — kupokea sarafu, kadi ya RFID, na Lipa kwa Simu (M-Pesa/Tigo/Airtel), pamoja na dashibodi ya wakati halisi. Jaza fomu hii na tutawasiliana nawe ndani ya siku 2 kupanga usakinishaji.</div>
     </div>
   </div>
 
@@ -286,9 +286,10 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
           <div class="form-group fg-full" style="margin-bottom:4px">
             <div class="section-label">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
-              SIM Card for Your Machine
+              SIM Card for Your Machine (or use your own WiFi instead)
             </div>
           </div>
+          <div class="form-hint" style="margin:-6px 0 10px">Your machine can connect via a SIM card (SmartKembo manages the data) OR your own WiFi if available near the machine — whichever is easier for you. If you'll use WiFi, you can leave the SIM fields below empty.</div>
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">SIM Card Number</label>
@@ -315,8 +316,8 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
         </div>
 
         <div class="form-footer">
-          <div class="form-note">By submitting you agree to be contacted by SMD's SmartKembo.<br>No payment required. This is a pre-registration only.</div>
-          <button class="btn-submit" id="submitBtn" onclick="doSubmit()">Register Interest →</button>
+          <div class="form-note">By submitting you agree to be contacted by SMD's SmartKembo.<br>Your first month of dashboard access is free — no payment until you decide to continue.</div>
+          <button class="btn-submit" id="submitBtn" onclick="doSubmit()">Submit Application →</button>
         </div>
       </div>
     </div>
@@ -324,8 +325,8 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
     <!-- SUCCESS -->
     <div class="form-card success" id="success-card">
       <div class="success-icon">✅</div>
-      <h2 class="success-title">You're on the <span>List!</span></h2>
-      <p class="success-p">Thank you for registering your interest in Water Vending. We have received your details and will contact you personally on WhatsApp as soon as the service is ready in your area.</p>
+      <h2 class="success-title">Application <span>Received!</span></h2>
+      <p class="success-p">Thank you for applying for your SWV Water Vending machine. We have received your details and will contact you on WhatsApp within 2 days to arrange installation.</p>
       <div class="success-ref">
         <div class="success-ref-lbl">Reference Number</div>
         <div class="success-ref-val" id="ref-num">WV-000000</div>
@@ -343,29 +344,29 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
     <div class="info-card">
       <div class="ic-title">💧 What to Expect</div>
       <div class="ic-item"><div class="ic-dot"></div>We will call or WhatsApp you within 2 days</div>
-      <div class="ic-item"><div class="ic-dot"></div>We will explain the system and answer your questions</div>
-      <div class="ic-item"><div class="ic-dot"></div>You will be first to know when Water Vending goes live</div>
-      <div class="ic-item"><div class="ic-dot"></div>No payment until you are fully satisfied</div>
+      <div class="ic-item"><div class="ic-dot"></div>We will explain the system and discuss your location</div>
+      <div class="ic-item"><div class="ic-dot"></div>We install your SWV machine and register it on our system</div>
+      <div class="ic-item"><div class="ic-dot"></div>You get 1 month of free dashboard access to try it out</div>
     </div>
 
     <div class="info-card">
-      <div class="ic-title">📅 Timeline</div>
+      <div class="ic-title">📅 What Happens Next</div>
       <div class="tl">
         <div class="tl-item">
           <div class="tl-dot">✓</div>
-          <div><div class="tl-title">Backend Ready</div><div class="tl-desc">Server and database complete</div></div>
+          <div><div class="tl-title">Application Received</div><div class="tl-desc">We review your details and location</div></div>
         </div>
         <div class="tl-item">
           <div class="tl-dot">✓</div>
-          <div><div class="tl-title">Dashboard Ready</div><div class="tl-desc">Owner dashboard complete</div></div>
+          <div><div class="tl-title">Contact & Agreement</div><div class="tl-desc">We call you and confirm setup details</div></div>
         </div>
         <div class="tl-item">
           <div class="tl-dot" style="background:rgba(96,165,250,0.3);border-color:var(--blue)">~</div>
-          <div><div class="tl-title">IoT Hardware</div><div class="tl-desc">Dispenser testing in progress</div></div>
+          <div><div class="tl-title">Installation</div><div class="tl-desc">Machine installed and connected at your location</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-dot" style="color:var(--gray2);border-color:var(--border);background:transparent">4</div>
-          <div><div class="tl-title">Live Launch — Q3 2025</div><div class="tl-desc">First customers go live</div></div>
+          <div class="tl-dot" style="color:var(--gray2);border-color:var(--border);background:transparent">✓</div>
+          <div><div class="tl-title">You're Live</div><div class="tl-desc">Start selling water — dashboard included free for 1 month</div></div>
         </div>
       </div>
     </div>
