@@ -246,14 +246,15 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="logo-name">Smart<span>Kembo</span> <span class="swv-badge">SWV</span></div>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="wifi.html">WiFi Vending</a></li>
-      <li><a href="water.html" class="active">Water Vending</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+      <li><a href="wifi.html" data-i18n="nav_wifi">WiFi Vending</a></li>
+      <li><a href="water.html" class="active" data-i18n="nav_water">Water Vending</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost btn-sm">Login</a>
-      <a href="apply-water.html" class="btn btn-water btn-sm">Apply for Machine</a>
+      <button onclick="toggleLang()" class="btn btn-ghost btn-sm" id="lang-toggle-btn" style="min-width:44px">SW</button>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost btn-sm" data-i18n="nav_login">Login</a>
+      <a href="apply-water.html" class="btn btn-water btn-sm" data-i18n="nav_apply">Apply for Machine</a>
     </div>
     <button class="hamburger" onclick="openMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -263,11 +264,11 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
-  <a href="index.html" onclick="closeMenu()">Home</a>
-  <a href="wifi.html" onclick="closeMenu()">WiFi Vending</a>
-  <a href="water.html" onclick="closeMenu()" style="color:var(--water)">Water Vending</a>
-  <a href="contact.html" onclick="closeMenu()">Contact</a>
-  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px">Apply for Machine →</a>
+  <a href="index.html" onclick="closeMenu()" data-i18n="nav_home">Home</a>
+  <a href="wifi.html" onclick="closeMenu()" data-i18n="nav_wifi">WiFi Vending</a>
+  <a href="water.html" onclick="closeMenu()" style="color:var(--water)" data-i18n="nav_water">Water Vending</a>
+  <a href="contact.html" onclick="closeMenu()" data-i18n="nav_contact">Contact</a>
+  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px" data-i18n="nav_apply_arrow">Apply for Machine →</a>
 </div>
 
 <!-- HERO -->
@@ -281,18 +282,18 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
     <div>
       <div class="hero-eyebrow"><div class="live-dot"></div>SWV — SmartKembo Water Vending</div>
       <h1 class="hero-h1">
-        Sell Water <span class="accent">Intelligently</span>
-        <span class="line2">No Cashier · No Waste · Revenue 24/7</span>
+        <span data-i18n="hero_h1a">Sell Water</span> <span class="accent" data-i18n="hero_h1b">Intelligently</span>
+        <span class="line2" data-i18n="hero_h1c">No Cashier · No Waste · Revenue 24/7</span>
       </h1>
-      <p class="hero-p">A customer pays with coins, an RFID card, or M-Pesa/Tigo/Airtel on their phone — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
+      <p class="hero-p" data-i18n="hero_p">A customer pays with coins, an RFID card, or M-Pesa/Tigo/Airtel on their phone — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
       <div class="hero-acts">
-        <a href="apply-water.html" class="btn btn-water btn-lg">Apply for Your SWV Machine →</a>
-        <a href="#how" class="btn btn-ghost btn-lg">How It Works</a>
+        <a href="apply-water.html" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
+        <a href="#how" class="btn btn-ghost btn-lg" data-i18n="hero_btn2">How It Works</a>
       </div>
       <div class="hero-trust">
-        <div class="trust-item"><div class="trust-icon">⚡</div><span>Works without a cashier</span></div>
-        <div class="trust-item"><div class="trust-icon">📡</div><span>Online via 4G SIM card</span></div>
-        <div class="trust-item"><div class="trust-icon">🇹🇿</div><span>Built in Tanzania</span></div>
+        <div class="trust-item"><div class="trust-icon">⚡</div><span data-i18n="hero_trust1">Works without a cashier</span></div>
+        <div class="trust-item"><div class="trust-icon">📡</div><span data-i18n="hero_trust2">Online via 4G SIM card</span></div>
+        <div class="trust-item"><div class="trust-icon">🇹🇿</div><span data-i18n="hero_trust3">Built in Tanzania</span></div>
       </div>
     </div>
     <!-- Live SWV Machine Demo -->
@@ -304,14 +305,14 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
             <div class="mc-dot" style="background:#FFBD2E"></div>
             <div class="mc-dot" style="background:#28CA41"></div>
           </div>
-          <div class="mc-title">SWV-001 &middot; LIVE DEMO</div>
-          <div class="mc-status"><div class="live-dot"></div>Online</div>
+          <div class="mc-title">SWV-001 &middot; <span data-i18n="demo_live">LIVE DEMO</span></div>
+          <div class="mc-status"><div class="live-dot"></div><span data-i18n="demo_online">Online</span></div>
         </div>
         <div class="mc-body">
 
           <!-- Amount selection (always visible) -->
           <div id="s1">
-            <div style="font-size:10px;color:var(--g2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px">Select amount</div>
+            <div style="font-size:10px;color:var(--g2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px" data-i18n="demo_select">Select amount</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
               <button class="qa" onclick="qa(this,50)"><span style="font-size:13px;font-weight:700;display:block">Tsh 50</span><span style="font-size:9px;color:var(--g2)">1.0 L</span></button>
               <button class="qa" onclick="qa(this,100)"><span style="font-size:13px;font-weight:700;display:block">Tsh 100</span><span style="font-size:9px;color:var(--g2)">2.0 L</span></button>
@@ -320,24 +321,24 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
             </div>
             <div style="position:relative;margin-bottom:10px">
               <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--g2)">Tsh</span>
-              <input id="qc" type="number" min="50" max="5000" step="50" placeholder="Custom amount"
+              <input id="qc" type="number" min="50" max="5000" step="50" data-i18n-placeholder="demo_custom" placeholder="Custom amount"
                 oninput="qcust(this.value)"
                 style="width:100%;padding:8px 10px 8px 34px;border-radius:8px;border:1px solid var(--b2);background:rgba(0,200,232,0.04);color:var(--white);font-size:13px;font-family:inherit;outline:none">
             </div>
             <div id="s1-preview" style="display:none;margin-bottom:10px;background:rgba(0,200,232,0.06);border:1px solid rgba(0,200,232,0.18);border-radius:10px;padding:11px 13px">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
-                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Your balance</div>
+                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px" data-i18n="demo_yourbal">Your balance</div>
                   <div id="s1-bal" style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--water);line-height:1">Tsh 0</div>
                 </div>
                 <div style="text-align:right">
-                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">You get</div>
+                  <div style="font-size:9px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px" data-i18n="demo_youget">You get</div>
                   <div id="s1-lit" style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--white)">0.0 L</div>
                 </div>
               </div>
             </div>
             <!-- GET WATER BUTTON -->
-            <button id="go-btn" onclick="dStart()" disabled>Get Water</button>
+            <button id="go-btn" onclick="dStart()" disabled data-i18n="demo_getwater">Get Water</button>
           </div>
 
           <!-- SVG: always visible — pipe + valve + bucket -->
@@ -413,8 +414,8 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
           <!-- Live stats (show during dispensing) -->
           <div id="disp-ui" style="display:none">
             <div class="mc-stats" style="margin-bottom:8px">
-              <div class="mc-stat"><div class="mc-stat-val" id="d-lit" style="color:var(--water)">0.00</div><div class="mc-stat-lbl">Litres</div></div>
-              <div class="mc-stat"><div class="mc-stat-val" id="d-pls">0</div><div class="mc-stat-lbl">Pulses</div></div>
+              <div class="mc-stat"><div class="mc-stat-val" id="d-lit" style="color:var(--water)">0.00</div><div class="mc-stat-lbl" data-i18n="demo_litres">Litres</div></div>
+              <div class="mc-stat"><div class="mc-stat-val" id="d-pls">0</div><div class="mc-stat-lbl" data-i18n="demo_pulses">Pulses</div></div>
               <div class="mc-stat"><div class="mc-stat-val" id="d-flw" style="color:var(--teal)">0.0</div><div class="mc-stat-lbl">L/min</div></div>
             </div>
             <div style="height:4px;background:rgba(0,200,232,0.1);border-radius:2px;overflow:hidden;margin-bottom:5px">
@@ -439,46 +440,46 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Stats Bar -->
 <div class="stats-bar">
   <div class="sbi">
-    <div class="sb rv"><div class="sb-val">24+</div><div class="sb-lbl">Active machine owners</div></div>
-    <div class="sb rv"><div class="sb-val">±0.1L</div><div class="sb-lbl">Dispensing accuracy</div></div>
-    <div class="sb rv"><div class="sb-val">24/7</div><div class="sb-lbl">Operates without a cashier</div></div>
-    <div class="sb rv"><div class="sb-val">4G</div><div class="sb-lbl">Online without WiFi</div></div>
+    <div class="sb rv"><div class="sb-val">24+</div><div class="sb-lbl" data-i18n="stat1">Active machine owners</div></div>
+    <div class="sb rv"><div class="sb-val">±0.1L</div><div class="sb-lbl" data-i18n="stat2">Dispensing accuracy</div></div>
+    <div class="sb rv"><div class="sb-val">24/7</div><div class="sb-lbl" data-i18n="stat3">Operates without a cashier</div></div>
+    <div class="sb rv"><div class="sb-val">4G</div><div class="sb-lbl" data-i18n="stat4">Online without WiFi</div></div>
   </div>
 </div>
 
 <!-- How It Works -->
 <section id="how" class="how-wrap">
   <div class="sec-inner">
-    <div class="eyebrow rv">Process</div>
-    <h2 class="sec-h2 rv">How <span>SWV Works</span></h2>
-    <p class="sec-p rv">Simple for the customer — powerful for the owner.</p>
+    <div class="eyebrow rv" data-i18n="how_eyebrow">Process</div>
+    <h2 class="sec-h2 rv"><span data-i18n="how_h2a">How</span> <span data-i18n="how_h2b">SWV Works</span></h2>
+    <p class="sec-p rv" data-i18n="how_p">Simple for the customer — powerful for the owner.</p>
     <div class="how-grid rv">
       <div class="hw">
         <div class="hw-num">01</div>
         <div class="hw-icon">🪙</div>
-        <div class="hw-title">Customer Inserts Coins</div>
-        <div class="hw-desc">They insert TZS coins — one or more. The LCD displays their balance and how many litres they will receive at the current price.</div>
+        <div class="hw-title" data-i18n="how1_t">Customer Pays</div>
+        <div class="hw-desc" data-i18n="how1_d">They pay with coins, an RFID card, or M-Pesa/Tigo/Airtel on the keypad. The LCD displays their balance and how many litres they will receive.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">02</div>
         <div class="hw-icon">▶</div>
-        <div class="hw-title">Press One Button</div>
-        <div class="hw-desc">A single button press. The Arduino Mega opens the solenoid valve and water starts flowing immediately.</div>
+        <div class="hw-title" data-i18n="how2_t">Press One Button</div>
+        <div class="hw-desc" data-i18n="how2_d">A single button press. The Arduino Mega opens the solenoid valve and water starts flowing immediately.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">03</div>
         <div class="hw-icon">💧</div>
-        <div class="hw-title">Exact Litres Dispensed</div>
-        <div class="hw-desc">The YF-S201 flow sensor counts litres with ±0.1L accuracy. The valve closes automatically — their litres only, not a drop more.</div>
+        <div class="hw-title" data-i18n="how3_t">Exact Litres Dispensed</div>
+        <div class="hw-desc" data-i18n="how3_d">The YF-S201 flow sensor counts litres with ±0.1L accuracy. The valve closes automatically — their litres only, not a drop more.</div>
         <svg class="hw-arr" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4l5 5-5 5" stroke="rgba(0,200,232,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="hw">
         <div class="hw-num">04</div>
         <div class="hw-icon">📊</div>
-        <div class="hw-title">You See It in Real Time</div>
-        <div class="hw-desc">The ESP32 sends transaction data to the server within minutes. View revenue and litres on your dashboard — live, from your phone.</div>
+        <div class="hw-title" data-i18n="how4_t">You See It in Real Time</div>
+        <div class="hw-desc" data-i18n="how4_d">The ESP32 sends transaction data to the server within minutes. View revenue and litres on your dashboard — live, from your phone.</div>
       </div>
     </div>
   </div>
@@ -487,63 +488,63 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Features -->
 <section id="features">
   <div class="sec-inner">
-    <div class="eyebrow rv">Features</div>
-    <h2 class="sec-h2 rv">Everything You Need to <span>Sell Water</span></h2>
-    <p class="sec-p rv">A complete system — from the first coin to the monthly report.</p>
+    <div class="eyebrow rv" data-i18n="feat_eyebrow">Features</div>
+    <h2 class="sec-h2 rv"><span data-i18n="feat_h2a">Everything You Need to</span> <span data-i18n="feat_h2b">Sell Water</span></h2>
+    <p class="sec-p rv" data-i18n="feat_p">A complete system — from the first coin to the monthly report.</p>
     <div class="feat-grid">
       <div class="feat rv">
         <div class="feat-icon">🪙</div>
-        <div class="feat-title">Coin Vending</div>
-        <div class="feat-desc">Accepts all TZS coins. No M-Pesa app required — accessible to every customer, even without a smartphone.</div>
-        <span class="feat-tag tag-live">✓ Live</span>
+        <div class="feat-title" data-i18n="feat1_t">Coin Vending</div>
+        <div class="feat-desc" data-i18n="feat1_d">Accepts all TZS coins. No M-Pesa app required — accessible to every customer, even without a smartphone.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">📡</div>
-        <div class="feat-title">Online via 4G SIM</div>
-        <div class="feat-desc">The owner's SIM card connects the SWV machine to the internet. Data is managed by SmartKembo — you don't need to do anything.</div>
-        <span class="feat-tag tag-live">✓ Live</span>
+        <div class="feat-title" data-i18n="feat2_t">Online via 4G SIM</div>
+        <div class="feat-desc" data-i18n="feat2_d">The owner's SIM card connects the SWV machine to the internet. Data is managed by SmartKembo — you don't need to do anything.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">💳</div>
-        <div class="feat-title">RFID Card Payments</div>
-        <div class="feat-desc">Regular customers can use a reloadable card instead of coins — faster, cleaner, and their balance is tracked automatically. Works across all your machines.</div>
-        <span class="feat-tag tag-live">✓ Live (Optional Hardware)</span>
+        <div class="feat-title" data-i18n="feat3_t">RFID Card Payments</div>
+        <div class="feat-desc" data-i18n="feat3_d">Regular customers can use a reloadable card instead of coins — faster, cleaner, and their balance is tracked automatically. Works across all your machines.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_optional">✓ Live (Optional Hardware)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">📱</div>
         <div class="feat-title">Lipa kwa Simu (M-Pesa/Tigo/Airtel)</div>
-        <div class="feat-desc">Customers can pay by mobile money directly on the machine's keypad — no smartphone or data needed on their side. The machine sends a payment prompt straight to their phone.</div>
-        <span class="feat-tag tag-live">✓ Live (Optional Hardware)</span>
+        <div class="feat-desc" data-i18n="feat4_d">Customers can pay by mobile money directly on the machine's keypad — no smartphone or data needed on their side. The machine sends a payment prompt straight to their phone.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_optional">✓ Live (Optional Hardware)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">📊</div>
-        <div class="feat-title">Real-Time Dashboard</div>
-        <div class="feat-desc">See today's revenue, litres dispensed, and a live animated bucket showing exactly what your customer is doing — from anywhere.</div>
-        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
+        <div class="feat-title" data-i18n="feat5_t">Real-Time Dashboard</div>
+        <div class="feat-desc" data-i18n="feat5_d">See today's revenue, litres dispensed, and a live animated bucket showing exactly what your customer is doing — from anywhere.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_sub">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">💰</div>
-        <div class="feat-title">Update Price Instantly</div>
-        <div class="feat-desc">Raise or lower the price per litre directly from your phone. The SWV machine updates automatically within minutes — no site visit needed.</div>
-        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
+        <div class="feat-title" data-i18n="feat6_t">Update Price Instantly</div>
+        <div class="feat-desc" data-i18n="feat6_d">Raise or lower the price per litre directly from your phone. The SWV machine updates automatically within minutes — no site visit needed.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_sub">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">🤖</div>
-        <div class="feat-title">AI Insights</div>
-        <div class="feat-desc">Get automatic sales trend analysis, peak-hour predictions, and hardware health alerts — powered by AI, in plain Swahili or English.</div>
-        <span class="feat-tag tag-live">✓ Live (Subscription)</span>
+        <div class="feat-title" data-i18n="feat7_t">AI Insights</div>
+        <div class="feat-desc" data-i18n="feat7_d">Get automatic sales trend analysis, peak-hour predictions, and hardware health alerts — powered by AI, in plain Swahili or English.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_sub">✓ Live (Subscription)</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">🔵</div>
-        <div class="feat-title">Bluetooth Configuration</div>
-        <div class="feat-desc">Change price, flow calibration, and machine settings via your phone's Bluetooth — no wiring, no tools. Available on Basic Plan.</div>
-        <span class="feat-tag tag-live">✓ Live</span>
+        <div class="feat-title" data-i18n="feat8_t">Bluetooth Configuration</div>
+        <div class="feat-desc" data-i18n="feat8_d">Change price, flow calibration, and machine settings via your phone's Bluetooth — no wiring, no tools. Available on Basic Plan.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_live">✓ Live</span>
       </div>
       <div class="feat rv">
         <div class="feat-icon">🔔</div>
-        <div class="feat-title">SIM Data Managed by SmartKembo</div>
-        <div class="feat-desc">We monitor the SIM card's data balance. When it gets low, SmartKembo buys more automatically. You never worry about connectivity.</div>
-        <span class="feat-tag tag-live">✓ Live</span>
+        <div class="feat-title" data-i18n="feat9_t">SIM Data Managed by SmartKembo</div>
+        <div class="feat-desc" data-i18n="feat9_d">We monitor the SIM card's data balance. When it gets low, SmartKembo buys more automatically. You never worry about connectivity.</div>
+        <span class="feat-tag tag-live" data-i18n="tag_live">✓ Live</span>
       </div>
     </div>
   </div>
@@ -552,8 +553,8 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Dashboard Preview -->
 <section class="dash-wrap">
   <div class="sec-inner">
-    <div class="eyebrow rv">Owner Dashboard</div>
-    <h2 class="sec-h2 rv">Manage Your Water Business <span>From Your Phone</span></h2>
+    <div class="eyebrow rv" data-i18n="dp_eyebrow">Owner Dashboard</div>
+    <h2 class="sec-h2 rv"><span data-i18n="dp_h2a">Manage Your Water Business</span> <span data-i18n="dp_h2b">From Your Phone</span></h2>
     <div class="dash-grid">
       <div class="dash-screen rv">
         <div class="dash-bar">
@@ -567,12 +568,12 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         </div>
         <div class="dash-body">
           <div class="dash-row">
-            <div class="ds"><div class="ds-val">Tsh 47K</div><div class="ds-lbl">Today</div></div>
-            <div class="ds"><div class="ds-val">940L</div><div class="ds-lbl">Litres</div></div>
-            <div class="ds"><div class="ds-val">188</div><div class="ds-lbl">Customers</div></div>
+            <div class="ds"><div class="ds-val">Tsh 47K</div><div class="ds-lbl" data-i18n="dp_today">Today</div></div>
+            <div class="ds"><div class="ds-val">940L</div><div class="ds-lbl" data-i18n="dp_litres">Litres</div></div>
+            <div class="ds"><div class="ds-val">188</div><div class="ds-lbl" data-i18n="dp_customers">Customers</div></div>
           </div>
           <div class="dash-chart">
-            <div class="chart-lbl">Revenue — Last 7 Days</div>
+            <div class="chart-lbl" data-i18n="dp_chartlbl">Revenue — Last 7 Days</div>
             <div class="chart-bars">
               <div class="cbar" style="height:45%"></div>
               <div class="cbar" style="height:62%"></div>
@@ -594,19 +595,19 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="dash-feats">
         <div class="df rv">
           <div class="df-icon">💧</div>
-          <div><div class="df-title">Live Bucket Animation</div><div class="df-desc">Watch the bucket fill and empty in real time as your customer collects water — even from hundreds of kilometres away.</div></div>
+          <div><div class="df-title" data-i18n="df1_t">Live Bucket Animation</div><div class="df-desc" data-i18n="df1_d">Watch the bucket fill and empty in real time as your customer collects water — even from hundreds of kilometres away.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">📈</div>
-          <div><div class="df-title">Detailed Reports</div><div class="df-desc">Daily, weekly, and monthly revenue. See your peak hours and identify your best-performing days.</div></div>
+          <div><div class="df-title" data-i18n="df2_t">Detailed Reports</div><div class="df-desc" data-i18n="df2_d">Daily, weekly, and monthly revenue. See your peak hours and identify your best-performing days.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">⚙️</div>
-          <div><div class="df-title">Update Price Without Bluetooth</div><div class="df-desc">Change the price per litre from your dashboard. The SWV machine syncs automatically — no physical visit required.</div></div>
+          <div><div class="df-title" data-i18n="df3_t">Update Price Without Bluetooth</div><div class="df-desc" data-i18n="df3_d">Change the price per litre from your dashboard. The SWV machine syncs automatically — no physical visit required.</div></div>
         </div>
         <div class="df rv">
           <div class="df-icon">🔐</div>
-          <div><div class="df-title">Your Account, Your Data</div><div class="df-desc">Log in with your email and password. Your business data is private — nobody else can see your revenue or transactions.</div></div>
+          <div><div class="df-title" data-i18n="df4_t">Your Account, Your Data</div><div class="df-desc" data-i18n="df4_d">Log in with your email and password. Your business data is private — nobody else can see your revenue or transactions.</div></div>
         </div>
       </div>
     </div>
@@ -616,36 +617,36 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Technical Specs -->
 <section>
   <div class="sec-inner">
-    <div class="eyebrow rv">Hardware</div>
-    <h2 class="sec-h2 rv">SWV <span>Technical Specifications</span></h2>
+    <div class="eyebrow rv" data-i18n="specs_eyebrow">Hardware</div>
+    <h2 class="sec-h2 rv"><span>SWV</span> <span data-i18n="specs_h2">Technical Specifications</span></h2>
     <div class="specs-grid rv">
       <div class="spec-card">
         <div class="spec-title">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          SWV Machine Hardware
+          <span data-i18n="specs_hw">SWV Machine Hardware</span>
         </div>
-        <div class="spec-row"><span class="spec-lbl">Main Controller</span><span class="spec-val">Arduino Mega 2560</span></div>
-        <div class="spec-row"><span class="spec-lbl">Online Module</span><span class="spec-val">ESP32 + SIM800A</span></div>
-        <div class="spec-row"><span class="spec-lbl">Real-Time Clock</span><span class="spec-val">RTC DS3231</span></div>
-        <div class="spec-row"><span class="spec-lbl">Flow Sensor</span><span class="spec-val">YF-S201 Hall Effect</span></div>
-        <div class="spec-row"><span class="spec-lbl">Valve</span><span class="spec-val">Solenoid 12V DC</span></div>
-        <div class="spec-row"><span class="spec-lbl">Display</span><span class="spec-val">LCD 16×2 I2C</span></div>
-        <div class="spec-row"><span class="spec-lbl">Accuracy</span><span class="spec-val">±0.1 Litres</span></div>
-        <div class="spec-row"><span class="spec-lbl">Power</span><span class="spec-val">220V AC · Solar Ready</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_controller">Main Controller</span><span class="spec-val">Arduino Mega 2560</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_online">Online Module</span><span class="spec-val">ESP32 + SIM800A</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_rtc">Real-Time Clock</span><span class="spec-val">RTC DS3231</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_flow">Flow Sensor</span><span class="spec-val">YF-S201 Hall Effect</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_valve">Valve</span><span class="spec-val">Solenoid 12V DC</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_display">Display</span><span class="spec-val">LCD 16×2 I2C</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_accuracy">Accuracy</span><span class="spec-val">±0.1 Litres</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_power">Power</span><span class="spec-val" data-i18n="spec_power_val">220V AC · Solar Ready</span></div>
       </div>
       <div class="spec-card">
         <div class="spec-title">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          Software & Connectivity
+          <span data-i18n="specs_sw">Software & Connectivity</span>
         </div>
-        <div class="spec-row"><span class="spec-lbl">Backend</span><span class="spec-val">Node.js + PostgreSQL</span></div>
-        <div class="spec-row"><span class="spec-lbl">Hosting</span><span class="spec-val">Railway</span></div>
-        <div class="spec-row"><span class="spec-lbl">Device Protocol</span><span class="spec-val">HTTPS REST API</span></div>
-        <div class="spec-row"><span class="spec-lbl">Heartbeat</span><span class="spec-val">Every 5 minutes</span></div>
-        <div class="spec-row"><span class="spec-lbl">Supported Networks</span><span class="spec-val">Vodacom · Airtel · Tigo</span></div>
-        <div class="spec-row"><span class="spec-lbl">Monthly Data Usage</span><span class="spec-val">~5–15 MB only</span></div>
-        <div class="spec-row"><span class="spec-lbl">Dashboard</span><span class="spec-val">Web · Mobile + Desktop</span></div>
-        <div class="spec-row"><span class="spec-lbl">Server Uptime</span><span class="spec-val">99.9% guaranteed</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_backend">Backend</span><span class="spec-val">Node.js + PostgreSQL</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_hosting">Hosting</span><span class="spec-val">Railway</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_protocol">Device Protocol</span><span class="spec-val">HTTPS REST API</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_heartbeat">Heartbeat</span><span class="spec-val" data-i18n="spec_heartbeat_val">Every 5 minutes</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_networks">Supported Networks</span><span class="spec-val">Vodacom · Airtel · Tigo</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_data">Monthly Data Usage</span><span class="spec-val" data-i18n="spec_data_val">~5–15 MB only</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_dash">Dashboard</span><span class="spec-val" data-i18n="spec_dash_val">Web · Mobile + Desktop</span></div>
+        <div class="spec-row"><span class="spec-lbl" data-i18n="spec_uptime">Server Uptime</span><span class="spec-val" data-i18n="spec_uptime_val">99.9% guaranteed</span></div>
       </div>
     </div>
   </div>
@@ -655,53 +656,53 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <section id="pricing" class="pricing-wrap">
   <div class="sec-inner">
     <div style="text-align:center">
-      <div class="eyebrow rv" style="justify-content:center">Pricing</div>
-      <h2 class="sec-h2 rv" style="text-align:center">Choose the Plan <span>That Fits You</span></h2>
-      <p class="sec-p rv" style="text-align:center;margin:0 auto 0">The SWV machine works without a subscription. The online dashboard requires a subscription only — <strong style="color:var(--water)">first month free on every new machine.</strong></p>
+      <div class="eyebrow rv" style="justify-content:center" data-i18n="price_eyebrow">Pricing</div>
+      <h2 class="sec-h2 rv" style="text-align:center"><span data-i18n="price_h2a">Choose the Plan</span> <span data-i18n="price_h2b">That Fits You</span></h2>
+      <p class="sec-p rv" style="text-align:center;margin:0 auto 0"><span data-i18n="price_p">The SWV machine works without a subscription. The online dashboard requires a subscription only —</span> <strong style="color:var(--water)" data-i18n="price_p_bold">first month free on every new machine.</strong></p>
     </div>
     <div class="plans-grid">
       <div class="plan rv">
-        <div class="plan-name">Basic</div>
-        <div class="plan-sub">Machine only · Offline</div>
-        <div class="plan-price" style="font-size:32px;margin-top:4px">Free</div>
-        <div class="plan-mo">No monthly fee</div>
-        <a href="apply-water.html" class="plan-btn">Apply for Machine</a>
+        <div class="plan-name" data-i18n="plan1_name">Basic</div>
+        <div class="plan-sub" data-i18n="plan1_sub">Machine only · Offline</div>
+        <div class="plan-price" style="font-size:32px;margin-top:4px" data-i18n="plan1_price">Free</div>
+        <div class="plan-mo" data-i18n="plan1_mo">No monthly fee</div>
+        <a href="apply-water.html" class="plan-btn" data-i18n="plan1_btn">Apply for Machine</a>
         <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Coin vending (all TZS coins)</div>
-        <div class="plan-feat"><div class="pfc">✓</div>RFID card & Lipa kwa Simu (optional hardware)</div>
-        <div class="plan-feat"><div class="pfc">✓</div>LCD shows balance and litres</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Bluetooth config (price, calibration)</div>
-        <div class="plan-feat"><div class="pfc">✓</div>SMS commands (balance, price)</div>
-        <div class="plan-feat"><div class="pfc" style="background:var(--g3);color:var(--g2)">✗</div><span style="color:var(--g2)">Online dashboard</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f1">Coin vending (all TZS coins)</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f2">RFID card & Lipa kwa Simu (optional hardware)</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f3">LCD shows balance and litres</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f4">Bluetooth config (price, calibration)</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f5">SMS commands (balance, price)</span></div>
+        <div class="plan-feat"><div class="pfc" style="background:var(--g3);color:var(--g2)">✗</div><span style="color:var(--g2)" data-i18n="plan1_f6">Online dashboard</span></div>
       </div>
       <div class="plan featured rv">
-        <div class="plan-pop">⭐ MOST POPULAR</div>
-        <div class="plan-name">Subscription</div>
-        <div class="plan-sub">Machine + Online Dashboard · First Month Free</div>
+        <div class="plan-pop" data-i18n="plan2_pop">⭐ MOST POPULAR</div>
+        <div class="plan-name" data-i18n="plan2_name">Subscription</div>
+        <div class="plan-sub" data-i18n="plan2_sub">Machine + Online Dashboard · First Month Free</div>
         <div class="plan-price">30K</div>
-        <div class="plan-mo">Tsh / month · SmartKembo pays for data</div>
-        <a href="apply-water.html" class="plan-btn">Start Free Month</a>
+        <div class="plan-mo" data-i18n="plan2_mo">Tsh / month · SmartKembo pays for data</div>
+        <a href="apply-water.html" class="plan-btn" data-i18n="plan2_btn">Start Free Month</a>
         <div class="plan-div" style="background:rgba(0,200,232,.14)"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Everything in Basic</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Real-time dashboard</div>
-        <div class="plan-feat"><div class="pfc">✓</div>AI Insights & sales predictions</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Live bucket animation</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Update price from your phone</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Full transaction history</div>
-        <div class="plan-feat"><div class="pfc">✓</div>4G data — SmartKembo pays</div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f1">Everything in Basic</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f2">Real-time dashboard</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f3">AI Insights & sales predictions</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f4">Live bucket animation</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f5">Update price from your phone</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f6">Full transaction history</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f7">4G data — SmartKembo pays</span></div>
       </div>
       <div class="plan rv">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-sub">Multiple machines · Large operations</div>
+        <div class="plan-name" data-i18n="plan3_name">Enterprise</div>
+        <div class="plan-sub" data-i18n="plan3_sub">Multiple machines · Large operations</div>
         <div class="plan-price">200K</div>
-        <div class="plan-mo">Tsh / month</div>
-        <a href="https://wa.me/255767830319" target="_blank" class="plan-btn">Contact Us</a>
+        <div class="plan-mo" data-i18n="plan3_mo">Tsh / month</div>
+        <a href="https://wa.me/255767830319" target="_blank" class="plan-btn" data-i18n="plan3_btn">Contact Us</a>
         <div class="plan-div"></div>
-        <div class="plan-feat"><div class="pfc">✓</div>Everything in Subscription</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Multiple machines, one dashboard</div>
-        <div class="plan-feat"><div class="pfc">✓</div>Full API access</div>
-        <div class="plan-feat"><div class="pfc">✓</div>99.9% SLA guaranteed</div>
-        <div class="plan-feat"><div class="pfc">✓</div>24/7 priority support</div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan3_f1">Everything in Subscription</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan3_f2">Multiple machines, one dashboard</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan3_f3">Full API access</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan3_f4">99.9% SLA guaranteed</span></div>
+        <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan3_f5">24/7 priority support</span></div>
       </div>
     </div>
   </div>
@@ -710,26 +711,26 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
-    <div class="eyebrow rv" style="justify-content:center">Get Started</div>
-    <h2 class="cta-h2 rv">Ready to Start <span>Selling Water?</span></h2>
-    <p class="cta-p rv">Apply for your SWV machine today. We'll contact you within 24 hours to approve your application and begin installation.</p>
+    <div class="eyebrow rv" style="justify-content:center" data-i18n="cta_eyebrow">Get Started</div>
+    <h2 class="cta-h2 rv"><span data-i18n="cta_h2a">Ready to Start</span> <span data-i18n="cta_h2b">Selling Water?</span></h2>
+    <p class="cta-p rv" data-i18n="cta_p">Apply for your SWV machine today. We'll contact you within 24 hours to approve your application and begin installation.</p>
     <div class="cta-acts rv">
-      <a href="apply-water.html" class="btn btn-water btn-lg">Apply for Your SWV Machine →</a>
+      <a href="apply-water.html" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
       <a href="https://wa.me/255767830319" target="_blank" class="btn btn-ghost btn-lg">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.67 19.79 19.79 0 01.5 2.12 2 2 0 012.5 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.87a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
-        WhatsApp Us
+        <span data-i18n="cta_wa">WhatsApp Us</span>
       </a>
     </div>
-    <div class="cta-note rv">No registration fee · We contact you · Installation within 2–3 days</div>
+    <div class="cta-note rv" data-i18n="cta_note">No registration fee · We contact you · Installation within 2–3 days</div>
   </div>
 </section>
 
 <footer>
-  <span class="ft-copy">© 2025 SMD's SmartKembo Discovery Science · SWV — SmartKembo Water Vending · Made in Tanzania 🇹🇿</span>
+  <span class="ft-copy">© 2026 SMD's SmartKembo Discovery Science · SWV — SmartKembo Water Vending · <span data-i18n="ft_made">Made in Tanzania</span> 🇹🇿</span>
   <div class="ft-links">
-    <a href="index.html">Home</a>
-    <a href="wifi.html">WiFi Vending</a>
-    <a href="apply-water.html">Apply for Machine</a>
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="wifi.html" data-i18n="nav_wifi">WiFi Vending</a>
+    <a href="apply-water.html" data-i18n="nav_apply">Apply for Machine</a>
     <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
     <a href="mailto:smdsgroups@gmail.com">Email</a>
   </div>
@@ -762,16 +763,16 @@ function setBtn(state){
   var checkSvg='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
   if(state==='idle'){
     btn.disabled=true;
-    btn.innerHTML=waterSvg+' Get Water';
+    btn.innerHTML=waterSvg+' '+T('demo_getwater');
   } else if(state==='ready'){
     btn.disabled=false;
-    btn.innerHTML=waterSvg+' Get Water';
+    btn.innerHTML=waterSvg+' '+T('demo_getwater');
   } else if(state==='dispensing'){
     btn.disabled=true;
-    btn.innerHTML=spinSvg+' Dispensing...';
+    btn.innerHTML=spinSvg+' '+T('demo_dispensing');
   } else if(state==='done'){
     btn.disabled=true;
-    btn.innerHTML=checkSvg+' Done!';
+    btn.innerHTML=checkSvg+' '+T('demo_done');
   }
 }
 
@@ -876,8 +877,8 @@ function dStart(){
   var target=dBal/PRICE;
   setBtn('dispensing');
   E('disp-ui').style.display='block';
-  E('d-tgt').textContent='of '+target.toFixed(1)+' L';
-  E('d-msg').textContent='Opening valve...';
+  E('d-tgt').textContent=T('demo_of')+' '+target.toFixed(1)+' L';
+  E('d-msg').textContent=T('demo_opening');
   E('d-bar').style.background='var(--water)';
   if(!wTimer) animWave();
   openValve();
@@ -887,7 +888,7 @@ function dStart(){
   var ms=Math.round((target*2200)/steps);
 
   setTimeout(function(){
-    E('d-msg').textContent='Water flowing...';
+    E('d-msg').textContent=T('demo_flowing');
     dispTimer=setInterval(function(){
       curr+=target/steps; if(curr>target) curr=target;
       flowRamp=Math.min(2.8, flowRamp+.07);
@@ -899,7 +900,7 @@ function dStart(){
       E('d-pls').textContent=puls;
       E('d-flw').textContent=flow;
       E('d-bar').style.width=pct+'%';
-      E('d-done').textContent=curr.toFixed(2)+' L dispensed';
+      E('d-done').textContent=curr.toFixed(2)+' '+T('demo_ldispensed');
       E('dfval').textContent=flow+' L/min';
       E('dpval').textContent=puls;
       if(curr>=target){ clearInterval(dispTimer); finishDisp(target); }
@@ -915,7 +916,7 @@ function finishDisp(lita){
   setBucket(100, lita);
   setBtn('done');
   E('d-msg').style.color='var(--water)';
-  E('d-msg').textContent='Done \u2014 '+lita.toFixed(1)+' L dispensed. Valve closed.';
+  E('d-msg').textContent=T('demo_donemsg1')+' \u2014 '+lita.toFixed(1)+' '+T('demo_donemsg2');
   E('d-bar').style.background='#10B981';
 
   setTimeout(function(){
@@ -939,6 +940,164 @@ function finishDisp(lita){
 (function(){var s=document.createElement('style');s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(s);})();
 
 animWave();
+
+// ═══════════════════════════════════════════════
+//  I18N — Kiswahili / English
+// ═══════════════════════════════════════════════
+var I18N = {
+  en: {
+    nav_home:'Home', nav_wifi:'WiFi Vending', nav_water:'Water Vending', nav_contact:'Contact',
+    nav_login:'Login', nav_apply:'Apply for Machine', nav_apply_arrow:'Apply for Machine →',
+    hero_h1a:'Sell Water', hero_h1b:'Intelligently', hero_h1c:'No Cashier · No Waste · Revenue 24/7',
+    hero_p:'A customer pays with coins, an RFID card, or M-Pesa/Tigo/Airtel on their phone — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.',
+    hero_btn1:'Apply for Your SWV Machine →', hero_btn2:'How It Works',
+    hero_trust1:'Works without a cashier', hero_trust2:'Online via 4G SIM card', hero_trust3:'Built in Tanzania',
+    demo_live:'LIVE DEMO', demo_online:'Online', demo_select:'Select amount', demo_custom:'Custom amount',
+    demo_yourbal:'Your balance', demo_youget:'You get', demo_getwater:'Get Water',
+    demo_litres:'Litres', demo_pulses:'Pulses', demo_dispensing:'Dispensing...', demo_done:'Done!',
+    demo_of:'of', demo_opening:'Opening valve...', demo_flowing:'Water flowing...',
+    demo_ldispensed:'L dispensed', demo_donemsg1:'Done', demo_donemsg2:'L dispensed. Valve closed.',
+    stat1:'Active machine owners', stat2:'Dispensing accuracy', stat3:'Operates without a cashier', stat4:'Online without WiFi',
+    how_eyebrow:'Process', how_h2a:'How', how_h2b:'SWV Works', how_p:'Simple for the customer — powerful for the owner.',
+    how1_t:'Customer Pays', how1_d:'They pay with coins, an RFID card, or M-Pesa/Tigo/Airtel on the keypad. The LCD displays their balance and how many litres they will receive.',
+    how2_t:'Press One Button', how2_d:'A single button press. The Arduino Mega opens the solenoid valve and water starts flowing immediately.',
+    how3_t:'Exact Litres Dispensed', how3_d:'The YF-S201 flow sensor counts litres with ±0.1L accuracy. The valve closes automatically — their litres only, not a drop more.',
+    how4_t:'You See It in Real Time', how4_d:'The ESP32 sends transaction data to the server within minutes. View revenue and litres on your dashboard — live, from your phone.',
+    feat_eyebrow:'Features', feat_h2a:'Everything You Need to', feat_h2b:'Sell Water', feat_p:'A complete system — from the first coin to the monthly report.',
+    feat1_t:'Coin Vending', feat1_d:'Accepts all TZS coins. No M-Pesa app required — accessible to every customer, even without a smartphone.',
+    feat2_t:'Online via 4G SIM', feat2_d:"The owner's SIM card connects the SWV machine to the internet. Data is managed by SmartKembo — you don't need to do anything.",
+    feat3_t:'RFID Card Payments', feat3_d:'Regular customers can use a reloadable card instead of coins — faster, cleaner, and their balance is tracked automatically. Works across all your machines.',
+    feat4_d:"Customers can pay by mobile money directly on the machine's keypad — no smartphone or data needed on their side. The machine sends a payment prompt straight to their phone.",
+    feat5_t:'Real-Time Dashboard', feat5_d:"See today's revenue, litres dispensed, and a live animated bucket showing exactly what your customer is doing — from anywhere.",
+    feat6_t:'Update Price Instantly', feat6_d:'Raise or lower the price per litre directly from your phone. The SWV machine updates automatically within minutes — no site visit needed.',
+    feat7_t:'AI Insights', feat7_d:'Get automatic sales trend analysis, peak-hour predictions, and hardware health alerts — powered by AI, in plain Swahili or English.',
+    feat8_t:'Bluetooth Configuration', feat8_d:"Change price, flow calibration, and machine settings via your phone's Bluetooth — no wiring, no tools. Available on Basic Plan.",
+    feat9_t:'SIM Data Managed by SmartKembo', feat9_d:"We monitor the SIM card's data balance. When it gets low, SmartKembo buys more automatically. You never worry about connectivity.",
+    tag_live:'✓ Live', tag_optional:'✓ Live (Optional Hardware)', tag_sub:'✓ Live (Subscription)',
+    dp_eyebrow:'Owner Dashboard', dp_h2a:'Manage Your Water Business', dp_h2b:'From Your Phone',
+    dp_today:'Today', dp_litres:'Litres', dp_customers:'Customers', dp_chartlbl:'Revenue — Last 7 Days',
+    df1_t:'Live Bucket Animation', df1_d:'Watch the bucket fill and empty in real time as your customer collects water — even from hundreds of kilometres away.',
+    df2_t:'Detailed Reports', df2_d:'Daily, weekly, and monthly revenue. See your peak hours and identify your best-performing days.',
+    df3_t:'Update Price Without Bluetooth', df3_d:'Change the price per litre from your dashboard. The SWV machine syncs automatically — no physical visit required.',
+    df4_t:'Your Account, Your Data', df4_d:'Log in with your email and password. Your business data is private — nobody else can see your revenue or transactions.',
+    specs_eyebrow:'Hardware', specs_h2:'Technical Specifications', specs_hw:'SWV Machine Hardware',
+    spec_controller:'Main Controller', spec_online:'Online Module', spec_rtc:'Real-Time Clock', spec_flow:'Flow Sensor',
+    spec_valve:'Valve', spec_display:'Display', spec_accuracy:'Accuracy', spec_power:'Power', spec_power_val:'220V AC · Solar Ready',
+    specs_sw:'Software & Connectivity', spec_backend:'Backend', spec_hosting:'Hosting', spec_protocol:'Device Protocol',
+    spec_heartbeat:'Heartbeat', spec_heartbeat_val:'Every 5 minutes', spec_networks:'Supported Networks',
+    spec_data:'Monthly Data Usage', spec_data_val:'~5–15 MB only', spec_dash:'Dashboard', spec_dash_val:'Web · Mobile + Desktop',
+    spec_uptime:'Server Uptime', spec_uptime_val:'99.9% guaranteed',
+    price_eyebrow:'Pricing', price_h2a:'Choose the Plan', price_h2b:'That Fits You',
+    price_p:'The SWV machine works without a subscription. The online dashboard requires a subscription only —',
+    price_p_bold:'first month free on every new machine.',
+    plan1_name:'Basic', plan1_sub:'Machine only · Offline', plan1_price:'Free', plan1_mo:'No monthly fee', plan1_btn:'Apply for Machine',
+    plan1_f1:'Coin vending (all TZS coins)', plan1_f2:'RFID card & Lipa kwa Simu (optional hardware)', plan1_f3:'LCD shows balance and litres',
+    plan1_f4:'Bluetooth config (price, calibration)', plan1_f5:'SMS commands (balance, price)', plan1_f6:'Online dashboard',
+    plan2_pop:'⭐ MOST POPULAR', plan2_name:'Subscription', plan2_sub:'Machine + Online Dashboard · First Month Free',
+    plan2_mo:'Tsh / month · SmartKembo pays for data', plan2_btn:'Start Free Month',
+    plan2_f1:'Everything in Basic', plan2_f2:'Real-time dashboard', plan2_f3:'AI Insights & sales predictions',
+    plan2_f4:'Live bucket animation', plan2_f5:'Update price from your phone', plan2_f6:'Full transaction history', plan2_f7:'4G data — SmartKembo pays',
+    plan3_name:'Enterprise', plan3_sub:'Multiple machines · Large operations', plan3_mo:'Tsh / month', plan3_btn:'Contact Us',
+    plan3_f1:'Everything in Subscription', plan3_f2:'Multiple machines, one dashboard', plan3_f3:'Full API access',
+    plan3_f4:'99.9% SLA guaranteed', plan3_f5:'24/7 priority support',
+    cta_eyebrow:'Get Started', cta_h2a:'Ready to Start', cta_h2b:'Selling Water?',
+    cta_p:"Apply for your SWV machine today. We'll contact you within 24 hours to approve your application and begin installation.",
+    cta_wa:'WhatsApp Us', cta_note:'No registration fee · We contact you · Installation within 2–3 days',
+    ft_made:'Made in Tanzania',
+  },
+  sw: {
+    nav_home:'Nyumbani', nav_wifi:'Mauzo ya WiFi', nav_water:'Mauzo ya Maji', nav_contact:'Wasiliana Nasi',
+    nav_login:'Ingia', nav_apply:'Omba Mashine', nav_apply_arrow:'Omba Mashine →',
+    hero_h1a:'Uza Maji', hero_h1b:'Kwa Akili', hero_h1c:'Hakuna Cashier · Hakuna Upotevu · Mapato 24/7',
+    hero_p:'Mteja analipa kwa sarafu, kadi ya RFID, au M-Pesa/Tigo/Airtel kwenye simu yake — mashine ya SWV inatoa lita hasa alizolipa, kisha inajifunga yenyewe. Unafuatilia kila kitu kutoka simu yako: mapato, lita zilizouzwa, hali ya mashine — popote, wakati wowote.',
+    hero_btn1:'Omba Mashine Yako ya SWV →', hero_btn2:'Jinsi Inavyofanya Kazi',
+    hero_trust1:'Inafanya kazi bila cashier', hero_trust2:'Mtandaoni kupitia SIM ya 4G', hero_trust3:'Imetengenezwa Tanzania',
+    demo_live:'MFANO WA LIVE', demo_online:'Mtandaoni', demo_select:'Chagua kiasi', demo_custom:'Kiasi kingine',
+    demo_yourbal:'Salio lako', demo_youget:'Utapata', demo_getwater:'Chukua Maji',
+    demo_litres:'Lita', demo_pulses:'Mipigo', demo_dispensing:'Inatoa Maji...', demo_done:'Imekamilika!',
+    demo_of:'ya', demo_opening:'Inafungua valve...', demo_flowing:'Maji yanatiririka...',
+    demo_ldispensed:'L zimetoka', demo_donemsg1:'Imekamilika', demo_donemsg2:'L zimetoka. Valve imefungwa.',
+    stat1:'Wamiliki wa mashine hai', stat2:'Usahihi wa kutoa maji', stat3:'Inafanya kazi bila cashier', stat4:'Mtandaoni bila WiFi',
+    how_eyebrow:'Mchakato', how_h2a:'Jinsi', how_h2b:'SWV Inavyofanya Kazi', how_p:'Rahisi kwa mteja — yenye nguvu kwa mmiliki.',
+    how1_t:'Mteja Analipa', how1_d:'Analipa kwa sarafu, kadi ya RFID, au M-Pesa/Tigo/Airtel kwenye Keypad. LCD inaonyesha salio lake na lita atakazopata.',
+    how2_t:'Bonyeza Kitufe Kimoja', how2_d:'Bonyeza kitufe kimoja tu. Arduino Mega inafungua valve na maji yanaanza kutiririka mara moja.',
+    how3_t:'Lita Hasa Zinazotolewa', how3_d:'Sensor ya YF-S201 inahesabu lita kwa usahihi wa ±0.1L. Valve inafunga yenyewe — lita zake hasa, si tone zaidi.',
+    how4_t:'Unaona Papo Hapo', how4_d:'ESP32 inatuma taarifa za muamala kwa server ndani ya dakika. Ona mapato na lita kwenye dashibodi yako — moja kwa moja, kutoka simu yako.',
+    feat_eyebrow:'Vipengele', feat_h2a:'Kila Kitu Unachohitaji', feat_h2b:'Kuuza Maji', feat_p:'Mfumo kamili — kutoka sarafu ya kwanza mpaka ripoti ya mwezi.',
+    feat1_t:'Mauzo ya Sarafu', feat1_d:'Inakubali sarafu zote za TZS. Hakuna app ya M-Pesa inayohitajika — inafikika kwa kila mteja, hata bila simu janja.',
+    feat2_t:'Mtandaoni kupitia SIM ya 4G', feat2_d:'SIM ya mmiliki inaunganisha mashine ya SWV kwenye internet. Data inasimamiwa na SmartKembo — huhitaji kufanya lolote.',
+    feat3_t:'Malipo kwa Kadi ya RFID', feat3_d:'Wateja wa kawaida wanaweza kutumia kadi inayojazwa upya badala ya sarafu — haraka zaidi, safi zaidi, na salio lao linafuatiliwa kiotomatiki. Inafanya kazi kwenye mashine zako zote.',
+    feat4_d:'Wateja wanaweza kulipa kwa M-Pesa/Tigo/Airtel moja kwa moja kwenye Keypad ya mashine — hakuna simu janja wala data inayohitajika kwa upande wao. Mashine inatuma ombi la malipo moja kwa moja kwenye simu yao.',
+    feat5_t:'Dashibodi ya Wakati Halisi', feat5_d:'Ona mapato ya leo, lita zilizotoka, na ndoo inayoonyesha moja kwa moja kile mteja wako anachofanya — kutoka popote.',
+    feat6_t:'Badilisha Bei Papo Hapo', feat6_d:'Ongeza au punguza bei ya lita moja kwa moja kutoka simu yako. Mashine ya SWV inasasika kiotomatiki ndani ya dakika — hakuna haja ya kutembelea eneo.',
+    feat7_t:'AI Insights', feat7_d:'Pata uchambuzi wa mienendo ya mauzo, utabiri wa masaa ya kilele, na arifa za afya ya vifaa — kwa AI, kwa Kiswahili au Kiingereza rahisi.',
+    feat8_t:'Usanidi wa Bluetooth', feat8_d:'Badilisha bei, calibration ya mtiririko, na mipangilio ya mashine kupitia Bluetooth ya simu yako — hakuna waya, hakuna zana. Inapatikana kwenye Basic Plan.',
+    feat9_t:'Data ya SIM Inasimamiwa na SmartKembo', feat9_d:'Tunafuatilia salio la data la SIM. Likipungua, SmartKembo inanunua zaidi kiotomatiki. Hutahangaika kamwe na muunganisho.',
+    tag_live:'✓ Ipo Sasa', tag_optional:'✓ Ipo Sasa (Hardware ya Ziada)', tag_sub:'✓ Ipo Sasa (Subscription)',
+    dp_eyebrow:'Dashibodi ya Mmiliki', dp_h2a:'Simamia Biashara Yako ya Maji', dp_h2b:'Kutoka Simu Yako',
+    dp_today:'Leo', dp_litres:'Lita', dp_customers:'Wateja', dp_chartlbl:'Mapato — Siku 7 Zilizopita',
+    df1_t:'Ndoo ya Wakati Halisi', df1_d:'Angalia ndoo ikijaa na kutoka wakati halisi mteja wako anapochukua maji — hata kutoka kilomita mia nyingi mbali.',
+    df2_t:'Ripoti za Kina', df2_d:'Mapato ya kila siku, wiki, na mwezi. Ona masaa yako ya kilele na tambua siku zako bora zaidi.',
+    df3_t:'Badilisha Bei Bila Bluetooth', df3_d:'Badilisha bei ya lita kutoka dashibodi yako. Mashine ya SWV inasasika kiotomatiki — hakuna ziara ya kimwili inayohitajika.',
+    df4_t:'Akaunti Yako, Data Yako', df4_d:'Ingia kwa email na password yako. Data ya biashara yako ni ya faragha — hakuna mtu mwingine anayeweza kuona mapato au miamala yako.',
+    specs_eyebrow:'Hardware', specs_h2:'Maelezo ya Kiufundi', specs_hw:'Hardware ya Mashine ya SWV',
+    spec_controller:'Kidhibiti Kikuu', spec_online:'Kifaa cha Mtandao', spec_rtc:'Saa ya Wakati Halisi', spec_flow:'Sensor ya Mtiririko',
+    spec_valve:'Valve', spec_display:'Skrini', spec_accuracy:'Usahihi', spec_power:'Umeme', spec_power_val:'220V AC · Tayari kwa Solar',
+    specs_sw:'Programu na Muunganisho', spec_backend:'Backend', spec_hosting:'Hosting', spec_protocol:'Protokali ya Kifaa',
+    spec_heartbeat:'Heartbeat', spec_heartbeat_val:'Kila dakika 5', spec_networks:'Mitandao Inayoungwa Mkono',
+    spec_data:'Matumizi ya Data kwa Mwezi', spec_data_val:'~5–15 MB tu', spec_dash:'Dashibodi', spec_dash_val:'Web · Simu + Kompyuta',
+    spec_uptime:'Uhai wa Server', spec_uptime_val:'99.9% inahakikishwa',
+    price_eyebrow:'Bei', price_h2a:'Chagua Mpango', price_h2b:'Unaokufaa',
+    price_p:'Mashine ya SWV inafanya kazi bila subscription. Dashibodi ya mtandaoni inahitaji subscription pekee —',
+    price_p_bold:'mwezi wa kwanza bure kwa kila mashine mpya.',
+    plan1_name:'Basic', plan1_sub:'Mashine pekee · Offline', plan1_price:'Bure', plan1_mo:'Hakuna ada ya mwezi', plan1_btn:'Omba Mashine',
+    plan1_f1:'Mauzo ya sarafu (sarafu zote za TZS)', plan1_f2:'Kadi ya RFID na Lipa kwa Simu (hardware ya ziada)', plan1_f3:'LCD inaonyesha salio na lita',
+    plan1_f4:'Usanidi wa Bluetooth (bei, calibration)', plan1_f5:'Amri za SMS (salio, bei)', plan1_f6:'Dashibodi ya mtandaoni',
+    plan2_pop:'⭐ MAARUFU ZAIDI', plan2_name:'Subscription', plan2_sub:'Mashine + Dashibodi ya Mtandaoni · Mwezi wa Kwanza Bure',
+    plan2_mo:'Tsh / mwezi · SmartKembo inalipa data', plan2_btn:'Anza Mwezi Bure',
+    plan2_f1:'Kila kitu cha Basic', plan2_f2:'Dashibodi ya wakati halisi', plan2_f3:'AI Insights na utabiri wa mauzo',
+    plan2_f4:'Ndoo ya wakati halisi', plan2_f5:'Badilisha bei kutoka simu yako', plan2_f6:'Historia kamili ya miamala', plan2_f7:'Data ya 4G — SmartKembo inalipa',
+    plan3_name:'Enterprise', plan3_sub:'Mashine nyingi · Uendeshaji mkubwa', plan3_mo:'Tsh / mwezi', plan3_btn:'Wasiliana Nasi',
+    plan3_f1:'Kila kitu cha Subscription', plan3_f2:'Mashine nyingi, dashibodi moja', plan3_f3:'Ufikiaji kamili wa API',
+    plan3_f4:'99.9% SLA inahakikishwa', plan3_f5:'Msaada wa kipaumbele 24/7',
+    cta_eyebrow:'Anza Sasa', cta_h2a:'Uko Tayari Kuanza', cta_h2b:'Kuuza Maji?',
+    cta_p:'Omba mashine yako ya SWV leo. Tutawasiliana nawe ndani ya masaa 24 kuidhinisha ombi lako na kuanza usakinishaji.',
+    cta_wa:'Tutumie WhatsApp', cta_note:'Hakuna ada ya usajili · Tunakuwasiliana · Usakinishaji ndani ya siku 2–3',
+    ft_made:'Imetengenezwa Tanzania',
+  }
+};
+
+var currentLang = localStorage.getItem('swv_site_lang') || 'en';
+
+function T(key){
+  return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key]) || key;
+}
+
+function applyTranslations(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key = el.getAttribute('data-i18n');
+    if (I18N[currentLang] && I18N[currentLang][key] !== undefined) el.innerHTML = I18N[currentLang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+    var key = el.getAttribute('data-i18n-placeholder');
+    if (I18N[currentLang] && I18N[currentLang][key] !== undefined) el.placeholder = I18N[currentLang][key];
+  });
+  var btn = document.getElementById('lang-toggle-btn');
+  if (btn) btn.textContent = currentLang === 'sw' ? 'EN' : 'SW';
+  document.documentElement.lang = currentLang;
+  // Sasisha maandishi ya kitufe cha "Get Water" ikiwa hakiko katikati ya mchakato
+  if (typeof dispensing !== 'undefined' && !dispensing) {
+    setBtn(dBal >= 50 ? 'ready' : 'idle');
+  }
+}
+
+function toggleLang(){
+  currentLang = currentLang === 'sw' ? 'en' : 'sw';
+  localStorage.setItem('swv_site_lang', currentLang);
+  applyTranslations();
+}
+
+applyTranslations();
 
 </script>
 </body>
