@@ -6,7 +6,7 @@
 <title>Get Started — SMD's SmartKembo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);--green:#22C55E;}
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--blue:#60A5FA;--blue2:rgba(96,165,250,0.08);--blue3:rgba(96,165,250,0.15);--green:#22C55E;--amber:#F59E0B;--amber2:rgba(245,158,11,0.08);--amber3:rgba(245,158,11,0.15);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
@@ -36,7 +36,7 @@ h1 span{color:var(--cyan);}
 .header-p{font-size:16px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:500px;margin:0 auto;}
 
 /* CARDS */
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px;}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;}
 
 .card{background:var(--navy2);border:2px solid var(--border);border-radius:24px;padding:36px 32px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s;}
@@ -47,6 +47,8 @@ h1 span{color:var(--cyan);}
 .card-wifi:hover{border-color:var(--cyan);box-shadow:0 20px 60px rgba(0,200,232,0.1);}
 .card-water::before{background:radial-gradient(circle at 30% 30%,rgba(96,165,250,0.06),transparent 60%);}
 .card-water:hover{border-color:var(--blue);box-shadow:0 20px 60px rgba(96,165,250,0.1);}
+.card-shop::before{background:radial-gradient(circle at 30% 30%,rgba(245,158,11,0.06),transparent 60%);}
+.card-shop:hover{border-color:var(--amber);box-shadow:0 20px 60px rgba(245,158,11,0.1);}
 
 .card-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px;width:fit-content;}
 .badge-live{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);}
@@ -58,6 +60,7 @@ h1 span{color:var(--cyan);}
 .card-title{font-size:26px;font-weight:600;letter-spacing:-0.3px;margin-bottom:10px;}
 .card-wifi .card-title{color:var(--cyan);}
 .card-water .card-title{color:var(--blue);}
+.card-shop .card-title{color:var(--amber);}
 .card-desc{font-size:14px;color:var(--gray1);font-weight:300;line-height:1.75;margin-bottom:28px;flex:1;}
 
 .card-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
@@ -65,12 +68,15 @@ h1 span{color:var(--cyan);}
 .feat-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
 .feat-check-cyan{background:rgba(0,200,232,.12);color:var(--cyan);}
 .feat-check-blue{background:rgba(96,165,250,.12);color:var(--blue);}
+.feat-check-amber{background:rgba(245,158,11,.12);color:var(--amber);}
 
 .card-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;transition:all .2s;}
 .btn-wifi{background:var(--cyan);color:var(--navy);}
 .btn-wifi:hover{opacity:.9;}
 .btn-water{background:var(--blue2);border:1px solid var(--blue3);color:var(--blue);}
 .btn-water:hover{background:var(--blue);color:var(--navy);}
+.btn-shop{background:var(--amber2);border:1px solid var(--amber3);color:var(--amber);}
+.btn-shop:hover{background:var(--amber);color:var(--navy);}
 .btn-arrow{font-size:18px;transition:transform .2s;}
 .card:hover .btn-arrow{transform:translateX(4px);}
 
@@ -177,6 +183,24 @@ h1 span{color:var(--cyan);}
         </div>
       </div>
 
+      <!-- Shop/POS Card -->
+      <div class="card card-shop" onclick="goShop()">
+        <div class="card-badge badge-live"><div class="badge-live-dot"></div>Live — Inapatikana Sasa</div>
+        <div class="card-icon">🛒</div>
+        <div class="card-title">Shop &amp; POS</div>
+        <p class="card-desc">Simamia duka lako — scan bidhaa kwa kamera, USB, au ESP32, fuatilia stock, wafanyakazi, na mauzo yote papo hapo, hata kwa maduka mengi.</p>
+        <div class="card-feats">
+          <div class="card-feat"><div class="feat-check feat-check-amber">✓</div>Barcode scanning kwa njia 3</div>
+          <div class="card-feat"><div class="feat-check feat-check-amber">✓</div>Maduka mengi, wafanyakazi wenye ruhusa ndogo</div>
+          <div class="card-feat"><div class="feat-check feat-check-amber">✓</div>Stock ya papo hapo + alert za stock chache</div>
+          <div class="card-feat"><div class="feat-check feat-check-amber">✓</div>Setup ndani ya siku moja</div>
+        </div>
+        <div class="card-btn btn-shop">
+          <span>Anza na Shop &amp; POS</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </div>
+
     </div>
 
     <!-- Both option -->
@@ -233,6 +257,12 @@ function goWater(){
   document.querySelector('.card-water').style.transform = 'scale(0.98)';
   setTimeout(function(){
     window.location.href = 'apply-water.html';
+  }, 150);
+}
+function goShop(){
+  document.querySelector('.card-shop').style.transform = 'scale(0.98)';
+  setTimeout(function(){
+    window.location.href = 'https://wa.me/255767830319?text=' + encodeURIComponent('Nataka kuanza na Shop & POS module ya SmartKembo');
   }, 150);
 }
 </script>
