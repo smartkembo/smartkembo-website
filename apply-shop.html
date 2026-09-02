@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for Shop &amp; POS — SMD's SmartKembo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--amber:#F59E0B;--amber2:rgba(245,158,11,0.08);--amber3:rgba(245,158,11,0.15);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.6;}
+a{text-decoration:none;}
+
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-inner{width:100%;max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy);}
+.logo-name{font-size:15px;font-weight:600;color:var(--white);}
+.logo-name span{color:var(--cyan);}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s;}
+.nav-back:hover{color:var(--amber);border-color:var(--amber3);}
+
+.page{max-width:1000px;margin:0 auto;padding:48px 5% 80px;display:grid;grid-template-columns:1fr 300px;gap:28px;align-items:start;}
+
+.banner{background:var(--amber2);border:1px solid var(--amber3);border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;margin-bottom:28px;grid-column:1/-1;}
+.banner-icon{font-size:24px;flex-shrink:0;}
+.banner-title{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:3px;}
+.banner-desc{font-size:12px;color:var(--gray1);line-height:1.7;}
+.dev-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.2);padding:3px 10px;border-radius:10px;font-size:9px;font-weight:700;color:#22C55E;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.dev-dot{width:5px;height:5px;background:#22C55E;border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.form-card{background:var(--navy2);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.form-card-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.fch-icon{width:40px;height:40px;border-radius:10px;background:var(--amber2);border:1px solid var(--amber3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.fch-title{font-size:15px;font-weight:600;color:var(--white);}
+.fch-sub{font-size:12px;color:var(--gray2);margin-top:2px;}
+.form-body{padding:24px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg-full{grid-column:1/-1;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:12px;font-weight:500;color:var(--gray1);}
+.req{color:var(--amber);}
+.form-control{background:var(--navy3);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--white);font-family:inherit;outline:none;transition:all .15s;width:100%;}
+.form-control:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,158,11,0.08);}
+.form-control::placeholder{color:rgba(255,255,255,0.2);}
+select.form-control option{background:var(--navy2);}
+textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
+.form-hint{font-size:10px;color:var(--gray2);line-height:1.5;}
+
+.divider{height:1px;background:var(--border);margin:20px 0;}
+.section-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.radio-opt{background:var(--navy3);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;}
+.radio-opt:hover{border-color:var(--amber3);}
+.radio-opt.on{border-color:var(--amber);background:var(--amber2);}
+.radio-opt input{display:none;}
+.ro-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.radio-opt.on .ro-dot{border-color:var(--amber);background:var(--amber);}
+.radio-opt.on .ro-dot::after{content:'';width:4px;height:4px;background:var(--navy);border-radius:50%;}
+.ro-icon{font-size:16px;}
+.ro-text{font-size:12px;font-weight:500;color:var(--white);}
+.ro-sub{font-size:10px;color:var(--gray2);}
+
+.alert{padding:11px 14px;border-radius:9px;font-size:12px;margin-bottom:16px;display:none;line-height:1.6;align-items:center;gap:8px;}
+.alert.show{display:flex;}
+.alert-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#FCA5A5;}
+
+.form-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap;}
+.btn-submit{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--amber);color:var(--navy);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.form-note{font-size:10px;color:var(--gray2);line-height:1.6;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(6,16,30,0.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.success{display:none;text-align:center;padding:48px 24px;}
+.success.show{display:block;}
+.success-icon{font-size:64px;margin-bottom:16px;}
+.success-title{font-size:26px;font-weight:600;margin-bottom:8px;}
+.success-title span{color:var(--amber);}
+.success-p{font-size:14px;color:var(--gray1);font-weight:300;line-height:1.75;max-width:420px;margin:0 auto 24px;}
+.success-ref{background:var(--navy3);border:1px solid var(--amber3);border-radius:12px;padding:14px 18px;max-width:360px;margin:0 auto 24px;font-size:12px;}
+.success-ref-lbl{color:var(--gray2);margin-bottom:4px;}
+.success-ref-val{font-size:18px;font-weight:700;color:var(--amber);font-family:monospace;letter-spacing:2px;}
+.success-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-wa{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:var(--amber);color:var(--navy);border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn-home{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:transparent;color:var(--cyan);border:1px solid var(--b2);border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+.info-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.ic-title{font-size:10px;font-weight:700;color:var(--amber);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.ic-item{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;color:var(--gray1);line-height:1.5;}
+.ic-item:last-child{border:none;}
+.ic-dot{width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tl{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:10px;padding-bottom:14px;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:10px;top:24px;bottom:0;width:2px;background:var(--border);}
+.tl-dot{width:22px;height:22px;border-radius:50%;background:var(--amber2);border:1px solid var(--amber3);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;color:var(--amber);font-weight:700;z-index:1;}
+.tl-title{font-size:12px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.tl-desc{font-size:11px;color:var(--gray2);line-height:1.5;}
+.contact-card{background:var(--amber2);border:1px solid var(--amber3);border-radius:14px;padding:18px 20px;}
+.cc-title{font-size:12px;font-weight:600;color:var(--amber);margin-bottom:12px;}
+.cc-link{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:12px;color:var(--gray1);border-bottom:1px solid rgba(255,255,255,0.05);transition:color .15s;}
+.cc-link:last-child{border:none;}
+.cc-link:hover{color:var(--cyan);}
+.cc-icon{font-size:14px;flex-shrink:0;}
+
+@media(max-width:800px){
+  .page{grid-template-columns:1fr;padding:32px 4% 60px;}
+  .banner{grid-column:1;}
+  .form-grid{grid-template-columns:1fr;}
+  .radio-grid{grid-template-columns:1fr;}
+  .form-footer{flex-direction:column;}
+  .btn-submit{width:100%;justify-content:center;}
+  .sidebar{order:3;}
+}
+@media(max-width:480px){
+  .form-body{padding:16px;}
+  .form-card-head{padding:16px;}
+  .success{padding:32px 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 40 40" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2"/><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2" transform="rotate(60,20,20)"/><ellipse cx="20" cy="20" rx="14" ry="6" stroke="#06101E" stroke-width="2" transform="rotate(120,20,20)"/><circle cx="20" cy="20" r="4" fill="#06101E"/><circle cx="20" cy="20" r="2" fill="#00C8E8"/><circle cx="34" cy="20" r="2.5" fill="#06101E"/><circle cx="9" cy="10" r="2.5" fill="#06101E"/><circle cx="9" cy="30" r="2.5" fill="#06101E"/></svg></div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="pos-system.html" class="nav-back">← Shop &amp; POS</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-icon">🛒</div>
+    <div>
+      <div class="dev-badge"><div class="dev-dot"></div>Live Now</div>
+      <div class="banner-title">Shop &amp; POS is LIVE — Apply for Your Account</div>
+      <div class="banner-desc">Barcode scanning (camera, USB or ESP32), multi-store support, staff accounts, real-time stock, and full sales reports — already working. Fill this form and we'll reach out within 2 days to get you set up.</div>
+    </div>
+  </div>
+
+  <!-- MAIN FORM -->
+  <div>
+    <div class="form-card" id="form-card">
+      <div class="form-card-head">
+        <div class="fch-icon">🛒</div>
+        <div>
+          <div class="fch-title">Shop &amp; POS Pre-Registration</div>
+          <div class="fch-sub">Tell us about your shop — we will reach out when ready</div>
+        </div>
+      </div>
+      <div class="form-body">
+        <div id="alert" class="alert alert-error"></div>
+
+        <div class="section-label">Personal Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input class="form-control" id="name" type="text" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone / WhatsApp <span class="req">*</span></label>
+            <input class="form-control" id="phone" type="tel" placeholder="0712 345 678">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-control" id="email" type="email" placeholder="you@email.com">
+            <span class="form-hint">Optional — for updates and notifications</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location / Region <span class="req">*</span></label>
+            <input class="form-control" id="location" type="text" placeholder="e.g. Dar es Salaam, Arusha">
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-label">Business Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Business / Shop Name <span class="req">*</span></label>
+            <input class="form-control" id="biz" type="text" placeholder="Your shop's name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Business Type</label>
+            <select class="form-control" id="biz-type">
+              <option value="" disabled selected>Select type...</option>
+              <option>Electronics &amp; Accessories</option>
+              <option>Hardware / Building Materials</option>
+              <option>Grocery / Duka la Vyakula</option>
+              <option>Pharmacy / Chemist</option>
+              <option>Clothing &amp; Fashion</option>
+              <option>Cosmetics &amp; Beauty</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">How Many Stores Do You Plan to Manage?</label>
+            <div class="radio-grid">
+              <label class="radio-opt" onclick="selectRadio(this,'stores')">
+                <input type="radio" name="stores" value="1 store">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🏪</div>
+                <div><div class="ro-text">1 Store</div><div class="ro-sub">Single shop</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'stores')">
+                <input type="radio" name="stores" value="2-3 stores">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🏬</div>
+                <div><div class="ro-text">2–3 Stores</div><div class="ro-sub">Small chain</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'stores')">
+                <input type="radio" name="stores" value="4-10 stores">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🏢</div>
+                <div><div class="ro-text">4–10 Stores</div><div class="ro-sub">Growing chain</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'stores')">
+                <input type="radio" name="stores" value="10+ stores">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🏙️</div>
+                <div><div class="ro-text">10+ Stores</div><div class="ro-sub">Large retailer</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Preferred Barcode Scanning Method</label>
+            <div class="radio-grid">
+              <label class="radio-opt" onclick="selectRadio(this,'scan')">
+                <input type="radio" name="scan" value="Phone Camera">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">📱</div>
+                <div><div class="ro-text">Phone Camera</div><div class="ro-sub">No extra hardware</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'scan')">
+                <input type="radio" name="scan" value="USB / OTG Scanner">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🔌</div>
+                <div><div class="ro-text">USB / OTG Scanner</div><div class="ro-sub">Plug-and-play</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'scan')">
+                <input type="radio" name="scan" value="ESP32 Station">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">📡</div>
+                <div><div class="ro-text">ESP32 Station</div><div class="ro-sub">Fixed counter setup</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'scan')">
+                <input type="radio" name="scan" value="Not sure yet">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🤔</div>
+                <div><div class="ro-text">Not Sure Yet</div><div class="ro-sub">Help me decide</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Preferred Plan</label>
+            <select class="form-control" id="plan">
+              <option value="" disabled selected>Select plan...</option>
+              <option>Basic — Tsh 25,000/month</option>
+              <option>Pro — Tsh 60,000/month</option>
+              <option>Enterprise — Tsh 150,000/month</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group fg-full">
+            <label class="form-label">Any additional information or questions</label>
+            <textarea class="form-control" id="notes" placeholder="Tell us anything useful — your products, current challenges, questions about the system..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <div class="form-note">By submitting you agree to be contacted by SMD's SmartKembo.<br>Setup is usually same-day once we confirm your details.</div>
+          <button class="btn-submit" id="submitBtn" onclick="doSubmit()">Submit Application →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="form-card success" id="success-card">
+      <div class="success-icon">✅</div>
+      <h2 class="success-title">Application <span>Received!</span></h2>
+      <p class="success-p">Thank you for applying for Shop &amp; POS. We have received your details and will contact you on WhatsApp within 2 days to get you set up.</p>
+      <div class="success-ref">
+        <div class="success-ref-lbl">Reference Number</div>
+        <div class="success-ref-val" id="ref-num">SH-000000</div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:20px">Keep this number for your records</p>
+      <div class="success-btns">
+        <a href="https://wa.me/255767830319?text=Nimejisajili%20Shop%20%26%20POS%20SmartKembo" target="_blank" class="btn-wa">📱 Follow Up on WhatsApp</a>
+        <a href="index.html" class="btn-home">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="info-card">
+      <div class="ic-title">🛒 What to Expect</div>
+      <div class="ic-item"><div class="ic-dot"></div>We will call or WhatsApp you within 2 days</div>
+      <div class="ic-item"><div class="ic-dot"></div>We will explain the system and discuss your products</div>
+      <div class="ic-item"><div class="ic-dot"></div>We help you add your first products and staff</div>
+      <div class="ic-item"><div class="ic-dot"></div>You start selling with barcode scanning the same day</div>
+    </div>
+
+    <div class="info-card">
+      <div class="ic-title">📅 What Happens Next</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot">✓</div>
+          <div><div class="tl-title">Application Received</div><div class="tl-desc">We review your details and business type</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">✓</div>
+          <div><div class="tl-title">Contact &amp; Setup</div><div class="tl-desc">We call you and set up your account</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:rgba(245,158,11,0.3);border-color:var(--amber)">~</div>
+          <div><div class="tl-title">Add Products &amp; Staff</div><div class="tl-desc">We help you get your shop ready to sell</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="color:var(--gray2);border-color:var(--border);background:transparent">✓</div>
+          <div><div class="tl-title">You're Live</div><div class="tl-desc">Start scanning and selling right away</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="cc-title">💬 Questions? Talk to us directly</div>
+      <a href="https://wa.me/255767830319" target="_blank" class="cc-link"><span class="cc-icon">📱</span>WhatsApp: +255 767 830 319</a>
+      <a href="https://t.me/smartkembo1" target="_blank" class="cc-link"><span class="cc-icon">✈</span>Telegram: @smartkembo1</a>
+      <a href="mailto:admin@smartkembo.com" class="cc-link"><span class="cc-icon">📧</span>admin@smartkembo.com</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function selectRadio(el, name){
+  document.querySelectorAll('[name="'+name+'"]').forEach(function(r){
+    r.closest('.radio-opt').classList.remove('on');
+  });
+  el.classList.add('on');
+  el.querySelector('input').checked = true;
+}
+
+function showAlert(msg){
+  var a = document.getElementById('alert');
+  a.textContent = msg;
+  a.classList.add('show');
+  setTimeout(function(){ a.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+}
+
+function hideAlert(){
+  document.getElementById('alert').classList.remove('show');
+}
+
+async function doSubmit(){
+  hideAlert();
+  var btn = document.getElementById('submitBtn');
+
+  var name     = document.getElementById('name').value.trim();
+  var phone    = document.getElementById('phone').value.trim();
+  var location = document.getElementById('location').value.trim();
+  var biz      = document.getElementById('biz').value.trim();
+
+  if(!name){ showAlert('⚠ Please enter your full name.'); return; }
+  if(!phone){ showAlert('⚠ Please enter your phone number.'); return; }
+  if(!location){ showAlert('⚠ Please enter your location.'); return; }
+  if(!biz){ showAlert('⚠ Please enter your business name.'); return; }
+
+  var storesEl = document.querySelector('[name="stores"]:checked');
+  var scanEl   = document.querySelector('[name="scan"]:checked');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  var ref = 'SH-' + Date.now().toString().slice(-6);
+  document.getElementById('ref-num').textContent = ref;
+
+  var msg = 'SHOP & POS PRE-REGISTRATION\n\n'
+    + 'Name: ' + name + '\n'
+    + 'Phone: ' + phone + '\n'
+    + 'Location: ' + location + '\n'
+    + 'Business: ' + biz + '\n'
+    + 'Type: ' + (document.getElementById('biz-type').value || 'Not specified') + '\n'
+    + 'Stores planned: ' + (storesEl ? storesEl.value : 'Not specified') + '\n'
+    + 'Scanning preference: ' + (scanEl ? scanEl.value : 'Not specified') + '\n'
+    + 'Plan: ' + (document.getElementById('plan').value || 'Not selected') + '\n'
+    + 'Ref: ' + ref;
+
+  try {
+    var apiRes = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/applications/shop', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        applicant_name:  name,
+        applicant_phone: phone,
+        applicant_email: document.getElementById('email').value.trim(),
+        business_name:   biz,
+        location:        location,
+        business_type:   document.getElementById('biz-type').value || '',
+        num_stores:      storesEl ? storesEl.value : '',
+        scan_preference: scanEl ? scanEl.value : '',
+        plan_interest:   document.getElementById('plan').value || '',
+        notes:           document.getElementById('notes').value.trim()
+      })
+    });
+    var apiData = await apiRes.json();
+    if (!apiRes.ok || !apiData.success) {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Application →';
+      showAlert('❌ Ombi halikufanikiwa: ' + (apiData.message || apiRes.status + ' ' + apiRes.statusText));
+      return;
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = 'Submit Application →';
+    showAlert('❌ Tatizo la mtandao: ' + e.message + ' — Jaribu tena au wasiliana nasi kwa WhatsApp.');
+    return;
+  }
+
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('success-card').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  setTimeout(function(){
+    window.open('https://wa.me/255767830319?text=' + encodeURIComponent(msg), '_blank');
+  }, 2000);
+}
+</script>
+</body>
+</html>
