@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Lipia Token ya Mashine yako ya Maji ya SmartKembo — weka namba ya mashine, chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money, pata token papo hapo.">
+<title>Lipa Token — SmartKembo Water Vending</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--good:#22C55E;--bad:#F87171;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{width:100%;max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy)}
+.logo-name{font-size:15px;font-weight:600;color:var(--white)}
+.logo-name span{color:var(--cyan)}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .15s}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2)}
+
+.page{max-width:520px;margin:0 auto;padding:40px 5% 80px}
+.hero{text-align:center;margin-bottom:28px}
+.hero-icon{font-size:36px;margin-bottom:10px}
+.hero h1{font-size:24px;font-weight:700;margin-bottom:6px}
+.hero p{font-size:13px;color:var(--gray1)}
+
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:var(--gray1);margin-bottom:6px}
+.field input,.field select{width:100%;background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:15px;font-family:inherit}
+.field input:focus,.field select:focus{outline:none;border-color:var(--cyan)}
+.field input::placeholder{color:var(--gray2)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:14px;font-weight:600;padding:13px 20px;cursor:pointer;border:none;width:100%;transition:opacity .15s}
+.btn-cyan{background:var(--cyan);color:var(--navy)}
+.btn-cyan:hover{opacity:.9}
+.btn-cyan:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--white)}
+
+.msg{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px;display:none}
+.msg.show{display:block}
+.msg-err{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--bad)}
+.msg-ok{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--good)}
+
+.machine-confirm{background:var(--cyan2);border:1px solid var(--b2);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:none}
+.machine-confirm.show{display:block}
+.machine-confirm .biz{font-size:15px;font-weight:700;color:var(--cyan)}
+.machine-confirm .code{font-size:12px;color:var(--gray1);margin-top:2px}
+
+.pkg-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.pkg-opt{border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
+.pkg-opt.selected{border-color:var(--cyan);background:var(--cyan2)}
+.pkg-opt .n{font-size:13px;font-weight:600}
+.pkg-opt .d{font-size:11px;color:var(--gray1)}
+.pkg-opt .p{font-size:14px;font-weight:700;color:var(--cyan)}
+
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.2);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.waiting{text-align:center;padding:20px 0}
+.waiting .dot{width:10px;height:10px;background:var(--cyan);border-radius:50%;display:inline-block;margin:0 3px;animation:bounce 1.2s infinite}
+.waiting .dot:nth-child(2){animation-delay:.15s}
+.waiting .dot:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-6px)}}
+
+.token-box{background:linear-gradient(135deg,var(--navy3),var(--navy2));border:1.5px dashed var(--cyan);border-radius:14px;padding:22px;text-align:center;margin-bottom:16px}
+.token-code{font-family:monospace;font-size:24px;font-weight:800;letter-spacing:2px;color:var(--cyan);word-break:break-all;margin:10px 0}
+.step{display:none}
+.step.active{display:block}
+.link-reset{display:block;text-align:center;font-size:12px;color:var(--gray1);margin-top:14px}
+.link-reset:hover{color:var(--cyan)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SK</div>
+      <div class="logo-name">Smart<span>Kembo</span></div>
+    </a>
+    <a href="water.html" class="nav-back">← Rudi</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="hero-icon">💧</div>
+    <h1>Lipa Token ya Mashine</h1>
+    <p>Weka namba ya mashine yako, chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money — pata token papo hapo, kama LUKU.</p>
+  </div>
+
+  <!-- STEP 1: MACHINE CODE -->
+  <div class="step active" id="step-1">
+    <div class="card">
+      <div class="card-title">1️⃣ Namba ya Mashine</div>
+      <div class="msg msg-err" id="s1-err"></div>
+      <div class="field">
+        <label>Namba ya Mashine (imeandikwa kwenye mashine yenyewe)</label>
+        <input id="machine-code" placeholder="Mfano: SWV-001" autocapitalize="characters">
+      </div>
+      <button class="btn btn-cyan" id="s1-btn" onclick="findMachine()">Tafuta Mashine →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PACKAGE + PHONE -->
+  <div class="step" id="step-2">
+    <div class="card">
+      <div class="card-title">2️⃣ Chagua Kifurushi</div>
+      <div class="machine-confirm show" id="machine-confirm">
+        <div class="biz" id="mc-biz">—</div>
+        <div class="code" id="mc-code">—</div>
+      </div>
+      <div class="msg msg-err" id="s2-err"></div>
+      <div class="pkg-list" id="pkg-list"><div style="font-size:13px;color:var(--gray1)">Inapakia vifurushi...</div></div>
+      <div class="field">
+        <label>Namba yako ya Simu (ya kulipia)</label>
+        <input id="pay-phone" type="tel" placeholder="07XXXXXXXX">
+      </div>
+      <button class="btn btn-cyan" id="s2-btn" onclick="startPurchase()">Lipa Sasa</button>
+      <a class="link-reset" onclick="goStep(1)">← Badilisha namba ya mashine</a>
+    </div>
+  </div>
+
+  <!-- STEP 3: WAITING -->
+  <div class="step" id="step-3">
+    <div class="card">
+      <div class="card-title">3️⃣ Thibitisha Malipo</div>
+      <div class="waiting">
+        <div style="margin-bottom:14px"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div style="font-size:13px;color:var(--gray1)">Tumetuma ombi la malipo kwenye simu yako.<br>Weka PIN yako kukamilisha malipo...</div>
+      </div>
+      <div class="msg msg-err" id="s3-err"></div>
+    </div>
+  </div>
+
+  <!-- STEP 4: DONE -->
+  <div class="step" id="step-4">
+    <div class="card">
+      <div class="card-title">✅ Token Imetengenezwa</div>
+      <div class="token-box">
+        <div style="font-size:12px;color:var(--gray1)">Ingiza namba hii kwenye keypad ya mashine yako</div>
+        <div class="token-code" id="final-code">—</div>
+      </div>
+      <button class="btn btn-outline" onclick="copyCode()">📋 Nakili Namba</button>
+      <a class="link-reset" onclick="goStep(1); resetAll()">Lipia mashine nyingine →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/public/tokens';
+let SELECTED_MACHINE = null;
+let PACKAGES = [];
+let SELECTED_PKG = null;
+let POLL_TIMER = null;
+let CURRENT_CODE = '';
+
+async function apiFetch(path, opts) {
+  opts = opts || {};
+  opts.headers = { 'Content-Type': 'application/json' };
+  if (opts.body && typeof opts.body !== 'string') opts.body = JSON.stringify(opts.body);
+  const r = await fetch(API + path, opts);
+  return r.json();
+}
+
+function fmtMoney(n) { return Math.round(n || 0).toLocaleString('en-US'); }
+
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+}
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+
+async function findMachine() {
+  const code = document.getElementById('machine-code').value.trim();
+  hideErr('s1-err');
+  if (!code) { showErr('s1-err', 'Weka namba ya mashine kwanza'); return; }
+
+  const btn = document.getElementById('s1-btn');
+  btn.disabled = true; btn.textContent = 'Inatafuta...';
+  try {
+    const res = await apiFetch('/machine/' + encodeURIComponent(code));
+    if (!res.success) { showErr('s1-err', res.message || 'Mashine haipatikani'); return; }
+    SELECTED_MACHINE = res.data;
+    document.getElementById('mc-biz').textContent = '🏢 ' + SELECTED_MACHINE.business_name;
+    document.getElementById('mc-code').textContent = 'Mashine: ' + SELECTED_MACHINE.machine_name + ' (' + SELECTED_MACHINE.machine_code + ')';
+    goStep(2);
+    loadPackages();
+  } catch (e) {
+    showErr('s1-err', 'Tatizo la mtandao. Jaribu tena.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Tafuta Mashine →';
+  }
+}
+
+async function loadPackages() {
+  const box = document.getElementById('pkg-list');
+  try {
+    const res = await apiFetch('/packages');
+    PACKAGES = res.data || [];
+    if (!PACKAGES.length) { box.innerHTML = '<div style="font-size:13px;color:var(--gray1)">Hakuna vifurushi kwa sasa</div>'; return; }
+    box.innerHTML = PACKAGES.map(p => `
+      <div class="pkg-opt" id="pkg-${p.id}" onclick="selectPkg('${p.id}')">
+        <div>
+          <div class="n">${p.name}</div>
+          <div class="d">${p.days_value} siku ${p.description ? '· ' + p.description : ''}</div>
+        </div>
+        <div class="p">TSh ${fmtMoney(p.price_tzs)}</div>
+      </div>`).join('');
+  } catch (e) {
+    box.innerHTML = '<div style="font-size:13px;color:var(--bad)">Imeshindwa kupakia vifurushi</div>';
+  }
+}
+
+function selectPkg(id) {
+  SELECTED_PKG = PACKAGES.find(p => p.id === id);
+  document.querySelectorAll('.pkg-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('pkg-' + id).classList.add('selected');
+}
+
+async function startPurchase() {
+  hideErr('s2-err');
+  if (!SELECTED_PKG) { showErr('s2-err', 'Chagua kifurushi kwanza'); return; }
+  const phone = document.getElementById('pay-phone').value.trim();
+  if (!/^0[67]\d{8}$/.test(phone)) { showErr('s2-err', 'Weka namba sahihi ya simu — mfano: 0712345678'); return; }
+
+  const btn = document.getElementById('s2-btn');
+  btn.disabled = true; btn.textContent = 'Inatuma ombi...';
+  try {
+    const res = await apiFetch('/purchase', { method: 'POST', body: { machine_code: SELECTED_MACHINE.machine_code, package_id: SELECTED_PKG.id, phone } });
+    if (!res.success) { showErr('s2-err', res.message || 'Imeshindwa'); return; }
+    goStep(3);
+    pollStatus(res.data.token_id);
+  } catch (e) {
+    showErr('s2-err', 'Tatizo la mtandao. Jaribu tena.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Lipa Sasa';
+  }
+}
+
+function pollStatus(tokenId) {
+  clearInterval(POLL_TIMER);
+  let tries = 0;
+  POLL_TIMER = setInterval(async () => {
+    tries++;
+    if (tries > 40) { clearInterval(POLL_TIMER); showErr('s3-err', 'Muda umeisha. Kama umeshalipa, tuma "OK" WhatsApp +255767830319 kwa msaada.'); return; }
+    try {
+      const res = await apiFetch('/purchase/' + tokenId + '/check');
+      const status = res?.data?.status;
+      if (status === 'issued') {
+        clearInterval(POLL_TIMER);
+        CURRENT_CODE = res.data.code_display || '';
+        document.getElementById('final-code').textContent = CURRENT_CODE;
+        goStep(4);
+      } else if (status === 'failed') {
+        clearInterval(POLL_TIMER);
+        showErr('s3-err', 'Malipo hayajakamilika au yamekataliwa. Jaribu tena.');
+        setTimeout(() => goStep(2), 2500);
+      }
+    } catch (e) { /* endelea kujaribu */ }
+  }, 4000);
+}
+
+function copyCode() {
+  if (!CURRENT_CODE) return;
+  navigator.clipboard?.writeText(CURRENT_CODE.replace(/\s+/g, ''));
+  alert('Namba imenakiliwa! Ingiza kwenye mashine yako.');
+}
+
+function resetAll() {
+  document.getElementById('machine-code').value = '';
+  document.getElementById('pay-phone').value = '';
+  SELECTED_MACHINE = null; SELECTED_PKG = null; CURRENT_CODE = '';
+}
+</script>
+</body>
+</html>
