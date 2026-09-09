@@ -309,7 +309,7 @@ h2 span{color:var(--cyan);}
       <div class="plan">
         <div class="plan-name">Basic</div>
         <div class="plan-desc">Single shop, small team</div>
-        <div class="plan-price">25K</div>
+        <div class="plan-price" data-plan-price="Basic">25K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="apply-shop.html" class="plan-btn">Get Started</a>
         <div class="plan-div"></div>
@@ -323,7 +323,7 @@ h2 span{color:var(--cyan);}
         <div class="plan-pop">⭐ MOST POPULAR</div>
         <div class="plan-name">Pro</div>
         <div class="plan-desc">Growing shops, multiple staff</div>
-        <div class="plan-price">60K</div>
+        <div class="plan-price" data-plan-price="Pro">60K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="apply-shop.html" class="plan-btn">Start with Pro</a>
         <div class="plan-div" style="background:rgba(0,200,232,.15)"></div>
@@ -336,7 +336,7 @@ h2 span{color:var(--cyan);}
       <div class="plan">
         <div class="plan-name">Enterprise</div>
         <div class="plan-desc">Chains &amp; multi-branch retailers</div>
-        <div class="plan-price">150K</div>
+        <div class="plan-price" data-plan-price="Enterprise">150K</div>
         <div class="plan-mo">Tsh per month</div>
         <a href="https://wa.me/255767830319" target="_blank" class="plan-btn">Contact Us</a>
         <div class="plan-div"></div>
@@ -432,6 +432,19 @@ h2 span{color:var(--cyan);}
 <script>
 function openMenu(){document.getElementById('mob').classList.add('open');document.body.style.overflow='hidden';}
 function closeMenu(){document.getElementById('mob').classList.remove('open');document.body.style.overflow='';}
+
+// ── Bei za LIVE kutoka kwenye backend ──
+(async function loadLivePricing() {
+  try {
+    const res = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/subscription/plans?module=shop');
+    const json = await res.json();
+    if (!json.success) return;
+    json.data.forEach(plan => {
+      const el = document.querySelector(`[data-plan-price="${plan.name}"]`);
+      if (el) el.textContent = Math.round(plan.price_monthly / 1000) + 'K';
+    });
+  } catch (e) { /* kimya */ }
+})();
 </script>
 </body>
 </html>
