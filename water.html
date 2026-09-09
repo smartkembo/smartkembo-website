@@ -681,7 +681,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <div class="plan-pop" data-i18n="plan2_pop">⭐ MOST POPULAR</div>
         <div class="plan-name" data-i18n="plan2_name">Subscription</div>
         <div class="plan-sub" data-i18n="plan2_sub">Machine + Online Dashboard · First Month Free</div>
-        <div class="plan-price">30K</div>
+        <div class="plan-price" data-plan-price="Subscription">30K</div>
         <div class="plan-mo" data-i18n="plan2_mo">Tsh / month · SmartKembo pays for data</div>
         <a href="apply-water.html" class="plan-btn" data-i18n="plan2_btn">Start Free Month</a>
         <div class="plan-div" style="background:rgba(0,200,232,.14)"></div>
@@ -696,7 +696,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="plan rv">
         <div class="plan-name" data-i18n="plan3_name">Enterprise</div>
         <div class="plan-sub" data-i18n="plan3_sub">Multiple machines · Large operations</div>
-        <div class="plan-price">200K</div>
+        <div class="plan-price" data-plan-price="Enterprise">200K</div>
         <div class="plan-mo" data-i18n="plan3_mo">Tsh / month</div>
         <a href="https://wa.me/255767830319" target="_blank" class="plan-btn" data-i18n="plan3_btn">Contact Us</a>
         <div class="plan-div"></div>
@@ -1101,6 +1101,20 @@ function toggleLang(){
 }
 
 applyTranslations();
+
+// ── Bei za LIVE kutoka kwenye backend (Basic inabaki "Free" kwa
+// makusudi — haihitaji bei ya moja kwa moja) ──
+(async function loadLivePricing() {
+  try {
+    const res = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/subscription/plans?module=water');
+    const json = await res.json();
+    if (!json.success) return;
+    json.data.forEach(plan => {
+      const el = document.querySelector(`[data-plan-price="${plan.name}"]`);
+      if (el) el.textContent = Math.round(plan.price_monthly / 1000) + 'K';
+    });
+  } catch (e) { /* kimya */ }
+})();
 
 </script>
 </body>
