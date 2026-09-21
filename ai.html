@@ -45,8 +45,10 @@
     max-width: 768px; margin: 0 auto;
     display: flex; gap: 16px; align-items: flex-start;
   }
-  .row.me .inner { justify-content: flex-end; flex-direction: row-reverse; }
+  .row.me .inner { justify-content: flex-end; flex-direction: row; }
+  .row.me .av { order: 2; margin-left: 10px; }
   .row.me .bubble {
+    order: 1;
     background: #00C8E8; color: #06101E;
     border-radius: 16px 16px 4px 16px;
     padding: 10px 14px;
