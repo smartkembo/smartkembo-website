@@ -603,7 +603,10 @@
       }
       isSending = false;
       sendBtn.disabled = false;
-      input.focus();
+      // Only re-focus on desktop: on touch devices, focusing the textarea
+      // pops the on-screen keyboard back up right after the AI answers,
+      // covering the reply the person just wanted to read.
+      if (!isTouch) input.focus();
     }
 
     sendBtn.addEventListener('click', send);
