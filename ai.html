@@ -45,6 +45,21 @@
     max-width: 768px; margin: 0 auto;
     display: flex; gap: 16px; align-items: flex-start;
   }
+  .row.me .inner { justify-content: flex-end; flex-direction: row-reverse; }
+  .row.me .bubble {
+    background: #00C8E8; color: #06101E;
+    border-radius: 16px 16px 4px 16px;
+    padding: 10px 14px;
+    max-width: 78%;
+    flex: 0 1 auto;
+  }
+  .row.bot .bubble {
+    background: #3A3A3A;
+    border-radius: 16px 16px 16px 4px;
+    padding: 10px 14px;
+    max-width: 78%;
+    flex: 0 1 auto;
+  }
   .av {
     width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
