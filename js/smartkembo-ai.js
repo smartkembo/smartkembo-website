@@ -157,7 +157,7 @@
       </button>
       <div id="sk-ai-panel">
         <div id="sk-ai-header">
-          <div id="sk-ai-avatar">SK</div>
+          <div id="sk-ai-avatar">💬</div>
           <div id="sk-ai-header-info">
             <div id="sk-ai-header-name">${BOT_NAME}</div>
             <div id="sk-ai-header-status"><span id="sk-ai-dot"></span> Online · SMD's SmartKembo</div>
@@ -166,7 +166,7 @@
         </div>
         <div id="sk-ai-messages"></div>
         <div id="sk-ai-input-area">
-          <textarea id="sk-ai-input" rows="1" placeholder="Write a message… / Andika ujumbe…"></textarea>
+          <textarea id="sk-ai-input" rows="1" placeholder="💬 Write a message… / Andika ujumbe…"></textarea>
           <button id="sk-ai-send" aria-label="Send">
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
@@ -255,8 +255,8 @@
 
     addBotMessage(
       preferSw
-        ? 'Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\nWiFi Vending · Water Vending · Shop & POS · Pricing'
-        : 'Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\nWiFi Vending · Water Vending · Shop & POS · Pricing'
+        ? '👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing'
+        : '👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing'
     );
 
     function addBotMessage(text, messageId) {
@@ -299,7 +299,7 @@
       const div = document.createElement('div');
       div.className = 'sk-msg bot typing';
       div.id = 'sk-typing';
-      div.textContent = preferSw ? 'Inafikiri…' : 'Thinking…';
+      div.textContent = preferSw ? '⏳ Inafikiri…' : '⏳ Thinking…';
       messages.appendChild(div);
       messages.scrollTop = messages.scrollHeight;
     }
