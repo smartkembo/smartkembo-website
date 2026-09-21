@@ -234,9 +234,9 @@
   </div>
   <button class="new" id="newChat">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-    New chat
+    <span id="newChatLabel">New chat</span>
   </button>
-  <div class="side-hint">Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka/POS na bei.</div>
+  <div class="side-hint" id="sideHintText">Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka/POS na bei.</div>
   <div class="brand">
     <b>SmartKembo AI</b>
     <a href="https://www.smartkembo.com">www.smartkembo.com</a>
@@ -250,19 +250,14 @@
       </button>
       <strong>SmartKembo AI</strong>
     </div>
-    <div class="online"><span class="dot"></span> Online</div>
+    <div class="online"><span class="dot"></span> <span id="onlineLabel">Online</span></div>
   </div>
   <div id="thread">
     <div class="hello" id="hello">
       <div class="hello-mark">✨</div>
-      <h1>What can I help with?</h1>
-      <p>Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.</p>
-      <div class="chips">
-        <button class="chip" data-q="Smart WiFi inafanya kazi vipi?">📶 Smart WiFi inafanyaje kazi?</button>
-        <button class="chip" data-q="Bei za SmartKembo ni zipi?">💳 Bei za SmartKembo</button>
-        <button class="chip" data-q="Nataka kujiunga, nianzeje?">🚀 Jinsi ya kuanza</button>
-        <button class="chip" data-q="Nipe namba ya WhatsApp">📱 Wasiliana nasi</button>
-      </div>
+      <h1 id="helloTitle">What can I help with?</h1>
+      <p id="helloSubtitle">Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.</p>
+      <div class="chips" id="chips"></div>
     </div>
     <div id="msgs"></div>
   </div>
@@ -273,7 +268,7 @@
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </div>
-    <div class="hint">SmartKembo AI can make mistakes. Check important prices with +255 767 830 319.</div>
+    <div class="hint" id="hintText">SmartKembo AI can make mistakes. Check important prices with +255 767 830 319.</div>
   </div>
 </main>
 <script>
@@ -289,7 +284,73 @@
   var overlay = document.getElementById('overlay');
   var menuBtn = document.getElementById('menuBtn');
   var appEl = document.getElementById('app');
+  var chipsEl = document.getElementById('chips');
   var busy = false;
+
+  // Interface language: auto-detected from the device/browser locale,
+  // applied consistently across the whole page (labels, hello screen,
+  // starter chips, placeholder, feedback) instead of a fixed language.
+  var browserLang = (navigator.language || 'en').toLowerCase();
+  var preferSw = browserLang.indexOf('sw') === 0;
+  var STR = preferSw ? {
+    online: 'Mtandaoni',
+    helloTitle: 'Nikusaidieje?',
+    helloSubtitle: 'Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka na bei.',
+    newChat: 'Mazungumzo mapya',
+    sideHint: 'Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka/POS na bei.',
+    placeholder: 'Andika ujumbe kwa SmartKembo AI',
+    hint: 'SmartKembo AI inaweza kukosea. Thibitisha bei muhimu kwa +255 767 830 319.',
+    genericError: 'Kuna hitilafu. Jaribu tena.',
+    cannotConnect: 'Siwezi kuunganisha sasa. WhatsApp: +255 767 830 319',
+    helpful: '👍 Msaada',
+    notHelpful: '👎 Haikusaidia',
+    savedGood: '✓ Asante',
+    savedBad: '✓ Tumepokea',
+    you: 'Wewe',
+    chips: [
+      { icon: '📶', label: 'Smart WiFi inafanyaje kazi?', q: 'Smart WiFi inafanya kazi vipi?' },
+      { icon: '💳', label: 'Bei za SmartKembo', q: 'Bei za SmartKembo ni zipi?' },
+      { icon: '🚀', label: 'Jinsi ya kuanza', q: 'Nataka kujiunga, nianzeje?' },
+      { icon: '📱', label: 'Wasiliana nasi', q: 'Nipe namba ya WhatsApp' }
+    ]
+  } : {
+    online: 'Online',
+    helloTitle: 'What can I help with?',
+    helloSubtitle: 'Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.',
+    newChat: 'New chat',
+    sideHint: 'Ask anything. For SmartKembo: WiFi, Water, Shop/POS and pricing.',
+    placeholder: 'Message SmartKembo AI',
+    hint: 'SmartKembo AI can make mistakes. Check important prices with +255 767 830 319.',
+    genericError: 'Something went wrong. Please try again.',
+    cannotConnect: 'Cannot connect right now. WhatsApp: +255 767 830 319',
+    helpful: '👍 Helpful',
+    notHelpful: '👎 Not helpful',
+    savedGood: '✓ Saved',
+    savedBad: '✓ Noted',
+    you: 'You',
+    chips: [
+      { icon: '📶', label: 'How does Smart WiFi work?', q: 'How does Smart WiFi work?' },
+      { icon: '💳', label: 'SmartKembo pricing', q: 'What are SmartKembo prices?' },
+      { icon: '🚀', label: 'How to get started', q: 'I want to join, how do I start?' },
+      { icon: '📱', label: 'Contact us', q: 'Give me your WhatsApp number' }
+    ]
+  };
+
+  // Apply the localized strings to the static markup.
+  document.getElementById('onlineLabel').textContent = STR.online;
+  document.getElementById('helloTitle').textContent = STR.helloTitle;
+  document.getElementById('helloSubtitle').textContent = STR.helloSubtitle;
+  document.getElementById('newChatLabel').textContent = STR.newChat;
+  document.getElementById('sideHintText').textContent = STR.sideHint;
+  document.getElementById('hintText').textContent = STR.hint;
+  input.placeholder = STR.placeholder;
+  STR.chips.forEach(function (c) {
+    var btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.q = c.q;
+    btn.textContent = c.icon + ' ' + c.label;
+    chipsEl.appendChild(btn);
+  });
 
   // Touch devices (phones/tablets) have no real Shift key, so treating
   // Enter as "send" there meant the message went out the moment someone
@@ -361,7 +422,7 @@
       body: JSON.stringify({ messageId: messageId, feedback: feedback })
     }).catch(function () {});
     groupEl.querySelectorAll('.fb-btn').forEach(function (b) { b.classList.add('done'); });
-    btnEl.textContent = feedback === 'good' ? '✓ Asante' : '✓ Noted';
+    btnEl.textContent = feedback === 'good' ? STR.savedGood : STR.savedBad;
   }
 
   function addFeedbackRow(bubbleCol, messageId) {
@@ -369,8 +430,8 @@
     var fb = document.createElement('div');
     fb.className = 'feedback';
     fb.innerHTML =
-      '<button type="button" class="fb-btn" data-fb="good">👍 Helpful</button>' +
-      '<button type="button" class="fb-btn" data-fb="bad">👎 Not helpful</button>';
+      '<button type="button" class="fb-btn" data-fb="good">' + STR.helpful + '</button>' +
+      '<button type="button" class="fb-btn" data-fb="bad">' + STR.notHelpful + '</button>';
     fb.querySelectorAll('.fb-btn').forEach(function (b) {
       b.addEventListener('click', function () { sendFeedback(messageId, b.dataset.fb, b, fb); });
     });
@@ -383,7 +444,7 @@
     row.className = 'row ' + who;
     row.innerHTML =
       '<div class="inner">' +
-        '<div class="av ' + who + '">' + (who === 'bot' ? '🤖' : 'You') + '</div>' +
+        '<div class="av ' + who + '">' + (who === 'bot' ? '🤖' : STR.you) + '</div>' +
         '<div class="bubble-col">' +
           '<div class="bubble"></div>' +
           '<div class="msg-time"></div>' +
@@ -425,14 +486,14 @@
       });
       var data = await res.json();
       typingRow.remove();
-      var reply = (data.success && data.data && data.data.reply) ? data.data.reply : (data.message || 'Something went wrong.');
+      var reply = (data.success && data.data && data.data.reply) ? data.data.reply : (data.message || STR.genericError);
       var botRow = add(reply, 'bot');
       if (data.success && data.data && data.data.messageId) {
         addFeedbackRow(botRow.querySelector('.bubble-col'), data.data.messageId);
       }
     } catch (e) {
       typingRow.remove();
-      add('Cannot connect right now. WhatsApp: +255 767 830 319', 'bot');
+      add(STR.cannotConnect, 'bot');
     }
     busy = false; sendBtn.disabled = false; input.focus();
     thread.scrollTop = thread.scrollHeight;
