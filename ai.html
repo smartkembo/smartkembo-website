@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SmartKembo AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- PWA: inaruhusu "Install" / "Add to Home Screen" kwenye simu -->
+<link rel="manifest" href="manifest-ai.json">
+<meta name="theme-color" content="#171717">
+<link rel="icon" href="favicon-ai-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon-ai.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SK AI">
 <style>
   :root {
     --accent: #00C8E8;
@@ -212,6 +222,36 @@
   #send svg { width: 16px; height: 16px; fill: #06101E; margin-left: 1px; }
   .hint { max-width:760px; margin:9px auto 0; text-align:center; font-size:11px; color:#7A7A7A; }
 
+  .install-btn {
+    display: none; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #06101E; border: 0; border-radius: 999px;
+    font-size: 12px; font-weight: 700; padding: 7px 13px;
+    cursor: pointer; font-family: inherit; flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0,200,232,.3);
+  }
+  .install-btn.show { display: inline-flex; }
+  .install-btn svg { width: 14px; height: 14px; fill: #06101E; }
+
+  #iosSheet {
+    display: none; position: fixed; inset: 0; z-index: 40;
+    background: rgba(0,0,0,.55); align-items: flex-end; justify-content: center;
+  }
+  #iosSheet.show { display: flex; }
+  #iosSheet .card {
+    width: 100%; max-width: 420px; background: #1E1E1E; color: var(--text);
+    border-radius: 18px 18px 0 0; padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+    font-size: 13.5px; line-height: 1.7;
+  }
+  #iosSheet h3 { margin: 0 0 10px; font-size: 15px; }
+  #iosSheet .step { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+  #iosSheet .step b { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: rgba(0,200,232,.18); color: var(--accent); display:flex; align-items:center; justify-content:center; font-size: 12px; }
+  #iosSheet .icon-inline { display:inline-block; vertical-align:middle; }
+  #iosSheet button.close {
+    margin-top: 14px; width: 100%; background: rgba(255,255,255,.06); color: var(--text);
+    border: 1px solid #3D3D3D; border-radius: 10px; padding: 10px; font: inherit; font-size: 13px; cursor: pointer;
+  }
+
   @media (max-width: 800px) {
     aside {
       position: fixed; top: 0; bottom: 0; left: 0; z-index: 31;
@@ -251,6 +291,10 @@
       <strong>SmartKembo AI</strong>
     </div>
     <div class="online"><span class="dot"></span> <span id="onlineLabel">Online</span></div>
+    <button class="install-btn" id="installBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#06101E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10.5m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+      <span id="installBtnLabel">Install</span>
+    </button>
   </div>
   <div id="thread">
     <div class="hello" id="hello">
@@ -271,6 +315,17 @@
     <div class="hint" id="hintText">SmartKembo AI can make mistakes. Check important prices with +255 767 830 319.</div>
   </div>
 </main>
+
+<div id="iosSheet">
+  <div class="card">
+    <h3 id="iosSheetTitle">Weka SmartKembo AI kwenye Home Screen</h3>
+    <div class="step"><b>1</b><span id="iosStep1">Bonyeza kitufe cha <b class="icon-inline">⬆️ Share</b> chini ya Safari</span></div>
+    <div class="step"><b>2</b><span id="iosStep2">Chagua "Add to Home Screen"</span></div>
+    <div class="step"><b>3</b><span id="iosStep3">Bonyeza "Add" juu kulia</span></div>
+    <button class="close" id="iosSheetClose">Nimeelewa</button>
+  </div>
+</div>
+
 <script>
 (function () {
   var API = 'https://smartkembo-backend.onrender.com';
@@ -307,6 +362,12 @@
     savedGood: '✓ Asante',
     savedBad: '✓ Tumepokea',
     you: 'Wewe',
+    installBtn: 'Install',
+    iosTitle: 'Weka SmartKembo AI kwenye Home Screen',
+    iosStep1: 'Bonyeza kitufe cha Share chini ya Safari',
+    iosStep2: 'Chagua "Add to Home Screen"',
+    iosStep3: 'Bonyeza "Add" juu kulia',
+    iosClose: 'Nimeelewa',
     chips: [
       { icon: '📶', label: 'Smart WiFi inafanyaje kazi?', q: 'Smart WiFi inafanya kazi vipi?' },
       { icon: '💳', label: 'Bei za SmartKembo', q: 'Bei za SmartKembo ni zipi?' },
@@ -328,6 +389,12 @@
     savedGood: '✓ Saved',
     savedBad: '✓ Noted',
     you: 'You',
+    installBtn: 'Install',
+    iosTitle: 'Add SmartKembo AI to your Home Screen',
+    iosStep1: 'Tap the Share button in Safari',
+    iosStep2: 'Choose "Add to Home Screen"',
+    iosStep3: 'Tap "Add" in the top-right corner',
+    iosClose: 'Got it',
     chips: [
       { icon: '📶', label: 'How does Smart WiFi work?', q: 'How does Smart WiFi work?' },
       { icon: '💳', label: 'SmartKembo pricing', q: 'What are SmartKembo prices?' },
@@ -344,6 +411,12 @@
   document.getElementById('sideHintText').textContent = STR.sideHint;
   document.getElementById('hintText').textContent = STR.hint;
   input.placeholder = STR.placeholder;
+  document.getElementById('installBtnLabel').textContent = STR.installBtn;
+  document.getElementById('iosSheetTitle').textContent = STR.iosTitle;
+  document.getElementById('iosStep1').textContent = STR.iosStep1;
+  document.getElementById('iosStep2').textContent = STR.iosStep2;
+  document.getElementById('iosStep3').textContent = STR.iosStep3;
+  document.getElementById('iosSheetClose').textContent = STR.iosClose;
   STR.chips.forEach(function (c) {
     var btn = document.createElement('button');
     btn.className = 'chip';
@@ -530,6 +603,56 @@
     sendBtn.disabled = !input.value.trim();
   });
   input.addEventListener('focus', function () { setTimeout(fitViewportHeight, 50); });
+
+  // ---------- PWA: installability ----------
+  var installBtn = document.getElementById('installBtn');
+  var iosSheet = document.getElementById('iosSheet');
+  var deferredInstallPrompt = null;
+
+  function isStandalone() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true; // iOS Safari
+  }
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS 13+
+
+  if (!isStandalone()) {
+    if (isIOS) {
+      // iOS Safari has no beforeinstallprompt / native install API — the
+      // only way to install a PWA there is the manual Share -> "Add to
+      // Home Screen" flow, so we show a button that explains those steps.
+      installBtn.classList.add('show');
+      installBtn.addEventListener('click', function () { iosSheet.classList.add('show'); });
+      document.getElementById('iosSheetClose').addEventListener('click', function () {
+        iosSheet.classList.remove('show');
+      });
+    } else {
+      // Chrome/Edge/Android: capture the native prompt and trigger it
+      // from our own branded button instead of waiting for the browser's
+      // default mini-infobar.
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        installBtn.classList.add('show');
+      });
+      installBtn.addEventListener('click', async function () {
+        if (!deferredInstallPrompt) return;
+        installBtn.disabled = true;
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        installBtn.classList.remove('show');
+        installBtn.disabled = false;
+      });
+      window.addEventListener('appinstalled', function () {
+        installBtn.classList.remove('show');
+      });
+    }
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw-ai.js').catch(function () {});
+  }
 })();
 </script>
 </body>
