@@ -106,6 +106,9 @@
         .sk-msg.bot { background: #102033; align-self: flex-start; border-bottom-left-radius: 4px; }
         .sk-msg.user { background: #00C8E8; color: #06101E; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 500; }
         .sk-msg.typing { color: #7AA0B8; font-style: italic; }
+        .sk-msg.bot a { color: #6FE3FF; text-decoration: underline; }
+        .sk-msg.bot ul.sk-list { margin: 4px 0; padding-left: 18px; }
+        .sk-msg.bot ul.sk-list li { margin: 2px 0; }
 
         .sk-feedback, .sk-continue { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .sk-fb-btn, .sk-c-btn {
@@ -259,10 +262,53 @@
         : '👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing'
     );
 
+    // Safe "lite markdown" renderer: escapes all HTML first (XSS-safe), then
+    // turns **bold**, "- " bullets and bare URLs/phone numbers into real
+    // markup instead of showing raw ** and - to the user (Gemini answers
+    // often contain markdown even though the prompt asks it not to).
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+    function renderBotHTML(text) {
+      const lines = String(text || '').split('\n');
+      let html = '';
+      let inList = false;
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        const isBullet = /^[-•]\s+/.test(line);
+        if (isBullet) {
+          if (!inList) { html += '<ul class="sk-list">'; inList = true; }
+          html += '<li>' + inlineFormat(line.replace(/^[-•]\s+/, '')) + '</li>';
+        } else {
+          if (inList) { html += '</ul>'; inList = false; }
+          if (line === '') html += '<br>';
+          else html += '<div>' + inlineFormat(line) + '</div>';
+        }
+      }
+      if (inList) html += '</ul>';
+      return html;
+    }
+    function inlineFormat(line) {
+      let s = escapeHtml(line);
+      // **bold**
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      // bare URLs
+      s = s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+      // WhatsApp-style phone numbers -> tap to chat
+      s = s.replace(/(\+255\s?\d{3}\s?\d{3}\s?\d{3})/g, function (m) {
+        var digits = m.replace(/\D/g, '');
+        return '<a href="https://wa.me/' + digits + '" target="_blank" rel="noopener noreferrer">' + m + '</a>';
+      });
+      return s;
+    }
+
     function addBotMessage(text, messageId) {
       const div = document.createElement('div');
       div.className = 'sk-msg bot';
-      div.textContent = text;
+      div.innerHTML = renderBotHTML(text);
       if (messageId) {
         const fb = document.createElement('div');
         fb.className = 'sk-feedback';
