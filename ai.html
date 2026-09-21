@@ -4,102 +4,117 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartKembo AI</title>
-<meta name="description" content="Talk to SmartKembo AI about WiFi Vending, Water Vending and Shop & POS.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --navy:#06101E; --card:#0C1A2E; --cyan:#00C8E8; --txt:#F2F8FF; --dim:#8BA3B8; --line:rgba(0,200,232,.14); }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
   body {
-    font-family: Inter, system-ui, sans-serif;
-    background: var(--navy);
-    color: var(--txt);
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    background: #212121;
+    color: #ECECEC;
     display: flex;
-    flex-direction: column;
   }
-  header {
-    flex: 0 0 auto;
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--line);
-    background: #0B1B2E;
+  aside {
+    width: 260px; background: #171717;
+    padding: 12px; display: flex; flex-direction: column; gap: 8px;
+    border-right: 1px solid #2F2F2F;
   }
-  .mark {
-    width: 36px; height: 36px; border-radius: 9px;
-    background: var(--cyan); color: var(--navy);
+  .new {
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid #3D3D3D; background: transparent; color: #ECECEC;
+    border-radius: 10px; padding: 10px 12px; cursor: pointer; font: inherit;
+  }
+  .brand { margin-top: auto; padding: 10px 8px; font-size: 13px; color: #B4B4B4; }
+  .brand b { color: #fff; font-weight: 600; display:block; margin-bottom: 2px; }
+  .brand a { color: #8B8B8B; text-decoration: none; }
+  main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 18px; border-bottom: 1px solid #2F2F2F;
+  }
+  .topbar strong { font-size: 15px; font-weight: 600; }
+  .online { font-size: 12px; color: #9B9B9B; display:flex; align-items:center; gap:6px; }
+  .dot { width:7px; height:7px; border-radius:50%; background:#4ADE80; }
+  #thread { flex: 1; overflow-y: auto; padding: 24px 16px 12px; }
+  .wrap { max-width: 768px; margin: 0 auto; }
+  .row { display: flex; gap: 14px; padding: 18px 0; }
+  .av {
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 12px;
+    font-size: 12px; font-weight: 700;
   }
-  .name { font-size: 15px; font-weight: 600; }
-  .status { font-size: 12px; color: var(--dim); display:flex; align-items:center; gap:6px; }
-  .dot { width:8px; height:8px; border-radius:50%; background:#22C55E; animation: blink 1.4s infinite; }
-  @keyframes blink {
-    0% { box-shadow: 0 0 0 0 rgba(34,197,94,.6); }
-    70% { box-shadow: 0 0 0 7px rgba(34,197,94,0); }
-    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
-  }
-  .web { margin-left: auto; color: var(--cyan); text-decoration: none; font-size: 13px; }
-  #msgs {
-    flex: 1 1 auto; overflow-y: auto; padding: 16px 14px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .msg {
-    max-width: 86%; padding: 10px 12px; border-radius: 12px;
-    font-size: 14px; line-height: 1.55; white-space: pre-wrap; word-break: break-word;
-  }
-  .bot { background: #102033; align-self: flex-start; border-bottom-left-radius: 4px; }
-  .user { background: var(--cyan); color: var(--navy); align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 500; }
-  .row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-  .chip {
-    background:#0B1B2E; border:1px solid var(--line); color:#B7D4E4;
-    border-radius:999px; padding:6px 10px; font-size:12px; cursor:pointer; font-family:inherit;
-  }
-  #bar {
-    flex: 0 0 auto;
-    display: flex; gap: 8px; align-items: center;
-    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--line);
-    background: #0B1B2E;
+  .av.bot { background: #00C8E8; color: #111; }
+  .av.me { background: #4B5563; color: #fff; }
+  .bubble { flex: 1; min-width: 0; font-size: 15.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  .hello { text-align: center; padding: 12vh 16px 8px; }
+  .hello h1 { font-size: 28px; font-weight: 600; margin: 0 0 8px; }
+  .hello p { color: #B4B4B4; margin: 0; }
+  .composer { padding: 8px 16px 20px; }
+  .box {
+    max-width: 768px; margin: 0 auto;
+    display: flex; align-items: flex-end; gap: 8px;
+    background: #303030; border: 1px solid #444;
+    border-radius: 26px; padding: 8px 8px 8px 18px;
   }
   #input {
-    flex: 1; min-width: 0; height: 44px;
-    background: #102033; color: var(--txt);
-    border: 1px solid var(--line); border-radius: 10px;
-    padding: 10px 12px; font: 16px/1.35 Inter, sans-serif; outline: none;
+    flex: 1; min-height: 28px; max-height: 160px;
+    background: transparent; border: 0; outline: none;
+    color: #ECECEC; font: 16px/1.5 Inter, sans-serif;
+    resize: none; padding: 8px 0;
   }
   #send {
-    width: 44px; height: 44px; border: 0; border-radius: 10px;
-    background: var(--cyan); cursor: pointer;
-    display:flex; align-items:center; justify-content:center;
+    width: 36px; height: 36px; border: 0; border-radius: 50%;
+    background: #fff; color: #000; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
   }
-  #send svg { width:18px; height:18px; fill: var(--navy); }
-  #send:disabled { opacity:.4; }
+  #send:disabled { opacity: .35; }
+  #send svg { width: 16px; height: 16px; fill: #000; }
+  .hint { max-width:768px; margin:8px auto 0; text-align:center; font-size:11px; color:#7A7A7A; }
+  @media (max-width: 800px) {
+    aside { display: none; }
+    .hello h1 { font-size: 22px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="mark">SK</div>
-  <div>
-    <div class="name">SmartKembo AI</div>
-    <div class="status"><span class="dot"></span> Online</div>
+<aside>
+  <button class="new" id="newChat">+ New chat</button>
+  <div class="brand">
+    <b>SmartKembo AI</b>
+    <a href="https://www.smartkembo.com">www.smartkembo.com</a>
   </div>
-  <a class="web" href="https://www.smartkembo.com">Website</a>
-</header>
-<div id="msgs"></div>
-<div id="bar">
-  <input id="input" maxlength="1000" placeholder="Write a message… / Andika ujumbe…">
-  <button id="send" aria-label="Send">
-    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-  </button>
-</div>
+</aside>
+<main>
+  <div class="topbar">
+    <strong>SmartKembo AI</strong>
+    <div class="online"><span class="dot"></span> Online</div>
+  </div>
+  <div id="thread">
+    <div class="hello" id="hello">
+      <h1>What can I help with?</h1>
+      <p>Ask about WiFi Vending, Water Vending, Shop & POS or pricing.</p>
+    </div>
+    <div class="wrap" id="msgs"></div>
+  </div>
+  <div class="composer">
+    <div class="box">
+      <textarea id="input" rows="1" placeholder="Message SmartKembo AI"></textarea>
+      <button id="send" aria-label="Send">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="hint">SmartKembo AI can make mistakes. Check important prices with +255 767 830 319.</div>
+  </div>
+</main>
 <script>
 (function () {
   var API = 'https://smartkembo-backend.onrender.com';
   var KEY = 'sk_ai_session';
   var msgs = document.getElementById('msgs');
+  var hello = document.getElementById('hello');
   var input = document.getElementById('input');
   var sendBtn = document.getElementById('send');
+  var thread = document.getElementById('thread');
   var busy = false;
 
   function sid() {
@@ -111,22 +126,25 @@
     return id;
   }
   function add(text, who) {
-    var d = document.createElement('div');
-    d.className = 'msg ' + who;
-    d.textContent = text;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
+    hello.style.display = 'none';
+    var row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = '<div class="av ' + who + '">' + (who === 'bot' ? 'AI' : 'You') + '</div>';
+    var b = document.createElement('div');
+    b.className = 'bubble';
+    b.textContent = text;
+    row.appendChild(b);
+    msgs.appendChild(row);
+    thread.scrollTop = thread.scrollHeight;
+    return b;
   }
-
-  add('👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing', 'bot');
 
   async function send() {
     var text = input.value.trim();
     if (!text || busy) return;
-    busy = true; sendBtn.disabled = true; input.value = '';
-    add(text, 'user');
-    var wait = add('⏳ Thinking…', 'bot');
+    busy = true; sendBtn.disabled = true; input.value = ''; input.style.height = '28px';
+    add(text, 'me');
+    var wait = add('Thinking…', 'bot');
     try {
       var res = await fetch(API + '/api/chat', {
         method: 'POST',
@@ -134,17 +152,26 @@
         body: JSON.stringify({ sessionId: sid(), message: text })
       });
       var data = await res.json();
-      wait.remove();
-      add((data.success && data.data && data.data.reply) ? data.data.reply : 'Kuna hitilafu. / Something went wrong.', 'bot');
+      wait.textContent = (data.success && data.data && data.data.reply) ? data.data.reply : 'Something went wrong.';
     } catch (e) {
-      wait.remove();
-      add('Cannot connect right now.\nWhatsApp: +255 767 830 319', 'bot');
+      wait.textContent = 'Cannot connect right now. WhatsApp: +255 767 830 319';
     }
     busy = false; sendBtn.disabled = false; input.focus();
+    thread.scrollTop = thread.scrollHeight;
   }
+
+  document.getElementById('newChat').onclick = function () {
+    localStorage.removeItem(KEY);
+    msgs.innerHTML = '';
+    hello.style.display = '';
+  };
   sendBtn.onclick = send;
   input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') { e.preventDefault(); send(); }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  input.addEventListener('input', function () {
+    input.style.height = '28px';
+    input.style.height = Math.min(input.scrollHeight, 160) + 'px';
   });
 })();
 </script>
