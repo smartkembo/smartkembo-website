@@ -29,6 +29,43 @@
   function createWidget() {
     if (document.getElementById('sk-ai-root')) return;
 
+    // Interface language: auto-detected from the device/browser locale
+    // (navigator.language), applied consistently to every label, greeting
+    // and message in the widget — not a bilingual mash-up of both.
+    var browserLang = (navigator.language || 'en').toLowerCase();
+    var preferSw = browserLang.indexOf('sw') === 0;
+    var STR = preferSw ? {
+      headerStatus: "Mtandaoni · SMD's SmartKembo",
+      placeholder: 'Andika ujumbe…',
+      greeting: '👋 Habari! Mimi ni SmartKembo AI.\n\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Duka & POS\n💳 Bei',
+      continuePrompt: 'Una swali lingine?',
+      yes: 'Ndiyo',
+      no: 'Hapana, funga',
+      closeMsg: 'Asante. Mazungumzo yamefungwa.',
+      cannotConnect: 'Siwezi kuunganisha sasa.\nWhatsApp: +255 767 830 319',
+      genericError: 'Kuna hitilafu. Jaribu tena.',
+      helpful: '👍 Msaada',
+      notHelpful: '👎 Haikusaidia',
+      savedGood: '✓ Asante',
+      savedBad: '✓ Tumepokea',
+      footer: 'Inaendeshwa na SmartKembo AI'
+    } : {
+      headerStatus: "Online · SMD's SmartKembo",
+      placeholder: 'Write a message…',
+      greeting: '👋 Hello! I am SmartKembo AI.\n\nHow can I help you today?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing',
+      continuePrompt: 'Would you like to ask anything else?',
+      yes: 'Yes',
+      no: 'No, close',
+      closeMsg: 'Thank you. The chat is closed.',
+      cannotConnect: 'Cannot connect right now.\nWhatsApp: +255 767 830 319',
+      genericError: 'Something went wrong. Please try again.',
+      helpful: '👍 Helpful',
+      notHelpful: '👎 Not helpful',
+      savedGood: '✓ Saved',
+      savedBad: '✓ Noted',
+      footer: 'Powered by SmartKembo AI'
+    };
+
     const root = document.createElement('div');
     root.id = 'sk-ai-root';
     root.innerHTML = `
@@ -287,20 +324,20 @@
           <div id="sk-ai-avatar">✨</div>
           <div id="sk-ai-header-info">
             <div id="sk-ai-header-name">${BOT_NAME} <span id="sk-ai-header-badge">AI</span></div>
-            <div id="sk-ai-header-status"><span id="sk-ai-dot"></span> Online · SMD's SmartKembo</div>
+            <div id="sk-ai-header-status"><span id="sk-ai-dot"></span> ${STR.headerStatus}</div>
           </div>
           <button id="sk-ai-close" aria-label="Close">×</button>
         </div>
         <div id="sk-ai-messages"></div>
         <div id="sk-ai-input-area">
           <div id="sk-ai-input-wrap">
-            <textarea id="sk-ai-input" rows="1" placeholder="Andika ujumbe… / Write a message…"></textarea>
+            <textarea id="sk-ai-input" rows="1" placeholder="${STR.placeholder}"></textarea>
           </div>
           <button id="sk-ai-send" aria-label="Send">
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
-        <div id="sk-ai-footer-note">Powered by SmartKembo AI</div>
+        <div id="sk-ai-footer-note">${STR.footer}</div>
       </div>
     `;
     document.body.appendChild(root);
@@ -330,8 +367,6 @@
     let isSending = false;
     let idleTimer = null;
     const CLOSE_WORDS = ['hapana','no','nope','sitaki','enough','bas','basi','close','funga','stop',"that's all",'thats all','no thanks','sihitaji'];
-    var browserLang = (navigator.language || 'en').toLowerCase();
-    var preferSw = browserLang.indexOf('sw') === 0;
     // Touch devices have no real Shift key — treating Enter as "send" there
     // meant the message went out the instant someone tried a new line.
     var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
@@ -361,9 +396,7 @@
 
     function endChat(fromIdle) {
       clearIdle();
-      addBotMessage(preferSw
-        ? 'Asante. Mazungumzo yamefungwa.\nThank you. The chat is closed.'
-        : 'Thank you. The chat is closed.\nAsante. Mazungumzo yamefungwa.');
+      addBotMessage(STR.closeMsg);
       setTimeout(function () { setOpen(false); }, 1400);
     }
 
@@ -375,10 +408,10 @@
         '<div class="sk-row-avatar">🤖</div>' +
         '<div class="sk-bubble-col">' +
           '<div class="sk-msg bot">' +
-            '<div>' + (preferSw ? 'Would you like to ask anything else?\nUna swali lingine?' : 'Would you like to ask anything else?\nUna swali lingine?') + '</div>' +
+            '<div>' + STR.continuePrompt + '</div>' +
             '<div class="sk-continue">' +
-              '<button type="button" class="sk-c-btn" data-act="yes">Yes</button>' +
-              '<button type="button" class="sk-c-btn close" data-act="no">No, close</button>' +
+              '<button type="button" class="sk-c-btn" data-act="yes">' + STR.yes + '</button>' +
+              '<button type="button" class="sk-c-btn close" data-act="no">' + STR.no + '</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -454,8 +487,8 @@
         const fb = document.createElement('div');
         fb.className = 'sk-feedback';
         fb.innerHTML =
-          '<button class="sk-fb-btn" data-fb="good" data-id="' + messageId + '">👍 Helpful</button>' +
-          '<button class="sk-fb-btn" data-fb="bad" data-id="' + messageId + '">👎 Not helpful</button>';
+          '<button class="sk-fb-btn" data-fb="good">' + STR.helpful + '</button>' +
+          '<button class="sk-fb-btn" data-fb="bad">' + STR.notHelpful + '</button>';
         div.appendChild(fb);
         fb.querySelectorAll('.sk-fb-btn').forEach(function (b) {
           b.addEventListener('click', async function () {
@@ -463,11 +496,11 @@
               await fetch(API_BASE + '/api/chat/feedback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messageId: b.dataset.id, feedback: b.dataset.fb })
+                body: JSON.stringify({ messageId: messageId, feedback: b.dataset.fb })
               });
             } catch (e) {}
             fb.querySelectorAll('.sk-fb-btn').forEach(function (x) { x.classList.add('done'); });
-            b.textContent = '✓ Saved';
+            b.textContent = b.dataset.fb === 'good' ? STR.savedGood : STR.savedBad;
           });
         });
       }
@@ -528,11 +561,7 @@
       if (t) t.remove();
     }
 
-    addBotMessage(
-      preferSw
-        ? '👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing'
-        : '👋 Hello. I am SmartKembo AI.\nHabari. Mimi ni SmartKembo AI.\n\nHow can I help you today?\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing'
-    );
+    addBotMessage(STR.greeting);
 
     async function send() {
       const text = input.value.trim();
@@ -563,12 +592,12 @@
         const data = await res.json();
         removeTyping();
         if (data.success && data.data) addBotMessage(data.data.reply, data.data.messageId);
-        else addBotMessage(data.message || 'Something went wrong. / Kuna hitilafu.');
+        else addBotMessage(data.message || STR.genericError);
         showContinuePrompt();
         startIdle();
       } catch (err) {
         removeTyping();
-        addBotMessage('Cannot connect right now.\nSiwezi kuunganisha sasa.\nWhatsApp: +255 767 830 319');
+        addBotMessage(STR.cannotConnect);
         showContinuePrompt();
         startIdle();
       }
