@@ -11,8 +11,8 @@
   // ═══════════════════════════════════════════
   //  CONFIG — Badilisha hapa
   // ═══════════════════════════════════════════
-  const API_BASE = 'https://api.smartkembo.co.tz';   // ← WEKA URL YA BACKEND YAKO
-  // Kwa development: const API_BASE = 'http://localhost:5000';
+  const API_BASE = 'https://smartkembo-backend.onrender.com';   // ← WEKA URL YA BACKEND YAKO
+  // Kwa development: const API_BASE = 'https://smartkembo-backend.onrender.com';
 
   const BOT_NAME = 'SmartKembo AI';
   const PRIMARY_COLOR = '#00C8E8';
