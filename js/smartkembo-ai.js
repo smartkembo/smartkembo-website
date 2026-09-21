@@ -43,6 +43,7 @@
           position: absolute; top: 4px; right: 4px;
           width: 10px; height: 10px; background: #22C55E;
           border-radius: 50%; border: 2px solid #06101E;
+          animation: sk-blink 1.4s ease-out infinite;
         }
 
         #sk-ai-panel {
@@ -74,8 +75,18 @@
         }
         #sk-ai-header-info { flex: 1; min-width: 0; }
         #sk-ai-header-name { color: #F2F8FF; font-size: 14px; font-weight: 600; letter-spacing: .2px; }
-        #sk-ai-header-status { color: #7AA0B8; font-size: 11px; margin-top: 1px; }
-        #sk-ai-header-status b { color: #3DDC84; font-weight: 600; }
+        #sk-ai-header-status { color: #7AA0B8; font-size: 11px; margin-top: 1px; display:flex; align-items:center; gap:6px; }
+        #sk-ai-dot {
+          width: 8px; height: 8px; border-radius: 50%; background: #22C55E;
+          box-shadow: 0 0 0 0 rgba(34,197,94,.7);
+          animation: sk-blink 1.4s ease-out infinite;
+          flex-shrink: 0;
+        }
+        @keyframes sk-blink {
+          0% { box-shadow: 0 0 0 0 rgba(34,197,94,.7); }
+          70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+          100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
         #sk-ai-close {
           background: transparent; border: 0; color: #8BA3B8;
           width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 20px;
@@ -149,7 +160,7 @@
           <div id="sk-ai-avatar">SK</div>
           <div id="sk-ai-header-info">
             <div id="sk-ai-header-name">${BOT_NAME}</div>
-            <div id="sk-ai-header-status"><b>●</b> Online · SMD's SmartKembo</div>
+            <div id="sk-ai-header-status"><span id="sk-ai-dot"></span> Online · SMD's SmartKembo</div>
           </div>
           <button id="sk-ai-close" aria-label="Close">×</button>
         </div>
