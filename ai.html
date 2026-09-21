@@ -20,36 +20,47 @@
     border-right: 1px solid #2F2F2F;
   }
   .new {
-    display: flex; align-items: center; gap: 10px;
     border: 1px solid #3D3D3D; background: transparent; color: #ECECEC;
-    border-radius: 10px; padding: 10px 12px; cursor: pointer; font: inherit;
+    border-radius: 10px; padding: 10px 12px; cursor: pointer; font: inherit; text-align: left;
   }
   .brand { margin-top: auto; padding: 10px 8px; font-size: 13px; color: #B4B4B4; }
-  .brand b { color: #fff; font-weight: 600; display:block; margin-bottom: 2px; }
+  .brand b { color: #fff; display:block; margin-bottom: 4px; }
   .brand a { color: #8B8B8B; text-decoration: none; }
   main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 18px; border-bottom: 1px solid #2F2F2F;
+    padding: 12px 18px; border-bottom: 1px solid #2F2F2F;
   }
-  .topbar strong { font-size: 15px; font-weight: 600; }
   .online { font-size: 12px; color: #9B9B9B; display:flex; align-items:center; gap:6px; }
   .dot { width:7px; height:7px; border-radius:50%; background:#4ADE80; }
-  #thread { flex: 1; overflow-y: auto; padding: 24px 16px 12px; }
-  .wrap { max-width: 768px; margin: 0 auto; }
-  .row { display: flex; gap: 14px; padding: 18px 0; }
+  #thread { flex: 1; overflow-y: auto; }
+  .row {
+    width: 100%;
+    border-bottom: 1px solid #2A2A2A;
+    padding: 22px 16px;
+  }
+  .row.bot { background: #2F2F2F; }
+  .row.me { background: #212121; }
+  .inner {
+    max-width: 768px; margin: 0 auto;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
   .av {
-    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700;
+    font-size: 11px; font-weight: 700;
   }
   .av.bot { background: #00C8E8; color: #111; }
-  .av.me { background: #4B5563; color: #fff; }
-  .bubble { flex: 1; min-width: 0; font-size: 15.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
-  .hello { text-align: center; padding: 12vh 16px 8px; }
+  .av.me { background: #5436DA; color: #fff; }
+  .bubble { flex: 1; min-width: 0; font-size: 15.5px; line-height: 1.75; }
+  .bubble p { margin: 0 0 12px; }
+  .bubble p:last-child { margin-bottom: 0; }
+  .bubble ul { margin: 0 0 12px 18px; padding: 0; }
+  .bubble li { margin: 4px 0; }
+  .hello { text-align: center; padding: 14vh 16px; }
   .hello h1 { font-size: 28px; font-weight: 600; margin: 0 0 8px; }
   .hello p { color: #B4B4B4; margin: 0; }
-  .composer { padding: 8px 16px 20px; }
+  .composer { padding: 10px 16px 18px; background: #212121; }
   .box {
     max-width: 768px; margin: 0 auto;
     display: flex; align-items: flex-end; gap: 8px;
@@ -64,16 +75,13 @@
   }
   #send {
     width: 36px; height: 36px; border: 0; border-radius: 50%;
-    background: #fff; color: #000; cursor: pointer;
+    background: #fff; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
   #send:disabled { opacity: .35; }
   #send svg { width: 16px; height: 16px; fill: #000; }
   .hint { max-width:768px; margin:8px auto 0; text-align:center; font-size:11px; color:#7A7A7A; }
-  @media (max-width: 800px) {
-    aside { display: none; }
-    .hello h1 { font-size: 22px; }
-  }
+  @media (max-width: 800px) { aside { display: none; } .hello h1 { font-size: 22px; } }
 </style>
 </head>
 <body>
@@ -92,9 +100,9 @@
   <div id="thread">
     <div class="hello" id="hello">
       <h1>What can I help with?</h1>
-      <p>Ask about WiFi Vending, Water Vending, Shop & POS or pricing.</p>
+      <p>Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.</p>
     </div>
-    <div class="wrap" id="msgs"></div>
+    <div id="msgs"></div>
   </div>
   <div class="composer">
     <div class="box">
@@ -125,18 +133,34 @@
     }
     return id;
   }
+  function fmt(text) {
+    var s = String(text || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    var lines = s.split(/\n/);
+    var html = '', list = false;
+    lines.forEach(function (line) {
+      var m = line.match(/^\s*[-*•]\s+(.+)/);
+      if (m) {
+        if (!list) { html += '<ul>'; list = true; }
+        html += '<li>' + m[1] + '</li>';
+      } else {
+        if (list) { html += '</ul>'; list = false; }
+        if (line.trim()) html += '<p>' + line + '</p>';
+      }
+    });
+    if (list) html += '</ul>';
+    return html || '<p></p>';
+  }
   function add(text, who) {
     hello.style.display = 'none';
     var row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = '<div class="av ' + who + '">' + (who === 'bot' ? 'AI' : 'You') + '</div>';
-    var b = document.createElement('div');
-    b.className = 'bubble';
-    b.textContent = text;
-    row.appendChild(b);
+    row.className = 'row ' + who;
+    row.innerHTML = '<div class="inner"><div class="av ' + who + '">' + (who === 'bot' ? 'AI' : 'You') + '</div><div class="bubble"></div></div>';
+    row.querySelector('.bubble').innerHTML = fmt(text);
     msgs.appendChild(row);
     thread.scrollTop = thread.scrollHeight;
-    return b;
+    return row.querySelector('.bubble');
   }
 
   async function send() {
@@ -152,9 +176,9 @@
         body: JSON.stringify({ sessionId: sid(), message: text })
       });
       var data = await res.json();
-      wait.textContent = (data.success && data.data && data.data.reply) ? data.data.reply : 'Something went wrong.';
+      wait.innerHTML = fmt((data.success && data.data && data.data.reply) ? data.data.reply : 'Something went wrong.');
     } catch (e) {
-      wait.textContent = 'Cannot connect right now. WhatsApp: +255 767 830 319';
+      wait.innerHTML = fmt('Cannot connect right now. WhatsApp: +255 767 830 319');
     }
     busy = false; sendBtn.disabled = false; input.focus();
     thread.scrollTop = thread.scrollHeight;
