@@ -1,0 +1,26 @@
+{
+  "name": "SmartKembo AI",
+  "short_name": "SK AI",
+  "description": "SmartKembo AI — muulize kuhusu WiFi, Maji, Duka/POS na bei za SmartKembo, saa 24.",
+  "start_url": "./ai.html",
+  "scope": "./ai.html",
+  "id": "/ai.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "icons": [
+    {
+      "src": "icon-ai-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-ai-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
