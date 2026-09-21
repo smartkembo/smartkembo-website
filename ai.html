@@ -2,108 +2,241 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SmartKembo AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --accent: #00C8E8;
+    --accent-2: #00E0B8;
+    --bg: #171717;
+    --bg-2: #212121;
+    --panel: #2A2A2A;
+    --border: #2F2F2F;
+    --text: #ECECEC;
+    --text-dim: #9B9B9B;
+  }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
   body {
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-    background: #212121;
-    color: #ECECEC;
+    background: var(--bg-2);
+    color: var(--text);
     display: flex;
+    overflow: hidden;
   }
+
+  /* ---------- Sidebar ---------- */
+  #overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
+    z-index: 30;
+  }
+  #overlay.show { display: block; }
   aside {
-    width: 260px; background: #171717;
-    padding: 12px; display: flex; flex-direction: column; gap: 8px;
-    border-right: 1px solid #2F2F2F;
+    width: 268px; flex-shrink: 0; background: var(--bg);
+    padding: 14px 12px; display: flex; flex-direction: column; gap: 8px;
+    border-right: 1px solid var(--border);
+    transition: transform .25s ease;
   }
+  .logo-row { display: flex; align-items: center; gap: 9px; padding: 4px 6px 10px; }
+  .logo-mark {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    background: linear-gradient(145deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .logo-row span { font-weight: 700; font-size: 14.5px; letter-spacing: .1px; }
   .new {
-    border: 1px solid #3D3D3D; background: transparent; color: #ECECEC;
-    border-radius: 10px; padding: 10px 12px; cursor: pointer; font: inherit; text-align: left;
+    border: 1px solid #3D3D3D; background: transparent; color: var(--text);
+    border-radius: 10px; padding: 11px 12px; cursor: pointer; font: inherit; font-size: 13.5px;
+    text-align: left; display: flex; align-items: center; gap: 9px;
+    transition: background .15s ease, border-color .15s ease;
   }
-  .brand { margin-top: auto; padding: 10px 8px; font-size: 13px; color: #B4B4B4; }
-  .brand b { color: #fff; display:block; margin-bottom: 4px; }
+  .new:hover { background: rgba(255,255,255,.05); border-color: #565656; }
+  .new svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .side-hint {
+    margin-top: 6px; font-size: 12px; color: var(--text-dim); padding: 8px 8px 0;
+    line-height: 1.6;
+  }
+  .brand { margin-top: auto; padding: 12px 8px 4px; font-size: 12.5px; color: var(--text-dim); border-top: 1px solid var(--border); }
+  .brand b { color: #fff; display:block; margin-bottom: 4px; font-size: 13px; }
   .brand a { color: #8B8B8B; text-decoration: none; }
-  main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .brand a:hover { color: var(--accent); }
+
+  main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; }
   .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 18px; border-bottom: 1px solid #2F2F2F;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
-  .online { font-size: 12px; color: #9B9B9B; display:flex; align-items:center; gap:6px; }
-  .dot { width:7px; height:7px; border-radius:50%; background:#4ADE80; }
-  #thread { flex: 1; overflow-y: auto; }
+  .topbar-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  #menuBtn {
+    display: none; background: transparent; border: 0; color: var(--text);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  #menuBtn:hover { background: rgba(255,255,255,.06); }
+  .topbar strong { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .online {
+    font-size: 11.5px; color: var(--text-dim); display:flex; align-items:center; gap:6px;
+    flex-shrink: 0;
+  }
+  .dot {
+    width:7px; height:7px; border-radius:50%; background:#4ADE80;
+    box-shadow: 0 0 0 0 rgba(74,222,128,.7); animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(74,222,128,.6); }
+    70% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+    100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  }
+
+  #thread { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(0,200,232,.3) transparent; }
+  #thread::-webkit-scrollbar { width: 7px; }
+  #thread::-webkit-scrollbar-thumb { background: rgba(0,200,232,.28); border-radius: 999px; }
+
   .row {
     width: 100%;
     border-bottom: 1px solid #2A2A2A;
     padding: 22px 16px;
+    animation: rowIn .25s cubic-bezier(.2,.9,.3,1.1);
   }
-  .row.bot { background: #2F2F2F; }
-  .row.me { background: #212121; }
+  @keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .row.bot { background: #262626; }
+  .row.me { background: var(--bg-2); }
   .inner {
-    max-width: 768px; margin: 0 auto;
-    display: flex; gap: 16px; align-items: flex-start;
+    max-width: 760px; margin: 0 auto;
+    display: flex; gap: 14px; align-items: flex-start;
   }
   .row.me .inner { justify-content: flex-end; flex-direction: row; }
-  .row.me .av { order: 2; margin-left: 10px; }
+  .row.me .av { order: 2; margin-left: 4px; }
+  .row.me .bubble-col { order: 1; align-items: flex-end; }
+
+  .bubble-col { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .row.me .bubble-col { flex: 0 1 auto; max-width: 78%; }
+
   .row.me .bubble {
-    order: 1;
-    background: #00C8E8; color: #06101E;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #06101E;
     border-radius: 16px 16px 4px 16px;
     padding: 10px 14px;
-    max-width: 78%;
-    flex: 0 1 auto;
   }
   .row.bot .bubble {
-    background: #3A3A3A;
+    background: var(--panel);
     border-radius: 16px 16px 16px 4px;
     padding: 10px 14px;
-    max-width: 78%;
-    flex: 0 1 auto;
+    box-shadow: 0 2px 10px rgba(0,0,0,.18);
   }
   .av {
-    width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
+    font-size: 14px; font-weight: 700;
   }
-  .av.bot { background: #00C8E8; color: #111; }
-  .av.me { background: #5436DA; color: #fff; }
-  .bubble { flex: 1; min-width: 0; font-size: 15.5px; line-height: 1.75; }
+  .av.bot { background: linear-gradient(145deg, var(--accent), var(--accent-2)); color: #06101E; }
+  .av.me { background: linear-gradient(145deg, #6C6C6C, #4A4A4A); color: #fff; font-size: 11px; }
+
+  .bubble { font-size: 15.2px; line-height: 1.72; word-break: break-word; }
   .bubble p { margin: 0 0 12px; }
   .bubble p:last-child { margin-bottom: 0; }
   .bubble ul { margin: 0 0 12px 18px; padding: 0; }
   .bubble li { margin: 4px 0; }
-  .hello { text-align: center; padding: 14vh 16px; }
-  .hello h1 { font-size: 28px; font-weight: 600; margin: 0 0 8px; }
-  .hello p { color: #B4B4B4; margin: 0; }
-  .composer { padding: 10px 16px 18px; background: #212121; }
+  .bubble a { color: #6FE3FF; text-decoration: underline; text-underline-offset: 2px; }
+  .row.me .bubble a { color: #06101E; text-decoration-color: rgba(6,16,30,.5); }
+
+  .msg-time { font-size: 10.5px; color: var(--text-dim); margin-top: 5px; padding: 0 2px; }
+  .row.me .msg-time { text-align: right; }
+
+  .feedback { display: flex; gap: 6px; margin-top: 10px; }
+  .fb-btn {
+    background: rgba(255,255,255,.04); border: 1px solid #3D3D3D;
+    color: #C7C7C7; font-size: 11.5px; padding: 5px 11px; border-radius: 999px;
+    cursor: pointer; font-family: inherit; transition: background .15s ease, border-color .15s ease;
+  }
+  .fb-btn:hover { background: rgba(0,200,232,.1); border-color: rgba(0,200,232,.4); }
+  .fb-btn.done { opacity: .5; pointer-events: none; }
+
+  /* Typing dots */
+  .typing-dots { display: inline-flex; align-items: center; gap: 4px; padding: 4px 0; }
+  .typing-dots span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim);
+    animation: dotBounce 1.1s ease-in-out infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: .15s; }
+  .typing-dots span:nth-child(3) { animation-delay: .3s; }
+  @keyframes dotBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .hello { text-align: center; padding: 12vh 16px; }
+  .hello .hello-mark {
+    width: 52px; height: 52px; border-radius: 16px; margin: 0 auto 16px;
+    background: linear-gradient(145deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+    box-shadow: 0 8px 24px rgba(0,200,232,.3);
+  }
+  .hello h1 { font-size: 26px; font-weight: 700; margin: 0 0 8px; }
+  .hello p { color: var(--text-dim); margin: 0 0 20px; font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 560px; margin: 0 auto; }
+  .chip {
+    background: var(--panel); border: 1px solid #3D3D3D; color: var(--text);
+    font-size: 12.5px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    font-family: inherit; transition: border-color .15s ease, background .15s ease;
+  }
+  .chip:hover { border-color: rgba(0,200,232,.45); background: rgba(0,200,232,.08); }
+
+  .composer { padding: 10px 16px 16px; background: var(--bg-2); flex-shrink: 0; }
   .box {
-    max-width: 768px; margin: 0 auto;
+    max-width: 760px; margin: 0 auto;
     display: flex; align-items: flex-end; gap: 8px;
     background: #303030; border: 1px solid #444;
     border-radius: 26px; padding: 8px 8px 8px 18px;
+    transition: border-color .15s ease, box-shadow .15s ease;
   }
+  .box:focus-within { border-color: rgba(0,200,232,.55); box-shadow: 0 0 0 3px rgba(0,200,232,.12); }
   #input {
     flex: 1; min-height: 28px; max-height: 160px;
     background: transparent; border: 0; outline: none;
-    color: #ECECEC; font: 16px/1.5 Inter, sans-serif;
+    color: var(--text); font: 16px/1.5 Inter, sans-serif;
     resize: none; padding: 8px 0;
   }
+  #input::placeholder { color: var(--text-dim); }
   #send {
-    width: 36px; height: 36px; border: 0; border-radius: 50%;
-    background: #fff; cursor: pointer;
+    width: 36px; height: 36px; border: 0; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(145deg, var(--accent), var(--accent-2)); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,200,232,.3);
+    transition: transform .15s ease, opacity .15s ease;
   }
-  #send:disabled { opacity: .35; }
-  #send svg { width: 16px; height: 16px; fill: #000; }
-  .hint { max-width:768px; margin:8px auto 0; text-align:center; font-size:11px; color:#7A7A7A; }
-  @media (max-width: 800px) { aside { display: none; } .hello h1 { font-size: 22px; } }
+  #send:hover:not(:disabled) { transform: scale(1.06); }
+  #send:disabled { opacity: .35; box-shadow: none; cursor: default; }
+  #send svg { width: 16px; height: 16px; fill: #06101E; margin-left: 1px; }
+  .hint { max-width:760px; margin:9px auto 0; text-align:center; font-size:11px; color:#7A7A7A; }
+
+  @media (max-width: 800px) {
+    aside {
+      position: fixed; top: 0; bottom: 0; left: 0; z-index: 31;
+      transform: translateX(-100%);
+      box-shadow: 0 0 40px rgba(0,0,0,.4);
+    }
+    aside.show { transform: translateX(0); }
+    #menuBtn { display: flex; }
+    .hello h1 { font-size: 21px; }
+    .chips { max-width: 320px; }
+  }
 </style>
 </head>
 <body>
-<aside>
-  <button class="new" id="newChat">+ New chat</button>
+<div id="overlay"></div>
+<aside id="sidebar">
+  <div class="logo-row">
+    <div class="logo-mark">✨</div>
+    <span>SmartKembo AI</span>
+  </div>
+  <button class="new" id="newChat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    New chat
+  </button>
+  <div class="side-hint">Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka/POS na bei.</div>
   <div class="brand">
     <b>SmartKembo AI</b>
     <a href="https://www.smartkembo.com">www.smartkembo.com</a>
@@ -111,20 +244,32 @@
 </aside>
 <main>
   <div class="topbar">
-    <strong>SmartKembo AI</strong>
+    <div class="topbar-left">
+      <button id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <strong>SmartKembo AI</strong>
+    </div>
     <div class="online"><span class="dot"></span> Online</div>
   </div>
   <div id="thread">
     <div class="hello" id="hello">
+      <div class="hello-mark">✨</div>
       <h1>What can I help with?</h1>
       <p>Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.</p>
+      <div class="chips">
+        <button class="chip" data-q="Smart WiFi inafanya kazi vipi?">📶 Smart WiFi inafanyaje kazi?</button>
+        <button class="chip" data-q="Bei za SmartKembo ni zipi?">💳 Bei za SmartKembo</button>
+        <button class="chip" data-q="Nataka kujiunga, nianzeje?">🚀 Jinsi ya kuanza</button>
+        <button class="chip" data-q="Nipe namba ya WhatsApp">📱 Wasiliana nasi</button>
+      </div>
     </div>
     <div id="msgs"></div>
   </div>
   <div class="composer">
     <div class="box">
       <textarea id="input" rows="1" placeholder="Message SmartKembo AI"></textarea>
-      <button id="send" aria-label="Send">
+      <button id="send" aria-label="Send" disabled>
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </div>
@@ -140,6 +285,9 @@
   var input = document.getElementById('input');
   var sendBtn = document.getElementById('send');
   var thread = document.getElementById('thread');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('overlay');
+  var menuBtn = document.getElementById('menuBtn');
   var busy = false;
 
   function sid() {
@@ -150,10 +298,22 @@
     }
     return id;
   }
+
+  function fmtTime(d) {
+    try { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; }
+  }
+
+  // Escapes HTML first (XSS-safe), then renders **bold**, "- " bullets,
+  // bare URLs and WhatsApp-style phone numbers as real markup.
   function fmt(text) {
     var s = String(text || '')
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    s = s.replace(/(\+255\s?\d{3}\s?\d{3}\s?\d{3})/g, function (m) {
+      var digits = m.replace(/\D/g, '');
+      return '<a href="https://wa.me/' + digits + '" target="_blank" rel="noopener noreferrer">' + m + '</a>';
+    });
     var lines = s.split(/\n/);
     var html = '', list = false;
     lines.forEach(function (line) {
@@ -169,23 +329,70 @@
     if (list) html += '</ul>';
     return html || '<p></p>';
   }
+
+  function sendFeedback(messageId, feedback, btnEl, groupEl) {
+    fetch(API + '/api/chat/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageId: messageId, feedback: feedback })
+    }).catch(function () {});
+    groupEl.querySelectorAll('.fb-btn').forEach(function (b) { b.classList.add('done'); });
+    btnEl.textContent = feedback === 'good' ? '✓ Asante' : '✓ Noted';
+  }
+
+  function addFeedbackRow(bubbleCol, messageId) {
+    if (!messageId) return;
+    var fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.innerHTML =
+      '<button type="button" class="fb-btn" data-fb="good">👍 Helpful</button>' +
+      '<button type="button" class="fb-btn" data-fb="bad">👎 Not helpful</button>';
+    fb.querySelectorAll('.fb-btn').forEach(function (b) {
+      b.addEventListener('click', function () { sendFeedback(messageId, b.dataset.fb, b, fb); });
+    });
+    bubbleCol.appendChild(fb);
+  }
+
   function add(text, who) {
     hello.style.display = 'none';
     var row = document.createElement('div');
     row.className = 'row ' + who;
-    row.innerHTML = '<div class="inner"><div class="av ' + who + '">' + (who === 'bot' ? 'AI' : 'You') + '</div><div class="bubble"></div></div>';
+    row.innerHTML =
+      '<div class="inner">' +
+        '<div class="av ' + who + '">' + (who === 'bot' ? '🤖' : 'You') + '</div>' +
+        '<div class="bubble-col">' +
+          '<div class="bubble"></div>' +
+          '<div class="msg-time"></div>' +
+        '</div>' +
+      '</div>';
     row.querySelector('.bubble').innerHTML = fmt(text);
+    row.querySelector('.msg-time').textContent = fmtTime(new Date());
     msgs.appendChild(row);
     thread.scrollTop = thread.scrollHeight;
-    return row.querySelector('.bubble');
+    return row;
   }
 
-  async function send() {
-    var text = input.value.trim();
+  function addTyping() {
+    hello.style.display = 'none';
+    var row = document.createElement('div');
+    row.className = 'row bot';
+    row.id = 'typingRow';
+    row.innerHTML =
+      '<div class="inner">' +
+        '<div class="av bot">🤖</div>' +
+        '<div class="bubble-col"><div class="bubble"><span class="typing-dots"><span></span><span></span><span></span></span></div></div>' +
+      '</div>';
+    msgs.appendChild(row);
+    thread.scrollTop = thread.scrollHeight;
+    return row;
+  }
+
+  async function send(preset) {
+    var text = (preset != null ? preset : input.value).trim();
     if (!text || busy) return;
     busy = true; sendBtn.disabled = true; input.value = ''; input.style.height = '28px';
     add(text, 'me');
-    var wait = add('Thinking…', 'bot');
+    var typingRow = addTyping();
     try {
       var res = await fetch(API + '/api/chat', {
         method: 'POST',
@@ -193,26 +400,46 @@
         body: JSON.stringify({ sessionId: sid(), message: text })
       });
       var data = await res.json();
-      wait.innerHTML = fmt((data.success && data.data && data.data.reply) ? data.data.reply : 'Something went wrong.');
+      typingRow.remove();
+      var reply = (data.success && data.data && data.data.reply) ? data.data.reply : (data.message || 'Something went wrong.');
+      var botRow = add(reply, 'bot');
+      if (data.success && data.data && data.data.messageId) {
+        addFeedbackRow(botRow.querySelector('.bubble-col'), data.data.messageId);
+      }
     } catch (e) {
-      wait.innerHTML = fmt('Cannot connect right now. WhatsApp: +255 767 830 319');
+      typingRow.remove();
+      add('Cannot connect right now. WhatsApp: +255 767 830 319', 'bot');
     }
     busy = false; sendBtn.disabled = false; input.focus();
     thread.scrollTop = thread.scrollHeight;
+  }
+
+  function openSidebar(open) {
+    sidebar.classList.toggle('show', open);
+    overlay.classList.toggle('show', open);
   }
 
   document.getElementById('newChat').onclick = function () {
     localStorage.removeItem(KEY);
     msgs.innerHTML = '';
     hello.style.display = '';
+    openSidebar(false);
   };
-  sendBtn.onclick = send;
+  menuBtn.addEventListener('click', function () { openSidebar(true); });
+  overlay.addEventListener('click', function () { openSidebar(false); });
+
+  document.querySelectorAll('.chip').forEach(function (chip) {
+    chip.addEventListener('click', function () { send(chip.dataset.q); });
+  });
+
+  sendBtn.onclick = function () { send(); };
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   });
   input.addEventListener('input', function () {
     input.style.height = '28px';
     input.style.height = Math.min(input.scrollHeight, 160) + 'px';
+    sendBtn.disabled = !input.value.trim();
   });
 })();
 </script>
