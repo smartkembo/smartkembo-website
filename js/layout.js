@@ -120,3 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function openSiteMenu()  { document.getElementById('mobile-menu').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeSiteMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.body.style.overflow = ''; }
+
+// ── SmartKembo AI Chat Widget ──
+(function(){
+  var s = document.createElement('script');
+  s.src = 'js/smartkembo-ai.js';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
