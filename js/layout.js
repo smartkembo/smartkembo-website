@@ -14,7 +14,7 @@ const navHTML = `
       <span class="logo-text">Smart<span>Kembo</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html">Home</a></li> 
       <li><a href="about.html">About</a></li>
       <li><a href="services.html">Services</a></li>
       <li><a href="projects.html">Projects</a></li>
