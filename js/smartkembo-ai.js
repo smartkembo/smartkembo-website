@@ -115,6 +115,14 @@
         }
         .sk-fb-btn:hover { background: rgba(0,200,232,0.15); color: #00C8E8; }
         .sk-fb-btn.done { opacity: 0.5; pointer-events: none; }
+        .sk-continue { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+        .sk-c-btn {
+          background: rgba(0,200,232,0.12); border: 1px solid rgba(0,200,232,0.28);
+          color: #7FE4F4; font-size: 12px; padding: 7px 12px; border-radius: 20px;
+          cursor: pointer; font-family: inherit;
+        }
+        .sk-c-btn:hover { background: rgba(0,200,232,0.22); color: #fff; }
+        .sk-c-btn.close { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color:#C5D4E0; }
 
         #sk-ai-input-area {
           padding: 12px 14px; border-top: 1px solid rgba(0,200,232,0.12);
@@ -178,6 +186,61 @@
 
     let isOpen = false;
     let isSending = false;
+    let idleTimer = null;
+    const CLOSE_WORDS = ['hapana','no','nope','sitaki','enough','bas','basi','close','funga','stop','that\'s all','thats all','no thanks','sihitaji'];
+
+    function clearIdle() {
+      if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+    }
+
+    function startIdle() {
+      clearIdle();
+      idleTimer = setTimeout(function () {
+        if (!isOpen) return;
+        endChat(true);
+      }, 90000);
+    }
+
+    function endChat(fromIdle) {
+      clearIdle();
+      var bye = preferSw
+        ? (fromIdle
+            ? 'Asante kwa kuwasiliana na SmartKembo AI.\nMazungumzo yamefungwa kwa sababu hakukuwa na swali jingine.\n\nThank you. The chat is now closed.'
+            : 'Asante. Mazungumzo yamefungwa.\nKaribu tena unapohitaji msaada.\n\nThank you. The chat is closed. You are welcome back anytime.')
+        : (fromIdle
+            ? 'Thank you for chatting with SmartKembo AI.\nThe conversation is closed because there was no further question.\n\nAsante. Mazungumzo yamefungwa.'
+            : 'Thank you. The chat is now closed.\nYou are welcome back anytime you need help.\n\nAsante. Karibu tena.');
+      addBotMessage(bye);
+      setTimeout(function () {
+        panel.classList.remove('open');
+        isOpen = false;
+      }, 1800);
+    }
+
+    function showContinuePrompt() {
+      document.querySelectorAll('.sk-continue').forEach(function (el) { el.remove(); });
+      var wrap = document.createElement('div');
+      wrap.className = 'sk-msg bot';
+      wrap.innerHTML =
+        '<div>' + (preferSw
+          ? 'Una swali lingine?\nDo you have another question?'
+          : 'Do you have another question?\nUna swali lingine?') + '</div>' +
+        '<div class="sk-continue">' +
+          '<button type="button" class="sk-c-btn" data-act="yes">' + (preferSw ? 'Ndiyo — endelea' : 'Yes — continue') + '</button>' +
+          '<button type="button" class="sk-c-btn close" data-act="no">' + (preferSw ? 'Hapana — funga' : 'No — close chat') + '</button>' +
+        '</div>';
+      messages.appendChild(wrap);
+      messages.scrollTop = messages.scrollHeight;
+      wrap.querySelector('[data-act="yes"]').onclick = function () {
+        wrap.remove();
+        input.focus();
+        startIdle();
+      };
+      wrap.querySelector('[data-act="no"]').onclick = function () {
+        wrap.remove();
+        endChat(false);
+      };
+    }
 
     function toggle() {
       isOpen = !isOpen;
@@ -185,16 +248,23 @@
       if (isOpen) {
         input.focus();
         document.getElementById('sk-ai-badge').style.display = 'none';
+        startIdle();
+      } else {
+        clearIdle();
       }
     }
 
     btn.addEventListener('click', toggle);
     closeBtn.addEventListener('click', toggle);
 
-    // Welcome message
-    addBotMessage(
-      'Habari! 👋 Mimi ni SmartKembo AI.\n\nNinaweza kukusaidia kuhusu:\n• Smart WiFi\n• Smart Water\n• Bei na jinsi ya kuanza\n• Wasiliana nasi\n\nUliza swali lolote (Kiswahili au English).'
-    );
+    // Welcome — lugha ya browser, kisha ujumbe wa lugha zote mbili
+    var browserLang = (navigator.language || 'en').toLowerCase();
+    var preferSw = browserLang.indexOf('sw') === 0;
+    var welcomeEn =
+      'Hello.\nI am SmartKembo AI.\n\nWe can start talking now.\nAsk about WiFi Vending, Water Vending, Shop & POS, pricing, or how to get started.\n\nYou can write in English or Kiswahili.';
+    var welcomeSw =
+      'Habari.\nMimi ni SmartKembo AI.\n\nTunaweza kuanza kuwasiliana sasa.\nUliza kuhusu WiFi Vending, Water Vending, Shop & POS, bei, au jinsi ya kuanza.\n\nAndika kwa English au Kiswahili.';
+    addBotMessage(preferSw ? (welcomeSw + '\n\n—\n\n' + welcomeEn) : (welcomeEn + '\n\n—\n\n' + welcomeSw));
 
     function addBotMessage(text, messageId) {
       const div = document.createElement('div');
@@ -261,7 +331,19 @@
       input.value = '';
       input.style.height = 'auto';
 
+      document.querySelectorAll('.sk-continue').forEach(function (el) { el.remove(); });
+      clearIdle();
+
+      var low = text.toLowerCase();
+      var wantsClose = CLOSE_WORDS.some(function (w) { return low === w || low.indexOf(w) !== -1; }) && text.length < 40;
       addUserMessage(text);
+      if (wantsClose) {
+        isSending = false;
+        sendBtn.disabled = false;
+        endChat(false);
+        return;
+      }
+
       addTyping();
 
       try {
@@ -280,11 +362,15 @@
         if (data.success && data.data) {
           addBotMessage(data.data.reply, data.data.messageId);
         } else {
-          addBotMessage(data.message || 'Samahani, kuna hitilafu. Jaribu tena.');
+          addBotMessage(data.message || 'Sorry, something went wrong. / Samahani, kuna hitilafu.');
         }
+        showContinuePrompt();
+        startIdle();
       } catch (err) {
         removeTyping();
-        addBotMessage('Samahani, siwezi kuunganisha sasa. Angalia internet yako au jaribu baadaye.\n\nUnaweza pia kututumia WhatsApp: +255 767 830 319');
+        addBotMessage('I cannot connect right now. Please try again later.\nSiwezi kuunganisha sasa. Jaribu baadaye.\n\nWhatsApp: +255 767 830 319');
+        showContinuePrompt();
+        startIdle();
       }
 
       isSending = false;
