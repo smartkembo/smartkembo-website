@@ -332,6 +332,9 @@
     const CLOSE_WORDS = ['hapana','no','nope','sitaki','enough','bas','basi','close','funga','stop',"that's all",'thats all','no thanks','sihitaji'];
     var browserLang = (navigator.language || 'en').toLowerCase();
     var preferSw = browserLang.indexOf('sw') === 0;
+    // Touch devices have no real Shift key — treating Enter as "send" there
+    // meant the message went out the instant someone tried a new line.
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
     function clearIdle() {
       if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
@@ -576,7 +579,10 @@
 
     sendBtn.addEventListener('click', send);
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+      if (e.isComposing) return; // don't hijack Enter during autocomplete/IME
+      if (e.key === 'Enter' && !e.shiftKey && !isTouch) { e.preventDefault(); send(); }
+      // On touch devices, Enter inserts a newline as normal; sending is
+      // done via the send button.
     });
     input.addEventListener('input', function () {
       input.style.height = '40px';
