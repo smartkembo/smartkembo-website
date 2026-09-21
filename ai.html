@@ -62,7 +62,7 @@
   .brand a { color: #8B8B8B; text-decoration: none; }
   .brand a:hover { color: var(--accent); }
 
-  main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; }
+  main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; height: 100dvh; }
   .topbar {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
     padding: 12px 16px; border-bottom: 1px solid var(--border);
@@ -242,7 +242,7 @@
     <a href="https://www.smartkembo.com">www.smartkembo.com</a>
   </div>
 </aside>
-<main>
+<main id="app">
   <div class="topbar">
     <div class="topbar-left">
       <button id="menuBtn" aria-label="Menu">
@@ -288,7 +288,31 @@
   var sidebar = document.getElementById('sidebar');
   var overlay = document.getElementById('overlay');
   var menuBtn = document.getElementById('menuBtn');
+  var appEl = document.getElementById('app');
   var busy = false;
+
+  // Touch devices (phones/tablets) have no real Shift key, so treating
+  // Enter as "send" there meant the message went out the moment someone
+  // tried to start a new line. On touch, Enter now behaves like a normal
+  // textarea newline; sending only happens via the send button.
+  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+  // The page used a fixed 100vh, but mobile browsers don't shrink 100vh
+  // when the on-screen keyboard opens — so the composer ended up hidden
+  // behind the keyboard. We measure the real visible height (visualViewport
+  // when available) and size #app to that instead.
+  function fitViewportHeight() {
+    var vv = window.visualViewport;
+    var h = vv ? vv.height : window.innerHeight;
+    appEl.style.height = h + 'px';
+    thread.scrollTop = thread.scrollHeight;
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', fitViewportHeight);
+    window.visualViewport.addEventListener('scroll', fitViewportHeight);
+  }
+  window.addEventListener('resize', fitViewportHeight);
+  fitViewportHeight();
 
   function sid() {
     var id = localStorage.getItem(KEY);
@@ -434,13 +458,17 @@
 
   sendBtn.onclick = function () { send(); };
   input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+    if (e.isComposing) return; // don't hijack Enter while autocomplete/IME is active
+    if (e.key === 'Enter' && !e.shiftKey && !isTouch) { e.preventDefault(); send(); }
+    // On touch devices, Enter just inserts a newline (default behaviour) —
+    // sending is done by tapping the send button.
   });
   input.addEventListener('input', function () {
     input.style.height = '28px';
     input.style.height = Math.min(input.scrollHeight, 160) + 'px';
     sendBtn.disabled = !input.value.trim();
   });
+  input.addEventListener('focus', function () { setTimeout(fitViewportHeight, 50); });
 })();
 </script>
 </body>
