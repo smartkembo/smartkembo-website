@@ -125,30 +125,42 @@
         .sk-c-btn.close { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color:#C5D4E0; }
 
         #sk-ai-input-area {
-          padding: 12px 14px; border-top: 1px solid rgba(0,200,232,0.12);
-          display: flex; gap: 8px; align-items: flex-end;
+          padding: 12px 14px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+          border-top: 1px solid rgba(0,200,232,0.12);
+          display: flex; flex-direction: row; gap: 8px; align-items: center;
           background: #0A1826;
+          flex-shrink: 0;
+          width: 100%;
         }
         #sk-ai-input {
-          flex: 1; background: #132233; border: 1px solid rgba(0,200,232,0.18);
-          border-radius: 12px; padding: 11px 14px; color: #F0F8FF;
-          font-size: 13.5px; resize: none; outline: none; max-height: 100px;
-          font-family: inherit; line-height: 1.4;
+          flex: 1 1 auto; min-width: 0; width: auto;
+          background: #132233; border: 1px solid rgba(0,200,232,0.18);
+          border-radius: 12px; padding: 12px 14px; color: #F0F8FF;
+          font-size: 16px; resize: none; outline: none; max-height: 88px;
+          font-family: inherit; line-height: 1.4; height: 44px;
         }
         #sk-ai-input:focus { border-color: #00C8E8; }
         #sk-ai-input::placeholder { color: #5A7A90; }
         #sk-ai-send {
-          width: 42px; height: 42px; border-radius: 12px;
+          width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 12px;
           background: linear-gradient(135deg, #00C8E8, #0090B0);
           border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0; transition: opacity .15s;
+          flex: 0 0 44px; transition: opacity .15s;
         }
         #sk-ai-send:disabled { opacity: 0.4; cursor: not-allowed; }
         #sk-ai-send svg { width: 18px; height: 18px; fill: white; }
 
         @media (max-width: 480px) {
-          #sk-ai-panel { bottom: 0; right: 0; left: 0; width: 100%; max-width: 100%; height: 85vh; max-height: 85vh; border-radius: 20px 20px 0 0; }
           #sk-ai-btn { bottom: 16px; right: 16px; }
+          #sk-ai-panel {
+            bottom: 0; right: 0; left: 0;
+            width: 100%; max-width: 100%;
+            height: 100dvh; max-height: 100dvh;
+            border-radius: 16px 16px 0 0;
+          }
+          #sk-ai-header { padding: 12px 14px; }
+          #sk-ai-messages { padding: 12px; }
+          #sk-ai-input-area { gap: 10px; }
         }
       </style>
 
@@ -183,6 +195,24 @@
     const input = document.getElementById('sk-ai-input');
     const sendBtn = document.getElementById('sk-ai-send');
     const messages = document.getElementById('sk-ai-messages');
+
+    function fitMobileKeyboard() {
+      if (!window.visualViewport) return;
+      var vv = window.visualViewport;
+      if (window.innerWidth > 480) {
+        panel.style.height = '';
+        panel.style.maxHeight = '';
+        panel.style.bottom = '';
+        return;
+      }
+      panel.style.height = vv.height + 'px';
+      panel.style.maxHeight = vv.height + 'px';
+      panel.style.bottom = Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px';
+    }
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitMobileKeyboard);
+      window.visualViewport.addEventListener('scroll', fitMobileKeyboard);
+    }
 
     let isOpen = false;
     let isSending = false;
@@ -246,11 +276,17 @@
       isOpen = !isOpen;
       panel.classList.toggle('open', isOpen);
       if (isOpen) {
-        input.focus();
         document.getElementById('sk-ai-badge').style.display = 'none';
         startIdle();
+        setTimeout(function () {
+          fitMobileKeyboard();
+          input.focus();
+        }, 50);
       } else {
         clearIdle();
+        panel.style.height = '';
+        panel.style.maxHeight = '';
+        panel.style.bottom = '';
       }
     }
 
