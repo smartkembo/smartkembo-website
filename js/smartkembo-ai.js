@@ -69,6 +69,7 @@
           animation: sk-slideUp .25s ease;
         }
         #sk-ai-panel.open { display: flex; }
+        #sk-ai-root.sk-open #sk-ai-btn { display: none !important; }
         @keyframes sk-slideUp {
           from { opacity:0; transform: translateY(20px); }
           to   { opacity:1; transform: translateY(0); }
@@ -275,6 +276,7 @@
     function toggle() {
       isOpen = !isOpen;
       panel.classList.toggle('open', isOpen);
+      root.classList.toggle('sk-open', isOpen);
       if (isOpen) {
         document.getElementById('sk-ai-badge').style.display = 'none';
         startIdle();
