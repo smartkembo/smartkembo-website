@@ -358,7 +358,7 @@
   // starter chips, placeholder, feedback) instead of a fixed language.
   var browserLang = (navigator.language || 'en').toLowerCase();
   var preferSw = browserLang.indexOf('sw') === 0;
-  var STR = preferSw ? {
+  var STR_SW = {
     online: 'Mtandaoni',
     helloTitle: 'Nikusaidieje?',
     helloSubtitle: 'Uliza chochote. Kwa SmartKembo: WiFi, Maji, Duka na bei.',
@@ -373,13 +373,21 @@
     savedGood: '✓ Asante',
     savedBad: '✓ Tumepokea',
     you: 'Wewe',
-    leadPrompt: 'Nipe jina na namba yako, timu yetu itakupigia haraka:',
-    leadNamePh: 'Jina lako',
-    leadPhonePh: 'Namba ya simu (mfano 07xx xxx xxx)',
-    leadSubmit: 'Tuma',
-    leadSending: 'Inatuma…',
-    leadInvalid: 'Weka jina na namba sahihi ya simu.',
-    leadThanks: '✅ Asante! Timu yetu itakupigia hivi karibuni.',
+    // Fomu KAMILI ya kujiunga (sio jina+namba tu) — inafanana na fomu
+    // halisi ya "Apply" ya website, inatuma kwenye /api/applications.
+    joinPrompt: 'Karibu SmartKembo! Jaza fomu fupi kujiunga:',
+    joinNamePh: 'Jina lako kamili',
+    joinBusinessPh: 'Jina la biashara yako',
+    joinEmailPh: 'Barua pepe',
+    joinPhonePh: 'Namba ya simu (mfano 07XXXXXXXX)',
+    joinLocationPh: 'Eneo (mfano: Kinondoni, Dar es Salaam)',
+    joinSubmit: 'Tuma Ombi',
+    joinSending: 'Inatuma…',
+    joinInvalidName: 'Jina linahitajika.',
+    joinInvalidBusiness: 'Jina la biashara linahitajika.',
+    joinInvalidEmail: 'Weka barua pepe sahihi.',
+    joinInvalidPhone: 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10 (mfano 07XXXXXXXX).',
+    joinInvalidLocation: 'Eneo linahitajika.',
     handoffMsg: 'Samahani, inaonekana sijakusaidia vizuri. Ungependa kuongea moja kwa moja na mtu wa timu yetu?',
     handoffBtn: '💬 Ongea na binadamu (WhatsApp)',
     installBtn: 'Install',
@@ -394,7 +402,8 @@
       { icon: '🚀', label: 'Jinsi ya kuanza', q: 'Nataka kujiunga, nianzeje?' },
       { icon: '📱', label: 'Wasiliana nasi', q: 'Nipe namba ya WhatsApp' }
     ]
-  } : {
+  };
+  var STR_EN = {
     online: 'Online',
     helloTitle: 'What can I help with?',
     helloSubtitle: 'Ask anything. For SmartKembo: WiFi, Water, Shop and pricing.',
@@ -409,13 +418,19 @@
     savedGood: '✓ Saved',
     savedBad: '✓ Noted',
     you: 'You',
-    leadPrompt: 'Share your name and number, our team will call you shortly:',
-    leadNamePh: 'Your name',
-    leadPhonePh: 'Phone number (e.g. 07xx xxx xxx)',
-    leadSubmit: 'Send',
-    leadSending: 'Sending…',
-    leadInvalid: 'Please enter a name and a valid phone number.',
-    leadThanks: '✅ Thanks! Our team will call you shortly.',
+    joinPrompt: 'Welcome to SmartKembo! Fill this short form to join:',
+    joinNamePh: 'Your full name',
+    joinBusinessPh: 'Your business name',
+    joinEmailPh: 'Email address',
+    joinPhonePh: 'Phone number (e.g. 07XXXXXXXX)',
+    joinLocationPh: 'Location (e.g. Kinondoni, Dar es Salaam)',
+    joinSubmit: 'Submit Application',
+    joinSending: 'Sending…',
+    joinInvalidName: 'Name is required.',
+    joinInvalidBusiness: 'Business name is required.',
+    joinInvalidEmail: 'Please enter a valid email.',
+    joinInvalidPhone: 'Phone must start with 06 or 07 and have 10 digits (e.g. 07XXXXXXXX).',
+    joinInvalidLocation: 'Location is required.',
     handoffMsg: "Sorry, it seems I haven't helped much. Would you like to talk directly to someone on our team?",
     handoffBtn: '💬 Talk to a human (WhatsApp)',
     installBtn: 'Install',
@@ -431,6 +446,12 @@
       { icon: '📱', label: 'Contact us', q: 'Give me your WhatsApp number' }
     ]
   };
+  var STR = preferSw ? STR_SW : STR_EN;
+  // Vipengele vinavyotokea PAKATI ya mazungumzo (fomu ya kujiunga,
+  // handoff, feedback) vinafuata LUGHA HALISI ya mazungumzo (kile
+  // alichoandika mtu), si mpangilio wa kifaa pekee.
+  var lastDetectedLang = preferSw ? 'sw' : 'en';
+  function dynStr() { return lastDetectedLang === 'sw' ? STR_SW : STR_EN; }
 
   // Apply the localized strings to the static markup.
   document.getElementById('onlineLabel').textContent = STR.online;
@@ -490,6 +511,10 @@
     try { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; }
   }
 
+  function escapeHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   // Escapes HTML first (XSS-safe), then renders **bold**, "- " bullets,
   // bare URLs and WhatsApp-style phone numbers as real markup.
   function fmt(text) {
@@ -524,16 +549,18 @@
       body: JSON.stringify({ messageId: messageId, feedback: feedback })
     }).catch(function () {});
     groupEl.querySelectorAll('.fb-btn').forEach(function (b) { b.classList.add('done'); });
-    btnEl.textContent = feedback === 'good' ? STR.savedGood : STR.savedBad;
+    var S = dynStr();
+    btnEl.textContent = feedback === 'good' ? S.savedGood : S.savedBad;
   }
 
   function addFeedbackRow(bubbleCol, messageId) {
     if (!messageId) return;
+    var S = dynStr();
     var fb = document.createElement('div');
     fb.className = 'feedback';
     fb.innerHTML =
-      '<button type="button" class="fb-btn" data-fb="good">' + STR.helpful + '</button>' +
-      '<button type="button" class="fb-btn" data-fb="bad">' + STR.notHelpful + '</button>';
+      '<button type="button" class="fb-btn" data-fb="good">' + S.helpful + '</button>' +
+      '<button type="button" class="fb-btn" data-fb="bad">' + S.notHelpful + '</button>';
     fb.querySelectorAll('.fb-btn').forEach(function (b) {
       b.addEventListener('click', function () { sendFeedback(messageId, b.dataset.fb, b, fb); });
     });
@@ -587,53 +614,95 @@
   }
 
   function showHandoffPrompt(lastUserText) {
+    var S = dynStr();
     var row = startBotRow();
-    var waMsg = (preferSw ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
+    var waMsg = (lastDetectedLang === 'sw' ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
     var waHref = 'https://wa.me/255767830319?text=' + encodeURIComponent(waMsg);
     row.querySelector('.bubble').innerHTML =
-      '<p>' + STR.handoffMsg + '</p>' +
-      '<div class="feedback"><a class="fb-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + STR.handoffBtn + '</a></div>';
+      '<p>' + S.handoffMsg + '</p>' +
+      '<div class="feedback"><a class="fb-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + S.handoffBtn + '</a></div>';
     row.querySelector('.msg-time').textContent = fmtTime(new Date());
     thread.scrollTop = thread.scrollHeight;
   }
 
-  function showLeadForm(interestHint) {
+  // Inagundua ni MODULE gani (WiFi/Maji/Duka) mtu alikuwa akiongea
+  // kuihusu, kwa ajili ya "message" ya ombi lake la kujiunga.
+  function detectInterest(text) {
+    var t = String(text || '').toLowerCase();
+    if (/wifi|mtandao|internet|router|mikrotik|voucher/.test(t)) return 'WiFi';
+    if (/maji|water|swv|tokeni|rfid|valve|lita/.test(t)) return 'Water';
+    if (/duka|shop|pos|bidhaa|stock|mauzo/.test(t)) return 'Shop';
+    return '';
+  }
+
+  // Fomu KAMILI ya kujiunga — sawa na "Apply" ya website, inatuma moja
+  // kwa moja kwenye /api/applications HALISI. Super Admin ataona ombi
+  // hili kwenye "Applications" kama maombi mengine yoyote (idhini bado
+  // inahitajika).
+  function showJoinForm(interestHint) {
+    var S = dynStr();
     var row = startBotRow();
     var bubble = row.querySelector('.bubble');
     bubble.innerHTML =
-      '<p>' + STR.leadPrompt + '</p>' +
-      '<input type="text" class="lead-input" data-f="name" placeholder="' + STR.leadNamePh + '">' +
-      '<input type="tel" class="lead-input" data-f="phone" placeholder="' + STR.leadPhonePh + '">' +
-      '<button type="button" class="fb-btn lead-submit">' + STR.leadSubmit + '</button>' +
+      '<p>' + S.joinPrompt + '</p>' +
+      '<input type="text" class="lead-input" data-f="name" placeholder="' + S.joinNamePh + '">' +
+      '<input type="text" class="lead-input" data-f="businessName" placeholder="' + S.joinBusinessPh + '">' +
+      '<input type="email" class="lead-input" data-f="email" placeholder="' + S.joinEmailPh + '">' +
+      '<input type="tel" class="lead-input" data-f="phone" placeholder="' + S.joinPhonePh + '">' +
+      '<input type="text" class="lead-input" data-f="location" placeholder="' + S.joinLocationPh + '">' +
+      '<select class="lead-input" data-f="planInterest">' +
+        '<option value="Basic">Basic</option>' +
+        '<option value="Pro">Pro</option>' +
+        '<option value="Enterprise">Enterprise</option>' +
+      '</select>' +
+      '<button type="button" class="fb-btn lead-submit" style="width:100%;margin-top:4px;">' + S.joinSubmit + '</button>' +
       '<div class="lead-status"></div>';
     row.querySelector('.msg-time').textContent = fmtTime(new Date());
     thread.scrollTop = thread.scrollHeight;
 
-    var nameInput = bubble.querySelector('[data-f="name"]');
-    var phoneInput = bubble.querySelector('[data-f="phone"]');
+    var f = {};
+    ['name', 'businessName', 'email', 'phone', 'location', 'planInterest'].forEach(function (k) {
+      f[k] = bubble.querySelector('[data-f="' + k + '"]');
+    });
     var statusEl = bubble.querySelector('.lead-status');
+
     bubble.querySelector('.lead-submit').addEventListener('click', async function () {
-      var name = nameInput.value.trim();
-      var phone = phoneInput.value.trim();
-      if (name.length < 2 || phone.replace(/\D/g, '').length < 9) {
-        statusEl.textContent = STR.leadInvalid;
-        return;
-      }
-      statusEl.textContent = STR.leadSending;
+      var name = f.name.value.trim();
+      var businessName = f.businessName.value.trim();
+      var email = f.email.value.trim();
+      var phone = f.phone.value.trim();
+      var location = f.location.value.trim();
+      var planInterest = f.planInterest.value;
+
+      if (name.length < 2) { statusEl.textContent = S.joinInvalidName; return; }
+      if (businessName.length < 2) { statusEl.textContent = S.joinInvalidBusiness; return; }
+      if (!/^\S+@\S+\.\S+$/.test(email)) { statusEl.textContent = S.joinInvalidEmail; return; }
+      if (!/^0[67]\d{8}$/.test(phone)) { statusEl.textContent = S.joinInvalidPhone; return; }
+      if (location.length < 2) { statusEl.textContent = S.joinInvalidLocation; return; }
+
+      statusEl.textContent = S.joinSending;
       try {
-        var res = await fetch(API + '/api/chat/lead', {
+        var res = await fetch(API + '/api/applications', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId: sid(), name: name, phone: phone, interest: interestHint || 'general' })
+          body: JSON.stringify({
+            name: name,
+            businessName: businessName,
+            email: email,
+            phone: phone,
+            location: location,
+            planInterest: planInterest,
+            message: interestHint ? ('Anavutiwa na: ' + interestHint + ' (kupitia SmartKembo AI)') : 'Kupitia SmartKembo AI'
+          })
         });
         var data = await res.json();
         if (data.success) {
-          bubble.innerHTML = '<p>' + STR.leadThanks + '</p>';
+          bubble.innerHTML = '<p>✅ ' + escapeHtml(data.message || (lastDetectedLang === 'sw' ? 'Ombi lako limepokelewa!' : 'Your application was received!')) + '</p>';
         } else {
-          statusEl.textContent = data.message || STR.leadInvalid;
+          statusEl.textContent = data.message || S.joinInvalidEmail;
         }
       } catch (e) {
-        statusEl.textContent = STR.cannotConnect;
+        statusEl.textContent = S.cannotConnect;
       }
     });
   }
@@ -715,6 +784,7 @@
       },
       function onDone(meta) {
         typingRow.remove();
+        if (meta.language === 'sw' || meta.language === 'en') lastDetectedLang = meta.language;
         if (!botRow) botRow = startBotRow();
         finalizeBotRow(botRow, assembled, meta.messageId);
 
@@ -729,7 +799,7 @@
             }
           }
         }
-        if (meta.showLeadForm) showLeadForm();
+        if (meta.showLeadForm) showJoinForm(detectInterest(text));
 
         busy = false; sendBtn.disabled = false;
         if (!isTouch) input.focus();
