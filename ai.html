@@ -163,6 +163,17 @@
   }
   .fb-btn:hover { background: rgba(0,200,232,.1); border-color: rgba(0,200,232,.4); }
   .fb-btn.done { opacity: .5; pointer-events: none; }
+  a.fb-btn, a.feedback-link { text-decoration: none; display: inline-block; }
+
+  .lead-input {
+    width: 100%; background: rgba(255,255,255,.05); border: 1px solid #3D3D3D;
+    border-radius: 9px; color: var(--text); font: 13.5px/1.4 inherit; padding: 9px 11px;
+    outline: none; margin-top: 7px;
+  }
+  .lead-input:first-of-type { margin-top: 4px; }
+  .lead-input:focus { border-color: rgba(0,200,232,.55); }
+  .lead-submit { width: 100%; margin-top: 9px; text-align: center; }
+  .lead-status { margin-top: 6px; font-size: 11.5px; color: var(--text-dim); min-height: 15px; }
 
   /* Typing dots */
   .typing-dots { display: inline-flex; align-items: center; gap: 4px; padding: 4px 0; }
@@ -362,6 +373,15 @@
     savedGood: '✓ Asante',
     savedBad: '✓ Tumepokea',
     you: 'Wewe',
+    leadPrompt: 'Nipe jina na namba yako, timu yetu itakupigia haraka:',
+    leadNamePh: 'Jina lako',
+    leadPhonePh: 'Namba ya simu (mfano 07xx xxx xxx)',
+    leadSubmit: 'Tuma',
+    leadSending: 'Inatuma…',
+    leadInvalid: 'Weka jina na namba sahihi ya simu.',
+    leadThanks: '✅ Asante! Timu yetu itakupigia hivi karibuni.',
+    handoffMsg: 'Samahani, inaonekana sijakusaidia vizuri. Ungependa kuongea moja kwa moja na mtu wa timu yetu?',
+    handoffBtn: '💬 Ongea na binadamu (WhatsApp)',
     installBtn: 'Install',
     iosTitle: 'Weka SmartKembo AI kwenye Home Screen',
     iosStep1: 'Bonyeza kitufe cha Share chini ya Safari',
@@ -389,6 +409,15 @@
     savedGood: '✓ Saved',
     savedBad: '✓ Noted',
     you: 'You',
+    leadPrompt: 'Share your name and number, our team will call you shortly:',
+    leadNamePh: 'Your name',
+    leadPhonePh: 'Phone number (e.g. 07xx xxx xxx)',
+    leadSubmit: 'Send',
+    leadSending: 'Sending…',
+    leadInvalid: 'Please enter a name and a valid phone number.',
+    leadThanks: '✅ Thanks! Our team will call you shortly.',
+    handoffMsg: "Sorry, it seems I haven't helped much. Would you like to talk directly to someone on our team?",
+    handoffBtn: '💬 Talk to a human (WhatsApp)',
     installBtn: 'Install',
     iosTitle: 'Add SmartKembo AI to your Home Screen',
     iosStep1: 'Tap the Share button in Safari',
@@ -530,6 +559,85 @@
     return row;
   }
 
+  // Kwa streaming: bubble tupu ya bot inaanzishwa mara moja, kisha
+  // inajazwa taratibu (startBotRow) na kumaliziwa (finalizeBotRow) na
+  // maandishi kamili + vitufe vya feedback + muhuri wa saa.
+  function startBotRow() {
+    hello.style.display = 'none';
+    var row = document.createElement('div');
+    row.className = 'row bot';
+    row.innerHTML =
+      '<div class="inner">' +
+        '<div class="av bot">🤖</div>' +
+        '<div class="bubble-col">' +
+          '<div class="bubble"></div>' +
+          '<div class="msg-time"></div>' +
+        '</div>' +
+      '</div>';
+    msgs.appendChild(row);
+    thread.scrollTop = thread.scrollHeight;
+    return row;
+  }
+
+  function finalizeBotRow(row, text, messageId) {
+    row.querySelector('.bubble').innerHTML = fmt(text);
+    row.querySelector('.msg-time').textContent = fmtTime(new Date());
+    if (messageId) addFeedbackRow(row.querySelector('.bubble-col'), messageId);
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function showHandoffPrompt(lastUserText) {
+    var row = startBotRow();
+    var waMsg = (preferSw ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
+    var waHref = 'https://wa.me/255767830319?text=' + encodeURIComponent(waMsg);
+    row.querySelector('.bubble').innerHTML =
+      '<p>' + STR.handoffMsg + '</p>' +
+      '<div class="feedback"><a class="fb-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + STR.handoffBtn + '</a></div>';
+    row.querySelector('.msg-time').textContent = fmtTime(new Date());
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function showLeadForm(interestHint) {
+    var row = startBotRow();
+    var bubble = row.querySelector('.bubble');
+    bubble.innerHTML =
+      '<p>' + STR.leadPrompt + '</p>' +
+      '<input type="text" class="lead-input" data-f="name" placeholder="' + STR.leadNamePh + '">' +
+      '<input type="tel" class="lead-input" data-f="phone" placeholder="' + STR.leadPhonePh + '">' +
+      '<button type="button" class="fb-btn lead-submit">' + STR.leadSubmit + '</button>' +
+      '<div class="lead-status"></div>';
+    row.querySelector('.msg-time').textContent = fmtTime(new Date());
+    thread.scrollTop = thread.scrollHeight;
+
+    var nameInput = bubble.querySelector('[data-f="name"]');
+    var phoneInput = bubble.querySelector('[data-f="phone"]');
+    var statusEl = bubble.querySelector('.lead-status');
+    bubble.querySelector('.lead-submit').addEventListener('click', async function () {
+      var name = nameInput.value.trim();
+      var phone = phoneInput.value.trim();
+      if (name.length < 2 || phone.replace(/\D/g, '').length < 9) {
+        statusEl.textContent = STR.leadInvalid;
+        return;
+      }
+      statusEl.textContent = STR.leadSending;
+      try {
+        var res = await fetch(API + '/api/chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: sid(), name: name, phone: phone, interest: interestHint || 'general' })
+        });
+        var data = await res.json();
+        if (data.success) {
+          bubble.innerHTML = '<p>' + STR.leadThanks + '</p>';
+        } else {
+          statusEl.textContent = data.message || STR.leadInvalid;
+        }
+      } catch (e) {
+        statusEl.textContent = STR.cannotConnect;
+      }
+    });
+  }
+
   function addTyping() {
     hello.style.display = 'none';
     var row = document.createElement('div');
@@ -545,35 +653,98 @@
     return row;
   }
 
+  // Inasoma /api/chat/stream (Server-Sent Events) neno kwa neno.
+  async function streamChat(text, onDelta, onDone, onError) {
+    try {
+      var res = await fetch(API + '/api/chat/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sid(), message: text })
+      });
+      if (!res.ok || !res.body || !res.body.getReader) throw new Error('stream unavailable');
+
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      for (;;) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+        var idx;
+        while ((idx = buffer.indexOf('\n\n')) !== -1) {
+          var rawEvent = buffer.slice(0, idx);
+          buffer = buffer.slice(idx + 2);
+          var eventType = 'message';
+          var dataStr = '';
+          rawEvent.split('\n').forEach(function (line) {
+            if (line.indexOf('event:') === 0) eventType = line.slice(6).trim();
+            else if (line.indexOf('data:') === 0) dataStr += line.slice(5).trim();
+          });
+          if (!dataStr) continue;
+          var payload;
+          try { payload = JSON.parse(dataStr); } catch (e) { continue; }
+          if (eventType === 'delta') onDelta(payload.text);
+          else if (eventType === 'done') onDone(payload);
+          else if (eventType === 'error') onError(payload);
+        }
+      }
+    } catch (err) {
+      onError({ message: err.message });
+    }
+  }
+
+  var lowConfidenceStreak = 0;
+
   async function send(preset) {
     var text = (preset != null ? preset : input.value).trim();
     if (!text || busy) return;
     busy = true; sendBtn.disabled = true; input.value = ''; input.style.height = '28px';
     add(text, 'me');
     var typingRow = addTyping();
-    try {
-      var res = await fetch(API + '/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: sid(), message: text })
-      });
-      var data = await res.json();
-      typingRow.remove();
-      var reply = (data.success && data.data && data.data.reply) ? data.data.reply : (data.message || STR.genericError);
-      var botRow = add(reply, 'bot');
-      if (data.success && data.data && data.data.messageId) {
-        addFeedbackRow(botRow.querySelector('.bubble-col'), data.data.messageId);
+
+    var botRow = null;
+    var assembled = '';
+
+    await streamChat(
+      text,
+      function onDelta(piece) {
+        if (!botRow) { typingRow.remove(); botRow = startBotRow(); }
+        assembled += piece;
+        botRow.querySelector('.bubble').textContent = assembled;
+        thread.scrollTop = thread.scrollHeight;
+      },
+      function onDone(meta) {
+        typingRow.remove();
+        if (!botRow) botRow = startBotRow();
+        finalizeBotRow(botRow, assembled, meta.messageId);
+
+        if (typeof meta.confidence === 'number') {
+          if (meta.confidence > 0) {
+            lowConfidenceStreak = 0;
+          } else {
+            lowConfidenceStreak += 1;
+            if (lowConfidenceStreak >= 2) {
+              lowConfidenceStreak = 0;
+              showHandoffPrompt(text);
+            }
+          }
+        }
+        if (meta.showLeadForm) showLeadForm();
+
+        busy = false; sendBtn.disabled = false;
+        if (!isTouch) input.focus();
+      },
+      function onError(e) {
+        typingRow.remove();
+        if (botRow && assembled) {
+          finalizeBotRow(botRow, assembled, null);
+        } else {
+          add(STR.cannotConnect, 'bot');
+        }
+        busy = false; sendBtn.disabled = false;
+        if (!isTouch) input.focus();
       }
-    } catch (e) {
-      typingRow.remove();
-      add(STR.cannotConnect, 'bot');
-    }
-    busy = false; sendBtn.disabled = false;
-    // Only re-focus on desktop: on touch devices, focusing the textarea
-    // pops the on-screen keyboard back up right after the AI answers,
-    // covering the reply the person just wanted to read.
-    if (!isTouch) input.focus();
-    thread.scrollTop = thread.scrollHeight;
+    );
   }
 
   function openSidebar(open) {
