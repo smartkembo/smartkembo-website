@@ -48,7 +48,16 @@
       notHelpful: '👎 Haikusaidia',
       savedGood: '✓ Asante',
       savedBad: '✓ Tumepokea',
-      footer: 'Inaendeshwa na SmartKembo AI'
+      footer: 'Inaendeshwa na SmartKembo AI',
+      leadPrompt: 'Nipe jina na namba yako, timu yetu itakupigia haraka:',
+      leadNamePh: 'Jina lako',
+      leadPhonePh: 'Namba ya simu (mfano 07xx xxx xxx)',
+      leadSubmit: 'Tuma',
+      leadSending: 'Inatuma…',
+      leadInvalid: 'Weka jina na namba sahihi ya simu.',
+      leadThanks: '✅ Asante! Timu yetu itakupigia hivi karibuni.',
+      handoffMsg: 'Samahani, inaonekana sijakusaidia vizuri. Ungependa kuongea moja kwa moja na mtu wa timu yetu?',
+      handoffBtn: '💬 Ongea na binadamu (WhatsApp)'
     } : {
       headerStatus: "Online · SMD's SmartKembo",
       placeholder: 'Write a message…',
@@ -63,7 +72,16 @@
       notHelpful: '👎 Not helpful',
       savedGood: '✓ Saved',
       savedBad: '✓ Noted',
-      footer: 'Powered by SmartKembo AI'
+      footer: 'Powered by SmartKembo AI',
+      leadPrompt: "Share your name and number, our team will call you shortly:",
+      leadNamePh: 'Your name',
+      leadPhonePh: 'Phone number (e.g. 07xx xxx xxx)',
+      leadSubmit: 'Send',
+      leadSending: 'Sending…',
+      leadInvalid: 'Please enter a name and a valid phone number.',
+      leadThanks: '✅ Thanks! Our team will call you shortly.',
+      handoffMsg: "Sorry, it seems I haven't helped much. Would you like to talk directly to someone on our team?",
+      handoffBtn: '💬 Talk to a human (WhatsApp)'
     };
 
     const root = document.createElement('div');
@@ -255,6 +273,18 @@
         .sk-fb-btn:hover, .sk-c-btn:hover { background: rgba(0,200,232,.1); border-color: rgba(0,200,232,.4); }
         .sk-c-btn.close { border-color: rgba(255,255,255,.12); color: #9BB3C4; }
         .sk-fb-btn.done { opacity: .55; pointer-events: none; }
+        a.sk-c-btn { text-decoration: none; display: inline-block; }
+
+        /* ---------- Inline lead-capture form ---------- */
+        .sk-lead-input {
+          width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(0,200,232,.2);
+          border-radius: 9px; color: var(--sk-text); font: 13px/1.4 inherit; padding: 8px 10px;
+          outline: none; margin-top: 6px;
+        }
+        .sk-lead-input:first-of-type { margin-top: 2px; }
+        .sk-lead-input:focus { border-color: rgba(0,200,232,.55); }
+        .sk-lead-submit { width: 100%; margin-top: 8px; text-align: center; }
+        .sk-lead-status { margin-top: 6px; font-size: 11px; color: var(--sk-text-dim); min-height: 14px; }
 
         /* ---------- Input area ---------- */
         #sk-ai-input-area {
@@ -366,6 +396,9 @@
     let isOpen = false;
     let isSending = false;
     let idleTimer = null;
+    // Mfululizo wa majibu yenye confidence=0 (AI "haijui") — likifika 2,
+    // tunapendekeza "ongea na binadamu" badala ya kumwacha mtu akizungushwa.
+    let lowConfidenceStreak = 0;
     const CLOSE_WORDS = ['hapana','no','nope','sitaki','enough','bas','basi','close','funga','stop',"that's all",'thats all','no thanks','sihitaji'];
     // Touch devices have no real Shift key — treating Enter as "send" there
     // meant the message went out the instant someone tried a new line.
@@ -421,6 +454,73 @@
       wrap.querySelector('[data-act="no"]').onclick = function () { wrap.remove(); endChat(false); };
     }
 
+    function showHandoffPrompt(lastUserText) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sk-row bot';
+      var waMsg = (preferSw ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
+      var waHref = 'https://wa.me/255767830319?text=' + encodeURIComponent(waMsg);
+      wrap.innerHTML =
+        '<div class="sk-row-avatar">🤖</div>' +
+        '<div class="sk-bubble-col">' +
+          '<div class="sk-msg bot">' +
+            '<div>' + STR.handoffMsg + '</div>' +
+            '<div class="sk-continue">' +
+              '<a class="sk-c-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + STR.handoffBtn + '</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      messages.appendChild(wrap);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showLeadForm(interestHint) {
+      var wrap = document.createElement('div');
+      wrap.className = 'sk-row bot';
+      wrap.innerHTML =
+        '<div class="sk-row-avatar">🤖</div>' +
+        '<div class="sk-bubble-col">' +
+          '<div class="sk-msg bot sk-lead-form">' +
+            '<div>' + STR.leadPrompt + '</div>' +
+            '<input type="text" class="sk-lead-input" data-f="name" placeholder="' + STR.leadNamePh + '">' +
+            '<input type="tel" class="sk-lead-input" data-f="phone" placeholder="' + STR.leadPhonePh + '">' +
+            '<button type="button" class="sk-c-btn sk-lead-submit">' + STR.leadSubmit + '</button>' +
+            '<div class="sk-lead-status"></div>' +
+          '</div>' +
+        '</div>';
+      messages.appendChild(wrap);
+      messages.scrollTop = messages.scrollHeight;
+
+      var box = wrap.querySelector('.sk-lead-form');
+      var nameInput = wrap.querySelector('[data-f="name"]');
+      var phoneInput = wrap.querySelector('[data-f="phone"]');
+      var statusEl = wrap.querySelector('.sk-lead-status');
+      wrap.querySelector('.sk-lead-submit').addEventListener('click', async function () {
+        var name = nameInput.value.trim();
+        var phone = phoneInput.value.trim();
+        if (name.length < 2 || phone.replace(/\D/g, '').length < 9) {
+          statusEl.textContent = STR.leadInvalid;
+          return;
+        }
+        statusEl.textContent = STR.leadSending;
+        try {
+          var res = await fetch(API_BASE + '/api/chat/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: getSessionId(), name: name, phone: phone, interest: interestHint || 'general' })
+          });
+          var data = await res.json();
+          if (data.success) {
+            box.innerHTML = '<div>' + STR.leadThanks + '</div>';
+          } else {
+            statusEl.textContent = data.message || STR.leadInvalid;
+          }
+        } catch (e) {
+          statusEl.textContent = STR.cannotConnect;
+        }
+      });
+      messages.scrollTop = messages.scrollHeight;
+    }
+
     btn.addEventListener('click', toggle);
     closeBtn.addEventListener('click', toggle);
 
@@ -468,6 +568,14 @@
     }
 
     function addBotMessage(text, messageId) {
+      const b = startBotBubble();
+      finalizeBotBubble(b, text, messageId);
+      return b;
+    }
+
+    // Huanzisha "bubble" tupu ya bot (kwa streaming: tunaijaza taratibu
+    // kadri maneno yanavyofika badala ya kuandika yote mara moja).
+    function startBotBubble() {
       const row = document.createElement('div');
       row.className = 'sk-row bot';
 
@@ -480,8 +588,19 @@
 
       const div = document.createElement('div');
       div.className = 'sk-msg bot';
-      div.innerHTML = renderBotHTML(text);
       col.appendChild(div);
+
+      row.appendChild(avatar);
+      row.appendChild(col);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return { row: row, col: col, bubble: div };
+    }
+
+    // Huweka maandishi ya mwisho (kamili) kwenye bubble iliyoanzishwa na
+    // startBotBubble, na kuongeza vitufe vya feedback + muhuri wa saa.
+    function finalizeBotBubble(b, text, messageId) {
+      b.bubble.innerHTML = renderBotHTML(text);
 
       if (messageId) {
         const fb = document.createElement('div');
@@ -489,18 +608,18 @@
         fb.innerHTML =
           '<button class="sk-fb-btn" data-fb="good">' + STR.helpful + '</button>' +
           '<button class="sk-fb-btn" data-fb="bad">' + STR.notHelpful + '</button>';
-        div.appendChild(fb);
-        fb.querySelectorAll('.sk-fb-btn').forEach(function (b) {
-          b.addEventListener('click', async function () {
+        b.bubble.appendChild(fb);
+        fb.querySelectorAll('.sk-fb-btn').forEach(function (btn) {
+          btn.addEventListener('click', async function () {
             try {
               await fetch(API_BASE + '/api/chat/feedback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messageId: messageId, feedback: b.dataset.fb })
+                body: JSON.stringify({ messageId: messageId, feedback: btn.dataset.fb })
               });
             } catch (e) {}
             fb.querySelectorAll('.sk-fb-btn').forEach(function (x) { x.classList.add('done'); });
-            b.textContent = b.dataset.fb === 'good' ? STR.savedGood : STR.savedBad;
+            btn.textContent = btn.dataset.fb === 'good' ? STR.savedGood : STR.savedBad;
           });
         });
       }
@@ -508,11 +627,7 @@
       const time = document.createElement('div');
       time.className = 'sk-time';
       time.textContent = formatTime(new Date());
-      col.appendChild(time);
-
-      row.appendChild(avatar);
-      row.appendChild(col);
-      messages.appendChild(row);
+      b.col.appendChild(time);
       messages.scrollTop = messages.scrollHeight;
     }
 
@@ -563,6 +678,50 @@
 
     addBotMessage(STR.greeting);
 
+    // Inasoma jibu la /api/chat/stream (Server-Sent Events) neno kwa neno.
+    // onDelta(chunk) inaitwa kila neno linapofika; onDone(meta) mwishoni
+    // (meta ina messageId, conversationId, confidence, showLeadForm);
+    // onError(e) ikiwa kuna hitilafu — hata hapo, chochote kilichokwisha
+    // andikwa (onDelta) kinabaki kwenye skrini.
+    async function streamChat(text, onDelta, onDone, onError) {
+      try {
+        const res = await fetch(API_BASE + '/api/chat/stream', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: getSessionId(), message: text })
+        });
+        if (!res.ok || !res.body || !res.body.getReader) throw new Error('stream unavailable');
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          let idx;
+          while ((idx = buffer.indexOf('\n\n')) !== -1) {
+            const rawEvent = buffer.slice(0, idx);
+            buffer = buffer.slice(idx + 2);
+            let eventType = 'message';
+            let dataStr = '';
+            rawEvent.split('\n').forEach(function (line) {
+              if (line.indexOf('event:') === 0) eventType = line.slice(6).trim();
+              else if (line.indexOf('data:') === 0) dataStr += line.slice(5).trim();
+            });
+            if (!dataStr) continue;
+            let payload;
+            try { payload = JSON.parse(dataStr); } catch (e) { continue; }
+            if (eventType === 'delta') onDelta(payload.text);
+            else if (eventType === 'done') onDone(payload);
+            else if (eventType === 'error') onError(payload);
+          }
+        }
+      } catch (err) {
+        onError({ message: err.message });
+      }
+    }
+
     async function send() {
       const text = input.value.trim();
       if (!text || isSending) return;
@@ -582,31 +741,57 @@
         endChat(false);
         return;
       }
+
       addTyping();
-      try {
-        const res = await fetch(API_BASE + '/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId: getSessionId(), message: text })
-        });
-        const data = await res.json();
-        removeTyping();
-        if (data.success && data.data) addBotMessage(data.data.reply, data.data.messageId);
-        else addBotMessage(data.message || STR.genericError);
-        showContinuePrompt();
-        startIdle();
-      } catch (err) {
-        removeTyping();
-        addBotMessage(STR.cannotConnect);
-        showContinuePrompt();
-        startIdle();
-      }
-      isSending = false;
-      sendBtn.disabled = false;
-      // Only re-focus on desktop: on touch devices, focusing the textarea
-      // pops the on-screen keyboard back up right after the AI answers,
-      // covering the reply the person just wanted to read.
-      if (!isTouch) input.focus();
+      let bubble = null;
+      let assembled = '';
+
+      await streamChat(
+        text,
+        function onDelta(chunk) {
+          if (!bubble) { removeTyping(); bubble = startBotBubble(); }
+          assembled += chunk;
+          bubble.bubble.textContent = assembled; // haraka wakati wa "kuandika"; renderBotHTML kamili mwishoni
+          messages.scrollTop = messages.scrollHeight;
+        },
+        function onDone(meta) {
+          removeTyping();
+          if (!bubble) bubble = startBotBubble();
+          finalizeBotBubble(bubble, assembled, meta.messageId);
+
+          if (typeof meta.confidence === 'number') {
+            if (meta.confidence > 0) {
+              lowConfidenceStreak = 0;
+            } else {
+              lowConfidenceStreak += 1;
+              if (lowConfidenceStreak >= 2) {
+                lowConfidenceStreak = 0;
+                showHandoffPrompt(text);
+              }
+            }
+          }
+          if (meta.showLeadForm) showLeadForm();
+
+          showContinuePrompt();
+          startIdle();
+          isSending = false;
+          sendBtn.disabled = false;
+          if (!isTouch) input.focus();
+        },
+        function onError(e) {
+          removeTyping();
+          if (bubble && assembled) {
+            finalizeBotBubble(bubble, assembled, null);
+          } else {
+            addBotMessage(STR.cannotConnect);
+          }
+          showContinuePrompt();
+          startIdle();
+          isSending = false;
+          sendBtn.disabled = false;
+          if (!isTouch) input.focus();
+        }
+      );
     }
 
     sendBtn.addEventListener('click', send);
