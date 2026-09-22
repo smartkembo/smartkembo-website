@@ -34,7 +34,7 @@
     // and message in the widget — not a bilingual mash-up of both.
     var browserLang = (navigator.language || 'en').toLowerCase();
     var preferSw = browserLang.indexOf('sw') === 0;
-    var STR = preferSw ? {
+    var STR_SW = {
       headerStatus: "Mtandaoni · SMD's SmartKembo",
       placeholder: 'Andika ujumbe…',
       greeting: '👋 Habari! Mimi ni SmartKembo AI.\n\nNaweza kukusaidiaje leo?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Duka & POS\n💳 Bei',
@@ -49,16 +49,27 @@
       savedGood: '✓ Asante',
       savedBad: '✓ Tumepokea',
       footer: 'Inaendeshwa na SmartKembo AI',
-      leadPrompt: 'Nipe jina na namba yako, timu yetu itakupigia haraka:',
-      leadNamePh: 'Jina lako',
-      leadPhonePh: 'Namba ya simu (mfano 07xx xxx xxx)',
-      leadSubmit: 'Tuma',
-      leadSending: 'Inatuma…',
-      leadInvalid: 'Weka jina na namba sahihi ya simu.',
-      leadThanks: '✅ Asante! Timu yetu itakupigia hivi karibuni.',
+      // Fomu KAMILI ya kujiunga (sio jina+namba tu) — inafanana na fomu
+      // halisi ya "Apply" ya website, na inatuma kwenye /api/applications
+      // ile ile (Super Admin anaikagua kwenye "Applications" kama kawaida).
+      joinPrompt: 'Karibu SmartKembo! Jaza fomu fupi kujiunga:',
+      joinNamePh: 'Jina lako kamili',
+      joinBusinessPh: 'Jina la biashara yako',
+      joinEmailPh: 'Barua pepe',
+      joinPhonePh: 'Namba ya simu (mfano 07XXXXXXXX)',
+      joinLocationPh: 'Eneo (mfano: Kinondoni, Dar es Salaam)',
+      joinPlanLabel: 'Plan unayopendelea',
+      joinSubmit: 'Tuma Ombi',
+      joinSending: 'Inatuma…',
+      joinInvalidName: 'Jina linahitajika.',
+      joinInvalidBusiness: 'Jina la biashara linahitajika.',
+      joinInvalidEmail: 'Weka barua pepe sahihi.',
+      joinInvalidPhone: 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10 (mfano 07XXXXXXXX).',
+      joinInvalidLocation: 'Eneo linahitajika.',
       handoffMsg: 'Samahani, inaonekana sijakusaidia vizuri. Ungependa kuongea moja kwa moja na mtu wa timu yetu?',
       handoffBtn: '💬 Ongea na binadamu (WhatsApp)'
-    } : {
+    };
+    var STR_EN = {
       headerStatus: "Online · SMD's SmartKembo",
       placeholder: 'Write a message…',
       greeting: '👋 Hello! I am SmartKembo AI.\n\nHow can I help you today?\n\n📶 WiFi Vending\n💧 Water Vending\n🛒 Shop & POS\n💳 Pricing',
@@ -73,16 +84,33 @@
       savedGood: '✓ Saved',
       savedBad: '✓ Noted',
       footer: 'Powered by SmartKembo AI',
-      leadPrompt: "Share your name and number, our team will call you shortly:",
-      leadNamePh: 'Your name',
-      leadPhonePh: 'Phone number (e.g. 07xx xxx xxx)',
-      leadSubmit: 'Send',
-      leadSending: 'Sending…',
-      leadInvalid: 'Please enter a name and a valid phone number.',
-      leadThanks: '✅ Thanks! Our team will call you shortly.',
+      joinPrompt: 'Welcome to SmartKembo! Fill this short form to join:',
+      joinNamePh: 'Your full name',
+      joinBusinessPh: 'Your business name',
+      joinEmailPh: 'Email address',
+      joinPhonePh: 'Phone number (e.g. 07XXXXXXXX)',
+      joinLocationPh: 'Location (e.g. Kinondoni, Dar es Salaam)',
+      joinPlanLabel: 'Preferred plan',
+      joinSubmit: 'Submit Application',
+      joinSending: 'Sending…',
+      joinInvalidName: 'Name is required.',
+      joinInvalidBusiness: 'Business name is required.',
+      joinInvalidEmail: 'Please enter a valid email.',
+      joinInvalidPhone: 'Phone must start with 06 or 07 and have 10 digits (e.g. 07XXXXXXXX).',
+      joinInvalidLocation: 'Location is required.',
       handoffMsg: "Sorry, it seems I haven't helped much. Would you like to talk directly to someone on our team?",
       handoffBtn: '💬 Talk to a human (WhatsApp)'
     };
+    var STR = preferSw ? STR_SW : STR_EN;
+    // Lugha ya vipengele vinavyotokea PAKATI ya mazungumzo (fomu ya
+    // kujiunga, handoff, feedback, "una swali lingine") inafuata LUGHA
+    // HALISI ya mazungumzo (kile alichoandika mtu, kinachogunduliwa na
+    // backend kwa kila ujumbe) — si mpangilio wa kifaa. Kwa mfano simu
+    // ya Kiingereza + mtu anayeandika Kiswahili → vipengele hivi
+    // vitaonekana kwa Kiswahili, sio Kiingereza, kwa sababu ndivyo
+    // mazungumzo yenyewe yanavyokwenda.
+    var lastDetectedLang = preferSw ? 'sw' : 'en';
+    function dynStr() { return lastDetectedLang === 'sw' ? STR_SW : STR_EN; }
 
     const root = document.createElement('div');
     root.id = 'sk-ai-root';
@@ -435,16 +463,17 @@
 
     function showContinuePrompt() {
       document.querySelectorAll('.sk-continue').forEach(function (el) { el.remove(); });
+      var S = dynStr();
       var wrap = document.createElement('div');
       wrap.className = 'sk-row bot';
       wrap.innerHTML =
         '<div class="sk-row-avatar">🤖</div>' +
         '<div class="sk-bubble-col">' +
           '<div class="sk-msg bot">' +
-            '<div>' + STR.continuePrompt + '</div>' +
+            '<div>' + S.continuePrompt + '</div>' +
             '<div class="sk-continue">' +
-              '<button type="button" class="sk-c-btn" data-act="yes">' + STR.yes + '</button>' +
-              '<button type="button" class="sk-c-btn close" data-act="no">' + STR.no + '</button>' +
+              '<button type="button" class="sk-c-btn" data-act="yes">' + S.yes + '</button>' +
+              '<button type="button" class="sk-c-btn close" data-act="no">' + S.no + '</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -455,17 +484,18 @@
     }
 
     function showHandoffPrompt(lastUserText) {
+      var S = dynStr();
       var wrap = document.createElement('div');
       wrap.className = 'sk-row bot';
-      var waMsg = (preferSw ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
+      var waMsg = (lastDetectedLang === 'sw' ? 'Habari, nilikuwa naongea na SmartKembo AI kuhusu: ' : 'Hi, I was chatting with SmartKembo AI about: ') + (lastUserText || '');
       var waHref = 'https://wa.me/255767830319?text=' + encodeURIComponent(waMsg);
       wrap.innerHTML =
         '<div class="sk-row-avatar">🤖</div>' +
         '<div class="sk-bubble-col">' +
           '<div class="sk-msg bot">' +
-            '<div>' + STR.handoffMsg + '</div>' +
+            '<div>' + S.handoffMsg + '</div>' +
             '<div class="sk-continue">' +
-              '<a class="sk-c-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + STR.handoffBtn + '</a>' +
+              '<a class="sk-c-btn" href="' + waHref + '" target="_blank" rel="noopener noreferrer">' + S.handoffBtn + '</a>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -473,17 +503,43 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function showLeadForm(interestHint) {
+    // Inagundua ni MODULE gani (WiFi/Maji/Duka) mtu alikuwa akiongea
+    // kuihusu, ili tuweke maelezo ya ziada kwenye "message" ya ombi lake
+    // la kujiunga — bila kumuuliza swali la ziada kwenye fomu.
+    function detectInterest(text) {
+      var t = String(text || '').toLowerCase();
+      if (/wifi|mtandao|internet|router|mikrotik|voucher/.test(t)) return 'WiFi';
+      if (/maji|water|swv|tokeni|rfid|valve|lita/.test(t)) return 'Water';
+      if (/duka|shop|pos|bidhaa|stock|mauzo/.test(t)) return 'Shop';
+      return '';
+    }
+
+    // Fomu KAMILI ya kujiunga — sawa na ile ya website ("Apply"), inatuma
+    // moja kwa moja kwenye /api/applications HALISI. Hii inamaanisha
+    // mtu anaweza "kujiunga kabisa" akiwa ndani ya chat, bila kuondoka
+    // kwenda ukurasa mwingine — Super Admin ataona ombi lake kwenye
+    // "Applications" kama maombi mengine yoyote (idhini bado inahitajika,
+    // sawa kabisa na njia ya kawaida).
+    function showJoinForm(interestHint) {
+      var S = dynStr();
       var wrap = document.createElement('div');
       wrap.className = 'sk-row bot';
       wrap.innerHTML =
         '<div class="sk-row-avatar">🤖</div>' +
         '<div class="sk-bubble-col">' +
           '<div class="sk-msg bot sk-lead-form">' +
-            '<div>' + STR.leadPrompt + '</div>' +
-            '<input type="text" class="sk-lead-input" data-f="name" placeholder="' + STR.leadNamePh + '">' +
-            '<input type="tel" class="sk-lead-input" data-f="phone" placeholder="' + STR.leadPhonePh + '">' +
-            '<button type="button" class="sk-c-btn sk-lead-submit">' + STR.leadSubmit + '</button>' +
+            '<div style="margin-bottom:6px;">' + S.joinPrompt + '</div>' +
+            '<input type="text" class="sk-lead-input" data-f="name" placeholder="' + S.joinNamePh + '">' +
+            '<input type="text" class="sk-lead-input" data-f="businessName" placeholder="' + S.joinBusinessPh + '">' +
+            '<input type="email" class="sk-lead-input" data-f="email" placeholder="' + S.joinEmailPh + '">' +
+            '<input type="tel" class="sk-lead-input" data-f="phone" placeholder="' + S.joinPhonePh + '">' +
+            '<input type="text" class="sk-lead-input" data-f="location" placeholder="' + S.joinLocationPh + '">' +
+            '<select class="sk-lead-input" data-f="planInterest">' +
+              '<option value="Basic">Basic</option>' +
+              '<option value="Pro">Pro</option>' +
+              '<option value="Enterprise">Enterprise</option>' +
+            '</select>' +
+            '<button type="button" class="sk-c-btn sk-lead-submit" style="margin-top:8px;width:100%;">' + S.joinSubmit + '</button>' +
             '<div class="sk-lead-status"></div>' +
           '</div>' +
         '</div>';
@@ -491,31 +547,49 @@
       messages.scrollTop = messages.scrollHeight;
 
       var box = wrap.querySelector('.sk-lead-form');
-      var nameInput = wrap.querySelector('[data-f="name"]');
-      var phoneInput = wrap.querySelector('[data-f="phone"]');
+      var f = {};
+      ['name', 'businessName', 'email', 'phone', 'location', 'planInterest'].forEach(function (k) {
+        f[k] = wrap.querySelector('[data-f="' + k + '"]');
+      });
       var statusEl = wrap.querySelector('.sk-lead-status');
+
       wrap.querySelector('.sk-lead-submit').addEventListener('click', async function () {
-        var name = nameInput.value.trim();
-        var phone = phoneInput.value.trim();
-        if (name.length < 2 || phone.replace(/\D/g, '').length < 9) {
-          statusEl.textContent = STR.leadInvalid;
-          return;
-        }
-        statusEl.textContent = STR.leadSending;
+        var name = f.name.value.trim();
+        var businessName = f.businessName.value.trim();
+        var email = f.email.value.trim();
+        var phone = f.phone.value.trim();
+        var location = f.location.value.trim();
+        var planInterest = f.planInterest.value;
+
+        if (name.length < 2) { statusEl.textContent = S.joinInvalidName; return; }
+        if (businessName.length < 2) { statusEl.textContent = S.joinInvalidBusiness; return; }
+        if (!/^\S+@\S+\.\S+$/.test(email)) { statusEl.textContent = S.joinInvalidEmail; return; }
+        if (!/^0[67]\d{8}$/.test(phone)) { statusEl.textContent = S.joinInvalidPhone; return; }
+        if (location.length < 2) { statusEl.textContent = S.joinInvalidLocation; return; }
+
+        statusEl.textContent = S.joinSending;
         try {
-          var res = await fetch(API_BASE + '/api/chat/lead', {
+          var res = await fetch(API_BASE + '/api/applications', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: getSessionId(), name: name, phone: phone, interest: interestHint || 'general' })
+            body: JSON.stringify({
+              name: name,
+              businessName: businessName,
+              email: email,
+              phone: phone,
+              location: location,
+              planInterest: planInterest,
+              message: interestHint ? ('Anavutiwa na: ' + interestHint + ' (kupitia SmartKembo AI)') : 'Kupitia SmartKembo AI'
+            })
           });
           var data = await res.json();
           if (data.success) {
-            box.innerHTML = '<div>' + STR.leadThanks + '</div>';
+            box.innerHTML = '<div>✅ ' + escapeHtml(data.message || (S === STR_SW ? 'Ombi lako limepokelewa!' : 'Your application was received!')) + '</div>';
           } else {
-            statusEl.textContent = data.message || STR.leadInvalid;
+            statusEl.textContent = data.message || S.joinInvalidEmail;
           }
         } catch (e) {
-          statusEl.textContent = STR.cannotConnect;
+          statusEl.textContent = S.cannotConnect;
         }
       });
       messages.scrollTop = messages.scrollHeight;
@@ -601,13 +675,14 @@
     // startBotBubble, na kuongeza vitufe vya feedback + muhuri wa saa.
     function finalizeBotBubble(b, text, messageId) {
       b.bubble.innerHTML = renderBotHTML(text);
+      var S = dynStr();
 
       if (messageId) {
         const fb = document.createElement('div');
         fb.className = 'sk-feedback';
         fb.innerHTML =
-          '<button class="sk-fb-btn" data-fb="good">' + STR.helpful + '</button>' +
-          '<button class="sk-fb-btn" data-fb="bad">' + STR.notHelpful + '</button>';
+          '<button class="sk-fb-btn" data-fb="good">' + S.helpful + '</button>' +
+          '<button class="sk-fb-btn" data-fb="bad">' + S.notHelpful + '</button>';
         b.bubble.appendChild(fb);
         fb.querySelectorAll('.sk-fb-btn').forEach(function (btn) {
           btn.addEventListener('click', async function () {
@@ -619,7 +694,7 @@
               });
             } catch (e) {}
             fb.querySelectorAll('.sk-fb-btn').forEach(function (x) { x.classList.add('done'); });
-            btn.textContent = btn.dataset.fb === 'good' ? STR.savedGood : STR.savedBad;
+            btn.textContent = btn.dataset.fb === 'good' ? S.savedGood : S.savedBad;
           });
         });
       }
@@ -756,6 +831,7 @@
         },
         function onDone(meta) {
           removeTyping();
+          if (meta.language === 'sw' || meta.language === 'en') lastDetectedLang = meta.language;
           if (!bubble) bubble = startBotBubble();
           finalizeBotBubble(bubble, assembled, meta.messageId);
 
@@ -770,7 +846,7 @@
               }
             }
           }
-          if (meta.showLeadForm) showLeadForm();
+          if (meta.showLeadForm) showJoinForm(detectInterest(text));
 
           showContinuePrompt();
           startIdle();
