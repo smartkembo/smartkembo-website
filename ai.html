@@ -896,7 +896,21 @@
   }
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw-ai.js').catch(function () {});
+    navigator.serviceWorker.register('sw-ai.js?v=3', { updateViaCache: 'none' })
+      .then(function (reg) {
+        reg.update();
+        if (reg.waiting) {
+          try { reg.waiting.postMessage('skipWaiting'); } catch (e) {}
+        }
+      })
+      .catch(function () {});
+
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!window.__skSwReloaded) {
+        window.__skSwReloaded = true;
+        location.reload();
+      }
+    });
   }
 })();
 </script>
