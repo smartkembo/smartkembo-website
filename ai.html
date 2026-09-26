@@ -896,29 +896,32 @@
   }
 
   if ('serviceWorker' in navigator) {
-    function showUpdateBar(worker) {
+    function showUpdating() {
       if (document.getElementById('sk-update-bar')) return;
       var bar = document.createElement('div');
       bar.id = 'sk-update-bar';
       bar.setAttribute('role', 'status');
-      bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483647;background:#0B1B2E;color:#fff;border:1px solid rgba(0,200,232,.45);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;font:600 14px Inter,system-ui,sans-serif;box-shadow:0 12px 40px rgba(0,0,0,.45)';
-      bar.innerHTML = '<span>Toleo jipya lipo. Sasisha ili upate mabadiliko.</span><button type="button" id="sk-update-btn" style="background:#00C8E8;color:#06101E;border:0;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer">Sasisha</button>';
+      bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483647;background:#0B1B2E;color:#fff;border:1px solid rgba(0,200,232,.45);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;font:600 14px Inter,system-ui,sans-serif;box-shadow:0 12px 40px rgba(0,0,0,.45)';
+      bar.textContent = 'Inasasisha toleo jipya…';
       document.body.appendChild(bar);
-      document.getElementById('sk-update-btn').onclick = function () {
-        try { worker.postMessage('skipWaiting'); } catch (e) {}
-      };
+    }
+
+    function applyUpdate(worker) {
+      showUpdating();
+      try { worker.postMessage('skipWaiting'); } catch (e) {}
     }
 
     navigator.serviceWorker.register('sw-ai.js?v=4', { updateViaCache: 'none' })
       .then(function (reg) {
-        setInterval(function () { reg.update(); }, 60 * 60 * 1000);
-        if (reg.waiting && navigator.serviceWorker.controller) showUpdateBar(reg.waiting);
+        reg.update();
+        setInterval(function () { reg.update(); }, 30 * 60 * 1000);
+        if (reg.waiting && navigator.serviceWorker.controller) applyUpdate(reg.waiting);
         reg.addEventListener('updatefound', function () {
           var nw = reg.installing;
           if (!nw) return;
           nw.addEventListener('statechange', function () {
             if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-              showUpdateBar(nw);
+              applyUpdate(nw);
             }
           });
         });
