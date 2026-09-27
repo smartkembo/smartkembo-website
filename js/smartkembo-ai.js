@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = 'https://smartkembo-backend.onrender.com';
+  const API_BASE = 'https://smartkembo-proxy.givensmartkembo.workers.dev';
   const BOT_NAME = 'SmartKembo AI';
   const STORAGE_KEY = 'sk_ai_session';
 
