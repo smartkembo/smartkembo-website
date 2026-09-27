@@ -568,6 +568,20 @@
         if (location.length < 2) { statusEl.textContent = S.joinInvalidLocation; return; }
 
         statusEl.textContent = S.joinSending;
+        // LEAD: tunahifadhi mawasiliano kwenye "Leads" za Admin AI (pamoja na
+        // mazungumzo yaliyomleta) HATA kama ombi la Applications litakataliwa
+        // (mfano email tayari ipo) — mtu huyu bado ni mteja mtarajiwa.
+        fetch(API_BASE + '/api/chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: getSessionId(),
+            name: name,
+            phone: phone,
+            interest: interestHint || 'general',
+            note: (businessName + ' | ' + location + ' | ' + email + ' | Plan: ' + planInterest).slice(0, 500)
+          })
+        }).catch(function () {});
         try {
           var res = await fetch(API_BASE + '/api/applications', {
             method: 'POST',
