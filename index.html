@@ -236,6 +236,8 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 }
 @media(max-width:768px){
   .nav-links,.nav-right .btn{display:none;}
+  /* Simu: kitufe cha Login kinabaki juu (kama kwenye kompyuta) — wamiliki wanakipata mara moja */
+  .nav-right .btn.nav-login{display:inline-flex;padding:7px 14px;font-size:13px;}
   .hamburger{display:flex;}
   .how-grid{grid-template-columns:1fr;}
   .hw::after{display:none;}
@@ -296,7 +298,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <button class="on" onclick="setLang('en')">EN</button>
         <button onclick="setLang('sw')">SW</button>
       </div>
-      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost">Login</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost nav-login">Login</a>
       <a href="get-started.html" class="btn btn-cyan">Get Started</a>
     </div>
     <button class="hamburger" onclick="openMenu()"><span></span><span></span><span></span></button>
@@ -305,6 +307,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
+  <a href="https://smartkembo-app.vercel.app/login-owner.html" onclick="closeMenu()" style="color:var(--cyan)">Owner Login →</a>
   <a href="#platform" onclick="closeMenu()">Platform</a>
   <a href="#electronics" onclick="closeMenu()">Electronics</a>
   <a href="#shop" onclick="closeMenu()">Shop</a>
