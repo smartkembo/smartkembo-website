@@ -2,7 +2,7 @@
 const navHTML = `
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <div class="logo-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
           <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
@@ -14,16 +14,16 @@ const navHTML = `
       <span class="logo-text">Smart<span>Kembo</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li> 
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="tutorials.html">Tutorials</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="/">Home</a></li> 
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/tutorials">Tutorials</a></li>
+      <li><a href="/contact">Contact</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="smartkembo/login-owner.html" class="btn btn-outline btn-sm">Login</a>
-      <a href="smartkembo/apply.html" class="btn btn-primary btn-sm">Start Free</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="/get-started" class="btn btn-primary btn-sm">Start Free</a>
     </div>
     <button class="hamburger" onclick="openSiteMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -32,20 +32,20 @@ const navHTML = `
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <button class="mobile-close" onclick="closeSiteMenu()">✕</button>
-  <a href="index.html" onclick="closeSiteMenu()">Home</a>
-  <a href="about.html" onclick="closeSiteMenu()">About</a>
-  <a href="services.html" onclick="closeSiteMenu()">Services</a>
-  <a href="projects.html" onclick="closeSiteMenu()">Projects</a>
-  <a href="tutorials.html" onclick="closeSiteMenu()">Tutorials</a>
-  <a href="contact.html" onclick="closeSiteMenu()">Contact</a>
-  <a href="smartkembo/apply.html" onclick="closeSiteMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
+  <a href="/" onclick="closeSiteMenu()">Home</a>
+  <a href="/about" onclick="closeSiteMenu()">About</a>
+  <a href="/services" onclick="closeSiteMenu()">Services</a>
+  <a href="/projects" onclick="closeSiteMenu()">Projects</a>
+  <a href="/tutorials" onclick="closeSiteMenu()">Tutorials</a>
+  <a href="/contact" onclick="closeSiteMenu()">Contact</a>
+  <a href="/get-started" onclick="closeSiteMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
 </div>`;
 
 const footerHTML = `
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="index.html" class="logo">
+      <a href="/" class="logo">
         <div class="logo-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
             <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
@@ -60,16 +60,16 @@ const footerHTML = `
     </div>
     <div class="footer-col">
       <h4>Platform</h4>
-      <a href="services.html">Our Services</a>
-      <a href="smartkembo/apply.html">Apply for Account</a>
-      <a href="smartkembo/login-owner.html">Login</a>
-      <a href="tutorials.html">Tutorials</a>
+      <a href="/services">Our Services</a>
+      <a href="/get-started">Apply for Account</a>
+      <a href="https://smartkembo-app.vercel.app/login-owner.html">Login</a>
+      <a href="/tutorials">Tutorials</a>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
-      <a href="about.html">About Us</a>
-      <a href="projects.html">Projects</a>
-      <a href="contact.html">Contact</a>
+      <a href="/about">About Us</a>
+      <a href="/projects">Projects</a>
+      <a href="/contact">Contact</a>
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
@@ -103,9 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.append(...footEl.childNodes);
 
   // Mark active link
-  const path = window.location.pathname.split('/').pop() || 'index.html';
+  // Anwani safi (/wifi) au za zamani (wifi.html) — linganisha jina la ukurasa bila "/" na ".html"
+  const norm = (p) => (String(p || '').split(/[?#]/)[0].replace(/^.*\//, '').replace(/\.html$/, '') || 'index');
+  const path = norm(window.location.pathname);
   document.querySelectorAll('.nav-links a').forEach(a => {
-    if (a.getAttribute('href') === path) a.classList.add('active');
+    const h = a.getAttribute('href') || '';
+    if (!/^https?:/.test(h) && norm(h) === path) a.classList.add('active');
   });
 
   // Scroll nav
