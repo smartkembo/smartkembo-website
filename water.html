@@ -235,7 +235,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <!-- Nav -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <div class="logo-mark">
         <svg viewBox="0 0 40 40" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="20" cy="20" rx="14" ry="6" stroke="#05111F" stroke-width="2.2"/>
@@ -248,16 +248,16 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       <div class="logo-name">Smart<span>Kembo</span> <span class="swv-badge">SWV</span></div>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html" data-i18n="nav_home">Home</a></li>
-      <li><a href="wifi.html" data-i18n="nav_wifi">WiFi Vending</a></li>
-      <li><a href="water.html" class="active" data-i18n="nav_water">Water Vending</a></li>
-      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      <li><a href="/" data-i18n="nav_home">Home</a></li>
+      <li><a href="/wifi" data-i18n="nav_wifi">WiFi Vending</a></li>
+      <li><a href="/water" class="active" data-i18n="nav_water">Water Vending</a></li>
+      <li><a href="/contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
     <div class="nav-right">
       <button onclick="toggleLang()" class="btn btn-ghost btn-sm" id="lang-toggle-btn" style="min-width:44px">SW</button>
-      <a href="lipa-token.html" class="btn btn-ghost btn-sm" data-i18n="nav_paytoken">Lipa Token</a>
+      <a href="/lipa-token" class="btn btn-ghost btn-sm" data-i18n="nav_paytoken">Lipa Token</a>
       <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost btn-sm nav-login" data-i18n="nav_login">Login</a>
-      <a href="apply-water.html" class="btn btn-water btn-sm" data-i18n="nav_apply">Apply for Machine</a>
+      <a href="/apply-water" class="btn btn-water btn-sm" data-i18n="nav_apply">Apply for Machine</a>
     </div>
     <button class="hamburger" onclick="openMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -268,12 +268,12 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
   <a href="https://smartkembo-app.vercel.app/login-owner.html" onclick="closeMenu()" style="color:var(--water)" data-i18n="nav_login">Login</a>
-  <a href="index.html" onclick="closeMenu()" data-i18n="nav_home">Home</a>
-  <a href="wifi.html" onclick="closeMenu()" data-i18n="nav_wifi">WiFi Vending</a>
-  <a href="water.html" onclick="closeMenu()" style="color:var(--water)" data-i18n="nav_water">Water Vending</a>
-  <a href="lipa-token.html" onclick="closeMenu()" data-i18n="nav_paytoken">Lipa Token</a>
-  <a href="contact.html" onclick="closeMenu()" data-i18n="nav_contact">Contact</a>
-  <a href="apply-water.html" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px" data-i18n="nav_apply_arrow">Apply for Machine →</a>
+  <a href="/" onclick="closeMenu()" data-i18n="nav_home">Home</a>
+  <a href="/wifi" onclick="closeMenu()" data-i18n="nav_wifi">WiFi Vending</a>
+  <a href="/water" onclick="closeMenu()" style="color:var(--water)" data-i18n="nav_water">Water Vending</a>
+  <a href="/lipa-token" onclick="closeMenu()" data-i18n="nav_paytoken">Lipa Token</a>
+  <a href="/contact" onclick="closeMenu()" data-i18n="nav_contact">Contact</a>
+  <a href="/apply-water" onclick="closeMenu()" style="color:var(--water);margin-top:14px;font-size:18px" data-i18n="nav_apply_arrow">Apply for Machine →</a>
 </div>
 
 <!-- HERO -->
@@ -292,7 +292,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
       </h1>
       <p class="hero-p" data-i18n="hero_p">A customer pays with coins, an RFID card, or M-Pesa/Tigo/Airtel on their phone — the SWV machine dispenses exactly the litres they paid for, then shuts off automatically. You monitor everything from your phone: revenue, litres sold, machine status — anywhere, anytime.</p>
       <div class="hero-acts">
-        <a href="apply-water.html" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
+        <a href="/apply-water" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
         <a href="#how" class="btn btn-ghost btn-lg" data-i18n="hero_btn2">How It Works</a>
       </div>
       <div class="hero-trust">
@@ -671,7 +671,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <div class="plan-sub" data-i18n="plan1_sub">Machine only · Offline</div>
         <div class="plan-price" style="font-size:32px;margin-top:4px" data-i18n="plan1_price">Free</div>
         <div class="plan-mo" data-i18n="plan1_mo">No monthly fee</div>
-        <a href="apply-water.html" class="plan-btn" data-i18n="plan1_btn">Apply for Machine</a>
+        <a href="/apply-water" class="plan-btn" data-i18n="plan1_btn">Apply for Machine</a>
         <div class="plan-div"></div>
         <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f1">Coin vending (all TZS coins)</span></div>
         <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan1_f2">RFID card & Lipa kwa Simu (optional hardware)</span></div>
@@ -686,7 +686,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
         <div class="plan-sub" data-i18n="plan2_sub">Machine + Online Dashboard · First Month Free</div>
         <div class="plan-price" data-plan-price="Subscription">30K</div>
         <div class="plan-mo" data-i18n="plan2_mo">Tsh / month · SmartKembo pays for data</div>
-        <a href="apply-water.html" class="plan-btn" data-i18n="plan2_btn">Start Free Month</a>
+        <a href="/apply-water" class="plan-btn" data-i18n="plan2_btn">Start Free Month</a>
         <div class="plan-div" style="background:rgba(0,200,232,.14)"></div>
         <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f1">Everything in Basic</span></div>
         <div class="plan-feat"><div class="pfc">✓</div><span data-i18n="plan2_f2">Real-time dashboard</span></div>
@@ -720,7 +720,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
     <h2 class="cta-h2 rv"><span data-i18n="cta_h2a">Ready to Start</span> <span data-i18n="cta_h2b">Selling Water?</span></h2>
     <p class="cta-p rv" data-i18n="cta_p">Apply for your SWV machine today. We'll contact you within 24 hours to approve your application and begin installation.</p>
     <div class="cta-acts rv">
-      <a href="apply-water.html" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
+      <a href="/apply-water" class="btn btn-water btn-lg" data-i18n="hero_btn1">Apply for Your SWV Machine →</a>
       <a href="https://wa.me/255767830319" target="_blank" class="btn btn-ghost btn-lg">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.67 19.79 19.79 0 01.5 2.12 2 2 0 012.5 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.87a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
         <span data-i18n="cta_wa">WhatsApp Us</span>
@@ -733,10 +733,10 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:26px 5%;
 <footer>
   <span class="ft-copy">© 2026 SMD's SmartKembo Discovery Science · SWV — SmartKembo Water Vending · <span data-i18n="ft_made">Made in Tanzania</span> 🇹🇿</span>
   <div class="ft-links">
-    <a href="index.html" data-i18n="nav_home">Home</a>
-    <a href="wifi.html" data-i18n="nav_wifi">WiFi Vending</a>
-    <a href="pos-system.html">Shop &amp; POS</a>
-    <a href="apply-water.html" data-i18n="nav_apply">Apply for Machine</a>
+    <a href="/" data-i18n="nav_home">Home</a>
+    <a href="/wifi" data-i18n="nav_wifi">WiFi Vending</a>
+    <a href="/pos-system">Shop &amp; POS</a>
+    <a href="/apply-water" data-i18n="nav_apply">Apply for Machine</a>
     <a href="https://wa.me/255767830319" target="_blank">WhatsApp</a>
     <a href="mailto:smdsgroups@gmail.com">Email</a>
   </div>
