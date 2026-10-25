@@ -69,26 +69,37 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
 .ro-text{font-size:12px;font-weight:500;color:var(--white);}
 .ro-sub{font-size:10px;color:var(--gray2);}
 
-/* MACHINE MODEL CARDS */
-.models-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
-.model-card{background:var(--navy3);border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;}
-.model-card:hover{border-color:var(--blue3);transform:translateY(-2px);}
-.model-card.selected{border-color:var(--blue);background:var(--blue2);box-shadow:0 0 0 3px rgba(96,165,250,0.12);}
-.model-img-wrap{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy);overflow:hidden;}
-.model-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-.model-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,rgba(96,165,250,0.08),rgba(0,200,232,0.06));}
-.model-badge{position:absolute;top:8px;left:8px;background:var(--blue);color:var(--navy);font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase;}
-.model-check{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--blue);color:var(--navy);display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+/* MACHINE MODEL CARDS — picha kubwa + maelezo yote */
+.models-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:8px;}
+.model-card{background:var(--navy3);border:1.5px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;}
+.model-card:hover{border-color:var(--blue3);}
+.model-card.selected{border-color:var(--blue);background:rgba(96,165,250,0.06);box-shadow:0 0 0 3px rgba(96,165,250,0.15);}
+.model-img-wrap{position:relative;width:100%;min-height:240px;max-height:360px;background:#0a1628;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.model-img-wrap img{width:100%;height:100%;min-height:240px;max-height:360px;object-fit:contain;display:block;background:#0a1628;}
+.model-img-placeholder{width:100%;min-height:240px;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,rgba(96,165,250,0.08),rgba(0,200,232,0.06));}
+.model-badge{position:absolute;top:12px;left:12px;background:var(--blue);color:var(--navy);font-size:10px;font-weight:700;padding:5px 10px;border-radius:8px;letter-spacing:.5px;text-transform:uppercase;z-index:2;}
+.model-check{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:var(--blue);color:var(--navy);display:none;align-items:center;justify-content:center;font-size:14px;font-weight:700;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.3);}
 .model-card.selected .model-check{display:flex;}
-.model-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;gap:6px;}
-.model-name{font-size:14px;font-weight:600;color:var(--white);line-height:1.3;}
-.model-desc{font-size:11px;color:var(--gray1);line-height:1.5;}
-.model-feats{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
-.model-feat{font-size:10px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);color:var(--blue);padding:2px 7px;border-radius:5px;}
-.model-price{margin-top:auto;padding-top:8px;font-size:15px;font-weight:700;color:var(--blue);font-family:'Space Grotesk',sans-serif;}
-.model-price span{font-size:11px;font-weight:500;color:var(--gray2);}
+.model-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column;gap:10px;}
+.model-name{font-size:18px;font-weight:700;color:var(--white);line-height:1.3;}
+.model-desc{font-size:13px;color:var(--gray1);line-height:1.65;}
+.model-full-desc{font-size:13px;color:var(--gray1);line-height:1.7;white-space:pre-wrap;margin:0;}
+.model-feats{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+.model-feat{font-size:12px;color:var(--white);display:flex;align-items:flex-start;gap:8px;line-height:1.45;}
+.model-feat::before{content:'✓';color:var(--blue);font-weight:700;flex-shrink:0;margin-top:1px;}
+.model-price{margin-top:6px;padding-top:12px;border-top:1px solid var(--border);font-size:20px;font-weight:700;color:var(--blue);font-family:'Space Grotesk',sans-serif;}
+.model-price span{font-size:12px;font-weight:500;color:var(--gray2);}
+.model-select-hint{font-size:11px;color:var(--gray2);margin-top:2px;}
+.model-card.selected .model-select-hint{color:var(--blue);}
 .models-loading,.models-empty{font-size:12px;color:var(--gray2);padding:16px;text-align:center;background:var(--navy3);border-radius:10px;border:1px dashed rgba(255,255,255,0.08);}
-@media(max-width:640px){.models-grid{grid-template-columns:1fr;}}
+@media(min-width:720px){
+  .models-grid{grid-template-columns:1fr;}
+  .model-card{flex-direction:row;align-items:stretch;}
+  .model-img-wrap{width:42%;min-width:220px;min-height:280px;max-height:none;flex-shrink:0;}
+  .model-img-wrap img{min-height:280px;max-height:none;height:100%;}
+  .model-img-placeholder{min-height:280px;}
+  .model-body{padding:22px 24px;}
+}
 
 /* ALERT */
 .alert{padding:11px 14px;border-radius:9px;font-size:12px;margin-bottom:16px;display:none;line-height:1.6;align-items:center;gap:8px;}
@@ -463,14 +474,18 @@ function renderModels(models){
   grid.style.display = 'grid';
   grid.innerHTML = models.map(function(m){
     var feats = Array.isArray(m.features) ? m.features : [];
-    var featHtml = feats.slice(0, 4).map(function(f){
-      return '<span class="model-feat">' + String(f).replace(/</g,'&lt;') + '</span>';
+    var featHtml = feats.map(function(f){
+      return '<div class="model-feat">' + String(f).replace(/</g,'&lt;') + '</div>';
     }).join('');
     var priceText = formatPrice(m.price, m.currency, m.price_label);
     var img = m.image_url
-      ? '<img src="' + String(m.image_url).replace(/"/g,'&quot;') + '" alt="' + String(m.name).replace(/"/g,'&quot;') + '" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=model-img-placeholder>💧</div>\'">'
+      ? '<img src="' + String(m.image_url).replace(/"/g,'&quot;') + '" alt="' + String(m.name).replace(/"/g,'&quot;') + '" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=\\\'model-img-placeholder\\\'>💧</div>\'">'
       : '<div class="model-img-placeholder">💧</div>';
     var badge = m.is_featured ? '<div class="model-badge">Inapendekezwa</div>' : '';
+    var shortD = m.short_desc ? String(m.short_desc).replace(/</g,'&lt;') : '';
+    var fullD = m.description ? String(m.description).replace(/</g,'&lt;') : '';
+    // Usirudie maelezo ikiwa description ni sawa na short_desc
+    var showFull = fullD && fullD !== shortD;
     return (
       '<div class="model-card" data-id="' + m.id + '" onclick="selectModel(\'' + m.id + '\',\'' + String(m.name).replace(/'/g,"\\'") + '\', this)">' +
         '<div class="model-img-wrap">' + img + badge +
@@ -478,9 +493,11 @@ function renderModels(models){
         '</div>' +
         '<div class="model-body">' +
           '<div class="model-name">' + String(m.name).replace(/</g,'&lt;') + '</div>' +
-          (m.short_desc ? '<div class="model-desc">' + String(m.short_desc).replace(/</g,'&lt;') + '</div>' : '') +
+          (shortD ? '<div class="model-desc">' + shortD + '</div>' : '') +
+          (showFull ? '<div class="model-full-desc">' + fullD + '</div>' : '') +
           (featHtml ? '<div class="model-feats">' + featHtml + '</div>' : '') +
           (priceText ? '<div class="model-price">' + priceText + '</div>' : '') +
+          '<div class="model-select-hint">Bofya kuchagua modeli hii</div>' +
         '</div>' +
       '</div>'
     );
