@@ -303,7 +303,10 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
           <div class="form-group" id="plan-form-group">
             <label class="form-label" id="plan-label">Preferred Plan (Subscription)</label>
             <div id="plan-wrap-token-note">
-              <strong>Mashine ya Token (offline)</strong> — <em>hakuna ada ya kila mwezi</em>. Baada ya kuwekwa, malipo yatakuwa kwa <strong>vifurushi vya token</strong> (siku), kama LUKU/TANESCO.
+              <strong>Mashine ya Token Offline</strong> — <em>hakuna ada ya kila mwezi</em>. Baada ya kuwekwa, malipo yatakuwa kwa <strong>vifurushi vya token</strong> (siku), kama LUKU/TANESCO.
+            </div>
+            <div id="plan-wrap-offline-note" style="display:none;font-size:12px;color:var(--gray1);line-height:1.65;padding:10px 12px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.25);border-radius:9px;margin-bottom:8px">
+              <strong>Mashine Offline pekee</strong> — <em>hakuna ada ya kila mwezi</em> na <em>si mfumo wa token</em>. Operesheni ni offline bila subscription.
             </div>
             <select class="form-control" id="plan">
               <option value="" disabled selected>Select plan...</option>
@@ -474,6 +477,7 @@ function selectModel(id, name, el, billing){
   var billEl = document.getElementById('preferred-billing');
   if (billEl) {
     if (billing === 'token') billEl.value = 'token';
+    else if (billing === 'offline') billEl.value = 'offline';
     else if (billing === 'subscription') billEl.value = 'subscription';
     else billEl.value = '';
   }
@@ -481,18 +485,26 @@ function selectModel(id, name, el, billing){
 }
 
 function updatePlanForBilling(billing){
-  var note = document.getElementById('plan-wrap-token-note');
+  var noteToken = document.getElementById('plan-wrap-token-note');
+  var noteOff = document.getElementById('plan-wrap-offline-note');
   var label = document.getElementById('plan-label');
   var plan = document.getElementById('plan');
   if (!plan) return;
   if (billing === 'token') {
-    // Offline / Token: fiche ada ya kila mwezi kabisa
-    if (note) note.style.display = 'block';
-    if (label) label.textContent = 'Malipo: Token (offline)';
+    if (noteToken) noteToken.style.display = 'block';
+    if (noteOff) noteOff.style.display = 'none';
+    if (label) label.textContent = 'Malipo: Token Offline';
+    plan.style.display = 'none';
+    plan.value = '';
+  } else if (billing === 'offline') {
+    if (noteToken) noteToken.style.display = 'none';
+    if (noteOff) noteOff.style.display = 'block';
+    if (label) label.textContent = 'Malipo: Offline pekee';
     plan.style.display = 'none';
     plan.value = '';
   } else {
-    if (note) note.style.display = 'none';
+    if (noteToken) noteToken.style.display = 'none';
+    if (noteOff) noteOff.style.display = 'none';
     if (label) label.textContent = 'Preferred Plan (Subscription)';
     plan.style.display = '';
   }
@@ -521,15 +533,18 @@ function renderModels(models){
       : '<div class="model-img-placeholder">💧</div>';
     var billing = m.billing_type || 'subscription';
     var badge = '';
-    if (billing === 'token') badge = '<div class="model-badge token">Token (Offline)</div>';
+    if (billing === 'token') badge = '<div class="model-badge token">Token Offline</div>';
+    else if (billing === 'offline') badge = '<div class="model-badge" style="background:#94a3b8;color:#0f172a">Offline pekee</div>';
     else if (billing === 'both') badge = m.is_featured ? '<div class="model-badge">Inapendekezwa</div>' : '<div class="model-badge sub">Subscription / Token</div>';
     else if (m.is_featured) badge = '<div class="model-badge">Inapendekezwa</div>';
     else badge = '<div class="model-badge sub">Subscription</div>';
 
     var billTag = billing === 'token'
-      ? '<span class="model-billing-tag token">🎟️ Token — nunua siku (kama LUKU)</span>'
+      ? '<span class="model-billing-tag token">🎟️ Token Offline — nunua siku (kama LUKU)</span>'
+      : billing === 'offline'
+        ? '<span class="model-billing-tag" style="background:rgba(148,163,184,0.15);color:#cbd5e1;border:1px solid rgba(148,163,184,0.3)">Offline pekee — bila token / bila subscription</span>'
       : billing === 'both'
-        ? '<span class="model-billing-tag sub">Subscription au Token</span>'
+        ? '<span class="model-billing-tag sub">Subscription / Token / Offline</span>'
         : '<span class="model-billing-tag sub">📡 Subscription — ada ya kila mwezi</span>';
 
     var shortD = m.short_desc ? String(m.short_desc).replace(/</g,'&lt;') : '';
@@ -582,9 +597,11 @@ async function doSubmit(){
   var source   = document.querySelector('[name="source"]:checked');
   var plan     = document.getElementById('plan') ? document.getElementById('plan').value : '';
   var modelId  = document.getElementById('selected-model-id').value || null;
-  // Offline/Token: usitume ada ya kila mwezi
+  // Token / Offline: usitume ada ya kila mwezi
   if (selectedModelBilling === 'token') {
     plan = (document.getElementById('plan-token-value') && document.getElementById('plan-token-value').value) || 'Token packages (offline)';
+  } else if (selectedModelBilling === 'offline') {
+    plan = 'Offline only (no subscription / no token)';
   }
 
   if(!name){ showAlert('⚠ Please enter your full name.'); return; }
