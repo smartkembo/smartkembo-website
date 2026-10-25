@@ -69,6 +69,27 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
 .ro-text{font-size:12px;font-weight:500;color:var(--white);}
 .ro-sub{font-size:10px;color:var(--gray2);}
 
+/* MACHINE MODEL CARDS */
+.models-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+.model-card{background:var(--navy3);border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;}
+.model-card:hover{border-color:var(--blue3);transform:translateY(-2px);}
+.model-card.selected{border-color:var(--blue);background:var(--blue2);box-shadow:0 0 0 3px rgba(96,165,250,0.12);}
+.model-img-wrap{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy);overflow:hidden;}
+.model-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.model-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,rgba(96,165,250,0.08),rgba(0,200,232,0.06));}
+.model-badge{position:absolute;top:8px;left:8px;background:var(--blue);color:var(--navy);font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase;}
+.model-check{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--blue);color:var(--navy);display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.model-card.selected .model-check{display:flex;}
+.model-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;gap:6px;}
+.model-name{font-size:14px;font-weight:600;color:var(--white);line-height:1.3;}
+.model-desc{font-size:11px;color:var(--gray1);line-height:1.5;}
+.model-feats{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.model-feat{font-size:10px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);color:var(--blue);padding:2px 7px;border-radius:5px;}
+.model-price{margin-top:auto;padding-top:8px;font-size:15px;font-weight:700;color:var(--blue);font-family:'Space Grotesk',sans-serif;}
+.model-price span{font-size:11px;font-weight:500;color:var(--gray2);}
+.models-loading,.models-empty{font-size:12px;color:var(--gray2);padding:16px;text-align:center;background:var(--navy3);border-radius:10px;border:1px dashed rgba(255,255,255,0.08);}
+@media(max-width:640px){.models-grid{grid-template-columns:1fr;}}
+
 /* ALERT */
 .alert{padding:11px 14px;border-radius:9px;font-size:12px;margin-bottom:16px;display:none;line-height:1.6;align-items:center;gap:8px;}
 .alert.show{display:flex;}
@@ -172,6 +193,14 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
       <div class="form-body">
         <div id="alert" class="alert alert-error"></div>
 
+        <div class="section-label">Chagua Mashine (Modeli)</div>
+        <p style="font-size:12px;color:var(--gray1);margin:-6px 0 14px;line-height:1.6">Angalia picha na sifa za mashine zilizopo, kisha chagua unayotaka. Unaweza pia kuendelea bila kuchagua.</p>
+        <div id="models-loading" class="models-loading">Inapakia modeli za mashine...</div>
+        <div id="models-grid" class="models-grid" style="display:none"></div>
+        <div id="models-empty" class="models-empty" style="display:none">Hakuna modeli zilizochapishwa bado. Wasiliana nasi baada ya kuwasilisha ombi.</div>
+        <input type="hidden" id="selected-model-id" value="">
+
+        <div class="divider"></div>
         <div class="section-label">Personal Information</div>
         <div class="form-grid">
           <div class="form-group">
@@ -382,6 +411,9 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
 </div>
 
 <script>
+var API_BASE = 'https://smartkembo-proxy.givensmartkembo.workers.dev';
+var selectedModelName = '';
+
 function selectRadio(el, name){
   document.querySelectorAll('[name="'+name+'"]').forEach(function(r){
     r.closest('.radio-opt').classList.remove('on');
@@ -401,6 +433,75 @@ function hideAlert(){
   document.getElementById('alert').classList.remove('show');
 }
 
+function formatPrice(price, currency, priceLabel){
+  if (priceLabel) return priceLabel;
+  if (price == null || price === '') return '';
+  var n = Number(price);
+  if (isNaN(n)) return '';
+  var cur = currency || 'TZS';
+  return cur + ' ' + n.toLocaleString('en-US');
+}
+
+function selectModel(id, name, el){
+  document.querySelectorAll('.model-card').forEach(function(c){ c.classList.remove('selected'); });
+  if (el) el.classList.add('selected');
+  document.getElementById('selected-model-id').value = id || '';
+  selectedModelName = name || '';
+}
+
+function renderModels(models){
+  var grid = document.getElementById('models-grid');
+  var loading = document.getElementById('models-loading');
+  var empty = document.getElementById('models-empty');
+  loading.style.display = 'none';
+  if (!models || !models.length) {
+    empty.style.display = 'block';
+    grid.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+  grid.innerHTML = models.map(function(m){
+    var feats = Array.isArray(m.features) ? m.features : [];
+    var featHtml = feats.slice(0, 4).map(function(f){
+      return '<span class="model-feat">' + String(f).replace(/</g,'&lt;') + '</span>';
+    }).join('');
+    var priceText = formatPrice(m.price, m.currency, m.price_label);
+    var img = m.image_url
+      ? '<img src="' + String(m.image_url).replace(/"/g,'&quot;') + '" alt="' + String(m.name).replace(/"/g,'&quot;') + '" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=model-img-placeholder>💧</div>\'">'
+      : '<div class="model-img-placeholder">💧</div>';
+    var badge = m.is_featured ? '<div class="model-badge">Inapendekezwa</div>' : '';
+    return (
+      '<div class="model-card" data-id="' + m.id + '" onclick="selectModel(\'' + m.id + '\',\'' + String(m.name).replace(/'/g,"\\'") + '\', this)">' +
+        '<div class="model-img-wrap">' + img + badge +
+          '<div class="model-check">✓</div>' +
+        '</div>' +
+        '<div class="model-body">' +
+          '<div class="model-name">' + String(m.name).replace(/</g,'&lt;') + '</div>' +
+          (m.short_desc ? '<div class="model-desc">' + String(m.short_desc).replace(/</g,'&lt;') + '</div>' : '') +
+          (featHtml ? '<div class="model-feats">' + featHtml + '</div>' : '') +
+          (priceText ? '<div class="model-price">' + priceText + '</div>' : '') +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+async function loadModels(){
+  try {
+    var res = await fetch(API_BASE + '/api/water/models/public');
+    var data = await res.json();
+    if (data && data.success) {
+      renderModels(data.data || []);
+    } else {
+      document.getElementById('models-loading').style.display = 'none';
+      document.getElementById('models-empty').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('models-loading').textContent = 'Imeshindwa kupakia modeli. Unaweza bado kuwasilisha ombi.';
+  }
+}
+
 async function doSubmit(){
   hideAlert();
   var btn = document.getElementById('submitBtn');
@@ -411,6 +512,8 @@ async function doSubmit(){
   var biz      = document.getElementById('biz').value.trim();
   var bizType  = document.getElementById('biz-type').value;
   var source   = document.querySelector('[name="source"]:checked');
+  var plan     = document.getElementById('plan') ? document.getElementById('plan').value : '';
+  var modelId  = document.getElementById('selected-model-id').value || null;
 
   if(!name){ showAlert('⚠ Please enter your full name.'); return; }
   if(!phone){ showAlert('⚠ Please enter your phone number.'); return; }
@@ -422,11 +525,9 @@ async function doSubmit(){
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Submitting...';
 
-  // Generate reference number
   var ref = 'WV-' + Date.now().toString().slice(-6);
   document.getElementById('ref-num').textContent = ref;
 
-  // Send to WhatsApp as backup (always works without backend)
   var msg = 'WATER VENDING PRE-REGISTRATION\n\n'
     + 'Name: ' + name + '\n'
     + 'Phone: ' + phone + '\n'
@@ -434,31 +535,33 @@ async function doSubmit(){
     + 'Business: ' + biz + '\n'
     + 'Type: ' + bizType + '\n'
     + 'Water Source: ' + source.value + '\n'
-    + 'Plan: ' + (document.getElementById('plan').value || 'Not selected') + '\n'
+    + 'Modeli: ' + (selectedModelName || 'Haijachaguliwa') + '\n'
+    + 'Plan: ' + (plan || 'Not selected') + '\n'
     + 'Customers/day: ' + (document.getElementById('customers').value || 'Not specified') + '\n'
     + 'Ref: ' + ref;
 
-  // Try backend first
   try {
-    var apiRes = await fetch('https://smartkembo-proxy.givensmartkembo.workers.dev/api/applications/water', {
+    var payload = {
+      applicant_name:  name,
+      applicant_phone: phone,
+      applicant_email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
+      business_name:   biz,
+      location:        location,
+      intended_use:    bizType,
+      sim_number:      document.getElementById('sim-number') ? document.getElementById('sim-number').value.trim() : '',
+      sim_network:     document.getElementById('sim-network') ? document.getElementById('sim-network').value : '',
+      sim_owner_name:  name,
+      preferred_plan:  plan || null,
+      selected_model_id: modelId || null,
+      notes:           document.getElementById('notes') ? document.getElementById('notes').value.trim() : ''
+    };
+    var apiRes = await fetch(API_BASE + '/api/applications/water', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        applicant_name:  name,
-        applicant_phone: phone,
-        applicant_email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
-        business_name:   biz,
-        location:        location,
-        intended_use:    bizType,
-        sim_number:      document.getElementById('sim-number') ? document.getElementById('sim-number').value.trim() : '',
-        sim_network:     document.getElementById('sim-network') ? document.getElementById('sim-network').value : '',
-        sim_owner_name:  name,
-        notes:           document.getElementById('notes') ? document.getElementById('notes').value.trim() : ''
-      })
+      body: JSON.stringify(payload)
     });
     var apiData = await apiRes.json();
     if (!apiRes.ok || !apiData.success) {
-      // Onyesha error halisi
       btn.disabled = false;
       btn.innerHTML = 'Register Interest →';
       showAlert('❌ Ombi halikufanikiwa: ' + (apiData.message || apiRes.status + ' ' + apiRes.statusText));
@@ -471,16 +574,16 @@ async function doSubmit(){
     return;
   }
 
-  // Show success
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
 
-  // Auto open WhatsApp after 2 seconds
   setTimeout(function(){
     window.open('https://wa.me/255767830319?text=' + encodeURIComponent(msg), '_blank');
   }, 2000);
 }
+
+loadModels();
 </script>
 <script src="js/smartkembo-ai.js" defer></script>
 </body>
