@@ -118,7 +118,7 @@ a{text-decoration:none;color:inherit}
       <div class="pkg-list" id="pkg-list"><div style="font-size:13px;color:var(--gray1)">Inapakia vifurushi...</div></div>
       <div class="field">
         <label>Namba yako ya Simu (ya kulipia)</label>
-        <input id="pay-phone" type="tel" placeholder="07XXXXXXXX">
+        <input id="pay-phone" type="tel" placeholder="0767830319">
       </div>
       <button class="btn btn-cyan" id="s2-btn" onclick="startPurchase()">Lipa Sasa</button>
       <a class="link-reset" onclick="goStep(1)">← Badilisha namba ya mashine</a>
@@ -232,7 +232,7 @@ async function startPurchase() {
   hideErr('s2-err');
   if (!SELECTED_PKG) { showErr('s2-err', 'Chagua kifurushi kwanza'); return; }
   const phone = document.getElementById('pay-phone').value.trim();
-  if (!/^0[67]\d{8}$/.test(phone)) { showErr('s2-err', 'Weka namba sahihi ya simu — mfano: 0712345678'); return; }
+  if (!/^0[67]\d{8}$/.test(phone)) { showErr('s2-err', 'Weka namba sahihi ya simu — mfano: 0767830319'); return; }
 
   const btn = document.getElementById('s2-btn');
   btn.disabled = true; btn.textContent = 'Inatuma ombi...';
