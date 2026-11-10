@@ -60,6 +60,7 @@ const footerHTML = `
         <span class="logo-text">Smart<span>Kembo</span></span>
       </a>
       <p>Modern WiFi Vending Management platform. Manage your WiFi, customers, and revenue from one place.</p>
+      <a href="/pakua-app" class="btn btn-primary btn-sm" style="margin-top:12px">📲 Pakua App ya SmartKembo Vending</a>
     </div>
     <div class="footer-col">
       <h4>Platform</h4>
@@ -67,6 +68,7 @@ const footerHTML = `
       <a href="/get-started">Apply for Account</a>
       <a href="https://smartkembo-app.vercel.app/login-owner.html">Login</a>
       <a href="/lipa-token">Lipa Token</a>
+      <a href="/pakua-app">📲 Pakua App</a>
       <a href="/tutorials">Tutorials</a>
     </div>
     <div class="footer-col">
