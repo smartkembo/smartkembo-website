@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Lipia Token ya Mashine yako ya Maji ya SmartKembo — weka namba ya mashine, chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money, pata token papo hapo.">
+<meta name="description" content="Lipia Token ya Mashine yako ya Maji ya SmartKembo — weka namba ya mashine, weka kiasi au chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money, pata token papo hapo.">
 <title>Lipa Token — SmartKembo Water Vending</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -72,6 +72,17 @@ a{text-decoration:none;color:inherit}
 .step.active{display:block}
 .link-reset{display:block;text-align:center;font-size:12px;color:var(--gray1);margin-top:14px}
 .link-reset:hover{color:var(--cyan)}
+.progress{height:10px;border-radius:999px;background:var(--navy3);border:1px solid var(--border);overflow:hidden;margin:8px 0 6px}
+.progress div{height:100%;background:linear-gradient(90deg,var(--good),var(--cyan))}
+.loan-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gray1)}
+.loan-row b{color:var(--white)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.quick button{background:var(--navy3);border:1px solid var(--border);color:var(--white);border-radius:999px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.quick button:hover{border-color:var(--cyan)}
+.preview{background:var(--cyan2);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.preview b{color:var(--cyan)}
+.owned{text-align:center;padding:10px 0}
+.owned .big{font-size:34px}
 </style>
 </head>
 <body>
@@ -90,7 +101,7 @@ a{text-decoration:none;color:inherit}
   <div class="hero">
     <div class="hero-icon">💧</div>
     <h1>Lipa Token ya Mashine</h1>
-    <p>Weka namba ya mashine yako, chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money — pata token papo hapo, kama LUKU.</p>
+    <p>Weka namba ya mashine yako, weka kiasi unachonunua, lipa kwa M-Pesa/Tigo/Airtel Money — pata token papo hapo, kama LUKU.</p>
   </div>
 
   <!-- STEP 1: MACHINE CODE -->
@@ -100,7 +111,7 @@ a{text-decoration:none;color:inherit}
       <div class="msg msg-err" id="s1-err"></div>
       <div class="field">
         <label>Namba ya Mashine (imeandikwa kwenye mashine yenyewe)</label>
-        <input id="machine-code" placeholder="Mfano: SWV-001" autocapitalize="characters">
+        <input id="machine-code" placeholder="Mfano: SWV482917" autocapitalize="characters">
       </div>
       <button class="btn btn-cyan" id="s1-btn" onclick="findMachine()">Tafuta Mashine →</button>
     </div>
@@ -109,18 +120,36 @@ a{text-decoration:none;color:inherit}
   <!-- STEP 2: PACKAGE + PHONE -->
   <div class="step" id="step-2">
     <div class="card">
-      <div class="card-title">2️⃣ Chagua Kifurushi</div>
+      <div class="card-title" id="s2-title">2️⃣ Kiasi cha Kununua</div>
       <div class="machine-confirm show" id="machine-confirm">
         <div class="biz" id="mc-biz">—</div>
         <div class="code" id="mc-code">—</div>
       </div>
       <div class="msg msg-err" id="s2-err"></div>
-      <div class="pkg-list" id="pkg-list"><div style="font-size:13px;color:var(--gray1)">Inapakia vifurushi...</div></div>
+
+      <!-- MKOPO: kiasi chochote -> salio la mauzo -->
+      <div id="loan-box" style="display:none">
+        <div id="loan-status"></div>
+        <div id="loan-buy">
+          <div class="field">
+            <label>Kiasi cha pesa unachonunua (TSh)</label>
+            <input id="loan-amount" type="number" inputmode="numeric" min="0" step="500" placeholder="mf. 10000" oninput="updatePreview()">
+          </div>
+          <div class="quick" id="loan-quick"></div>
+          <div class="preview" id="loan-preview">Weka kiasi kuona salio la mauzo utakalopata.</div>
+        </div>
+      </div>
+
+      <!-- VIFURUSHI VYA SIKU (mashine zisizo za mkopo) -->
+      <div class="pkg-list" id="pkg-list" style="display:none"></div>
+
+      <div id="pay-area">
       <div class="field">
         <label>Namba yako ya Simu (ya kulipia)</label>
         <input id="pay-phone" type="tel" placeholder="0767830319">
       </div>
       <button class="btn btn-cyan" id="s2-btn" onclick="startPurchase()">Lipa Sasa</button>
+      </div>
       <a class="link-reset" onclick="goStep(1)">← Badilisha namba ya mashine</a>
     </div>
   </div>
@@ -142,8 +171,9 @@ a{text-decoration:none;color:inherit}
     <div class="card">
       <div class="card-title">✅ Token Imetengenezwa</div>
       <div class="token-box">
-        <div style="font-size:12px;color:var(--gray1)">Ingiza namba hii kwenye keypad ya mashine yako</div>
+        <div style="font-size:12px;color:var(--gray1)">Ingiza namba hii kwenye mashine yako (app ya SmartKembo Vending au keypad)</div>
         <div class="token-code" id="final-code">—</div>
+        <div style="font-size:13px;color:var(--white)" id="final-note"></div>
       </div>
       <button class="btn btn-outline" onclick="copyCode()">📋 Nakili Namba</button>
       <a class="link-reset" onclick="goStep(1); resetAll()">Lipia mashine nyingine →</a>
@@ -153,7 +183,7 @@ a{text-decoration:none;color:inherit}
 
 <script>
 const API = 'https://smartkembo-proxy.givensmartkembo.workers.dev/api/water/public/tokens';
-let SELECTED_MACHINE = null;
+let MACHINE = null;      // jibu la /machine/:number
 let PACKAGES = [];
 let SELECTED_PKG = null;
 let POLL_TIMER = null;
@@ -167,35 +197,34 @@ async function apiFetch(path, opts) {
   return r.json();
 }
 
-function fmtMoney(n) { return Math.round(n || 0).toLocaleString('en-US'); }
+const fmt = (n) => 'TSh ' + Math.round(n || 0).toLocaleString('en-US');
+const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function goStep(n) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-' + n).classList.add('active');
 }
-
-function showErr(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.classList.add('show');
-}
+function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
 function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+const isLoan = () => MACHINE && MACHINE.plan === 'revenue_share' && MACHINE.loan;
 
 async function findMachine() {
-  const code = document.getElementById('machine-code').value.trim();
+  const number = document.getElementById('machine-code').value.trim().toUpperCase().replace(/\s+/g, '');
   hideErr('s1-err');
-  if (!code) { showErr('s1-err', 'Weka namba ya mashine kwanza'); return; }
+  if (!/^SWV[0-9]{1,8}$/.test(number)) { showErr('s1-err', 'Weka namba sahihi ya mashine — mfano: SWV482917'); return; }
 
   const btn = document.getElementById('s1-btn');
   btn.disabled = true; btn.textContent = 'Inatafuta...';
   try {
-    const res = await apiFetch('/machine/' + encodeURIComponent(code));
+    const res = await apiFetch('/machine/' + encodeURIComponent(number));
     if (!res.success) { showErr('s1-err', res.message || 'Mashine haipatikani'); return; }
-    SELECTED_MACHINE = res.data;
-    document.getElementById('mc-biz').textContent = '🏢 ' + SELECTED_MACHINE.business_name;
-    document.getElementById('mc-code').textContent = 'Mashine: ' + SELECTED_MACHINE.machine_name + ' (' + SELECTED_MACHINE.machine_code + ')';
+    MACHINE = res.data;
+    document.getElementById('mc-biz').textContent = '💧 ' + (MACHINE.machine_name || 'Mashine');
+    document.getElementById('mc-code').textContent = MACHINE.machine_number
+      + (MACHINE.location ? ' · ' + MACHINE.location : '')
+      + (MACHINE.owner_name ? ' · ' + MACHINE.owner_name : '');
+    setupStep2();
     goStep(2);
-    loadPackages();
   } catch (e) {
     showErr('s1-err', 'Tatizo la mtandao. Jaribu tena.');
   } finally {
@@ -203,8 +232,75 @@ async function findMachine() {
   }
 }
 
+function setupStep2() {
+  hideErr('s2-err');
+  const loanBox = document.getElementById('loan-box');
+  const pkgList = document.getElementById('pkg-list');
+  const payArea = document.getElementById('pay-area');
+  if (isLoan()) {
+    document.getElementById('s2-title').textContent = '2️⃣ Kiasi cha Kununua';
+    loanBox.style.display = '';
+    pkgList.style.display = 'none';
+    renderLoanStatus();
+    const owned = MACHINE.loan.owned;
+    document.getElementById('loan-buy').style.display = owned ? 'none' : '';
+    payArea.style.display = owned ? 'none' : '';
+    document.getElementById('loan-amount').value = '';
+    updatePreview();
+  } else {
+    document.getElementById('s2-title').textContent = '2️⃣ Chagua Kifurushi';
+    loanBox.style.display = 'none';
+    pkgList.style.display = '';
+    payArea.style.display = '';
+    loadPackages();
+  }
+}
+
+function renderLoanStatus() {
+  const L = MACHINE.loan;
+  const box = document.getElementById('loan-status');
+  if (L.owned) {
+    box.innerHTML = '<div class="owned"><div class="big">🎉</div><div style="font-weight:700;color:var(--good)">Mashine hii imeshalipwa yote</div>'
+      + '<div style="font-size:12px;color:var(--gray1)">Ni mali ya mmiliki — haihitaji token tena.</div></div>';
+    return;
+  }
+  const pct = L.progress_pct || 0;
+  box.innerHTML = '<div class="loan-row"><span>Imelipwa <b>' + fmt(L.paid_tzs) + '</b></span><span>Lengo ' + fmt(L.ownership_target_tzs) + '</span></div>'
+    + '<div class="progress"><div style="width:' + pct + '%"></div></div>'
+    + '<div class="loan-row" style="margin-bottom:14px"><span>' + pct + '% imelipwa</span><span>Zimebaki <b>' + fmt(L.remaining_to_own_tzs) + '</b></span></div>';
+  const quick = [10000, 20000, 50000, 100000].filter(a => a >= L.min_purchase_tzs && a < L.remaining_to_own_tzs);
+  document.getElementById('loan-quick').innerHTML = quick.map(a => '<button onclick="setAmount(' + a + ')">' + fmt(a) + '</button>').join('')
+    + '<button onclick="setAmount(' + L.remaining_to_own_tzs + ')">Maliza mkopo</button>';
+}
+
+function setAmount(a) { document.getElementById('loan-amount').value = a; updatePreview(); }
+
+// Hesabu ile ile ya server — server ndiyo inathibitisha mwisho
+function quote(amount) {
+  const L = MACHINE.loan;
+  amount = Math.round(Number(amount) || 0);
+  if (amount <= 0) return null;
+  if (L.remaining_to_own_tzs !== null && amount >= L.remaining_to_own_tzs) return { kind: 'ownership', charge: L.remaining_to_own_tzs };
+  if (amount < L.min_purchase_tzs) return { kind: 'too_small', min: L.min_purchase_tzs };
+  return { kind: 'sales_credit', charge: amount, credit: Math.floor(amount * 100 / L.share_pct) };
+}
+
+function updatePreview() {
+  if (!isLoan()) return;
+  const box = document.getElementById('loan-preview');
+  const q = quote(document.getElementById('loan-amount').value);
+  if (!q) { box.innerHTML = 'Weka kiasi kuona salio la mauzo utakalopata.'; return; }
+  if (q.kind === 'too_small') { box.innerHTML = '⚠️ Kiasi cha chini ni ' + fmt(q.min) + '.'; return; }
+  if (q.kind === 'ownership') {
+    box.innerHTML = '🎉 <b>Malipo ya mwisho!</b> Utalipa ' + fmt(q.charge) + ' tu na kupata token ya <b>umiliki</b> — mashine itakuwa yako na haitahitaji token tena.';
+    return;
+  }
+  box.innerHTML = 'Utalipa <b>' + fmt(q.charge) + '</b> → mashine itaruhusiwa kuuza maji ya <b>' + fmt(q.credit) + '</b>.';
+}
+
 async function loadPackages() {
   const box = document.getElementById('pkg-list');
+  box.innerHTML = '<div style="font-size:13px;color:var(--gray1)">Inapakia vifurushi...</div>';
   try {
     const res = await apiFetch('/packages');
     PACKAGES = res.data || [];
@@ -212,10 +308,10 @@ async function loadPackages() {
     box.innerHTML = PACKAGES.map(p => `
       <div class="pkg-opt" id="pkg-${p.id}" onclick="selectPkg('${p.id}')">
         <div>
-          <div class="n">${p.name}</div>
-          <div class="d">${p.days_value} siku ${p.description ? '· ' + p.description : ''}</div>
+          <div class="n">${esc(p.name)}</div>
+          <div class="d">${p.days_value} siku ${p.description ? '· ' + esc(p.description) : ''}</div>
         </div>
-        <div class="p">TSh ${fmtMoney(p.price_tzs)}</div>
+        <div class="p">${fmt(p.price_tzs)}</div>
       </div>`).join('');
   } catch (e) {
     box.innerHTML = '<div style="font-size:13px;color:var(--bad)">Imeshindwa kupakia vifurushi</div>';
@@ -230,14 +326,24 @@ function selectPkg(id) {
 
 async function startPurchase() {
   hideErr('s2-err');
-  if (!SELECTED_PKG) { showErr('s2-err', 'Chagua kifurushi kwanza'); return; }
   const phone = document.getElementById('pay-phone').value.trim();
+  const body = { machine_number: MACHINE.machine_number, phone };
+
+  if (isLoan()) {
+    const q = quote(document.getElementById('loan-amount').value);
+    if (!q) { showErr('s2-err', 'Weka kiasi cha pesa kwanza'); return; }
+    if (q.kind === 'too_small') { showErr('s2-err', 'Kiasi cha chini ni ' + fmt(q.min)); return; }
+    body.amount_tzs = q.charge;
+  } else {
+    if (!SELECTED_PKG) { showErr('s2-err', 'Chagua kifurushi kwanza'); return; }
+    body.package_id = SELECTED_PKG.id;
+  }
   if (!/^0[67]\d{8}$/.test(phone)) { showErr('s2-err', 'Weka namba sahihi ya simu — mfano: 0767830319'); return; }
 
   const btn = document.getElementById('s2-btn');
   btn.disabled = true; btn.textContent = 'Inatuma ombi...';
   try {
-    const res = await apiFetch('/purchase', { method: 'POST', body: { machine_code: SELECTED_MACHINE.machine_code, package_id: SELECTED_PKG.id, phone } });
+    const res = await apiFetch('/purchase', { method: 'POST', body });
     if (!res.success) { showErr('s2-err', res.message || 'Imeshindwa'); return; }
     goStep(3);
     pollStatus(res.data.token_id);
@@ -256,13 +362,18 @@ function pollStatus(tokenId) {
     if (tries > 40) { clearInterval(POLL_TIMER); showErr('s3-err', 'Muda umeisha. Kama umeshalipa, tuma "OK" WhatsApp +255767830319 kwa msaada.'); return; }
     try {
       const res = await apiFetch('/purchase/' + tokenId + '/check');
-      const status = res?.data?.status;
-      if (status === 'issued') {
+      const d = res && res.data;
+      if (d && d.status === 'issued') {
         clearInterval(POLL_TIMER);
-        CURRENT_CODE = res.data.code_display || '';
+        CURRENT_CODE = d.code_display || '';
         document.getElementById('final-code').textContent = CURRENT_CODE;
+        document.getElementById('final-note').innerHTML = d.token_class === 4
+          ? '🎉 <b>Hongera!</b> Mkopo umelipwa. Weka token hii — mashine itakuwa yako kikamilifu.'
+          : d.token_class === 2
+            ? 'Salio la mauzo: <b>' + fmt(d.sales_credit_tzs) + '</b>'
+            : (d.days_value ? d.days_value + ' siku za huduma' : '');
         goStep(4);
-      } else if (status === 'failed') {
+      } else if (d && d.status === 'failed') {
         clearInterval(POLL_TIMER);
         showErr('s3-err', 'Malipo hayajakamilika au yamekataliwa. Jaribu tena.');
         setTimeout(() => goStep(2), 2500);
@@ -280,8 +391,14 @@ function copyCode() {
 function resetAll() {
   document.getElementById('machine-code').value = '';
   document.getElementById('pay-phone').value = '';
-  SELECTED_MACHINE = null; SELECTED_PKG = null; CURRENT_CODE = '';
+  MACHINE = null; SELECTED_PKG = null; CURRENT_CODE = '';
 }
+
+// QR / link: lipa-token.html?number=SWV482917
+(function () {
+  const n = new URLSearchParams(location.search).get('number');
+  if (n && /^SWV[0-9]{1,8}$/i.test(n)) { document.getElementById('machine-code').value = n.toUpperCase(); findMachine(); }
+})();
 </script>
 <script src="js/smartkembo-ai.js" defer></script>
 </body>
