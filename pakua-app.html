@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pakua app ya SmartKembo Vending (SWV) kwa simu ya Android — simamia mashine yako ya maji kwa Bluetooth: mauzo, bei, token na zaidi.">
+<title>Pakua App — SmartKembo Vending</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.6);--gray2:rgba(255,255,255,0.3);--border:rgba(0,200,232,0.12);--b2:rgba(0,200,232,0.25);--good:#22C55E;--gold:#FFC21A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.nav{height:64px;display:flex;align-items:center;padding:0 5%;background:rgba(6,16,30,0.96);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{width:100%;max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:38px;height:38px;background:var(--cyan);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--navy)}
+.logo-name{font-size:15px;font-weight:600}
+.logo-name span{color:var(--cyan)}
+.nav-back{color:var(--gray2);font-size:13px;padding:7px 14px;border-radius:8px;border:1px solid var(--border)}
+.nav-back:hover{color:var(--cyan);border-color:var(--b2)}
+.page{max-width:560px;margin:0 auto;padding:36px 5% 80px}
+.hero{text-align:center;margin-bottom:26px}
+.app-icon{width:112px;height:112px;border-radius:26px;margin:0 auto 16px;background:linear-gradient(135deg,#1E7BFF,#0A3FD1 55%,#041A5C);display:flex;align-items:center;justify-content:center;box-shadow:0 0 36px rgba(79,216,255,.35);font-size:52px}
+.hero h1{font-size:25px;font-weight:700;margin-bottom:6px}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:14px;color:var(--gray1)}
+.ver{display:inline-block;margin-top:12px;font-size:12px;color:var(--cyan);background:var(--cyan2);border:1px solid var(--b2);border-radius:999px;padding:4px 12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:14px;font-size:16px;font-weight:700;padding:16px 20px;width:100%;background:linear-gradient(180deg,#FFE04A,#FFC21A 55%,#FF8A00);color:#1A1200;box-shadow:0 6px 18px rgba(255,138,0,.3)}
+.btn:hover{opacity:.93}
+.small{font-size:12px;color:var(--gray1);text-align:center;margin-top:10px}
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:18px;padding:22px;margin-top:18px}
+.card h2{font-size:15px;font-weight:700;margin-bottom:14px}
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding-left:40px;margin-bottom:14px;font-size:13.5px;color:var(--gray1)}
+.steps li b{color:var(--white)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--cyan2);border:1px solid var(--b2);color:var(--cyan);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feat div{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:12.5px;color:var(--gray1)}
+.feat b{display:block;color:var(--white);font-size:13px;margin-bottom:2px}
+.note{font-size:12.5px;color:var(--gray1);line-height:1.6}
+.note b{color:var(--white)}
+.wa{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:12px;border-radius:12px;border:1px solid var(--border);font-size:13.5px;font-weight:600}
+.wa:hover{border-color:var(--good);color:var(--good)}
+@media(max-width:420px){.feat{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo"><div class="logo-mark">SWV</div><div class="logo-name">Smart<span>Kembo</span></div></a>
+    <a href="/" class="nav-back">← Rudi</a>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="hero">
+    <div class="app-icon" aria-hidden="true">💧</div>
+    <h1>SmartKembo <span>Vending</span></h1>
+    <p>App ya kusimamia mashine yako ya maji kwa Bluetooth: mauzo, bei, calibration, token na kadi za wateja.</p>
+    <span class="ver" id="ver">Kwa simu za Android</span>
+  </div>
+
+  <a class="btn" id="dl" href="https://github.com/smartkembo/smartkembo-website/releases/latest/download/SmartKembo-Vending.apk">
+    📲 Pakua App (Android)
+  </a>
+  <div class="small" id="size">Bure · Inafanya kazi kwenye Android 7 na kuendelea</div>
+
+  <div class="card">
+    <h2>Jinsi ya kusakinisha</h2>
+    <ol class="steps">
+      <li>Bonyeza <b>Pakua App</b> hapo juu na usubiri upakuaji umalizike.</li>
+      <li>Fungua <b>File Manager</b> (au <b>Files</b>) kwenye simu, nenda <b>Downloads</b>, na ubonyeze <b>SmartKembo-Vending.apk</b>. Ni bora kufungua kutoka hapo kuliko kutoka kwenye kivinjari.</li>
+      <li>Simu ikiuliza ruhusa, bonyeza <b>Settings</b>, washa <b>Allow from this source</b>, kisha rudi nyuma.</li>
+      <li>Bonyeza <b>Install</b>. Kama <b>Play Protect</b> itaonyesha onyo, chagua <b>Install anyway</b>.</li>
+      <li>Fungua app, oanisha Bluetooth ya mashine yako, kisha weka nenosiri la mashine.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Unachoweza kufanya</h2>
+    <div class="feat">
+      <div><b>Mauzo</b>Angalia jumla ya mauzo ya mashine.</div>
+      <div><b>Mipangilio</b>Badilisha bei, calibration na pre-close.</div>
+      <div><b>Token</b>Weka token na uone salio la mauzo.</div>
+      <div><b>Kadi</b>Sajili kadi na uongeze salio la wateja.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Muhimu kujua</h2>
+    <p class="note">
+      • App inafanya kazi kwenye simu za <b>Android</b> tu (si iPhone).<br>
+      • Haihitaji intaneti kuwasiliana na mashine. Inatumia Bluetooth.<br>
+      • Ukiwa na intaneti, app inakujulisha yenyewe toleo jipya linapotoka, na unaweza kulisakinisha moja kwa moja ndani ya app.<br>
+      • Kama upakuaji kwa kivinjari umegoma, tuma ujumbe WhatsApp tukutumie app moja kwa moja.
+    </p>
+    <a class="wa" href="https://wa.me/255767830319?text=Habari%2C%20naomba%20app%20ya%20SmartKembo%20Vending" target="_blank" rel="noopener">💬 Omba app kupitia WhatsApp</a>
+  </div>
+</main>
+
+<script>
+// Onyesha toleo la sasa kutoka version.json (kama linapatikana)
+fetch('/downloads/version.json', { cache: 'no-store' })
+  .then(function (r) { return r.ok ? r.json() : null; })
+  .then(function (v) {
+    if (!v) return;
+    document.getElementById('ver').textContent = 'Toleo ' + v.version + ' · Android';
+    if (v.apk_url && /^https:\/\//.test(v.apk_url)) document.getElementById('dl').href = v.apk_url;
+  })
+  .catch(function () {});
+</script>
+</body>
+</html>
