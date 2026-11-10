@@ -237,7 +237,10 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 @media(max-width:768px){
   .nav-links,.nav-right .btn{display:none;}
   /* Simu: kitufe cha Login kinabaki juu (kama kwenye kompyuta) — wamiliki wanakipata mara moja */
-  .nav-right .btn.nav-login{display:inline-flex;padding:7px 14px;font-size:13px;}
+  .nav-right .btn.nav-login{display:inline-flex;padding:7px 12px;font-size:13px;}
+  .nav-right{gap:6px;}
+  .nav-right .lang button{padding:4px 7px;}
+  .logo-tag{display:none;}
   .hamburger{display:flex;}
   .how-grid{grid-template-columns:1fr;}
   .hw::after{display:none;}
@@ -298,6 +301,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <button class="on" onclick="setLang('en')">EN</button>
         <button onclick="setLang('sw')">SW</button>
       </div>
+      <a href="/lipa-token" class="btn btn-ghost nav-login">💧 Lipa Token</a>
       <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-ghost nav-login">Login</a>
       <a href="/get-started" class="btn btn-cyan">Get Started</a>
     </div>
@@ -307,6 +311,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 
 <div class="mob" id="mob">
   <button class="mob-x" onclick="closeMenu()">✕</button>
+  <a href="/lipa-token" onclick="closeMenu()" style="color:var(--cyan)">💧 Lipa Token →</a>
   <a href="https://smartkembo-app.vercel.app/login-owner.html" onclick="closeMenu()" style="color:var(--cyan)">Owner Login →</a>
   <a href="#platform" onclick="closeMenu()">Platform</a>
   <a href="#electronics" onclick="closeMenu()">Electronics</a>
