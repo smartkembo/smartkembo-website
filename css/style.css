@@ -340,7 +340,10 @@ footer {
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   section { padding: 64px 5%; }
-  .nav-links, .nav-cta { display: none; }
+  .nav-links { display: none; }
+  /* Simu: kitufe cha Lipa Token kinabaki juu; vingine viko kwenye menyu */
+  .nav-cta > *:not(.nav-token) { display: none; }
+  .nav-cta .nav-token { padding: 7px 12px; font-size: 13px; }
   .hamburger { display: flex; }
   .mobile-menu {
     position: fixed;
