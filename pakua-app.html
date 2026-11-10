@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Pakua app ya SmartKembo Vending (SWV) kwa simu ya Android — simamia mashine yako ya maji kwa Bluetooth: mauzo, bei, token na zaidi.">
-<title>Pakua App — SmartKembo Vending</title>
+<title>Pakua App — SmartKembo Water Vending</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.6);--gray2:rgba(255,255,255,0.3);--border:rgba(0,200,232,0.12);--b2:rgba(0,200,232,0.25);--good:#22C55E;--gold:#FFC21A;}
@@ -48,8 +48,8 @@ a{text-decoration:none;color:inherit}
 <body>
 <nav class="nav">
   <div class="nav-inner">
-    <a href="/" class="logo"><div class="logo-mark">SWV</div><div class="logo-name">Smart<span>Kembo</span></div></a>
-    <a href="/" class="nav-back">← Rudi</a>
+    <a href="/water" class="logo"><div class="logo-mark">SWV</div><div class="logo-name">Smart<span>Kembo</span></div></a>
+    <a href="/water" class="nav-back">← SmartKembo Water</a>
   </div>
 </nav>
 
@@ -57,7 +57,7 @@ a{text-decoration:none;color:inherit}
   <div class="hero">
     <div class="app-icon" aria-hidden="true">💧</div>
     <h1>SmartKembo <span>Vending</span></h1>
-    <p>App ya kusimamia mashine yako ya maji kwa Bluetooth: mauzo, bei, calibration, token na kadi za wateja.</p>
+    <p>App ya wamiliki wa mashine za maji za SmartKembo (SWV). Simamia mashine yako kwa Bluetooth: mauzo, bei, calibration, token na kadi za wateja.</p>
     <span class="ver" id="ver">Kwa simu za Android</span>
   </div>
 
@@ -100,13 +100,14 @@ a{text-decoration:none;color:inherit}
 </main>
 
 <script>
-// Onyesha toleo la sasa kutoka version.json (kama linapatikana)
-fetch('/downloads/version.json', { cache: 'no-store' })
+// Onyesha toleo la karibuni kutoka GitHub Releases
+fetch('https://api.github.com/repos/smartkembo/smartkembo-website/releases/latest', { headers: { 'Accept': 'application/vnd.github+json' } })
   .then(function (r) { return r.ok ? r.json() : null; })
-  .then(function (v) {
-    if (!v) return;
-    document.getElementById('ver').textContent = 'Toleo ' + v.version + ' · Android';
-    if (v.apk_url && /^https:\/\//.test(v.apk_url)) document.getElementById('dl').href = v.apk_url;
+  .then(function (rel) {
+    if (!rel || !rel.tag_name) return;
+    document.getElementById('ver').textContent = 'Toleo ' + rel.tag_name.replace(/^v/i, '') + ' · Android';
+    var a = (rel.assets || []).filter(function (x) { return x.name === 'SmartKembo-Vending.apk'; })[0];
+    if (a) document.getElementById('size').textContent = 'Bure · MB ' + (a.size / 1048576).toFixed(0) + ' · Android 7 na kuendelea';
   })
   .catch(function () {});
 </script>
