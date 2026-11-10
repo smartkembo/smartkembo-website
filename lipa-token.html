@@ -93,6 +93,11 @@ a{text-decoration:none;color:inherit}
 .owner-box .meta b{color:var(--white);font-weight:600}
 .confirm{display:flex;gap:10px;align-items:flex-start;font-size:13px;margin:0 0 16px;cursor:pointer;line-height:1.45}
 .confirm input{width:18px;height:18px;margin-top:1px;accent-color:var(--cyan);flex:none}
+.breakdown{background:var(--navy3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.breakdown .row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray1);padding:4px 0}
+.breakdown .row b{color:var(--white);font-weight:600}
+.breakdown .row.total{border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-size:14px}
+.breakdown .row.total b{color:var(--cyan);font-size:16px}
 </style>
 </head>
 <body>
@@ -272,12 +277,13 @@ function setupStep2() {
     document.getElementById('loan-amount').value = '';
     updatePreview();
   } else {
-    document.getElementById('s2-title').textContent = '2️⃣ Chagua Kifurushi';
-    document.getElementById('confirm-row').style.display = '';
+    // Vifurushi vya siku havitumiki tena: mashine lazima iwekewe mpango wa mkopo na SmartKembo
+    document.getElementById('s2-title').textContent = '2️⃣ Hali ya Mashine';
+    document.getElementById('confirm-row').style.display = 'none';
     loanBox.style.display = 'none';
+    payArea.style.display = 'none';
     pkgList.style.display = '';
-    payArea.style.display = '';
-    loadPackages();
+    pkgList.innerHTML = '<div class="msg msg-err show" style="margin:0">Mashine hii bado haijawekewa mpango wa malipo ya token. Tafadhali wasiliana na SmartKembo kupitia +255 767 830 319 (simu au WhatsApp) ili ianzishwe.</div>';
   }
 }
 
@@ -290,9 +296,15 @@ function renderLoanStatus() {
     return;
   }
   const pct = L.progress_pct || 0;
-  box.innerHTML = '<div class="loan-row"><span>Imelipwa <b>' + fmt(L.paid_tzs) + '</b></span><span>Lengo ' + fmt(L.ownership_target_tzs) + '</span></div>'
+  box.innerHTML = '<div class="breakdown">'
+    + '<div class="row"><span>Jumla ya kulipa ili mashine iwe yako</span><b>' + fmt(L.ownership_target_tzs) + '</b></div>'
+    + (L.deposit_tzs ? '<div class="row"><span>Amana ya mwanzo</span><b>' + fmt(L.deposit_tzs) + '</b></div>' : '')
+    + '<div class="row"><span>Malipo ya token</span><b>' + fmt(L.token_paid_tzs || 0) + '</b></div>'
+    + '<div class="row"><span>Jumla iliyolipwa</span><b>' + fmt(L.paid_tzs) + '</b></div>'
+    + '<div class="row total"><span>Kiasi kilichobaki</span><b>' + fmt(L.remaining_to_own_tzs) + '</b></div>'
+    + '</div>'
     + '<div class="progress"><div style="width:' + pct + '%"></div></div>'
-    + '<div class="loan-row" style="margin-bottom:14px"><span>' + pct + '% imelipwa</span><span>Zimebaki <b>' + fmt(L.remaining_to_own_tzs) + '</b></span></div>';
+    + '<div class="loan-row" style="margin-bottom:14px"><span>' + pct + '% imelipwa</span><span>SmartKembo: ' + L.share_pct + '% ya kila sarafu</span></div>';
   const quick = [10000, 20000, 50000, 100000].filter(a => a >= L.min_purchase_tzs && a < L.remaining_to_own_tzs);
   document.getElementById('loan-quick').innerHTML = quick.map(a => '<button onclick="setAmount(' + a + ')">' + fmt(a) + '</button>').join('')
     + '<button onclick="setAmount(' + L.remaining_to_own_tzs + ')">Maliza mkopo</button>';
