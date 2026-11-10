@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Lipia Token ya Mashine yako ya Maji ya SmartKembo — weka namba ya mashine, weka kiasi au chagua kifurushi, lipa kwa M-Pesa/Tigo/Airtel Money, pata token papo hapo.">
-<title>Lipa Token — SmartKembo Water Vending</title>
+<meta name="description" content="Nunua token ya mashine yako ya maji ya SmartKembo kwa M-Pesa, Tigo Pesa au Airtel Money. Weka namba ya mashine, thibitisha jina la mmiliki, weka kiasi na upokee token mara moja.">
+<title>Nunua Token — SmartKembo Water Vending</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#06101E;--navy2:#0C1A2E;--navy3:#112238;--cyan:#00C8E8;--cyan2:rgba(0,200,232,0.08);--white:#F2F8FF;--gray1:rgba(255,255,255,0.55);--gray2:rgba(255,255,255,0.25);--gray3:rgba(255,255,255,0.07);--border:rgba(0,200,232,0.1);--b2:rgba(0,200,232,0.2);--good:#22C55E;--bad:#F87171;}
@@ -83,6 +83,16 @@ a{text-decoration:none;color:inherit}
 .preview b{color:var(--cyan)}
 .owned{text-align:center;padding:10px 0}
 .owned .big{font-size:34px}
+.steps-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 0}
+.steps-strip div{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:10px 8px;font-size:11.5px;color:var(--gray1);line-height:1.4}
+.steps-strip b{display:block;color:var(--cyan);font-size:15px;margin-bottom:2px}
+.owner-box{background:var(--cyan2);border:1px solid var(--b2);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.owner-box .lbl{font-size:11px;color:var(--gray1);text-transform:uppercase;letter-spacing:.06em}
+.owner-box .owner{font-size:20px;font-weight:700;color:var(--white);margin:2px 0 6px}
+.owner-box .meta{font-size:12.5px;color:var(--gray1);line-height:1.6}
+.owner-box .meta b{color:var(--white);font-weight:600}
+.confirm{display:flex;gap:10px;align-items:flex-start;font-size:13px;margin:0 0 16px;cursor:pointer;line-height:1.45}
+.confirm input{width:18px;height:18px;margin-top:1px;accent-color:var(--cyan);flex:none}
 </style>
 </head>
 <body>
@@ -100,8 +110,13 @@ a{text-decoration:none;color:inherit}
 <div class="page">
   <div class="hero">
     <div class="hero-icon">💧</div>
-    <h1>Lipa Token ya Mashine</h1>
-    <p>Weka namba ya mashine yako, weka kiasi unachonunua, lipa kwa M-Pesa/Tigo/Airtel Money — pata token papo hapo, kama LUKU.</p>
+    <h1>Nunua Token ya Mashine</h1>
+    <p>Lipia salio la mauzo la mashine yako ya maji ya SmartKembo kwa M-Pesa, Tigo Pesa au Airtel Money. Token yako inatolewa mara tu malipo yanapothibitishwa.</p>
+    <div class="steps-strip">
+      <div><b>1</b>Weka namba ya mashine</div>
+      <div><b>2</b>Thibitisha mmiliki na weka kiasi</div>
+      <div><b>3</b>Lipa na upokee token</div>
+    </div>
   </div>
 
   <!-- STEP 1: MACHINE CODE -->
@@ -110,10 +125,11 @@ a{text-decoration:none;color:inherit}
       <div class="card-title">1️⃣ Namba ya Mashine</div>
       <div class="msg msg-err" id="s1-err"></div>
       <div class="field">
-        <label>Namba ya Mashine (imeandikwa kwenye mashine yenyewe)</label>
+        <label>Namba ya mashine</label>
         <input id="machine-code" placeholder="Mfano: SWV482917" autocapitalize="characters">
       </div>
-      <button class="btn btn-cyan" id="s1-btn" onclick="findMachine()">Tafuta Mashine →</button>
+      <div style="font-size:12px;color:var(--gray1);margin:-6px 0 16px">Namba hii imeandikwa kwenye kibandiko cha mashine, na inaanza na herufi SWV.</div>
+      <button class="btn btn-cyan" id="s1-btn" onclick="findMachine()">Endelea →</button>
     </div>
   </div>
 
@@ -121,10 +137,15 @@ a{text-decoration:none;color:inherit}
   <div class="step" id="step-2">
     <div class="card">
       <div class="card-title" id="s2-title">2️⃣ Kiasi cha Kununua</div>
-      <div class="machine-confirm show" id="machine-confirm">
-        <div class="biz" id="mc-biz">—</div>
-        <div class="code" id="mc-code">—</div>
+      <div class="owner-box">
+        <div class="lbl">Mmiliki wa mashine</div>
+        <div class="owner" id="mc-owner">—</div>
+        <div class="meta" id="mc-meta">—</div>
       </div>
+      <label class="confirm" id="confirm-row">
+        <input type="checkbox" id="confirm-owner" onchange="hideErr('s2-err')">
+        <span>Nimethibitisha kuwa jina la mmiliki na mashine hii ni sahihi.</span>
+      </label>
       <div class="msg msg-err" id="s2-err"></div>
 
       <!-- MKOPO: kiasi chochote -> salio la mauzo -->
@@ -219,16 +240,18 @@ async function findMachine() {
     const res = await apiFetch('/machine/' + encodeURIComponent(number));
     if (!res.success) { showErr('s1-err', res.message || 'Mashine haipatikani'); return; }
     MACHINE = res.data;
-    document.getElementById('mc-biz').textContent = '💧 ' + (MACHINE.machine_name || 'Mashine');
-    document.getElementById('mc-code').textContent = MACHINE.machine_number
-      + (MACHINE.location ? ' · ' + MACHINE.location : '')
-      + (MACHINE.owner_name ? ' · ' + MACHINE.owner_name : '');
+    document.getElementById('mc-owner').textContent = MACHINE.owner_name || 'Jina la mmiliki halijawekwa';
+    document.getElementById('mc-meta').innerHTML =
+      'Mashine: <b>' + esc(MACHINE.machine_name || '—') + '</b><br>'
+      + 'Namba: <b>' + esc(MACHINE.machine_number) + '</b>'
+      + (MACHINE.location ? '<br>Mahali: <b>' + esc(MACHINE.location) + '</b>' : '');
+    document.getElementById('confirm-owner').checked = false;
     setupStep2();
     goStep(2);
   } catch (e) {
-    showErr('s1-err', 'Tatizo la mtandao. Jaribu tena.');
+    showErr('s1-err', 'Imeshindwa kuwasiliana na mfumo. Hakikisha una intaneti, kisha jaribu tena.');
   } finally {
-    btn.disabled = false; btn.textContent = 'Tafuta Mashine →';
+    btn.disabled = false; btn.textContent = 'Endelea →';
   }
 }
 
@@ -243,12 +266,14 @@ function setupStep2() {
     pkgList.style.display = 'none';
     renderLoanStatus();
     const owned = MACHINE.loan.owned;
+    document.getElementById('confirm-row').style.display = owned ? 'none' : '';
     document.getElementById('loan-buy').style.display = owned ? 'none' : '';
     payArea.style.display = owned ? 'none' : '';
     document.getElementById('loan-amount').value = '';
     updatePreview();
   } else {
     document.getElementById('s2-title').textContent = '2️⃣ Chagua Kifurushi';
+    document.getElementById('confirm-row').style.display = '';
     loanBox.style.display = 'none';
     pkgList.style.display = '';
     payArea.style.display = '';
@@ -326,6 +351,10 @@ function selectPkg(id) {
 
 async function startPurchase() {
   hideErr('s2-err');
+  if (!document.getElementById('confirm-owner').checked) {
+    showErr('s2-err', 'Thibitisha kwanza kuwa jina la mmiliki na mashine ni sahihi, ili usilipie mashine ya mtu mwingine.');
+    return;
+  }
   const phone = document.getElementById('pay-phone').value.trim();
   const body = { machine_number: MACHINE.machine_number, phone };
 
