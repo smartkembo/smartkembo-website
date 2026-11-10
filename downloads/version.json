@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "build": 2,
+  "version": "1.2.0",
+  "build": 3,
   "min_build": 1,
   "apk_url": "https://github.com/smartkembo/smartkembo-website/releases/latest/download/SmartKembo-Vending.apk",
   "notes_sw": "Salio la mauzo kwa mashine za mkopo, marekebisho ya calibration na maboresho mengine.",
