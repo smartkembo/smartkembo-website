@@ -22,6 +22,7 @@ const navHTML = `
       <li><a href="/contact">Contact</a></li>
     </ul>
     <div class="nav-cta">
+      <a href="/lipa-token" class="btn btn-outline btn-sm nav-token">💧 Lipa Token</a>
       <a href="https://smartkembo-app.vercel.app/login-owner.html" class="btn btn-outline btn-sm">Login</a>
       <a href="/get-started" class="btn btn-primary btn-sm">Start Free</a>
     </div>
@@ -38,7 +39,9 @@ const navHTML = `
   <a href="/projects" onclick="closeSiteMenu()">Projects</a>
   <a href="/tutorials" onclick="closeSiteMenu()">Tutorials</a>
   <a href="/contact" onclick="closeSiteMenu()">Contact</a>
-  <a href="/get-started" onclick="closeSiteMenu()" style="color:var(--accent);margin-top:12px">Start Free →</a>
+  <a href="/lipa-token" onclick="closeSiteMenu()" style="color:var(--accent);margin-top:12px">💧 Lipa Token</a>
+  <a href="https://smartkembo-app.vercel.app/login-owner.html" onclick="closeSiteMenu()">Login</a>
+  <a href="/get-started" onclick="closeSiteMenu()" style="color:var(--accent)">Start Free →</a>
 </div>`;
 
 const footerHTML = `
@@ -63,6 +66,7 @@ const footerHTML = `
       <a href="/services">Our Services</a>
       <a href="/get-started">Apply for Account</a>
       <a href="https://smartkembo-app.vercel.app/login-owner.html">Login</a>
+      <a href="/lipa-token">Lipa Token</a>
       <a href="/tutorials">Tutorials</a>
     </div>
     <div class="footer-col">
