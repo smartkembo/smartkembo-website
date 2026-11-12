@@ -83,6 +83,9 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
 .model-billing-tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;}
 .model-billing-tag.token{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);}
 .model-billing-tag.sub{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.25);}
+#loan-box{display:none;font-size:12.5px;color:var(--gray1);line-height:1.65;padding:12px 14px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.25);border-radius:10px;margin-top:10px}
+#loan-box b{color:var(--white,#fff)}
+#loan-box ol{margin:6px 0 10px 18px;padding:0}
 #plan-wrap-token-note{display:none;font-size:12px;color:var(--gray1);line-height:1.65;padding:10px 12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.22);border-radius:9px;margin-bottom:8px;}
 .model-check{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:var(--blue);color:var(--navy);display:none;align-items:center;justify-content:center;font-size:14px;font-weight:700;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.3);}
 .model-card.selected .model-check{display:flex;}
@@ -300,10 +303,41 @@ textarea.form-control{resize:vertical;min-height:80px;line-height:1.6;}
               <option>More than 200</option>
             </select>
           </div>
+          <div class="form-group fg-full" id="acquire-group">
+            <label class="form-label">Utapataje mashine? / How will you get the machine?</label>
+            <div class="radio-grid">
+              <label class="radio-opt" onclick="selectRadio(this,'acquire'); onAcquireChange()">
+                <input type="radio" name="acquire" value="cash">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">💵</div>
+                <div><div class="ro-text">Nunua moja kwa moja</div><div class="ro-sub">Lipa bei ya mashine yote</div></div>
+              </label>
+              <label class="radio-opt" onclick="selectRadio(this,'acquire'); onAcquireChange()">
+                <input type="radio" name="acquire" value="loan">
+                <div class="ro-dot"></div>
+                <div class="ro-icon">🤝</div>
+                <div><div class="ro-text">Mkopo</div><div class="ro-sub">Lipa kidogo kidogo kadri unavyouza</div></div>
+              </label>
+            </div>
+            <div id="loan-box">
+              <b>Jinsi mkopo unavyofanya kazi:</b>
+              <ol>
+                <li>Unalipa <b>amana ya mwanzo</b>, na mashine inafungwa kwako. Unapewa pia token ya kwanza ili uanze kuuza maji mara moja.</li>
+                <li>Mashine inafanya kazi kwa <b>token</b>: unanunua token kwenye website kwa kiasi chochote, na SmartKembo inachukua <b>asilimia ya kila sarafu</b> ya mauzo yako.</li>
+                <li>Jumla ya malipo yako ikifika kiasi mtakachokubaliana, <b>mashine inakuwa yako kabisa</b> na haihitaji token tena.</li>
+              </ol>
+              Asilimia, amana na jumla ya kulipa mtakubaliana na SmartKembo kabla ya kufunga mashine.
+              <div style="margin-top:10px">
+                <label class="form-label" for="loan-deposit" style="margin-bottom:4px">Kiasi cha amana unachoweza kulipa sasa (TSh) — si lazima</label>
+                <input class="form-control" id="loan-deposit" type="number" min="0" step="10000" inputmode="numeric" placeholder="mf. 500000">
+              </div>
+            </div>
+          </div>
+
           <div class="form-group" id="plan-form-group">
             <label class="form-label" id="plan-label">Preferred Plan (Subscription)</label>
             <div id="plan-wrap-token-note">
-              <strong>Mashine ya Token Offline</strong> — <em>hakuna ada ya kila mwezi</em>. Baada ya kuwekwa, malipo yatakuwa kwa <strong>vifurushi vya token</strong> (siku), kama LUKU/TANESCO.
+              <strong>Mashine ya Token</strong> — <em>hakuna ada ya kila mwezi</em>. Malipo ni kwa <strong>token ya salio la mauzo</strong>, inayonunuliwa kwenye website kwa simu.
             </div>
             <div id="plan-wrap-offline-note" style="display:none;font-size:12px;color:var(--gray1);line-height:1.65;padding:10px 12px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.25);border-radius:9px;margin-bottom:8px">
               <strong>Mashine Offline pekee</strong> — <em>hakuna ada ya kila mwezi</em> na <em>si mfumo wa token</em>. Operesheni ni offline bila subscription.
@@ -482,6 +516,25 @@ function selectModel(id, name, el, billing){
     else billEl.value = '';
   }
   updatePlanForBilling(billing);
+  if (selectedAcquire() === 'loan') onAcquireChange();
+}
+
+function selectedAcquire(){
+  var r = document.querySelector('input[name="acquire"]:checked');
+  return r ? r.value : '';
+}
+
+// Mkopo = mashine ya token (malipo kwa token ya salio la mauzo, hakuna ada ya mwezi)
+function onAcquireChange(){
+  var loan = selectedAcquire() === 'loan';
+  document.getElementById('loan-box').style.display = loan ? 'block' : 'none';
+  if (loan) {
+    updatePlanForBilling('token');
+    var label = document.getElementById('plan-label');
+    if (label) label.textContent = 'Malipo: Mkopo kwa token';
+  } else {
+    updatePlanForBilling(selectedModelBilling);
+  }
 }
 
 function updatePlanForBilling(billing){
@@ -597,8 +650,12 @@ async function doSubmit(){
   var source   = document.querySelector('[name="source"]:checked');
   var plan     = document.getElementById('plan') ? document.getElementById('plan').value : '';
   var modelId  = document.getElementById('selected-model-id').value || null;
+  var acquire = selectedAcquire();
+  var loanDeposit = acquire === 'loan' ? (parseFloat(document.getElementById('loan-deposit').value) || null) : null;
   // Token / Offline: usitume ada ya kila mwezi
-  if (selectedModelBilling === 'token') {
+  if (acquire === 'loan') {
+    plan = 'Mkopo — lipa kwa token' + (loanDeposit ? ' (amana TSh ' + loanDeposit.toLocaleString('en-US') + ')' : '');
+  } else if (selectedModelBilling === 'token') {
     plan = (document.getElementById('plan-token-value') && document.getElementById('plan-token-value').value) || 'Token packages (offline)';
   } else if (selectedModelBilling === 'offline') {
     plan = 'Offline only (no subscription / no token)';
@@ -625,6 +682,7 @@ async function doSubmit(){
     + 'Type: ' + bizType + '\n'
     + 'Water Source: ' + source.value + '\n'
     + 'Modeli: ' + (selectedModelName || 'Haijachaguliwa') + '\n'
+    + 'Njia: ' + (acquire === 'loan' ? 'MKOPO' : acquire === 'cash' ? 'Kununua moja kwa moja' : 'Haijachaguliwa') + '\n'
     + 'Plan: ' + (plan || 'Not selected') + '\n'
     + 'Customers/day: ' + (document.getElementById('customers').value || 'Not specified') + '\n'
     + 'Ref: ' + ref;
@@ -641,7 +699,9 @@ async function doSubmit(){
       sim_network:     document.getElementById('sim-network') ? document.getElementById('sim-network').value : '',
       sim_owner_name:  name,
       preferred_plan:  plan || null,
-      preferred_billing: (document.getElementById('preferred-billing') && document.getElementById('preferred-billing').value) || selectedModelBilling || null,
+      preferred_billing: acquire === 'loan' ? 'token' : ((document.getElementById('preferred-billing') && document.getElementById('preferred-billing').value) || selectedModelBilling || null),
+      acquisition_type: acquire || null,
+      loan_deposit_tzs: loanDeposit,
       selected_model_id: modelId || null,
       notes:           document.getElementById('notes') ? document.getElementById('notes').value.trim() : ''
     };
