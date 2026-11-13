@@ -400,7 +400,7 @@ function pollStatus(tokenId) {
   let tries = 0;
   POLL_TIMER = setInterval(async () => {
     tries++;
-    if (tries > 40) { clearInterval(POLL_TIMER); showErr('s3-err', 'Muda umeisha. Kama umeshalipa, tuma "OK" WhatsApp +255767830319 kwa msaada.'); return; }
+    if (tries > 40) { clearInterval(POLL_TIMER); showErr('s3-err', 'Bado tunasubiri uthibitisho wa malipo. Kama umeshalipa, usijali: token itatolewa yenyewe na kutumwa kwa SMS kwenye namba uliyolipia ndani ya dakika chache. Msaada: WhatsApp +255767830319.'); return; }
     try {
       const res = await apiFetch('/purchase/' + tokenId + '/check');
       const d = res && res.data;
@@ -416,7 +416,7 @@ function pollStatus(tokenId) {
         goStep(4);
       } else if (d && d.status === 'failed') {
         clearInterval(POLL_TIMER);
-        showErr('s3-err', 'Malipo hayajakamilika au yamekataliwa. Jaribu tena.');
+        showErr('s3-err', 'Malipo hayakukamilika au yalikataliwa. Hakuna pesa iliyokatwa. Jaribu tena.');
         setTimeout(() => goStep(2), 2500);
       }
     } catch (e) { /* endelea kujaribu */ }
