@@ -611,6 +611,23 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   }
 
   // ── Kikapu / kuagiza ──
+  // Chukua mipangilio ya sasa ya duka (njia za kupokea/malipo, bei, stock) kabla ya kuagiza,
+  // ili ukurasa uliofunguliwa muda mrefu usionyeshe chaguo zilizobadilishwa na mmiliki.
+  async function refreshStore() {
+    try {
+      var d = await getJson(BASE + '/stores/' + encodeURIComponent(slug));
+      store = d.store; products = d.products; categories = d.categories;
+      renderChips(); renderGrid(); renderCartBar();
+      return true;
+    } catch (e) { return false; }
+  }
+  async function openCartFresh() {
+    var b = $('cartbar'); b.disabled = true;
+    await refreshStore();
+    b.disabled = false;
+    if (cartLines().length) openCart(); else toast('Bidhaa ulizochagua hazipatikani tena');
+  }
+
   function openCart() {
     renderCart();
     // Njia moja tu → taarifa (bila kuchagua). Njia mbili → mteja anachagua.
@@ -619,7 +636,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
         var f = opts[0];
         $(h).textContent = infoText;
         return '<div class="info1"><input type="radio" name="' + name + '" value="' + f[0] + '" checked hidden>' +
-          '<span class="ic" aria-hidden="true">' + f[3] + '</span><span><b>' + esc(f[4]) + '</b>' + (f[2] ? '<small>' + esc(f[2]) + '</small>' : '') + '</span></div>';
+          '<span class="ic" aria-hidden="true">' + f[3] + '</span><span><b>' + esc(f[4]) + '</b>' + (f[2] && name !== 'pay' ? '<small>' + esc(f[2]) + '</small>' : '') + '</span></div>';
       }
       $(h).textContent = askText;
       return opts.map(function (f, i) {
@@ -721,7 +738,15 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
       loadOrder();
     } catch (e) {
       bad(e.message || 'Imeshindwa kutuma oda. Jaribu tena.');
-      if (e.status === 409) { loadStore().then(function () { if (Object.keys(cart).length) openCart(); }); }
+      if (e.status === 409 || e.status === 400) {
+        // Mipangilio au bidhaa zimebadilika: sasisha ukurasa, kisha onyesha chaguo sahihi
+        var msg = e.message;
+        await refreshStore();
+        if (cartLines().length) {
+          openCart();
+          bad(msg + (e.status === 400 ? '. Tumesasisha chaguo za duka, angalia tena kisha uagize.' : ''));
+        }
+      }
     } finally {
       btn.disabled = false; renderCart();
     }
@@ -804,7 +829,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   $('pd-add').addEventListener('click', function () {
     cart[current.id] = pdQty; renderCartBar(); closeOv('ov-product'); toast('Imewekwa kwenye kikapu');
   });
-  $('cartbar').addEventListener('click', openCart);
+  $('cartbar').addEventListener('click', openCartFresh);
   $('track-open').addEventListener('click', openTrack);
   $('mo-list').addEventListener('click', function (e) {
     if (!e.target.closest('#mo-more')) return;
