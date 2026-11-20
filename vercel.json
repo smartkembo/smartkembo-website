@@ -32,7 +32,7 @@
   "rewrites": [
     {
       "source": "/duka/:slug",
-      "destination": "/duka.html"
+      "destination": "/duka"
     }
   ]
 }
