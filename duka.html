@@ -129,6 +129,15 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
 .badge{display:inline-block;font-size:12px;font-weight:600;padding:5px 10px;border-radius:9px}
 .skeleton{background:linear-gradient(90deg,#eef2f7 25%,#f8fafc 50%,#eef2f7 75%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:16px;height:220px}
 @keyframes sk{to{background-position:-200% 0}}
+.myorders{margin:12px 16px 0;background:#fff;border:2px solid var(--gold);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.myorders h2{margin:0;font-size:15px}
+.mo-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:var(--bg);text-decoration:none;color:var(--ink);min-height:52px}
+.mo-item b{font-size:14px}
+.mo-item.done{background:var(--ok-bg)} .mo-item.cancel{background:#FEE2E2}
+.mo-item.done small{color:#065F46} .mo-item.cancel small{color:#7F1D1D}
+.mo-item small{display:block;font-size:12.5px;color:var(--muted)}
+.track-link{display:flex;justify-content:center;padding:8px 16px 0}
+.track-link button{border:1px solid var(--line-2);background:#fff;color:var(--blue);font-weight:600;font-size:14px;border-radius:12px;height:44px;padding:0 16px}
 .btn-wa{background:#128C47;color:#fff;width:100%}
 .wa-step{background:#E7F7EE;border:2px solid #128C47;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .wa-step b.t{font-size:16px;color:#0B5A2E}
@@ -177,6 +186,11 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     </div>
   </header>
   <div class="wrap">
+    <div class="myorders hidden" id="myorders" aria-live="polite">
+      <h2>Oda zako</h2>
+      <div id="mo-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="track-link"><button type="button" id="track-open">Fuatilia oda yako</button></div>
     <div class="chips" id="chips" role="group" aria-label="Makundi ya bidhaa"></div>
     <div class="grid" id="grid"></div>
   </div>
@@ -273,6 +287,30 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     </form>
     <div class="sheet-f">
       <button class="btn btn-blue" id="ct-submit" form="checkout" type="submit">Agiza sasa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FUATILIA ODA (simu + jina) ═══ -->
+<div class="overlay hidden" id="ov-track" role="dialog" aria-modal="true" aria-labelledby="tr-title">
+  <div class="sheet">
+    <div class="sheet-h">
+      <h2 id="tr-title">Fuatilia oda yako</h2>
+      <button class="x" data-close aria-label="Funga"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form class="sheet-b" id="track-form" novalidate>
+      <p class="note" style="font-size:14px;margin:0">Andika namba ya simu na jina ulilotumia kuagiza. Utaona oda zako zinazoendelea, na zilizokamilika au kughairiwa ndani ya siku 7 zilizopita.</p>
+      <label class="f">Namba ya simu
+        <input class="inp" id="tr-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" maxlength="16">
+      </label>
+      <label class="f">Jina lako
+        <input class="inp" id="tr-name" autocomplete="name" maxlength="150">
+      </label>
+      <div class="err hidden" id="tr-err" role="alert"></div>
+      <div id="tr-results" style="display:flex;flex-direction:column;gap:8px"></div>
+    </form>
+    <div class="sheet-f">
+      <button class="btn btn-blue" type="submit" form="track-form" id="tr-btn">Tafuta oda zangu</button>
     </div>
   </div>
 </div>
@@ -377,6 +415,80 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     $('cb-total').textContent = tsh(cartTotal(lines));
   }
 
+  // ── Oda zangu (kwenye kivinjari hiki) ──
+  var ST_LABEL = { new: 'Imepokelewa, inasubiri duka', confirmed: 'Duka limethibitisha', ready: 'Iko tayari' };
+  function myKey() { return 'sk_orders_' + slug.toLowerCase(); }
+  function myTokens() { try { return JSON.parse(localStorage.getItem(myKey()) || '[]') || []; } catch (e) { return []; } }
+  function saveTokens(list) { try { localStorage.setItem(myKey(), JSON.stringify(list.slice(0, 20))); } catch (e) { /* bila hifadhi */ } }
+  function rememberOrder(tok) { var l = myTokens().filter(function (t) { return t !== tok; }); l.unshift(tok); saveTokens(l); }
+  function forgetOrders(toks) { if (!toks.length) return; saveTokens(myTokens().filter(function (t) { return toks.indexOf(t) === -1; })); }
+  function dmy(d) { var x = new Date(d); return x.toLocaleDateString('en-GB'); }
+  function orderItemHtml(o) {
+    if (o.status === 'completed' || o.status === 'cancelled') {
+      var done = o.status === 'completed';
+      var txt = done ? '✓ Imekamilika ' + dmy(o.closed_at) + ' · ' + tsh(o.total)
+        : 'Imeghairiwa ' + dmy(o.closed_at) + (o.cancel_reason ? ' · Sababu: ' + esc(o.cancel_reason) : '');
+      return '<a class="mo-item ' + (done ? 'done' : 'cancel') + '" href="?oda=' + o.token + '" data-oda="' + o.token + '"><span><b>' + esc(o.order_number) + '</b>' +
+        '<small>' + txt + '</small></span>' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>';
+    }
+    return '<a class="mo-item" href="?oda=' + o.token + '" data-oda="' + o.token + '"><span><b>' + esc(o.order_number) + '</b>' +
+      '<small>' + (ST_LABEL[o.status] || o.status) + ' · bidhaa ' + o.item_count + ' · ' + tsh(o.total) + '</small></span>' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>';
+  }
+  async function loadMyOrders() {
+    var toks = myTokens();
+    if (!toks.length) { $('myorders').classList.add('hidden'); return; }
+    try {
+      var d = await getJson(BASE + '/orders/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tokens: toks }) });
+      forgetOrders(d.forget);                       // zilizopita siku 7 zinasahauliwa kabisa
+      var all = d.open.concat(d.closed);
+      $('mo-list').innerHTML = all.map(orderItemHtml).join('') +
+        (d.closed.length ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana hapa kwa siku ' + d.notice_days + ', kisha zinaondoka.</div>' : '');
+      $('myorders').classList.toggle('hidden', !all.length);
+    } catch (e) { /* kimya: duka bado linafanya kazi */ }
+  }
+  function openOrderLink(tok) {
+    closeOverlays();
+    history.pushState(null, '', location.pathname + '?oda=' + tok);
+    orderToken = tok; loadOrder._shown = false; loadOrder();
+  }
+  function closeOverlays() { document.querySelectorAll('.overlay').forEach(function (o) { o.classList.add('hidden'); }); document.body.style.overflow = ''; }
+
+  // ── Fuatilia oda kwa simu + jina ──
+  function openTrack() {
+    try {
+      var b = JSON.parse(localStorage.getItem('sk_buyer') || '{}');
+      if (b.phone && !$('tr-phone').value) $('tr-phone').value = b.phone;
+      if (b.name && !$('tr-name').value) $('tr-name').value = b.name;
+    } catch (e) { /* bila hifadhi */ }
+    $('tr-err').classList.add('hidden'); $('tr-results').innerHTML = '';
+    openOv('ov-track');
+  }
+  async function submitTrack(ev) {
+    ev.preventDefault();
+    var err = $('tr-err'); err.classList.add('hidden'); $('tr-results').innerHTML = '';
+    var phone = $('tr-phone').value.trim(), name = $('tr-name').value.trim();
+    if (!phoneOk(phone)) { err.textContent = 'Namba ya simu si sahihi. Mfano: 0712345678'; err.classList.remove('hidden'); return; }
+    if (name.length < 2) { err.textContent = 'Andika jina ulilotumia kuagiza.'; err.classList.remove('hidden'); return; }
+    var btn = $('tr-btn'); btn.disabled = true; btn.textContent = 'Inatafuta…';
+    try {
+      var list = await getJson(BASE + '/stores/' + encodeURIComponent(slug) + '/my-orders', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ customer_phone: phone, customer_name: name }),
+      });
+      var all = list.open.concat(list.closed);
+      if (!all.length) {
+        $('tr-results').innerHTML = '<div class="box" style="text-align:center;color:var(--muted)">Hakuna oda kwa namba na jina hili ndani ya siku ' + list.notice_days + ' zilizopita. Hakikisha namba na jina ni zile ulizotumia kuagiza.</div>';
+      } else {
+        all.forEach(function (o) { rememberOrder(o.token); });
+        $('tr-results').innerHTML = all.map(orderItemHtml).join('') +
+          (list.closed.length ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana kwa siku ' + list.notice_days + ' tu.</div>' : '');
+        loadMyOrders();
+      }
+    } catch (e) { err.textContent = e.message || 'Imeshindwa kutafuta. Jaribu tena.'; err.classList.remove('hidden'); }
+    finally { btn.disabled = false; btn.textContent = 'Tafuta oda zangu'; }
+  }
+
   // ── Duka ──
   async function loadStore() {
     try {
@@ -391,7 +503,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     $('st-logo').textContent = initials(store.name);
     $('st-sub').innerHTML = store.location ? ICON_PIN + esc(store.location) : 'Duka la mtandaoni';
     if (store.description) { $('st-desc').textContent = store.description; $('st-desc').classList.remove('hidden'); }
-    renderChips(); renderGrid(); renderCartBar();
+    renderChips(); renderGrid(); renderCartBar(); loadMyOrders();
     show('view-store');
   }
 
@@ -572,6 +684,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
       closeOv('ov-cart');
       history.pushState(null, '', location.pathname + '?oda=' + d.token);
       orderToken = d.token;
+      rememberOrder(d.token);
       loadOrder();
     } catch (e) {
       bad(e.message || 'Imeshindwa kutuma oda. Jaribu tena.');
@@ -604,6 +717,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     catch (e) { return fail('Oda haipatikani', 'Link ya oda si sahihi.'); }
     var idx = { new: 0, confirmed: 1, ready: 2, completed: 3 }[o.status];
     var cancelled = o.status === 'cancelled';
+    rememberOrder(orderToken);   // server inaamua lini isahauliwe (siku 7 baada ya kufungwa)
     $('od-title').textContent = cancelled ? 'Oda imeghairiwa' : (o.status === 'completed' ? 'Asante kwa kununua!' : 'Oda yako imepokelewa');
     $('od-no').textContent = o.order_number;
     $('od-store').textContent = o.store.name;
@@ -658,6 +772,12 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     cart[current.id] = pdQty; renderCartBar(); closeOv('ov-product'); toast('Imewekwa kwenye kikapu');
   });
   $('cartbar').addEventListener('click', openCart);
+  $('track-open').addEventListener('click', openTrack);
+  $('track-form').addEventListener('submit', submitTrack);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-oda]'); if (!a) return;
+    e.preventDefault(); openOrderLink(a.getAttribute('data-oda'));
+  });
   $('ct-lines').addEventListener('click', function (e) {
     var inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]');
     if (inc) { var id = inc.getAttribute('data-inc'); cart[id] = (cart[id] || 0) + 1; renderCart(); }
@@ -680,7 +800,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   });
   window.addEventListener('popstate', function () {
     orderToken = new URLSearchParams(location.search).get('oda') || '';
-    if (orderToken) loadOrder(); else { clearTimeout(pollTimer); store ? show('view-store') : loadStore(); }
+    if (orderToken) { loadOrder._shown = false; loadOrder(); } else { clearTimeout(pollTimer); if (store) { show('view-store'); loadMyOrders(); } else loadStore(); }
   });
 
   // ── Anza ──
