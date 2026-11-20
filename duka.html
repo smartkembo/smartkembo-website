@@ -114,6 +114,12 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
 .info1 .ic{font-size:18px;line-height:1.3}
 .info1 small{display:block;color:var(--ink-2);font-size:12.5px}
 .paybox{background:var(--gold-l);border-radius:12px;padding:12px;font-size:14px;line-height:1.55}
+.proof{display:flex;flex-direction:column;gap:8px;padding:12px;border:2px dashed var(--line-2);border-radius:12px;background:#fff}
+.proof b{font-size:14px}
+.proof .pbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:12px;border:1px solid var(--blue);color:var(--blue);background:var(--blue-l);font-weight:600;font-size:15px;cursor:pointer}
+.proof img{max-width:160px;max-height:220px;border-radius:10px;border:1px solid var(--line)}
+.paystat{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;font-size:14px;line-height:1.5}
+.paystat.wait{background:var(--warn-bg);color:var(--warn)} .paystat.ok{background:var(--ok-bg);color:#065F46}
 .paym{background:#fff;border-radius:10px;padding:10px 12px;margin:8px 0}
 .paym .pt{font-size:12.5px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.3px}
 .paybox .num{font-family:"Space Grotesk",sans-serif;font-size:22px;font-weight:700;color:var(--blue);letter-spacing:.5px}
@@ -278,9 +284,15 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
         <div class="opts" id="f-pay"></div>
         <div id="f-mobile" class="hidden" style="display:flex;flex-direction:column;gap:10px">
           <div class="paybox" id="f-paybox"></div>
-          <label class="f">Namba ya kumbukumbu ya muamala (kutoka SMS ya malipo)
-            <input class="inp" id="f-ref" maxlength="60" autocapitalize="characters" placeholder="mf. QK71X2ABCD">
-          </label>
+          <div class="proof">
+            <b>Picha ya malipo (si lazima)</b>
+            <span class="note">Ukishalipa, piga picha ya skrini (screenshot) ya SMS ya malipo uiweke hapa. Au utaituma kwa WhatsApp ya duka baada ya kuagiza.</span>
+            <label class="pbtn">📷 Weka picha ya malipo<input type="file" id="f-proof" accept="image/*" class="sr"></label>
+            <div id="f-proof-prev" class="hidden" style="display:flex;gap:10px;align-items:flex-end">
+              <img id="f-proof-img" alt="Picha ya malipo uliyochagua">
+              <button type="button" class="mini" id="f-proof-x" style="width:auto;padding:0 12px">Ondoa</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -331,12 +343,14 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   <div class="wa-step hidden" id="od-wa-step">
     <b class="t">Hatua ya mwisho: tuma oda kwa WhatsApp ya duka</b>
     <p>Ujumbe wenye oda yako umeshaandaliwa. Bonyeza kitufe, kisha bonyeza <b>Tuma</b> kwenye WhatsApp. Utabaki na oda yako kwenye WhatsApp, kwa hiyo hata ukija kuchukua jioni utaikumbuka.</p>
+    <p id="od-wa-proof" class="hidden"><b>Muhimu:</b> baada ya kutuma ujumbe, tuma pia <b>picha ya risiti ya malipo</b> (screenshot ya SMS) kwenye mazungumzo hayo ili duka lihakiki malipo yako.</p>
     <a class="btn btn-wa" id="od-wa" target="_blank" rel="noopener"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg> Tuma oda kwa WhatsApp</a>
   </div>
   <div class="box">
     <h3 id="od-store">Duka</h3>
     <div class="steps" id="od-steps"></div>
     <div class="err hidden" id="od-cancel"></div>
+    <div id="od-pay" class="hidden" style="display:flex;flex-direction:column;gap:10px"></div>
   </div>
   <div class="box">
     <h3>Bidhaa</h3>
@@ -715,7 +729,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
       fulfilment: val('ful'),
       payment_method: val('pay'),
       delivery_address: $('f-addr').value.trim(),
-      payment_ref: $('f-ref').value.trim(),
+      payment_proof: val('pay') === 'mobile' ? proofData : null,
       notes: $('f-notes').value.trim(),
       items: lines.map(function (l) { return { product_id: l.p.id, quantity: l.q }; }),
     };
@@ -723,14 +737,13 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     if (body.customer_name.length < 2) return bad('Andika jina lako.');
     if (!phoneOk(body.customer_phone)) return bad('Namba ya simu si sahihi. Mfano: 0712345678');
     if (body.fulfilment === 'delivery' && body.delivery_address.length < 4) return bad('Andika mahali pa kuletewa.');
-    if (body.payment_method === 'mobile' && body.payment_ref.length < 4) return bad('Andika namba ya kumbukumbu ya muamala uliyopokea kwa SMS baada ya kulipa.');
     var btn = $('ct-submit'); btn.disabled = true; btn.textContent = 'Inatuma…';
     try {
       var d = await getJson(BASE + '/stores/' + encodeURIComponent(slug) + '/orders', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
       });
       try { localStorage.setItem('sk_buyer', JSON.stringify({ name: body.customer_name, phone: body.customer_phone })); } catch (e) { /* bila hifadhi */ }
-      cart = {}; saveCart();
+      cart = {}; saveCart(); setProof(null);
       closeOv('ov-cart');
       history.pushState(null, '', location.pathname + '?oda=' + d.token);
       orderToken = d.token;
@@ -752,6 +765,34 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     }
   }
 
+  // ── Picha ya malipo: inapunguzwa kwenye simu (upana 1000px, JPEG) kabla ya kutumwa ──
+  var proofData = null;
+  function shrinkImage(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onload = function () {
+        var im = new Image();
+        im.onload = function () {
+          var k = Math.min(1, 1000 / Math.max(im.width, im.height));
+          var c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+          var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+          var q = 0.8, out = c.toDataURL('image/jpeg', q);
+          while (out.length > 380000 && q > 0.35) { q -= 0.1; out = c.toDataURL('image/jpeg', q); }
+          resolve(out);
+        };
+        im.onerror = function () { reject(new Error('Picha haisomeki. Chagua picha nyingine.')); };
+        im.src = fr.result;
+      };
+      fr.onerror = function () { reject(new Error('Picha haisomeki. Chagua picha nyingine.')); };
+      fr.readAsDataURL(file);
+    });
+  }
+  function setProof(data) {
+    proofData = data;
+    $('f-proof-prev').classList.toggle('hidden', !data);
+    if (data) $('f-proof-img').src = data; else { $('f-proof-img').removeAttribute('src'); $('f-proof').value = ''; }
+  }
+
   // ── WhatsApp ya duka ──
   function localPhone(p) { var d = String(p || '').replace(/\D/g, ''); return d ? '0' + d.slice(-9) : ''; }
   function waOrderText(o) {
@@ -759,11 +800,43 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     o.items.forEach(function (l) { lines.push('- ' + fmtQty(l.quantity) + ' x ' + l.product_name + ' = ' + tsh(l.subtotal)); });
     lines.push('Jumla: ' + tsh(o.total));
     lines.push(o.fulfilment === 'delivery' ? 'Niletewe: ' + o.delivery_address : 'Nitakuja kuchukua dukani');
-    lines.push(o.payment_method === 'mobile' ? 'Malipo: nimelipa kwa simu, kumbukumbu ' + o.payment_ref : 'Malipo: nitalipa nikipokea');
+    lines.push(o.payment_method === 'mobile'
+      ? (o.has_proof ? 'Malipo: nimelipa kwa simu, picha ya malipo nimeiweka kwenye oda.' : 'Malipo: nimelipa kwa simu. Natuma picha ya risiti ya malipo hapa.')
+      : 'Malipo: nitalipa nikipokea');
     lines.push('Jina: ' + o.customer_name + ' (' + localPhone(o.customer_phone) + ')');
     if (o.notes) lines.push('Maelezo: ' + o.notes);
     lines.push('', 'Fuatilia oda: ' + location.origin + location.pathname + '?oda=' + orderToken);
     return lines.join('\n');
+  }
+
+  function open0(o) { return o.status !== 'cancelled' && o.status !== 'completed'; }
+  // Hali ya malipo ya simu kwenye ukurasa wa oda (+ kuweka picha baadaye)
+  function renderOrderPay(o, isOpen) {
+    var box = $('od-pay');
+    if (o.payment_method !== 'mobile' || o.status === 'cancelled') { box.classList.add('hidden'); return; }
+    box.classList.remove('hidden');
+    if (o.payment_verified) {
+      box.innerHTML = '<div class="paystat ok"><span aria-hidden="true">✓</span><span><b>Malipo yamethibitishwa na duka.</b></span></div>';
+      return;
+    }
+    var html = '<div class="paystat wait"><span aria-hidden="true">⏳</span><span><b>Malipo yanasubiri uthibitisho wa duka.</b><br>' +
+      (o.has_proof ? 'Picha yako ya malipo imepokelewa. Duka litaihakiki.' : 'Weka picha ya malipo hapa, au itume kwa WhatsApp ya duka.') + '</span></div>';
+    if (isOpen && !o.has_proof) {
+      html += '<label class="pbtn" style="display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:12px;border:1px solid var(--blue);color:var(--blue);background:var(--blue-l);font-weight:600;cursor:pointer">' +
+        '📷 Weka picha ya malipo<input type="file" id="od-proof" accept="image/*" class="sr"></label>';
+    }
+    box.innerHTML = html;
+  }
+  async function uploadLateProof(file) {
+    try {
+      toast('Inatuma picha…');
+      var data = await shrinkImage(file);
+      await getJson(BASE + '/orders/' + encodeURIComponent(orderToken) + '/proof', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image_data: data }),
+      });
+      toast('Picha ya malipo imetumwa');
+      loadOrder();
+    } catch (e) { toast(e.message || 'Imeshindwa kutuma picha'); }
   }
 
   // ── Hali ya oda ──
@@ -791,7 +864,8 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     }).join('');
     $('od-total').textContent = tsh(o.total);
     $('od-meta').textContent = (o.fulfilment === 'delivery' ? 'Kuletewa: ' + o.delivery_address : 'Kuchukua dukani' + (o.store.location ? ' (' + o.store.location + ')' : '')) +
-      ' · ' + (o.payment_method === 'mobile' ? 'Umelipa kwa simu (kumb. ' + o.payment_ref + ')' : 'Utalipa ukipokea');
+      ' · ' + (o.payment_method === 'mobile' ? 'Malipo kwa simu' : 'Utalipa ukipokea');
+    renderOrderPay(o, open0(o));
     var wa = o.store.whatsapp, open = !cancelled && o.status !== 'completed';
     if (wa) {
       var href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(waOrderText(o));
@@ -799,6 +873,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
       $('od-wa2').href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Habari ' + o.store.name + ', ni kuhusu oda yangu ' + o.order_number + '.');
     }
     $('od-wa-step').classList.toggle('hidden', !wa || !open);
+    $('od-wa-proof').classList.toggle('hidden', !(o.payment_method === 'mobile' && !o.has_proof && !o.payment_verified));
     $('od-wa2').classList.toggle('hidden', !wa || open);
     var call = $('od-call');
     if (o.store.phone) { call.href = 'tel:' + o.store.phone.replace(/[^\d+]/g, ''); call.classList.remove('hidden'); } else call.classList.add('hidden');
@@ -831,6 +906,14 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   });
   $('cartbar').addEventListener('click', openCartFresh);
   $('track-open').addEventListener('click', openTrack);
+  $('f-proof').addEventListener('change', async function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    try { setProof(await shrinkImage(f)); } catch (e) { toast(e.message); setProof(null); }
+  });
+  $('f-proof-x').addEventListener('click', function () { setProof(null); });
+  $('od-pay').addEventListener('change', function (e) {
+    var inp = e.target.closest('#od-proof'); if (inp && inp.files && inp.files[0]) uploadLateProof(inp.files[0]);
+  });
   $('mo-list').addEventListener('click', function (e) {
     if (!e.target.closest('#mo-more')) return;
     myExpanded = !myExpanded; renderMyOrders();
