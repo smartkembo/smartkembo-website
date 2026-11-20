@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Duka la Mtandaoni | SmartKembo</title>
+<meta name="description" content="Nunua bidhaa mtandaoni kutoka maduka yanayotumia SmartKembo.">
+<meta name="theme-color" content="#0E3A8A">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0E3A8A; --blue-d:#0B2C69; --blue-l:#E8EEFB; --gold:#F2B705; --gold-l:#FFF4D1;
+  --ink:#0F172A; --ink-2:#334155; --muted:#475569; --line:#E2E8F0; --line-2:#CBD5E1;
+  --bg:#F5F7FB; --card:#FFFFFF; --ok:#047857; --ok-bg:#D1FAE5; --warn:#92400E; --warn-bg:#FEF3C7; --bad:#B91C1C;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--blue)}
+.wrap{max-width:1100px;margin:0 auto}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Header */
+.hdr{background:var(--blue);color:#fff;padding:18px 16px 16px}
+.hdr-row{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--gold);color:var(--blue);display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:19px;flex-shrink:0}
+.hdr h1{margin:0;font-family:"Space Grotesk",sans-serif;font-size:20px;line-height:1.2}
+.hdr .sub{font-size:13px;color:#DCE6FF;display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto}
+.desc{font-size:14px;color:#DCE6FF;margin:10px 0 0;line-height:1.5}
+.search{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:0 14px;height:46px;color:var(--muted);margin-top:14px}
+.search input{border:0;outline:none;flex:1;background:transparent;font-size:15px;color:var(--ink);min-width:0}
+
+/* Chips */
+.chips{display:flex;gap:8px;padding:14px 16px 6px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{height:36px;padding:0 16px;border-radius:18px;border:1px solid var(--line-2);background:#fff;font-size:14px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:10px 16px 120px}
+.card{background:var(--card);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px rgba(15,23,42,.06);border:0;text-align:left;color:var(--ink)}
+.card:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.thumb{aspect-ratio:4/3;border-radius:12px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;color:var(--blue);overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb.alt{background:var(--gold-l)}
+.pname{font-size:14px;font-weight:600;line-height:1.3}
+.punit{font-size:12px;color:var(--muted)}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
+.price{font-weight:700;font-size:15px}
+.plus{width:34px;height:34px;border-radius:10px;background:var(--gold);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stock{font-size:12px;font-weight:600}
+.stock.in{color:var(--ok)} .stock.low{color:#B45309} .stock.out{color:var(--bad)}
+.card.out{opacity:.6}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px;font-size:15px}
+
+/* Cart bar */
+.cartbar{position:fixed;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom));width:min(560px,calc(100% - 32px));height:60px;border-radius:16px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border:0;box-shadow:0 8px 24px rgba(14,58,138,.35);font-weight:600;font-size:15px;z-index:20}
+.cartbar .count{width:28px;height:28px;border-radius:14px;background:var(--gold);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-right:10px}
+.powered{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 96px}
+.powered a{color:var(--muted)}
+
+/* Sheets */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:560px;max-height:92vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:700px){.overlay{align-items:center}.sheet{border-radius:22px;max-height:88vh}}
+.sheet-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sheet-h h2{margin:0;font-family:"Space Grotesk",sans-serif;font-size:19px;flex:1}
+.x{width:44px;height:44px;border-radius:12px;border:0;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.sheet-b{padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.sheet-f{padding:12px 16px max(16px,env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
+.big-img{aspect-ratio:4/3;border-radius:16px;background:var(--gold-l);display:flex;align-items:center;justify-content:center;color:var(--blue);overflow:hidden}
+.big-img img{width:100%;height:100%;object-fit:contain;background:#fff}
+.stepper{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;background:var(--bg)}
+.stepper .ctr{display:flex;align-items:center;gap:12px}
+.sbtn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);background:#fff;font-size:22px;line-height:1}
+.sbtn.p{border:0;background:var(--blue);color:#fff}
+.qty{font-size:18px;font-weight:700;min-width:28px;text-align:center}
+.btn{height:56px;border-radius:16px;border:0;font-weight:700;font-size:16px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-gold{background:var(--gold);color:var(--blue);flex:1}
+.btn-blue{background:var(--blue);color:#fff;flex:1}
+.btn-ghost{background:#fff;border:1px solid var(--line-2);color:var(--ink)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.box h3{margin:0;font-size:15px}
+.line{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #EEF2F7}
+.line:last-child{border-bottom:0}
+.line .nm{flex:1;min-width:0}
+.line .nm b{display:block;font-size:14px}
+.line .nm span{font-size:12px;color:var(--muted)}
+.mini{width:36px;height:36px;border-radius:10px;border:1px solid var(--line-2);background:#fff;font-size:18px;line-height:1}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;padding-top:6px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-2)}
+.inp{height:48px;border-radius:12px;border:1px solid var(--line-2);padding:0 12px;font-size:16px;background:#fff;color:var(--ink);width:100%}
+textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
+.inp:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--line-2);cursor:pointer}
+.opt input{margin-top:3px;width:18px;height:18px;accent-color:var(--blue)}
+.opt:has(input:checked){border:2px solid var(--blue);background:var(--blue-l);padding:11px}
+.opt b{display:block;font-size:14px}
+.opt span{font-size:12px;color:var(--ink-2)}
+.paybox{background:var(--gold-l);border-radius:12px;padding:12px;font-size:14px;line-height:1.55}
+.paybox .num{font-family:"Space Grotesk",sans-serif;font-size:22px;font-weight:700;color:var(--blue);letter-spacing:.5px}
+.err{background:#FEE2E2;color:var(--bad);border-radius:12px;padding:10px 12px;font-size:14px}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* Status */
+.status-page{max-width:560px;margin:0 auto;padding:20px 16px 60px;display:flex;flex-direction:column;gap:14px}
+.okmark{width:64px;height:64px;border-radius:32px;background:var(--ok-bg);color:var(--ok);display:flex;align-items:center;justify-content:center;margin:6px auto 0}
+.center{text-align:center}
+.status-page h2{margin:0;font-family:"Space Grotesk",sans-serif;font-size:24px}
+.ordno{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;color:var(--blue)}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;align-items:flex-start;padding:6px 0;color:var(--muted)}
+.dot{width:24px;height:24px;border-radius:12px;border:2px solid var(--line-2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#fff}
+.step.done{color:var(--ink)} .step.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.step.now{color:var(--ink);font-weight:600} .step.now .dot{border-color:var(--blue);color:var(--blue)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:5px 10px;border-radius:9px}
+.skeleton{background:linear-gradient(90deg,#eef2f7 25%,#f8fafc 50%,#eef2f7 75%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:16px;height:220px}
+@keyframes sk{to{background-position:-200% 0}}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:60}
+</style>
+</head>
+<body>
+
+<div id="view-loading" class="wrap" aria-busy="true">
+  <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+  </div>
+</div>
+
+<div id="view-error" class="status-page hidden">
+  <div class="okmark" style="background:#FEE2E2;color:var(--bad)" aria-hidden="true">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
+  </div>
+  <h2 class="center" id="err-title">Duka halipatikani</h2>
+  <p class="center note" id="err-msg" style="font-size:15px">Huenda link si sahihi, au duka limezimwa kwa muda.</p>
+  <a class="btn btn-blue" href="/shop">Fahamu kuhusu SmartKembo Shop</a>
+</div>
+
+<!-- ═══ DUKA ═══ -->
+<div id="view-store" class="hidden">
+  <header class="hdr">
+    <div class="wrap">
+      <div class="hdr-row">
+        <div class="logo" id="st-logo" aria-hidden="true">D</div>
+        <div style="min-width:0">
+          <h1 id="st-name">Duka</h1>
+          <div class="sub" id="st-sub"></div>
+        </div>
+        <button class="icon-btn" id="share-btn" aria-label="Shiriki duka hili">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        </button>
+      </div>
+      <p class="desc hidden" id="st-desc"></p>
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span class="sr">Tafuta bidhaa</span>
+        <input type="search" id="q" placeholder="Tafuta bidhaa…" autocomplete="off">
+      </label>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="chips" id="chips" role="group" aria-label="Makundi ya bidhaa"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <p class="powered">Inaendeshwa na <a href="/shop">SmartKembo</a></p>
+  <button class="cartbar hidden" id="cartbar">
+    <span><span class="count" id="cb-count">0</span>Angalia kikapu</span>
+    <span id="cb-total">TSh 0</span>
+  </button>
+</div>
+
+<!-- ═══ BIDHAA ═══ -->
+<div class="overlay hidden" id="ov-product" role="dialog" aria-modal="true" aria-labelledby="pd-name">
+  <div class="sheet">
+    <div class="sheet-h">
+      <h2 id="pd-name">Bidhaa</h2>
+      <button class="x" data-close aria-label="Funga"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="sheet-b">
+      <div class="big-img" id="pd-img"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div>
+          <div class="punit" id="pd-unit"></div>
+          <div class="price" style="font-size:24px;color:var(--blue)" id="pd-price"></div>
+        </div>
+        <span class="badge" id="pd-stock"></span>
+      </div>
+      <p id="pd-desc" style="margin:0;font-size:15px;line-height:1.55;color:var(--ink-2)"></p>
+      <div class="stepper" id="pd-stepper">
+        <b>Idadi</b>
+        <div class="ctr">
+          <button class="sbtn" id="pd-minus" aria-label="Punguza">−</button>
+          <span class="qty" id="pd-qty" aria-live="polite">1</span>
+          <button class="sbtn p" id="pd-plus" aria-label="Ongeza">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-f">
+      <button class="btn btn-gold" id="pd-add">Weka kwenye kikapu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ KIKAPU + KUAGIZA ═══ -->
+<div class="overlay hidden" id="ov-cart" role="dialog" aria-modal="true" aria-labelledby="ct-title">
+  <div class="sheet">
+    <div class="sheet-h">
+      <h2 id="ct-title">Kikapu chako</h2>
+      <button class="x" data-close aria-label="Funga"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form class="sheet-b" id="checkout" novalidate>
+      <div class="box">
+        <div id="ct-lines"></div>
+        <div class="total"><span>Jumla</span><span id="ct-total">TSh 0</span></div>
+      </div>
+
+      <div class="box">
+        <h3>Taarifa zako</h3>
+        <label class="f">Jina lako
+          <input class="inp" id="f-name" autocomplete="name" maxlength="150" required>
+        </label>
+        <label class="f">Namba ya simu
+          <input class="inp" id="f-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" maxlength="16" required>
+        </label>
+      </div>
+
+      <div class="box">
+        <h3>Utapataje bidhaa?</h3>
+        <div class="opts" id="f-ful"></div>
+        <div id="f-addr-wrap" class="hidden" style="display:flex;flex-direction:column;gap:6px">
+          <label class="f">Mahali pa kuletewa
+            <input class="inp" id="f-addr" maxlength="300" placeholder="Mtaa, alama ya karibu">
+          </label>
+          <div class="note" id="f-addr-note"></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>Malipo</h3>
+        <div class="opts" id="f-pay"></div>
+        <div id="f-mobile" class="hidden" style="display:flex;flex-direction:column;gap:10px">
+          <div class="paybox" id="f-paybox"></div>
+          <label class="f">Namba ya kumbukumbu ya muamala (kutoka SMS ya malipo)
+            <input class="inp" id="f-ref" maxlength="60" autocapitalize="characters" placeholder="mf. QK71X2ABCD">
+          </label>
+        </div>
+      </div>
+
+      <label class="f">Maelezo kwa duka (si lazima)
+        <textarea class="inp" id="f-notes" maxlength="500" placeholder="mf. Nitakuja jioni saa 11"></textarea>
+      </label>
+      <div class="err hidden" id="f-err" role="alert"></div>
+      <p class="note">Bei zinathibitishwa na duka. SmartKembo haipokei malipo yako: unalipa duka moja kwa moja.</p>
+    </form>
+    <div class="sheet-f">
+      <button class="btn btn-blue" id="ct-submit" form="checkout" type="submit">Agiza sasa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HALI YA ODA ═══ -->
+<div id="view-order" class="status-page hidden">
+  <div class="okmark" aria-hidden="true">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+  </div>
+  <h2 class="center" id="od-title">Oda yako imepokelewa</h2>
+  <div class="center">Namba ya oda: <span class="ordno" id="od-no"></span></div>
+  <div class="box">
+    <h3 id="od-store">Duka</h3>
+    <div class="steps" id="od-steps"></div>
+    <div class="err hidden" id="od-cancel"></div>
+  </div>
+  <div class="box">
+    <h3>Bidhaa</h3>
+    <div id="od-lines"></div>
+    <div class="total"><span>Jumla</span><span id="od-total"></span></div>
+    <div class="note" id="od-meta"></div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a class="btn btn-ghost" id="od-call" style="flex:1" href="#">Piga simu dukani</a>
+    <a class="btn btn-blue" id="od-back" style="flex:1" href="#">Rudi dukani</a>
+  </div>
+  <p class="note center">Hifadhi ukurasa huu ili kufuatilia oda yako. Unasasishwa wenyewe.</p>
+</div>
+
+<div class="toast hidden" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var API = 'https://smartkembo-proxy.givensmartkembo.workers.dev';
+  var BASE = API + '/api/shop-online/public';
+
+  // ── Link: /duka/<slug>  (au duka.html?d=<slug>) + ?oda=<token> ──
+  var params = new URLSearchParams(location.search);
+  var parts = location.pathname.split('/').filter(Boolean);
+  var slug = (parts[0] === 'duka' && parts[1]) ? decodeURIComponent(parts[1]) : (params.get('d') || '');
+  var orderToken = params.get('oda') || '';
+
+  var store = null, products = [], categories = [], cat = '', cart = {}, current = null, pollTimer = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+  function tsh(n) { return 'TSh ' + Math.round(Number(n) || 0).toLocaleString('en-US'); }
+  function fmtQty(n) { n = Number(n) || 0; return n % 1 === 0 ? String(n) : n.toFixed(2).replace(/0+$/, ''); }
+  function initials(name) {
+    var w = String(name || '').replace(/^duka\s+(la|ya|cha)\s+/i, '').split(/\s+/).filter(Boolean);
+    return ((w[0] || 'D')[0] + (w[1] ? w[1][0] : '')).toUpperCase();
+  }
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.remove('hidden');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.add('hidden'); }, 2600);
+  }
+  function show(id) {
+    ['view-loading', 'view-error', 'view-store', 'view-order'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
+  }
+  function fail(title, msg) { $('err-title').textContent = title; $('err-msg').textContent = msg; show('view-error'); }
+  async function getJson(url, opts) {
+    var r = await fetch(url, opts);
+    var j = await r.json().catch(function () { return {}; });
+    if (!r.ok || !j.success) { var e = new Error(j.message || 'Hitilafu ya mtandao'); e.status = r.status; throw e; }
+    return j.data;
+  }
+
+  var ICON_BAG = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>';
+  var ICON_PIN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+
+  // ── Kikapu (kinahifadhiwa kwenye kivinjari, kwa kila duka) ──
+  function cartKey() { return 'sk_cart_' + slug.toLowerCase(); }
+  function loadCart() { try { cart = JSON.parse(localStorage.getItem(cartKey()) || '{}') || {}; } catch (e) { cart = {}; } }
+  function saveCart() { try { localStorage.setItem(cartKey(), JSON.stringify(cart)); } catch (e) { /* bila hifadhi */ } }
+  function byId(id) { for (var i = 0; i < products.length; i++) if (products[i].id === id) return products[i]; return null; }
+  function maxQty(p) { return p.availability === 'low' ? p.remaining : 9999; }
+  function cartLines() {
+    var out = [];
+    Object.keys(cart).forEach(function (id) {
+      var p = byId(id);
+      if (!p || p.availability === 'out') { delete cart[id]; return; }
+      var q = Math.min(cart[id], maxQty(p));
+      if (q <= 0) { delete cart[id]; return; }
+      cart[id] = q;
+      out.push({ p: p, q: q, sub: p.price * q });
+    });
+    return out;
+  }
+  function cartTotal(lines) { return lines.reduce(function (a, l) { return a + l.sub; }, 0); }
+  function renderCartBar() {
+    var lines = cartLines(); saveCart();
+    var n = lines.reduce(function (a, l) { return a + l.q; }, 0);
+    $('cartbar').classList.toggle('hidden', !lines.length);
+    $('cb-count').textContent = n > 99 ? '99+' : fmtQty(n);
+    $('cb-total').textContent = tsh(cartTotal(lines));
+  }
+
+  // ── Duka ──
+  async function loadStore() {
+    try {
+      var d = await getJson(BASE + '/stores/' + encodeURIComponent(slug));
+      store = d.store; products = d.products; categories = d.categories;
+    } catch (e) {
+      if (e.status === 404) return fail('Duka halipatikani', 'Huenda link si sahihi, au duka limezimwa kwa muda. Wasiliana na mwenye duka.');
+      return fail('Imeshindwa kufungua duka', 'Angalia intaneti yako kisha ujaribu tena.');
+    }
+    document.title = store.name + ' | Duka la Mtandaoni';
+    $('st-name').textContent = store.name;
+    $('st-logo').textContent = initials(store.name);
+    $('st-sub').innerHTML = store.location ? ICON_PIN + esc(store.location) : 'Duka la mtandaoni';
+    if (store.description) { $('st-desc').textContent = store.description; $('st-desc').classList.remove('hidden'); }
+    renderChips(); renderGrid(); renderCartBar();
+    show('view-store');
+  }
+
+  function renderChips() {
+    var el = $('chips');
+    if (categories.length < 2) { el.classList.add('hidden'); return; }
+    var all = [''].concat(categories);
+    el.innerHTML = all.map(function (c) {
+      return '<button class="chip" type="button" data-cat="' + esc(c) + '" aria-pressed="' + (c === cat) + '">' + esc(c || 'Zote') + '</button>';
+    }).join('');
+  }
+
+  function stockText(p) {
+    if (p.availability === 'out') return '<span class="stock out">Imeisha</span>';
+    if (p.availability === 'low') return '<span class="stock low">Zimebaki ' + p.remaining + '</span>';
+    return '<span class="stock in">Ipo</span>';
+  }
+  function thumb(p, i, cls) {
+    if (p.image) return '<div class="' + cls + '"><img src="' + esc(API + p.image) + '" alt="" loading="lazy"></div>';
+    return '<div class="' + cls + (i % 2 ? ' alt' : '') + '">' + ICON_BAG + '</div>';
+  }
+
+  function renderGrid() {
+    var q = $('q').value.trim().toLowerCase();
+    var list = products.filter(function (p) {
+      return (!cat || p.category === cat) && (!q || (p.name + ' ' + p.category).toLowerCase().indexOf(q) !== -1);
+    });
+    // Zilizoisha mwisho (zinabaki kuonekana ili mteja ajue zipo)
+    list = list.filter(function (p) { return p.availability !== 'out'; }).concat(list.filter(function (p) { return p.availability === 'out'; }));
+    if (!list.length) {
+      $('grid').innerHTML = '<div class="empty">' + (products.length ? 'Hakuna bidhaa inayolingana na utafutaji wako.' : 'Duka hili bado halijaweka bidhaa mtandaoni.') + '</div>';
+      return;
+    }
+    $('grid').innerHTML = list.map(function (p, i) {
+      return '<button class="card' + (p.availability === 'out' ? ' out' : '') + '" type="button" data-id="' + p.id + '">' +
+        thumb(p, i, 'thumb') +
+        '<span class="pname">' + esc(p.name) + '</span>' +
+        (p.unit ? '<span class="punit">' + esc(p.unit) + '</span>' : '') +
+        '<span class="prow"><span class="price">' + tsh(p.price) + '</span>' +
+        (p.availability === 'out' ? '' : '<span class="plus" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span>') +
+        '</span>' + stockText(p) + '</button>';
+    }).join('');
+  }
+
+  // ── Dirisha la bidhaa ──
+  var pdQty = 1;
+  function openProduct(id) {
+    var p = byId(id); if (!p) return;
+    current = p; pdQty = cart[id] || 1;
+    $('pd-name').textContent = p.name;
+    $('pd-img').innerHTML = p.image ? '<img src="' + esc(API + p.image) + '" alt="' + esc(p.name) + '">' : ICON_BAG.replace(/40/g, '96');
+    $('pd-unit').textContent = [p.category, p.unit].filter(Boolean).join(' · ');
+    $('pd-price').textContent = tsh(p.price);
+    var b = $('pd-stock');
+    if (p.availability === 'out') { b.textContent = 'Imeisha'; b.style.background = '#FEE2E2'; b.style.color = 'var(--bad)'; }
+    else if (p.availability === 'low') { b.textContent = 'Zimebaki ' + p.remaining + ' tu'; b.style.background = 'var(--warn-bg)'; b.style.color = 'var(--warn)'; }
+    else { b.textContent = 'Ipo'; b.style.background = 'var(--ok-bg)'; b.style.color = 'var(--ok)'; }
+    $('pd-desc').textContent = p.description || '';
+    $('pd-desc').classList.toggle('hidden', !p.description);
+    $('pd-stepper').classList.toggle('hidden', p.availability === 'out');
+    updatePd();
+    openOv('ov-product');
+  }
+  function updatePd() {
+    var p = current, out = p.availability === 'out';
+    $('pd-qty').textContent = pdQty;
+    $('pd-minus').disabled = pdQty <= 1;
+    $('pd-plus').disabled = pdQty >= maxQty(p);
+    $('pd-add').disabled = out;
+    $('pd-add').textContent = out ? 'Imeisha' : ((cart[p.id] ? 'Badilisha kikapu · ' : 'Weka kwenye kikapu · ') + tsh(p.price * pdQty));
+  }
+
+  // ── Kikapu / kuagiza ──
+  function openCart() {
+    renderCart();
+    var ful = [];
+    if (store.pickup) ful.push(['pickup', 'Nitachukua dukani', store.location || '']);
+    if (store.delivery) ful.push(['delivery', 'Niletewe', store.delivery_note || 'Ada ya kuleta inakubaliwa na duka']);
+    $('f-ful').innerHTML = ful.map(function (f, i) {
+      return '<label class="opt"><input type="radio" name="ful" value="' + f[0] + '"' + (i === 0 ? ' checked' : '') + '><span><b>' + esc(f[1]) + '</b>' + (f[2] ? '<span>' + esc(f[2]) + '</span>' : '') + '</span></label>';
+    }).join('');
+    var pay = [];
+    if (store.pay_mobile) pay.push(['mobile', 'Lipa sasa kwa simu', 'Pesa inaenda moja kwa moja kwa duka']);
+    if (store.pay_cod) pay.push(['cod', 'Lipa ukipokea', 'Unalipa unapopokea bidhaa']);
+    $('f-pay').innerHTML = pay.map(function (f, i) {
+      return '<label class="opt"><input type="radio" name="pay" value="' + f[0] + '"' + (i === 0 ? ' checked' : '') + '><span><b>' + esc(f[1]) + '</b><span>' + esc(f[2]) + '</span></span></label>';
+    }).join('');
+    $('f-addr-note').textContent = store.delivery_note || '';
+    try {
+      var saved = JSON.parse(localStorage.getItem('sk_buyer') || '{}');
+      if (saved.name && !$('f-name').value) $('f-name').value = saved.name;
+      if (saved.phone && !$('f-phone').value) $('f-phone').value = saved.phone;
+    } catch (e) { /* bila hifadhi */ }
+    $('f-err').classList.add('hidden');
+    syncForm();
+    openOv('ov-cart');
+  }
+  function renderCart() {
+    var lines = cartLines(); saveCart();
+    if (!lines.length) { closeOv('ov-cart'); renderCartBar(); return; }
+    $('ct-lines').innerHTML = lines.map(function (l) {
+      return '<div class="line"><div class="nm"><b>' + esc(l.p.name) + '</b><span>' + tsh(l.p.price) + (l.p.unit ? ' / ' + esc(l.p.unit) : '') + '</span></div>' +
+        '<button type="button" class="mini" data-dec="' + l.p.id + '" aria-label="Punguza ' + esc(l.p.name) + '">−</button>' +
+        '<span class="qty" style="font-size:15px;min-width:22px">' + fmtQty(l.q) + '</span>' +
+        '<button type="button" class="mini" data-inc="' + l.p.id + '" aria-label="Ongeza ' + esc(l.p.name) + '"' + (l.q >= maxQty(l.p) ? ' disabled' : '') + '>+</button>' +
+        '<b style="min-width:82px;text-align:right;font-size:14px">' + tsh(l.sub) + '</b></div>';
+    }).join('');
+    var total = cartTotal(lines);
+    $('ct-total').textContent = tsh(total);
+    $('ct-submit').textContent = 'Agiza sasa · ' + tsh(total);
+    syncForm();
+    renderCartBar();
+  }
+  function val(name) { var el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+  function syncForm() {
+    if (!store) return;
+    $('f-addr-wrap').classList.toggle('hidden', val('ful') !== 'delivery');
+    var mob = val('pay') === 'mobile';
+    $('f-mobile').classList.toggle('hidden', !mob);
+    if (mob) {
+      var total = cartTotal(cartLines());
+      $('f-paybox').innerHTML = 'Tuma <b>' + tsh(total) + '</b> kwa ' + esc(store.pay_network || 'namba hii') + ':<br>' +
+        '<span class="num">' + esc(store.pay_number) + '</span>' + (store.pay_name ? '<br>Jina: <b>' + esc(store.pay_name) + '</b>' : '') +
+        '<br><span class="note">Hakikisha jina linalotokea ni la duka kabla ya kuthibitisha malipo.</span>';
+    }
+  }
+  function phoneOk(p) {
+    var d = String(p || '').replace(/\D/g, '');
+    if (d.indexOf('0') === 0 && d.length === 10) d = '255' + d.slice(1); else if (d.length === 9) d = '255' + d;
+    return /^255[67]\d{8}$/.test(d);
+  }
+  async function submitOrder(ev) {
+    ev.preventDefault();
+    var errBox = $('f-err');
+    function bad(m) { errBox.textContent = m; errBox.classList.remove('hidden'); errBox.scrollIntoView({ block: 'nearest' }); }
+    errBox.classList.add('hidden');
+    var lines = cartLines();
+    var body = {
+      customer_name: $('f-name').value.trim(),
+      customer_phone: $('f-phone').value.trim(),
+      fulfilment: val('ful'),
+      payment_method: val('pay'),
+      delivery_address: $('f-addr').value.trim(),
+      payment_ref: $('f-ref').value.trim(),
+      notes: $('f-notes').value.trim(),
+      items: lines.map(function (l) { return { product_id: l.p.id, quantity: l.q }; }),
+    };
+    if (!lines.length) return bad('Kikapu ni tupu.');
+    if (body.customer_name.length < 2) return bad('Andika jina lako.');
+    if (!phoneOk(body.customer_phone)) return bad('Namba ya simu si sahihi. Mfano: 0712345678');
+    if (body.fulfilment === 'delivery' && body.delivery_address.length < 4) return bad('Andika mahali pa kuletewa.');
+    if (body.payment_method === 'mobile' && body.payment_ref.length < 4) return bad('Andika namba ya kumbukumbu ya muamala uliyopokea kwa SMS baada ya kulipa.');
+    var btn = $('ct-submit'); btn.disabled = true; btn.textContent = 'Inatuma…';
+    try {
+      var d = await getJson(BASE + '/stores/' + encodeURIComponent(slug) + '/orders', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      });
+      try { localStorage.setItem('sk_buyer', JSON.stringify({ name: body.customer_name, phone: body.customer_phone })); } catch (e) { /* bila hifadhi */ }
+      cart = {}; saveCart();
+      closeOv('ov-cart');
+      history.pushState(null, '', location.pathname + '?oda=' + d.token);
+      orderToken = d.token;
+      loadOrder();
+    } catch (e) {
+      bad(e.message || 'Imeshindwa kutuma oda. Jaribu tena.');
+      if (e.status === 409) { loadStore().then(function () { if (Object.keys(cart).length) openCart(); }); }
+    } finally {
+      btn.disabled = false; renderCart();
+    }
+  }
+
+  // ── Hali ya oda ──
+  var STEPS = [['new', 'Oda imepokelewa'], ['confirmed', 'Duka limethibitisha'], ['ready', 'Iko tayari'], ['completed', 'Imekabidhiwa']];
+  async function loadOrder() {
+    clearTimeout(pollTimer);
+    var o;
+    try { o = await getJson(BASE + '/orders/' + encodeURIComponent(orderToken)); }
+    catch (e) { return fail('Oda haipatikani', 'Link ya oda si sahihi.'); }
+    var idx = { new: 0, confirmed: 1, ready: 2, completed: 3 }[o.status];
+    var cancelled = o.status === 'cancelled';
+    $('od-title').textContent = cancelled ? 'Oda imeghairiwa' : (o.status === 'completed' ? 'Asante kwa kununua!' : 'Oda yako imepokelewa');
+    $('od-no').textContent = o.order_number;
+    $('od-store').textContent = o.store.name;
+    $('od-steps').innerHTML = STEPS.map(function (s, i) {
+      // Hatua zilizofikiwa = done; inayosubiriwa = now
+      var cls = cancelled ? '' : (i <= idx ? 'done' : (i === idx + 1 ? 'now' : ''));
+      return '<div class="step ' + cls + '"><span class="dot">' + (cls === 'done' ? '✓' : (i + 1)) + '</span><span>' + s[1] + '</span></div>';
+    }).join('');
+    $('od-cancel').classList.toggle('hidden', !cancelled);
+    $('od-cancel').textContent = cancelled ? ('Duka limeghairi oda hii' + (o.cancel_reason ? ': ' + o.cancel_reason : '.')) : '';
+    $('od-lines').innerHTML = o.items.map(function (l) {
+      return '<div class="line"><div class="nm"><b>' + esc(l.product_name) + '</b><span>' + fmtQty(l.quantity) + ' × ' + tsh(l.unit_price) + '</span></div><b>' + tsh(l.subtotal) + '</b></div>';
+    }).join('');
+    $('od-total').textContent = tsh(o.total);
+    $('od-meta').textContent = (o.fulfilment === 'delivery' ? 'Kuletewa: ' + o.delivery_address : 'Kuchukua dukani' + (o.store.location ? ' (' + o.store.location + ')' : '')) +
+      ' · ' + (o.payment_method === 'mobile' ? 'Umelipa kwa simu (kumb. ' + o.payment_ref + ')' : 'Utalipa ukipokea');
+    var call = $('od-call');
+    if (o.store.phone) { call.href = 'tel:' + o.store.phone.replace(/[^\d+]/g, ''); call.classList.remove('hidden'); } else call.classList.add('hidden');
+    $('od-back').href = '/duka/' + encodeURIComponent(o.store.slug || slug);
+    show('view-order');
+    if (!cancelled && o.status !== 'completed') pollTimer = setTimeout(loadOrder, 20000);
+  }
+
+  // ── Madirisha ──
+  var lastFocus = null;
+  function openOv(id) { lastFocus = document.activeElement; $(id).classList.remove('hidden'); document.body.style.overflow = 'hidden'; var f = $(id).querySelector('button,input'); if (f) f.focus(); }
+  function closeOv(id) { $(id).classList.add('hidden'); document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+
+  // ── Matukio ──
+  $('chips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cat]'); if (!b) return;
+    cat = b.getAttribute('data-cat'); renderChips(); renderGrid();
+  });
+  $('q').addEventListener('input', renderGrid);
+  $('grid').addEventListener('click', function (e) { var c = e.target.closest('[data-id]'); if (c) openProduct(c.getAttribute('data-id')); });
+  $('pd-minus').addEventListener('click', function () { if (pdQty > 1) { pdQty--; updatePd(); } });
+  $('pd-plus').addEventListener('click', function () { if (pdQty < maxQty(current)) { pdQty++; updatePd(); } });
+  $('pd-add').addEventListener('click', function () {
+    cart[current.id] = pdQty; renderCartBar(); closeOv('ov-product'); toast('Imewekwa kwenye kikapu');
+  });
+  $('cartbar').addEventListener('click', openCart);
+  $('ct-lines').addEventListener('click', function (e) {
+    var inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]');
+    if (inc) { var id = inc.getAttribute('data-inc'); cart[id] = (cart[id] || 0) + 1; renderCart(); }
+    if (dec) { var id2 = dec.getAttribute('data-dec'); cart[id2] = (cart[id2] || 0) - 1; if (cart[id2] <= 0) delete cart[id2]; renderCart(); }
+  });
+  $('checkout').addEventListener('change', syncForm);
+  $('checkout').addEventListener('submit', submitOrder);
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { closeOv(b.closest('.overlay').id); }); });
+  document.querySelectorAll('.overlay').forEach(function (ov) { ov.addEventListener('click', function (e) { if (e.target === ov) closeOv(ov.id); }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var open = document.querySelector('.overlay:not(.hidden)'); if (open) closeOv(open.id);
+  });
+  $('share-btn').addEventListener('click', async function () {
+    var url = location.origin + '/duka/' + encodeURIComponent(slug);
+    try {
+      if (navigator.share) { await navigator.share({ title: store.name, text: 'Nunua kwa ' + store.name + ' mtandaoni', url: url }); return; }
+      await navigator.clipboard.writeText(url); toast('Link imenakiliwa');
+    } catch (e) { /* mtumiaji ameghairi */ }
+  });
+  window.addEventListener('popstate', function () {
+    orderToken = new URLSearchParams(location.search).get('oda') || '';
+    if (orderToken) loadOrder(); else { clearTimeout(pollTimer); store ? show('view-store') : loadStore(); }
+  });
+
+  // ── Anza ──
+  if (orderToken) loadOrder();
+  else if (!slug) fail('Duka halipatikani', 'Link haina jina la duka.');
+  else { loadCart(); loadStore(); }
+})();
+</script>
+</body>
+</html>
