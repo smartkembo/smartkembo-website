@@ -3,7 +3,7 @@
   "short_name": "SK AI",
   "description": "SmartKembo AI — muulize kuhusu WiFi, Maji, Duka/POS na bei za SmartKembo, saa 24.",
   "start_url": "/ai",
-  "scope": "/",
+  "scope": "/ai",
   "id": "/ai.html",
   "display": "standalone",
   "orientation": "portrait",
