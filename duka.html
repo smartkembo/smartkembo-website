@@ -133,6 +133,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
 .myorders h2{margin:0;font-size:15px}
 .mo-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:var(--bg);text-decoration:none;color:var(--ink);min-height:52px}
 .mo-item b{font-size:14px}
+.mo-more{border:0;background:none;color:var(--blue);font-weight:600;font-size:14px;min-height:44px;padding:0;text-align:left}
 .mo-item.done{background:var(--ok-bg)} .mo-item.cancel{background:#FEE2E2}
 .mo-item.done small{color:#065F46} .mo-item.cancel small{color:#7F1D1D}
 .mo-item small{display:block;font-size:12.5px;color:var(--muted)}
@@ -442,11 +443,23 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     try {
       var d = await getJson(BASE + '/orders/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tokens: toks }) });
       forgetOrders(d.forget);                       // zilizopita siku 7 zinasahauliwa kabisa
-      var all = d.open.concat(d.closed);
-      $('mo-list').innerHTML = all.map(orderItemHtml).join('') +
-        (d.closed.length ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana hapa kwa siku ' + d.notice_days + ', kisha zinaondoka.</div>' : '');
+      var all = d.open.concat(d.closed);       // zinazoendelea kwanza
+      myAll = all; myNoticeDays = d.notice_days;
+      renderMyOrders();
       $('myorders').classList.toggle('hidden', !all.length);
     } catch (e) { /* kimya: duka bado linafanya kazi */ }
+  }
+  // Oda nyingi: onyesha 2 tu, kisha "Ona oda zote (N)"
+  var myAll = [], myNoticeDays = 7, myExpanded = false, MY_SHOW = 2;
+  function renderMyOrders() {
+    var list = myExpanded ? myAll : myAll.slice(0, MY_SHOW);
+    var hasClosed = myAll.some(function (o) { return o.status === 'completed' || o.status === 'cancelled'; });
+    var nOpen = myAll.filter(function (o) { return o.status !== 'completed' && o.status !== 'cancelled'; }).length;
+    $('myorders').querySelector('h2').textContent = nOpen ? 'Oda zako (' + nOpen + ' zinaendelea)' : 'Oda zako';
+    $('mo-list').innerHTML = list.map(orderItemHtml).join('') +
+      (myAll.length > MY_SHOW ? '<button type="button" class="mo-more" id="mo-more" aria-expanded="' + myExpanded + '">' +
+        (myExpanded ? 'Ficha' : 'Ona oda zote (' + myAll.length + ')') + '</button>' : '') +
+      (hasClosed && (myExpanded || myAll.length <= MY_SHOW) ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana hapa kwa siku ' + myNoticeDays + ', kisha zinaondoka.</div>' : '');
   }
   function openOrderLink(tok) {
     closeOverlays();
@@ -773,6 +786,10 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   });
   $('cartbar').addEventListener('click', openCart);
   $('track-open').addEventListener('click', openTrack);
+  $('mo-list').addEventListener('click', function (e) {
+    if (!e.target.closest('#mo-more')) return;
+    myExpanded = !myExpanded; renderMyOrders();
+  });
   $('track-form').addEventListener('submit', submitTrack);
   document.addEventListener('click', function (e) {
     var a = e.target.closest('[data-oda]'); if (!a) return;
