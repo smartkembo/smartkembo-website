@@ -37,7 +37,7 @@ a{color:var(--blue)}
 .search input{border:0;outline:none;flex:1;background:transparent;font-size:15px;color:var(--ink);min-width:0}
 
 /* Chips */
-.chips{display:flex;gap:8px;padding:14px 16px 6px;overflow-x:auto;scrollbar-width:none}
+.chips{display:flex;gap:8px;padding:12px 16px 8px;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:10;background:var(--bg)}
 .chips::-webkit-scrollbar{display:none}
 .chip{height:36px;padding:0 16px;border-radius:18px;border:1px solid var(--line-2);background:#fff;font-size:14px;white-space:nowrap}
 .chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
@@ -57,6 +57,11 @@ a{color:var(--blue)}
 .stock{font-size:12px;font-weight:600}
 .stock.in{color:var(--ok)} .stock.low{color:#B45309} .stock.out{color:var(--bad)}
 .card.out{opacity:.6}
+.sec-h{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:14px 0 2px}
+.sec-h:first-child{margin-top:4px}
+.sec-h h2{margin:0;font-family:"Space Grotesk",sans-serif;font-size:18px}
+.sec-h small{color:var(--muted);font-size:13px;font-weight:500;margin-left:6px}
+.sec-h button{border:0;background:none;color:var(--blue);font-weight:600;font-size:14px;padding:8px 0;min-height:44px}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px;font-size:15px}
 
 /* Cart bar */
@@ -408,7 +413,7 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
       $('grid').innerHTML = '<div class="empty">' + (products.length ? 'Hakuna bidhaa inayolingana na utafutaji wako.' : 'Duka hili bado halijaweka bidhaa mtandaoni.') + '</div>';
       return;
     }
-    $('grid').innerHTML = list.map(function (p, i) {
+    function card(p, i) {
       return '<button class="card' + (p.availability === 'out' ? ' out' : '') + '" type="button" data-id="' + p.id + '">' +
         thumb(p, i, 'thumb') +
         '<span class="pname">' + esc(p.name) + '</span>' +
@@ -416,6 +421,22 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
         '<span class="prow"><span class="price">' + tsh(p.price) + '</span>' +
         (p.availability === 'out' ? '' : '<span class="plus" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span>') +
         '</span>' + stockText(p) + '</button>';
+    }
+    // Panga kwa makundi: kila kundi na kichwa chake (bila kundi → "Nyingine")
+    var groups = [], byCat = {};
+    list.forEach(function (p) {
+      var c = p.category || '';
+      if (!byCat[c]) { byCat[c] = []; groups.push(c); }
+      byCat[c].push(p);
+    });
+    groups.sort(function (a, b) { return a === '' ? 1 : b === '' ? -1 : a.localeCompare(b); });
+    if (groups.length < 2) { $('grid').innerHTML = list.map(card).join(''); return; }
+    var i = 0;
+    $('grid').innerHTML = groups.map(function (c) {
+      var items = byCat[c];
+      var head = '<div class="sec-h"><h2>' + esc(c || 'Nyingine') + '<small>' + items.length + '</small></h2>' +
+        (c && !cat ? '<button type="button" data-cat="' + esc(c) + '">Ona zote</button>' : '') + '</div>';
+      return head + items.map(function (p) { return card(p, i++); }).join('');
     }).join('');
   }
 
@@ -589,7 +610,11 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     cat = b.getAttribute('data-cat'); renderChips(); renderGrid();
   });
   $('q').addEventListener('input', renderGrid);
-  $('grid').addEventListener('click', function (e) { var c = e.target.closest('[data-id]'); if (c) openProduct(c.getAttribute('data-id')); });
+  $('grid').addEventListener('click', function (e) {
+    var h = e.target.closest('.sec-h [data-cat]');
+    if (h) { cat = h.getAttribute('data-cat'); renderChips(); renderGrid(); window.scrollTo({ top: $('chips').offsetTop, behavior: 'smooth' }); return; }
+    var c = e.target.closest('[data-id]'); if (c) openProduct(c.getAttribute('data-id'));
+  });
   $('pd-minus').addEventListener('click', function () { if (pdQty > 1) { pdQty--; updatePd(); } });
   $('pd-plus').addEventListener('click', function () { if (pdQty < maxQty(current)) { pdQty++; updatePd(); } });
   $('pd-add').addEventListener('click', function () {
