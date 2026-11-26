@@ -149,6 +149,11 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
 .mo-item.done small{color:#065F46} .mo-item.cancel small{color:#7F1D1D}
 .mo-item small{display:block;font-size:12.5px;color:var(--muted)}
 .track-link{display:flex;justify-content:center;padding:8px 16px 0}
+.hdr-btns{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
+.hdr-btns .icon-btn{margin-left:0;position:relative}
+.ob-badge{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--gold);color:#0E3A8A;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #0E3A8A}
+.ob-badge.alert{background:#EF4444;color:#fff}
+.mo-empty{text-align:center;color:var(--muted);font-size:14px;padding:18px 8px}
 .track-link button{border:1px solid var(--line-2);background:#fff;color:var(--blue);font-weight:600;font-size:14px;border-radius:12px;height:44px;padding:0 16px}
 .btn-wa{background:#128C47;color:#fff;width:100%}
 .wa-step{background:#E7F7EE;border:2px solid #128C47;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
@@ -185,9 +190,15 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
           <h1 id="st-name">Duka</h1>
           <div class="sub" id="st-sub"></div>
         </div>
-        <button class="icon-btn" id="share-btn" aria-label="Shiriki duka hili">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
-        </button>
+        <div class="hdr-btns">
+          <button class="icon-btn" id="orders-btn" aria-label="Oda zako">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 20a1.9 1.9 0 0 0 3.4 0"/></svg>
+            <span class="ob-badge hidden" id="orders-badge"></span>
+          </button>
+          <button class="icon-btn" id="share-btn" aria-label="Shiriki duka hili">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </button>
+        </div>
       </div>
       <p class="desc hidden" id="st-desc"></p>
       <label class="search">
@@ -198,11 +209,6 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     </div>
   </header>
   <div class="wrap">
-    <div class="myorders hidden" id="myorders" aria-live="polite">
-      <h2>Oda zako</h2>
-      <div id="mo-list" style="display:flex;flex-direction:column;gap:8px"></div>
-    </div>
-    <div class="track-link"><button type="button" id="track-open">Fuatilia oda yako</button></div>
     <div class="chips" id="chips" role="group" aria-label="Makundi ya bidhaa"></div>
     <div class="grid" id="grid"></div>
   </div>
@@ -305,6 +311,22 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     </form>
     <div class="sheet-f">
       <button class="btn btn-blue" id="ct-submit" form="checkout" type="submit">Agiza sasa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ODA ZAKO (kengele juu) ═══ -->
+<div class="overlay hidden" id="ov-orders" role="dialog" aria-modal="true" aria-labelledby="mo-title">
+  <div class="sheet">
+    <div class="sheet-h">
+      <h2 id="mo-title">Oda zako</h2>
+      <button class="x" data-close aria-label="Funga"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="sheet-b">
+      <div id="mo-list" style="display:flex;flex-direction:column;gap:8px" aria-live="polite"></div>
+    </div>
+    <div class="sheet-f">
+      <button class="btn" type="button" id="track-open" style="border:1px solid var(--line-2);background:#fff;color:var(--blue)">Huoni oda yako? Fuatilia kwa namba ya simu</button>
     </div>
   </div>
 </div>
@@ -458,28 +480,52 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   }
   async function loadMyOrders() {
     var toks = myTokens();
-    if (!toks.length) { $('myorders').classList.add('hidden'); return; }
+    if (!toks.length) { myAll = []; renderMyOrders(); return; }
     try {
       var d = await getJson(BASE + '/orders/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tokens: toks }) });
       forgetOrders(d.forget);                       // zilizopita siku 7 zinasahauliwa kabisa
       var all = d.open.concat(d.closed);       // zinazoendelea kwanza
       myAll = all; myNoticeDays = d.notice_days;
-      renderMyOrders();
-      $('myorders').classList.toggle('hidden', !all.length);
+      if (!$('ov-orders').classList.contains('hidden')) { myAll = all; markSeen(); }   // anaziangalia sasa hivi
+      else { notifyChanges(all); renderMyOrders(); }
     } catch (e) { /* kimya: duka bado linafanya kazi */ }
   }
-  // Oda nyingi: onyesha 2 tu, kisha "Ona oda zote (N)"
-  var myAll = [], myNoticeDays = 7, myExpanded = false, MY_SHOW = 2;
+  // Oda zako ziko kwenye kengele juu (kama notification). Namba = oda zinazoendelea;
+  // nyekundu = kuna oda iliyobadilika hali tangu ulipoangalia mara ya mwisho.
+  var myAll = [], myNoticeDays = 7;
+  function seenKey() { return 'sk_orders_seen_' + slug.toLowerCase(); }
+  function getSeen() { try { return JSON.parse(localStorage.getItem(seenKey()) || '{}') || {}; } catch (e) { return {}; } }
+  function setSeen(m) { try { localStorage.setItem(seenKey(), JSON.stringify(m)); } catch (e) { /* bila hifadhi */ } }
+  var CHANGE_MSG = { confirmed: 'imethibitishwa na duka', ready: 'iko tayari', completed: 'imekamilika', cancelled: 'imeghairiwa' };
+  function unseen() { var seen = getSeen(); return myAll.filter(function (o) { return seen[o.token] && seen[o.token] !== o.status; }); }
+  function notifyChanges(all) {
+    var seen = getSeen(), changed = null, dirty = false;
+    all.forEach(function (o) {
+      if (!seen[o.token]) { seen[o.token] = o.status; dirty = true; }          // oda mpya: haina habari ya kuonyesha
+      else if (seen[o.token] !== o.status && !changed) changed = o;
+    });
+    if (dirty) setSeen(seen);
+    if (changed) toast('🔔 Oda ' + changed.order_number + ' ' + (CHANGE_MSG[changed.status] || 'imebadilika') + '. Bonyeza kengele juu.');
+  }
+  function markSeen() {
+    var seen = {}; myAll.forEach(function (o) { seen[o.token] = o.status; }); setSeen(seen); renderMyOrders();
+  }
   function renderMyOrders() {
-    var list = myExpanded ? myAll : myAll.slice(0, MY_SHOW);
     var hasClosed = myAll.some(function (o) { return o.status === 'completed' || o.status === 'cancelled'; });
     var nOpen = myAll.filter(function (o) { return o.status !== 'completed' && o.status !== 'cancelled'; }).length;
-    $('myorders').querySelector('h2').textContent = nOpen ? 'Oda zako (' + nOpen + ' zinaendelea)' : 'Oda zako';
-    $('mo-list').innerHTML = list.map(orderItemHtml).join('') +
-      (myAll.length > MY_SHOW ? '<button type="button" class="mo-more" id="mo-more" aria-expanded="' + myExpanded + '">' +
-        (myExpanded ? 'Ficha' : 'Ona oda zote (' + myAll.length + ')') + '</button>' : '') +
-      (hasClosed && (myExpanded || myAll.length <= MY_SHOW) ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana hapa kwa siku ' + myNoticeDays + ', kisha zinaondoka.</div>' : '');
+    var nNew = unseen().length, b = $('orders-badge');
+    b.classList.toggle('hidden', !(nNew || nOpen));
+    b.classList.toggle('alert', !!nNew);
+    b.textContent = nNew || nOpen || '';
+    $('orders-btn').setAttribute('aria-label', 'Oda zako' + (nOpen ? ': ' + nOpen + ' zinaendelea' : '') + (nNew ? ', ' + nNew + ' zina habari mpya' : ''));
+    $('mo-title').textContent = nOpen ? 'Oda zako (' + nOpen + ' zinaendelea)' : 'Oda zako';
+    $('mo-list').innerHTML = myAll.length ? myAll.map(orderItemHtml).join('') +
+      (hasClosed ? '<div class="note">Oda zilizokamilika au kughairiwa zinaonekana hapa kwa siku ' + myNoticeDays + ', kisha zinaondoka.</div>' : '')
+      : '<div class="mo-empty">Bado huna oda kwenye simu hii.<br>Ukiagiza, oda yako itaonekana hapa.</div>';
   }
+  // Angalia hali ya oda kila dakika 1 akiwa dukani (kama notification)
+  setInterval(function () { if (!document.hidden && store && !orderToken && myTokens().length) loadMyOrders(); }, 60000);
+  function openMyOrders() { renderMyOrders(); openOv('ov-orders'); markSeen(); loadMyOrders(); }
   function openOrderLink(tok) {
     closeOverlays();
     history.pushState(null, '', location.pathname + '?oda=' + tok);
@@ -905,7 +951,8 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
     cart[current.id] = pdQty; renderCartBar(); closeOv('ov-product'); toast('Imewekwa kwenye kikapu');
   });
   $('cartbar').addEventListener('click', openCartFresh);
-  $('track-open').addEventListener('click', openTrack);
+  $('track-open').addEventListener('click', function () { closeOv('ov-orders'); openTrack(); });
+  $('orders-btn').addEventListener('click', openMyOrders);
   $('f-proof').addEventListener('change', async function () {
     var f = this.files && this.files[0]; if (!f) return;
     try { setProof(await shrinkImage(f)); } catch (e) { toast(e.message); setProof(null); }
@@ -913,10 +960,6 @@ textarea.inp{height:auto;min-height:72px;padding:10px 12px;resize:vertical}
   $('f-proof-x').addEventListener('click', function () { setProof(null); });
   $('od-pay').addEventListener('change', function (e) {
     var inp = e.target.closest('#od-proof'); if (inp && inp.files && inp.files[0]) uploadLateProof(inp.files[0]);
-  });
-  $('mo-list').addEventListener('click', function (e) {
-    if (!e.target.closest('#mo-more')) return;
-    myExpanded = !myExpanded; renderMyOrders();
   });
   $('track-form').addEventListener('submit', submitTrack);
   document.addEventListener('click', function (e) {
